@@ -1,21 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Form, Button, Col, Row, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../Actions/userAction'
 
-const LoginScreen = () => {
+const LoginScreen = ({ history }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const userLogin = useSelector(state => state.userLogin)
-    const { loading, error, userInfo } = userLogin
+    const { loading, error, currentUser } = userLogin
 
+    useEffect(() => {
+        if (currentUser) {
+            history.push('/');
+        }
+    }, [currentUser, history])
 
 
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(login(email, password));
+        history.push('/');
     }
     return (
         <Container>
