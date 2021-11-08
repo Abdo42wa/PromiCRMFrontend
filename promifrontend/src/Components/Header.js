@@ -1,13 +1,13 @@
 import React from 'react'
-import { Navbar, Container, Nav } from 'react-bootstrap'
+import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../Actions/userAction'
 
 const Header = () => {
     const dispatch = useDispatch();
-    const userLogin = useSelector(state => state.userLogin)
-    const { currentUser } = userLogin
+    const usersReducer = useSelector(state => state.usersReducer)
+    const { currentUser } = usersReducer
 
     const logoutHandler = () => {
         dispatch(logout())
@@ -28,18 +28,21 @@ const Header = () => {
                                     <LinkContainer to='/'>
                                         <Nav.Link href="#home">Home</Nav.Link>
                                     </LinkContainer>
+                                    <NavDropdown title='Admin' id='adminmenu'>
+                                        <LinkContainer to='/register'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-user-plus"></i> Add user
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
+                                    </NavDropdown>
 
-                                    <LinkContainer to='/register'>
-                                        <Nav.Link >
-                                            <i class="fas fa-user-plus"></i> Add user
-                                        </Nav.Link>
-                                    </LinkContainer>
 
                                     <LinkContainer to='/login'>
                                         <Nav.Link onClick={logoutHandler} >
                                             <i class="fas fa-sign-out-alt"></i> Log Out
                                         </Nav.Link>
                                     </LinkContainer>
+
 
                                 </>
                             ) : (

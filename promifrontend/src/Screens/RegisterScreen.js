@@ -15,8 +15,8 @@ const RegisterScreen = ({ history, location }) => {
     const [message, setMessage] = useState(null);
 
     const dispatch = useDispatch()
-    const userRegister = useSelector((state) => state.userRegister)
-    const { loading, error } = userRegister
+    const usersReducer = useSelector((state) => state.usersReducer)
+    const { loading, error } = usersReducer
 
 
 

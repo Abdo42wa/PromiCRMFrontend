@@ -8,8 +8,8 @@ const LoginScreen = ({ history }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const userLogin = useSelector(state => state.userLogin)
-    const { loading, error, currentUser } = userLogin
+    const usersReducer = useSelector(state => state.usersReducer)
+    const { loading, error, currentUser } = usersReducer
 
     useEffect(() => {
         if (currentUser) {
@@ -21,7 +21,9 @@ const LoginScreen = ({ history }) => {
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(login(email, password));
-        //history.push('/');
+        if (currentUser) {
+            history.push('/');
+        }
     }
     return (
         <Container>
