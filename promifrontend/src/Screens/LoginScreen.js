@@ -21,7 +21,7 @@ const LoginScreen = ({ history }) => {
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(login(email, password));
-        history.push('/');
+        //history.push('/');
     }
     return (
         <Container>
