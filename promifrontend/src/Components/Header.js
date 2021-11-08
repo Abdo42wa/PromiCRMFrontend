@@ -29,6 +29,12 @@ const Header = () => {
                                         <Nav.Link href="#home">Home</Nav.Link>
                                     </LinkContainer>
 
+                                    <LinkContainer to='/register'>
+                                        <Nav.Link >
+                                            <i class="fas fa-user-plus"></i> Add user
+                                        </Nav.Link>
+                                    </LinkContainer>
+
                                     <LinkContainer to='/login'>
                                         <Nav.Link onClick={logoutHandler} >
                                             <i class="fas fa-sign-out-alt"></i> Log Out

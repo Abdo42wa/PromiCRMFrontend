@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap'
 import HomeScreen from './Screens/HomeScreen';
 import Header from './Components/Header';
 import LoginScreen from './Screens/LoginScreen';
-import { RegisterScreen } from './Screens/RegisterScreen';
+import RegisterScreen from './Screens/RegisterScreen';
 
 function App() {
   return (
