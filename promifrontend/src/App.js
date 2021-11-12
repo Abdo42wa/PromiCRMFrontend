@@ -5,6 +5,7 @@ import HomeScreen from './Screens/HomeScreen';
 import Header from './Components/Header';
 import LoginScreen from './Screens/LoginScreen';
 import RegisterScreen from './Screens/RegisterScreen';
+import UserListScreen from './Screens/UserListScreen';
 
 function App() {
   return (
@@ -17,10 +18,11 @@ function App() {
           <Route path='/' component={HomeScreen} exact />
           <Route path='/login' component={LoginScreen} />
           <Route path='/register' component={RegisterScreen} />
+          <Route path='/user-list' component={UserListScreen}/>
 
         </div>
       </Container>
-    </Router >
+    </Router>
   );
 }
 

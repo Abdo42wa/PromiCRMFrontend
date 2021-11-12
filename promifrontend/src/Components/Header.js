@@ -34,6 +34,11 @@ const Header = () => {
                                                 <i class="fas fa-user-plus"></i> Add user
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/users-list'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-users"></i> Users
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
 
 

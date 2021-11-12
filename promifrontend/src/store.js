@@ -10,9 +10,9 @@ const allReducers = combineReducers({
 });
 
 
-const userInfoFromStorage = localStorage.getItem('userInfo');
+const userInfoFromStorage = localStorage.getItem('currentUser')?localStorage.getItem('currentUser'):null;
 const initialState = {
-    userLogin: { currentUser: userInfoFromStorage }
+    usersReducer: { currentUser: userInfoFromStorage },
 }
 
 const middleware = [thunk];

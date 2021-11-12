@@ -19,7 +19,7 @@ export const login = (email, password) => async (dispatch) => {
             payload: data
         })
 
-        localStorage.setItem('userInfo', JSON.stringify(data))
+        localStorage.setItem('currentUser', data.token)
     } catch (error) {
         dispatch({
             type: 'USER_LOGIN_FAIL',
@@ -32,7 +32,7 @@ export const login = (email, password) => async (dispatch) => {
 }
 
 export const logout = () => (dispatch) => {
-    localStorage.removeItem('userInfo')
+    localStorage.removeItem('currentUser')
     dispatch({ type: 'USER_LOGOUT' })
 
 }
@@ -61,12 +61,12 @@ export const register = (firstName, lastName, phoneNumber, position, email, pass
             payload: data,
         })
 
-        dispatch({
-            type: 'USER_LOGIN_SUCCESS',
-            payload: data,
-        })
+        // dispatch({
+        //     type: 'USER_LOGIN_SUCCESS',
+        //     payload: data,
+        // })
 
-        localStorage.setItem('userInfo', JSON.stringify(data))
+        // localStorage.setItem('userInfo', JSON.stringify(data))
 
     } catch (error) {
         dispatch({
