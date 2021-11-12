@@ -2,11 +2,13 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 //import { userLoginReducer, userRegisterReducer, userDataReducer } from './Reducers/userReducer';
-import { usersReducer } from './Reducers/userReducer'
+import { usersReducer } from './Reducers/userReducer';
+import { usersListReducer } from './Reducers/userListReducer';
 
 
 const allReducers = combineReducers({
-    usersReducer
+    usersReducer,
+    usersListReducer
 });
 
 

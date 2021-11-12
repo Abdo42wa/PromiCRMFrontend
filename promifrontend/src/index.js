@@ -4,6 +4,7 @@ import App from './App';
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 import store from './store';
+import "antd/dist/antd.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
@@ -11,7 +12,7 @@ ReactDOM.render(
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode >,
+  </React.StrictMode>,
   document.getElementById('root')
 );
 
