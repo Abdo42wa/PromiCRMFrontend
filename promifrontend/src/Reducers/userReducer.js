@@ -45,7 +45,7 @@ export const usersReducer = (state = { currentUser: null, user: null }, action) 
         case 'USER_LOGIN_REQUEST':
             return { loading: true }
         case 'USER_LOGIN_SUCCESS':
-            return { ...state, loading: false, currentUser: action.payload.token, user: action.payload.user }
+            return { ...state, loading: false, currentUser: action.payload.token }
         case 'USER_LOGIN_FAIL':
             return { loading: false, error: action.payload }
         case 'USER_LOGOUT':
@@ -53,7 +53,7 @@ export const usersReducer = (state = { currentUser: null, user: null }, action) 
         case 'USER_REGISTER_REQUEST':
             return { loading: true };
         case 'USER_REGISTER_SUCCESS':
-            return { ...state, loading: false, currentUser: action.payload.token, user: action.payload.user };
+            return { ...state, loading: false };
         case 'USER_REGISTER_FAIL':
             return { loading: false, error: action.payload };
         case 'USER_DATA_REQUEST':

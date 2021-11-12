@@ -1,6 +1,6 @@
 {
   "name": "promifrontend",
-  "proxy": "https://localhost:44338",
+  "proxy": "https://localhost:44324",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

@@ -1,5 +1,5 @@
 import axios from 'axios'
-export const getUsers = (num,callback) => async(dispatch,getState) =>{
+export const getUsers = (callback) => async(dispatch,getState) =>{
     try {
         dispatch({
             type: 'FETCH_ALL_REQUEST'
@@ -11,7 +11,6 @@ export const getUsers = (num,callback) => async(dispatch,getState) =>{
             type: 'FETCH_ALL_SUCCESS',
             payload: response.data,
         });
-        console.log('Action got data:'+JSON.stringify(response.data))
         callback();
     } catch (error) {
         dispatch({

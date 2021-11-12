@@ -13,12 +13,11 @@ function App() {
       <Header />
       <Container>
         <div className="App">
-
-
-          <Route path='/' component={HomeScreen} exact />
+          
           <Route path='/login' component={LoginScreen} />
           <Route path='/register' component={RegisterScreen} />
-          <Route path='/user-list' component={UserListScreen}/>
+          <Route path='/userlist' component={UserListScreen}/>
+          <Route path='/' component={HomeScreen} exact />
 
         </div>
       </Container>
