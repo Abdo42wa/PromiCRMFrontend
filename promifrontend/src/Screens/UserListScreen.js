@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal } from 'antd'
-// import { Container, Image, Text } from 'react-bootstrap';
-// import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { getUsers } from '../Actions/userListActions'
 import { Link, withRouter } from 'react-router-dom'

@@ -5,12 +5,14 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { usersReducer } from './Reducers/userReducer';
 import { usersListReducer } from './Reducers/userListReducer';
 import { materialsReducer } from './Reducers/materialsReducer';
+import { productsReducer } from './Reducers/productsReducer';
 
 
 const allReducers = combineReducers({
     usersReducer,
     usersListReducer,
-    materialsReducer
+    materialsReducer,
+    productsReducer
 });
 
 

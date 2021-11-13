@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom'
-import { getMaterials } from '../Actions/materialsActions'
+import { getMaterials, createMaterial} from '../Actions/materialsActions'
 import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
 // import Button from "react-bootstrap/Button";
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
@@ -33,8 +33,15 @@ class MaterialsScreen extends React.Component {
             addMaterialVisibility: false
         });
     }
-    saveAddMaterial = () => {
-        console.log('Save')
+    saveAddMaterial = (postObject) => {
+        console.log(JSON.stringify(postObject));
+        this.props.createMaterial(postObject, () =>{
+            const materialsClone = this.props.materialsReducer.materials;
+            this.setState({
+                materials:  materialsClone,
+                addMaterialVisibility: false
+            });
+        });
     }
 
     //FOR UpdateMaterialComponent
@@ -64,7 +71,7 @@ class MaterialsScreen extends React.Component {
                 const materialsClone = JSON.parse(JSON.stringify(this.props.materialsReducer.materials));
                 this.setState({
                     materials: materialsClone
-                }, () => console.log('Materials:' + JSON.stringify(this.state.materials)))
+                });
             });
         } else {
             this.props.history.push('/')
@@ -141,4 +148,4 @@ const mapStateToProps = (state) => {
 }
 
 //connect redux states, and define all action that will be used
-export default connect(mapStateToProps, { getMaterials })(withRouter(MaterialsScreen))
+export default connect(mapStateToProps, { getMaterials,createMaterial })(withRouter(MaterialsScreen))
