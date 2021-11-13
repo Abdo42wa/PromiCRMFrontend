@@ -48,7 +48,7 @@ export const createMaterial = (postObject,callback) => async(dispatch,getState) 
 }
 
 
-export const updateItem = (id, postObj, callback) => async(dispatch,getState) => {
+export const updateItem = (id, postObj, reducerObj, callback) => async(dispatch,getState) => {
     try{
         dispatch({
             type: 'MATERIAL_UPDATE_REQUEST'
@@ -58,7 +58,7 @@ export const updateItem = (id, postObj, callback) => async(dispatch,getState) =>
         const response = await axios.put(`/api/Materials/${id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
         dispatch({
             type: 'MATERIAL_UPDATE_SUCCESS',
-            payload: postObj
+            payload: reducerObj
         });
         callback();
     }catch (error) {

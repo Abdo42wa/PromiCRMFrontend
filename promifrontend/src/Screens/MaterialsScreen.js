@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom'
-import { getMaterials, createMaterial} from '../Actions/materialsActions'
+import { getMaterials, createMaterial, updateItem } from '../Actions/materialsActions'
 import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
 // import Button from "react-bootstrap/Button";
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddMaterialComponent from '../Components/materials_components/AddMaterialComponent';
+import UpdateMaterialComponent from '../Components/materials_components/UpdateMaterialComponent';
 
 
 class MaterialsScreen extends React.Component {
@@ -34,11 +35,10 @@ class MaterialsScreen extends React.Component {
         });
     }
     saveAddMaterial = (postObject) => {
-        console.log(JSON.stringify(postObject));
-        this.props.createMaterial(postObject, () =>{
+        this.props.createMaterial(postObject, () => {
             const materialsClone = this.props.materialsReducer.materials;
             this.setState({
-                materials:  materialsClone,
+                materials: materialsClone,
                 addMaterialVisibility: false
             });
         });
@@ -52,7 +52,7 @@ class MaterialsScreen extends React.Component {
         }
         this.setState({
             updateMaterialVisibility: obj
-        });
+        }, () => console.log('Record is set:' + JSON.stringify(this.state.updateMaterialVisibility.record)));
     }
 
     unshowUpdateMaterial = () => {
@@ -62,6 +62,16 @@ class MaterialsScreen extends React.Component {
         }
         this.setState({
             updateMaterialVisibility: obj
+        });
+    }
+    saveUpdateMaterial = (postObj, id, reducerObj) => {
+        console.log(JSON.stringify(postObj))
+        this.props.updateItem(id, postObj, reducerObj, ()=>{
+            const materialsClone = this.props.materialsReducer.materials;
+            this.setState({
+                materials: materialsClone,
+                updateMaterialVisibility: false
+            });
         });
     }
 
@@ -133,8 +143,13 @@ class MaterialsScreen extends React.Component {
                         </Row>
                     </Col>
                 </div>
-                <AddMaterialComponent visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterial}
-                    save={this.saveAddMaterial} />
+                {this.state.addMaterialVisibility !== false ? <AddMaterialComponent visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterial}
+                    save={this.saveAddMaterial} /> : null}
+                {this.state.updateMaterialVisibility.visibility !== false ?
+                    <UpdateMaterialComponent visible={this.state.updateMaterialVisibility.visibility} data={this.state.updateMaterialVisibility.record}
+                        save={this.saveUpdateMaterial} onClose={this.unshowUpdateMaterial} /> :
+                    null}
+
             </>
         )
     }
@@ -148,4 +163,4 @@ const mapStateToProps = (state) => {
 }
 
 //connect redux states, and define all action that will be used
-export default connect(mapStateToProps, { getMaterials,createMaterial })(withRouter(MaterialsScreen))
+export default connect(mapStateToProps, { getMaterials, createMaterial, updateItem })(withRouter(MaterialsScreen))

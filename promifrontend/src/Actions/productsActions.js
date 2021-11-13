@@ -12,7 +12,6 @@ export const getProducts = (callback) => async(dispatch,getState) =>{
             type: 'PRODUCTS_FETCH_SUCCESS',
             payload: response.data
         });
-        console.log('Productsa action:'+JSON.stringify(response.data))
         callback()
     }catch (error) {
         dispatch({
