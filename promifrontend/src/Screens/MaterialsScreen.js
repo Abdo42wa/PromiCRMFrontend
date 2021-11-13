@@ -133,7 +133,7 @@ class MaterialsScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={columns}
-                                        dataSource={this.props.materialsReducer.materials}
+                                        dataSource={this.state.materials}
                                         pagination={{ pageSize: 15 }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddMaterial}>Pridėti materialą</Button></Space>)}
                                     />

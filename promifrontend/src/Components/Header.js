@@ -44,6 +44,11 @@ const Header = () => {
                                                 <i class="fas fa-toolbox"></i> Materialai
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/shipments'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-shipping-fast"></i> Pristatymai
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
 
 

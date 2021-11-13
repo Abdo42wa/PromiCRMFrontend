@@ -6,13 +6,15 @@ import { usersReducer } from './Reducers/userReducer';
 import { usersListReducer } from './Reducers/userListReducer';
 import { materialsReducer } from './Reducers/materialsReducer';
 import { productsReducer } from './Reducers/productsReducer';
+import { shipmentsReducer } from './Reducers/shipmentsReducer';
 
 
 const allReducers = combineReducers({
     usersReducer,
     usersListReducer,
     materialsReducer,
-    productsReducer
+    productsReducer,
+    shipmentsReducer
 });
 
 

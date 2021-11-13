@@ -1,0 +1,162 @@
+import React from 'react';
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom'
+import {getShipments, createShipment, updateShipment} from '../Actions/shipmentsActions'
+import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
+import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
+
+class ShipmentScreen extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            shipments: [],
+            addShipmentVisibility: false,
+            updateShipmentVisibility: {
+                visibility: false,
+                record: null
+            }
+        }
+    }
+    // FOR AddShipmentComponent
+    showAddShipment = () =>{
+        this.setState({
+            addShipmentVisibility: true
+        });
+    }
+
+    unshowShipmentVisibility = () =>{
+        this.setState({
+            addShipmentVisibility: false
+        });
+    }
+    
+    saveAddShipment = (postObj) =>{
+        console.log('Save shipment');
+    }
+    
+    //FOR UpdateShipmentComponent
+    showUpdateShipment = (record) =>{
+        const obj = {
+            visibility: true,
+            record: record
+        }
+        this.setState({
+            updateShipmentVisibility: obj
+        });
+    }
+
+    unshowUpdateShipment = (record) =>{
+        const obj = {
+            visibility: false,
+            record: null
+        }
+        this.setState({
+            updateShipmentVisibility: obj
+        });
+    }
+
+    saveUpdateShipment = (postObj,reducerObj) =>{
+        console.log('Save update')
+    }
+
+    componentDidMount(){
+        if(this.props.usersReducer.currentUser !== null){
+            this.props.getShipments(() =>{
+                const shipmentsClone = JSON.parse(JSON.stringify(this.props.shipmentsReducer.shipments));
+                this.setState({
+                    shipments: shipmentsClone
+                }, () => console.log('Shipments set to:'+JSON.stringify(this.state.shipments)));
+            });
+        }else{
+            this.props.history.push('/')
+        }
+    }
+
+    render(){
+        const columns = [
+            {
+                title: 'Atnaujinti',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Button onClick={(e) => this.showUpdateShipment(record)}>Atnaujinti</Button>
+                )
+            },
+            {
+                title: 'Tipas',
+                dataIndex: 'type',
+                width: '15%'
+            },
+            {
+                title: 'Periodas',
+                dataIndex: 'period',
+                width: '15%'
+            },
+            {
+                title: 'Pristatymo kaina',
+                dataIndex: 'shippingCost',
+                width: '20%'
+            },
+            {
+                title: 'Pristatymo numeris',
+                dataIndex: 'shippingNumber',
+                width: '20%'
+            },
+            {
+                title: 'Pristatymo informacija',
+                dataIndex: 'shipmentInfo',
+                width: '20%'
+            }
+        ]
+        return (
+            <>
+
+                <div style={{ marginTop: 45, marginBottom: 45 }}>
+                    <Col span={24} offset={2}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <Typography.Title>Pristatymai</Typography.Title>
+                                    <Typography.Text>Pridėkite ir atnaujinkite pristatymus</Typography.Text>
+                                </div>
+                            </Col>
+                        </Row>
+                        {/* returns second column with table */}
+                        {/* <FixedCostTable data={obj.types} countryVats={this.props.countryVats} category_title={obj.category_title} category_id={obj.category_id} /> */}
+                        <Row gutter={16}>
+                            <Col span={18}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={columns}
+                                        dataSource={this.props.shipmentsReducer.shipments}
+                                        pagination={{ pageSize: 15 }}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddShipment}>Pridėti materialą</Button></Space>)}
+                                    />
+                                    {/* <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.addMaterial}>Pridėti materialą</Button></Space> */}
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+                </div>
+                {/* {this.state.addMaterialVisibility !== false ? <AddMaterialComponent visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterial}
+                    save={this.saveAddMaterial} /> : null}
+                {this.state.updateMaterialVisibility.visibility !== false ?
+                    <UpdateMaterialComponent visible={this.state.updateMaterialVisibility.visibility} data={this.state.updateMaterialVisibility.record}
+                        save={this.saveUpdateMaterial} onClose={this.unshowUpdateMaterial} /> :
+                    null} */}
+
+            </>
+        )
+    }
+}
+
+//get redux states. map them to props
+const mapStateToProps = (state) =>{
+    return {
+        usersReducer: state.usersReducer,
+        shipmentsReducer: state.shipmentsReducer
+    }
+}
+
+// connect to redux states, define all action that will be used
+export default connect(mapStateToProps, {getShipments,createShipment,updateShipment})(withRouter(ShipmentScreen))

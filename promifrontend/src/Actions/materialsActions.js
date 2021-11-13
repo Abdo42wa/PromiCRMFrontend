@@ -33,7 +33,7 @@ export const createMaterial = (postObject,callback) => async(dispatch,getState) 
         const response = await axios.post(`/api/Materials`, postObject, {headers:{Authorization: `Bearer ${token}`}})
         dispatch({
             type: 'MATERIALS_CREATE_SUCCESS',
-            payload: postObject
+            payload: response.data
         });
         callback();
     }catch (error) {
