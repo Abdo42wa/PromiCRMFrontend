@@ -48,6 +48,31 @@ export const createMaterial = (postObject,callback) => async(dispatch,getState) 
 }
 
 
+export const updateItem = (id, postObj, callback) => async(dispatch,getState) => {
+    try{
+        dispatch({
+            type: 'MATERIAL_UPDATE_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        const response = await axios.put(`/api/Materials/${id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'MATERIAL_UPDATE_SUCCESS',
+            payload: postObj
+        });
+        callback();
+    }catch (error) {
+        dispatch({
+            type: 'MATERIAL_UPDATE_SUCCESS',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
 // export const updateItems = (postObject, callback) => async(dispatch,getState) =>{
 //     try{
 //         dispatch({

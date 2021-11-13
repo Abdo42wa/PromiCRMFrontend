@@ -31,12 +31,17 @@ const Header = () => {
                                     <NavDropdown title='Admin' id='adminmenu'>
                                         <LinkContainer to='/register'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-user-plus"></i> Add user
+                                                <i class="fas fa-user-plus"></i> Pridėti naudotojus
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/userlist'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-users"></i> Users
+                                                <i class="fas fa-users"></i> Naudotojai
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/materials'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-toolbox"></i> Materialai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                     </NavDropdown>
