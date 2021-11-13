@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom'
 import {getShipments, createShipment, updateShipment} from '../Actions/shipmentsActions'
 import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
+import AddShipmentComponent from '../Components/shipments_components/AddShipmentComponent';
 
 class ShipmentScreen extends React.Component{
     constructor(props){
@@ -31,7 +32,13 @@ class ShipmentScreen extends React.Component{
     }
     
     saveAddShipment = (postObj) =>{
-        console.log('Save shipment');
+        this.props.createShipment(postObj, () =>{
+            const shipmentsClone = this.props.shipmentsReducer.shipments;
+            this.setState({
+                shipments: shipmentsClone,
+                addShipmentVisibility: false
+            });
+        });
     }
     
     //FOR UpdateShipmentComponent
@@ -138,12 +145,9 @@ class ShipmentScreen extends React.Component{
                         </Row>
                     </Col>
                 </div>
-                {/* {this.state.addMaterialVisibility !== false ? <AddMaterialComponent visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterial}
-                    save={this.saveAddMaterial} /> : null}
-                {this.state.updateMaterialVisibility.visibility !== false ?
-                    <UpdateMaterialComponent visible={this.state.updateMaterialVisibility.visibility} data={this.state.updateMaterialVisibility.record}
-                        save={this.saveUpdateMaterial} onClose={this.unshowUpdateMaterial} /> :
-                    null} */}
+                {this.state.addShipmentVisibility !== false?
+                <AddShipmentComponent onClose={this.unshowShipmentVisibility} save={this.saveAddShipment} visible={this.state.addShipmentVisibility}
+                />:null}
 
             </>
         )
