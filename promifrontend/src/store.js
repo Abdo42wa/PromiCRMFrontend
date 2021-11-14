@@ -8,6 +8,7 @@ import { materialsReducer } from './Reducers/materialsReducer';
 import { productsReducer } from './Reducers/productsReducer';
 import { shipmentsReducer } from './Reducers/shipmentsReducer';
 import { customersReducer } from './Reducers/customersReducer';
+import { warehouseReducer } from './Reducers/warehouseReducer';
 
 
 const allReducers = combineReducers({
@@ -16,7 +17,8 @@ const allReducers = combineReducers({
     materialsReducer,
     productsReducer,
     shipmentsReducer,
-    customersReducer
+    customersReducer,
+    warehouseReducer
 });
 
 

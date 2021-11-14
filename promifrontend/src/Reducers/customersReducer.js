@@ -14,13 +14,13 @@ export const customersReducer = (state = {customers: []},action)=>{
             return {...state, loading: false, customers: newCustomers}
         case 'CUSTOMERS_CREATE_FAIL':
             return {...state, loading: false, error: action.payload}
-        case 'CUSTOMERS_UPDATE_REQUEST':
+        case 'CUSTOMER_UPDATE_REQUEST':
             return {...state, loading: true}
-        case 'CUSTOMERS_UPDATE_SUCCESS':
+        case 'CUSTOMER_UPDATE_SUCCESS':
             // loop through array check for item with same id, then update its values to new
             const customersClone = JSON.parse(JSON.stringify(state.customers));
             customersClone.map((element,index)=>{
-                if(customersClone.id === action.payload.id){
+                if(element.id === action.payload.id){
                     element.name = action.payload.name;
                     element.lastName = action.payload.lastName;
                     element.email = action.payload.email;
@@ -29,7 +29,7 @@ export const customersReducer = (state = {customers: []},action)=>{
                 }
             });
             return {...state, loading: false, customers: customersClone}
-        case 'CUSTOMERS_UPDATE_FAIL':
+        case 'CUSTOMER_UPDATE_FAIL':
             return {...state, loading: false, error: action.payload}
         default: 
             return state;
