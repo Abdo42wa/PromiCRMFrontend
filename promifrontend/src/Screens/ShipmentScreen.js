@@ -1,13 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom'
-import {getShipments, createShipment, updateShipment} from '../Actions/shipmentsActions'
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
+import { getShipments, createShipment, updateShipment } from '../Actions/shipmentsActions'
 import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddShipmentComponent from '../Components/shipments_components/AddShipmentComponent';
+import UpdateShipmentComponent from '../Components/shipments_components/UpdateShipmentComponent';
 
-class ShipmentScreen extends React.Component{
-    constructor(props){
+class ShipmentScreen extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             shipments: [],
@@ -19,20 +20,20 @@ class ShipmentScreen extends React.Component{
         }
     }
     // FOR AddShipmentComponent
-    showAddShipment = () =>{
+    showAddShipment = () => {
         this.setState({
             addShipmentVisibility: true
         });
     }
 
-    unshowShipmentVisibility = () =>{
+    unshowShipmentVisibility = () => {
         this.setState({
             addShipmentVisibility: false
         });
     }
-    
-    saveAddShipment = (postObj) =>{
-        this.props.createShipment(postObj, () =>{
+
+    saveAddShipment = (postObj) => {
+        this.props.createShipment(postObj, () => {
             const shipmentsClone = this.props.shipmentsReducer.shipments;
             this.setState({
                 shipments: shipmentsClone,
@@ -40,9 +41,9 @@ class ShipmentScreen extends React.Component{
             });
         });
     }
-    
+
     //FOR UpdateShipmentComponent
-    showUpdateShipment = (record) =>{
+    showUpdateShipment = (record) => {
         const obj = {
             visibility: true,
             record: record
@@ -52,7 +53,7 @@ class ShipmentScreen extends React.Component{
         });
     }
 
-    unshowUpdateShipment = (record) =>{
+    unshowUpdateShipment = (record) => {
         const obj = {
             visibility: false,
             record: null
@@ -62,24 +63,32 @@ class ShipmentScreen extends React.Component{
         });
     }
 
-    saveUpdateShipment = (postObj,reducerObj) =>{
-        console.log('Save update')
+    saveUpdateShipment = (postObj, reducerObj) => {
+        // console.log('Save update:' + JSON.stringify(postObj))
+        this.props.updateShipment(postObj, reducerObj, () =>{
+            //get clone of shipments reducer state which just updated
+            const shipmentsClone = JSON.parse(JSON.stringify(this.props.shipmentsReducer.shipments));
+            this.setState({
+                shipments: shipmentsClone
+            });
+            this.unshowUpdateShipment();
+        });
     }
 
-    componentDidMount(){
-        if(this.props.usersReducer.currentUser !== null){
-            this.props.getShipments(() =>{
+    componentDidMount() {
+        if (this.props.usersReducer.currentUser !== null) {
+            this.props.getShipments(() => {
                 const shipmentsClone = JSON.parse(JSON.stringify(this.props.shipmentsReducer.shipments));
                 this.setState({
                     shipments: shipmentsClone
-                }, () => console.log('Shipments set to:'+JSON.stringify(this.state.shipments)));
+                }, () => console.log('Shipments set to:' + JSON.stringify(this.state.shipments)));
             });
-        }else{
+        } else {
             this.props.history.push('/')
         }
     }
 
-    render(){
+    render() {
         const columns = [
             {
                 title: 'Atnaujinti',
@@ -145,9 +154,13 @@ class ShipmentScreen extends React.Component{
                         </Row>
                     </Col>
                 </div>
-                {this.state.addShipmentVisibility !== false?
-                <AddShipmentComponent onClose={this.unshowShipmentVisibility} save={this.saveAddShipment} visible={this.state.addShipmentVisibility}
-                />:null}
+                {this.state.addShipmentVisibility !== false ?
+                    <AddShipmentComponent onClose={this.unshowShipmentVisibility} save={this.saveAddShipment} visible={this.state.addShipmentVisibility}
+                    /> : null}
+                {this.state.updateShipmentVisibility.visibility !== false ?
+                    <UpdateShipmentComponent visible={this.state.updateShipmentVisibility.visibility}
+                        save={this.saveUpdateShipment} onClose={this.unshowUpdateShipment}
+                        record={this.state.updateShipmentVisibility.record} /> : null}
 
             </>
         )
@@ -155,7 +168,7 @@ class ShipmentScreen extends React.Component{
 }
 
 //get redux states. map them to props
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
         shipmentsReducer: state.shipmentsReducer
@@ -163,4 +176,4 @@ const mapStateToProps = (state) =>{
 }
 
 // connect to redux states, define all action that will be used
-export default connect(mapStateToProps, {getShipments,createShipment,updateShipment})(withRouter(ShipmentScreen))
+export default connect(mapStateToProps, { getShipments, createShipment, updateShipment })(withRouter(ShipmentScreen))
