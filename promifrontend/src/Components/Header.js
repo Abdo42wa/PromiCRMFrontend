@@ -49,6 +49,11 @@ const Header = () => {
                                                 <i class="fas fa-shipping-fast"></i> Pristatymai
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/customers'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-user-friends"></i> Klientai
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
 
 

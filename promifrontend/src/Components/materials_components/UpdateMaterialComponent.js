@@ -53,7 +53,7 @@ class UpdateMaterialComponent extends React.Component {
         }
         this.setState({
             material: materialClone
-        }, console.log('Material changed:'+JSON.stringify(this.state.material)));
+        }, console.log('Material changed:' + JSON.stringify(this.state.material)));
     }
     saveChanges = () => {
         const materialClone = JSON.parse(JSON.stringify(this.state.material));
@@ -102,14 +102,14 @@ class UpdateMaterialComponent extends React.Component {
                     }
                 >
                     <Form layout="vertical" id="myForm" name="myForm">
-                    <p style={{...textStyle}}>Pavadinimas</p>
-                        <Input style={{ width: '100%', fontSize:'18px' }} placeholder="Įrašykite pavadinimą" defaultValue={this.state.material.name} value={this.state.material.name} onChange={(e) => this.onDataChange(e.target.value, "name")} />
-                        <p style={{...textStyle}}>Panaudotas materialas</p>
-                        <Input style={{ width: '100%', fontSize:'18px' }} placeholder="Įrašykite panaudotą materialą" defaultValue={this.state.material.materialUsed} value={material.materialUsed} onChange={(e) => this.onDataChange(e.target.value, "materialUsed")} />
-                        <p style={{...textStyle}}>Produktai</p>
+                        <p style={{ ...textStyle }}>Pavadinimas</p>
+                        <Input style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite pavadinimą" defaultValue={this.state.material.name} value={this.state.material.name} onChange={(e) => this.onDataChange(e.target.value, "name")} />
+                        <p style={{ ...textStyle }}>Panaudotas materialas</p>
+                        <Input style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite panaudotą materialą" defaultValue={this.state.material.materialUsed} value={material.materialUsed} onChange={(e) => this.onDataChange(e.target.value, "materialUsed")} />
+                        <p style={{ ...textStyle }}>Produktai</p>
                         <Select
                             showSearch
-                            style={{ width: '320px', fontSize:'18px'}}
+                            style={{ width: '320px', fontSize: '18px' }}
                             placeholder="Priskirkite produktą"
                             optionFilterProp="children"
                             defaultValue={this.state.material.productId}
