@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 function AddShipmentComponent(props) {
-    const dispatch = useDispatch();
     const [shipment, setShipment] = useState({
         type: "",
         period: 0,

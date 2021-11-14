@@ -146,7 +146,7 @@ class ShipmentScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.props.shipmentsReducer.shipments}
                                         pagination={{ pageSize: 15 }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddShipment}>Pridėti materialą</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddShipment}>Pridėti pristatymą</Button></Space>)}
                                     />
                                     {/* <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.addMaterial}>Pridėti materialą</Button></Space> */}
                                 </Card>

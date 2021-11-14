@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom';
 import {getCustomers, updateCustomer, createCustomer} from '../Actions/customersActions'
 import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
+import AddCustomerComponent from '../Components/customers_components/AddCustomerComponent';
 
 class CustomersScreen extends React.Component{
     constructor(props){
@@ -29,7 +30,14 @@ class CustomersScreen extends React.Component{
         });
     }
     saveAddCustomer = (postObj) => {
-        console.log('Saving:'+JSON.stringify(postObj))
+        this.props.createCustomer(postObj, ()=>{
+            //clone update customersReducer
+            const customersClone = JSON.parse(JSON.stringify(this.props.customersReducer.customers));
+            this.setState({
+                customers: customersClone,
+                addCustomerVisibility: false
+            });
+        });
     }
     
     // FOR UpdateCustomerComponent
@@ -124,22 +132,15 @@ class CustomersScreen extends React.Component{
                                         columns={columns}
                                         dataSource={this.props.customersReducer.customers}
                                         pagination={{ pageSize: 15 }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddShipment}>Pridėti materialą</Button></Space>)}
-                                    />
-                                    {/* <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.addMaterial}>Pridėti materialą</Button></Space> */}
-                                </Card>
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddCustomer}>Pridėti klientą</Button></Space>)}
+                                    />                                </Card>
                             </Col>
                         </Row>
                     </Col>
                 </div>
-                {/* {this.state.addShipmentVisibility !== false ?
-                    <AddShipmentComponent onClose={this.unshowShipmentVisibility} save={this.saveAddShipment} visible={this.state.addShipmentVisibility}
-                    /> : null}
-                {this.state.updateShipmentVisibility.visibility !== false ?
-                    <UpdateShipmentComponent visible={this.state.updateShipmentVisibility.visibility}
-                        save={this.saveUpdateShipment} onClose={this.unshowUpdateShipment}
-                        record={this.state.updateShipmentVisibility.record} /> : null} */}
-
+                {this.state.addCustomerVisibility !== false ?
+                <AddCustomerComponent visible={this.state.addCustomerVisibility}
+                    save={this.saveAddCustomer} onClose={this.unshowAddCustomer} />:null}
             </>
         )
     }

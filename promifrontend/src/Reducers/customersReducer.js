@@ -11,6 +11,7 @@ export const customersReducer = (state = {customers: []},action)=>{
         case 'CUSTOMERS_CREATE_SUCCESS':
             //add new object to customers array(state)
             const newCustomers = [...state.customers, {...action.payload}]
+            return {...state, loading: false, customers: newCustomers}
         case 'CUSTOMERS_CREATE_FAIL':
             return {...state, loading: false, error: action.payload}
         case 'CUSTOMERS_UPDATE_REQUEST':
