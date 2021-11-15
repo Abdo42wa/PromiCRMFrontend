@@ -9,7 +9,8 @@ import { productsReducer } from './Reducers/productsReducer';
 import { shipmentsReducer } from './Reducers/shipmentsReducer';
 import { customersReducer } from './Reducers/customersReducer';
 import { warehouseReducer } from './Reducers/warehouseReducer';
-import {nonStandartWorksReducer} from './Reducers/nonStandartWorksReducer'
+import { nonStandartWorksReducer } from './Reducers/nonStandartWorksReducer';
+import { countryReducer } from './Reducers/countryReducer'
 
 
 const allReducers = combineReducers({
@@ -20,11 +21,12 @@ const allReducers = combineReducers({
     shipmentsReducer,
     customersReducer,
     warehouseReducer,
-    nonStandartWorksReducer
+    nonStandartWorksReducer,
+    countryReducer
 });
 
 
-const userInfoFromStorage = localStorage.getItem('currentUser')?localStorage.getItem('currentUser'):null;
+const userInfoFromStorage = localStorage.getItem('currentUser') ? localStorage.getItem('currentUser') : null;
 const initialState = {
     usersReducer: { currentUser: userInfoFromStorage },
 }

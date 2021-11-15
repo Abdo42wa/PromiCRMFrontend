@@ -59,8 +59,13 @@ const Header = () => {
                                                 <i class="fas fa-boxes"></i> Sandėlys
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/countries'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-globe"></i> šalyse
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
-                                    
+
 
                                     <LinkContainer to='/login'>
                                         <Nav.Link onClick={logoutHandler} >
