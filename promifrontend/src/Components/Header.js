@@ -54,8 +54,13 @@ const Header = () => {
                                                 <i class="fas fa-user-friends"></i> Klientai
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/warehouse-countings'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-boxes"></i> Sandėlys
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
-
+                                    
 
                                     <LinkContainer to='/login'>
                                         <Nav.Link onClick={logoutHandler} >

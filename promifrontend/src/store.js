@@ -9,6 +9,7 @@ import { productsReducer } from './Reducers/productsReducer';
 import { shipmentsReducer } from './Reducers/shipmentsReducer';
 import { customersReducer } from './Reducers/customersReducer';
 import { warehouseReducer } from './Reducers/warehouseReducer';
+import {nonStandartWorksReducer} from './Reducers/nonStandartWorksReducer'
 
 
 const allReducers = combineReducers({
@@ -18,7 +19,8 @@ const allReducers = combineReducers({
     productsReducer,
     shipmentsReducer,
     customersReducer,
-    warehouseReducer
+    warehouseReducer,
+    nonStandartWorksReducer
 });
 
 

@@ -9,6 +9,8 @@ import UserListScreen from './Screens/UserListScreen';
 import MaterialsScreen from './Screens/MaterialsScreen';
 import ShipmentScreen from './Screens/ShipmentScreen';
 import CustomersScreen from './Screens/CustomersScreen';
+import WarehouseCountingsScreen  from './Screens/WarehouseCountingsScreen'
+
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
           <Route path='/materials' component={MaterialsScreen}/>
           <Route path='/shipments' component={ShipmentScreen}/>
           <Route path='/customers' component={CustomersScreen}/>
+          <Route path='/warehouse-countings' component={WarehouseCountingsScreen}/>
           <Route path='/' component={HomeScreen} exact />
 
         </div>
