@@ -4,6 +4,10 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../Actions/userAction'
 
+const titleStyle = {
+    fontSize: '20px'
+}
+
 const Header = () => {
     const dispatch = useDispatch();
     const usersReducer = useSelector(state => state.usersReducer)
@@ -14,10 +18,10 @@ const Header = () => {
     }
     return (
         <div>
-            <Navbar bg="dark" variant='dark' expand="lg">
+            <Navbar bg='dark' variant="dark" expand='lg' className='py-4'>
                 <Container>
                     <LinkContainer to='/'>
-                        <Navbar.Brand>Primo</Navbar.Brand>
+                        <Navbar.Brand style={{fontSize:'30px !important;'}}>Primo</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -26,7 +30,7 @@ const Header = () => {
                             {currentUser ? (
                                 <>
                                     <LinkContainer to='/'>
-                                        <Nav.Link href="#home">Home</Nav.Link>
+                                        <Nav.Link href="/">Home</Nav.Link>
                                     </LinkContainer>
                                     <NavDropdown title='Admin' id='adminmenu'>
                                         <LinkContainer to='/register'>
