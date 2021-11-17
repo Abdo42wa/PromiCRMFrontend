@@ -4,6 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { getWarehouseData, createWarehouseData, updateWarehouseData } from '../Actions/warehouseActions'
 import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
+import AddWarehouseDataComponent from '../Components/warehouse_components/AddWarehouseDataComponent'
+import moment from 'moment';
 
 class WarehouseCountingsScreen extends React.Component {
     constructor(props) {
@@ -29,7 +31,14 @@ class WarehouseCountingsScreen extends React.Component {
         });
     }
     saveAddWarehouseData = (postObj) => {
-        console.log('Save:' + JSON.stringify(postObj))
+        this.props.createWarehouseData(postObj, () => {
+            //get updated warehouseData redux state
+            const dataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
+            this.setState({
+                warehouseData: dataClone,
+                addWarehouseVisibility: false
+            });
+        });
     }
 
     // For UpdateWarehouseDataComponent
@@ -60,7 +69,9 @@ class WarehouseCountingsScreen extends React.Component {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getWarehouseData(() => {
                 //clone warehouseData. do not work directly
+                
                 const warehouseDataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
+                console.log(JSON.stringify(warehouseDataClone))
                 this.setState({
                     warehouseData: warehouseDataClone
                 });
@@ -77,26 +88,27 @@ class WarehouseCountingsScreen extends React.Component {
                 )
             },
             {
+                title: 'Užsakymo numeris',
+                dataIndex: 'orderId',
+                width: '10'
+            },
+            {
                 title: 'Produkto kiekis sandelyje',
                 dataIndex: 'quantityProductWarehouse',
-                width: '30%'
+                width: '20%'
             },
             {
                 title: 'Fotografija',
                 dataIndex: 'photo',
-                width: '30%',
-                render: (value, record, index) => (
-                    <Image
-                        preview={false}
-                        src={value}
-                        width={200}
-                    />
-                )
+                width: '20%'
             },
             {
                 title: 'Paskutini kartą keista',
                 dataIndex: 'lastTimeChanging',
-                width: '30%'
+                width: '20%',
+                render: (text,record,index) =>(
+                    <p>{moment(text).format('YYYY/MM-DD')}</p>
+                )
             }
         ]
         return (
@@ -124,12 +136,14 @@ class WarehouseCountingsScreen extends React.Component {
                                         pagination={{ pageSize: 15 }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddWarehouseData}>Pridėti prie sandėlio</Button></Space>)}
                                     />
-                                    {/* <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.addMaterial}>Pridėti materialą</Button></Space> */}
                                 </Card>
                             </Col>
                         </Row>
                     </Col>
                 </div>
+                {this.state.addWarehouseVisibility !== false?
+                <AddWarehouseDataComponent visible={this.state.addWarehouseVisibility} onClose={this.unshowAddWarehouseData}
+                save={this.saveAddWarehouseData} />:null}
                 {/* {this.state.addShipmentVisibility !== false ?
                     <AddShipmentComponent onClose={this.unshowShipmentVisibility} save={this.saveAddShipment} visible={this.state.addShipmentVisibility}
                     /> : null}
