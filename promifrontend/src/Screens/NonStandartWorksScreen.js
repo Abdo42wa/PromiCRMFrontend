@@ -6,6 +6,7 @@ import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/custo
 import { withRouter } from 'react-router-dom';
 import AddNonStandartWorkComponent from '../Components/nonStandartWorks_components/AddNonStandartWorkComponent';
 import moment from 'moment';
+import UpdateNonStandartWorkComponent from '../Components/nonStandartWorks_components/UpdateNonStandartWork';
 
 const { Option } = Select;
 
@@ -33,7 +34,7 @@ class NonStandartWorksScrenn extends React.Component {
         })
     }
     saveAddWork = (postObj) => {
-        this.props.createNonStandartWork(postObj, () =>{
+        this.props.createNonStandartWork(postObj, () => {
             //clone updated nonStandartData state from redux
             const dataClone = JSON.parse(JSON.stringify(this.props.nonStandartWorksReducer.nonStandartWorks));
             this.setState({
@@ -62,8 +63,14 @@ class NonStandartWorksScrenn extends React.Component {
         });
     }
     saveUpdateWork = (postObj, reducerObj) => {
-        console.log('PostObj:' + JSON.stringify(postObj))
-        console.log('reducerObj:' + JSON.stringify(reducerObj))
+        this.props.updateNonStandartWork(postObj,reducerObj,()=>{
+            //clone updated nonStandartWorks state from redux
+            const dataClone = JSON.parse(JSON.stringify(this.props.nonStandartWorksReducer.nonStandartWorks));
+            this.setState({
+                nonStandartWorks:dataClone
+            });
+            this.unshowUpdateWorkModal();
+        });
     }
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
@@ -95,7 +102,7 @@ class NonStandartWorksScrenn extends React.Component {
                 title: 'Data',
                 dataIndex: 'date',
                 width: '10%',
-                render: (text,record,index)=>(
+                render: (text, record, index) => (
                     <p>{moment(text).format('YYYY/MM/DD')}</p>
                 )
             },
@@ -103,7 +110,7 @@ class NonStandartWorksScrenn extends React.Component {
                 title: 'Užsakymo deadline',
                 dataIndex: 'orderDeadline',
                 width: '10%',
-                render: (text,record,index)=>(
+                render: (text, record, index) => (
                     <p>{moment(text).format('YYYY/MM/DD')}</p>
                 )
             },
@@ -184,12 +191,10 @@ class NonStandartWorksScrenn extends React.Component {
                     <AddNonStandartWorkComponent visible={this.state.addWorkVisibility} save={this.saveAddWork}
                         onClose={this.unshowAddWorkModal} />
                     : null}
-                {/* {this.state.addMaterialVisibility !== false ? <AddMaterialComponent visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterial}
-                    save={this.saveAddMaterial} /> : null}
-                {this.state.updateMaterialVisibility.visibility !== false ?
-                    <UpdateMaterialComponent visible={this.state.updateMaterialVisibility.visibility} data={this.state.updateMaterialVisibility.record}
-                        save={this.saveUpdateMaterial} onClose={this.unshowUpdateMaterial} /> :
-                    null} */}
+                {this.state.updateWork.visibility !== false ?
+                    <UpdateNonStandartWorkComponent visible={this.state.updateWork.visibility} record={this.state.updateWork.record}
+                        save={this.saveUpdateWork} onClose={this.unshowUpdateWorkModal} />
+                    : null}
 
             </>
         )
