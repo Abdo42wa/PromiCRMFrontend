@@ -6,6 +6,7 @@ import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button,
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddWarehouseDataComponent from '../Components/warehouse_components/AddWarehouseDataComponent'
 import moment from 'moment';
+import UpdateWarehouseDataComponent from '../Components/warehouse_components/UpdateWarehouseDataComponent';
 
 class WarehouseCountingsScreen extends React.Component {
     constructor(props) {
@@ -53,7 +54,7 @@ class WarehouseCountingsScreen extends React.Component {
     }
     unshowUpdateWarehouseData = () => {
         const obj = {
-            visibility: true,
+            visibility: false,
             record: null
         }
         this.setState({
@@ -61,15 +62,21 @@ class WarehouseCountingsScreen extends React.Component {
         });
     }
     saveUpdateWarehouseData = (postObj, reducerObj) => {
-        console.log('Post:' + JSON.stringify(postObj));
-        console.log('ReducerObj:' + JSON.stringify(reducerObj))
+        this.props.updateWarehouseData(postObj,reducerObj,()=>{
+            //get clone of updated warehouseData state from reducer
+            const dataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
+            this.setState({
+                warehouseData: dataClone,
+            });
+            this.unshowUpdateWarehouseData();
+        });
     }
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getWarehouseData(() => {
                 //clone warehouseData. do not work directly
-                
+
                 const warehouseDataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
                 console.log(JSON.stringify(warehouseDataClone))
                 this.setState({
@@ -106,7 +113,7 @@ class WarehouseCountingsScreen extends React.Component {
                 title: 'Paskutini kartą keista',
                 dataIndex: 'lastTimeChanging',
                 width: '20%',
-                render: (text,record,index) =>(
+                render: (text, record, index) => (
                     <p>{moment(text).format('YYYY/MM-DD')}</p>
                 )
             }
@@ -141,16 +148,13 @@ class WarehouseCountingsScreen extends React.Component {
                         </Row>
                     </Col>
                 </div>
-                {this.state.addWarehouseVisibility !== false?
-                <AddWarehouseDataComponent visible={this.state.addWarehouseVisibility} onClose={this.unshowAddWarehouseData}
-                save={this.saveAddWarehouseData} />:null}
-                {/* {this.state.addShipmentVisibility !== false ?
-                    <AddShipmentComponent onClose={this.unshowShipmentVisibility} save={this.saveAddShipment} visible={this.state.addShipmentVisibility}
-                    /> : null}
-                {this.state.updateShipmentVisibility.visibility !== false ?
-                    <UpdateShipmentComponent visible={this.state.updateShipmentVisibility.visibility}
-                        save={this.saveUpdateShipment} onClose={this.unshowUpdateShipment}
-                        record={this.state.updateShipmentVisibility.record} /> : null} */}
+                {this.state.addWarehouseVisibility !== false ?
+                    <AddWarehouseDataComponent visible={this.state.addWarehouseVisibility} onClose={this.unshowAddWarehouseData}
+                        save={this.saveAddWarehouseData} /> : null}
+                {this.state.updateWarehouse.visibility !== false ?
+                    <UpdateWarehouseDataComponent visible={this.state.updateWarehouse.visibility} save={this.saveUpdateWarehouseData}
+                        record={this.state.updateWarehouse.record} onClose={this.unshowUpdateWarehouseData} />
+                    : null}
 
             </>
         )
