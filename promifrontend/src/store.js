@@ -11,7 +11,7 @@ import { customersReducer } from './Reducers/customersReducer';
 import { warehouseReducer } from './Reducers/warehouseReducer';
 import { nonStandartWorksReducer } from './Reducers/nonStandartWorksReducer';
 import { countryReducer } from './Reducers/countryReducer'
-import { ordersReducer } from './Reducers/ordersReducer';
+import { orderReducer } from './Reducers/orderReducer';
 
 
 const allReducers = combineReducers({
@@ -24,7 +24,7 @@ const allReducers = combineReducers({
     warehouseReducer,
     nonStandartWorksReducer,
     countryReducer,
-    ordersReducer
+    orderReducer
 });
 
 

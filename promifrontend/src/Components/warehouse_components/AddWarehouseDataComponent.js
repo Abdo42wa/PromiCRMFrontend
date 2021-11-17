@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import {useDispatch,useSelector} from 'react-redux';
-import { getOrders } from '../../Actions/orderActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { getOrders } from '../../Actions/orderAction';
 import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment'
 
-const {Option} = Select;
+const { Option } = Select;
 
 function AddWarehouseDataComponent(props) {
     const dispatch = useDispatch();
@@ -41,9 +41,9 @@ function AddWarehouseDataComponent(props) {
     }
     useEffect(() => {
         dispatch(getOrders(() => {
-            console.log('Orders:'+ordersReducer.orders)
+            console.log('Orders:' + ordersReducer.orders)
         }))
-    },[]);
+    }, []);
     return (
         <>
             <Modal
@@ -69,18 +69,18 @@ function AddWarehouseDataComponent(props) {
                     </Form.Item>
                 </Form>
                 <p style={{ marginBottom: '5px' }}>Užsakymas</p>
-                    <Select
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite užsakymą"
-                        optionFilterProp="children"
-                        onChange={(e) => onDataChange(e, "orderId")}
-                    >
-                        {ordersReducer.orders.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.orderNumber}</Option>)
-                        })}
-                    </Select>
-                    {/* pasirinkimas pagal uzsakymo nr */}
+                <Select
+                    showSearch
+                    style={{ width: '320px' }}
+                    placeholder="Priskirkite užsakymą"
+                    optionFilterProp="children"
+                    onChange={(e) => onDataChange(e, "orderId")}
+                >
+                    {ordersReducer.orders.map((element, index) => {
+                        return (<Option key={element.id} value={element.id}>{element.orderNumber}</Option>)
+                    })}
+                </Select>
+                {/* pasirinkimas pagal uzsakymo nr */}
             </Modal>
         </>
     )
