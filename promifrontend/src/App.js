@@ -9,7 +9,8 @@ import UserListScreen from './Screens/UserListScreen';
 import MaterialsScreen from './Screens/MaterialsScreen';
 import ShipmentScreen from './Screens/ShipmentScreen';
 import CustomersScreen from './Screens/CustomersScreen';
-import WarehouseCountingsScreen  from './Screens/WarehouseCountingsScreen'
+import WarehouseCountingsScreen from './Screens/WarehouseCountingsScreen'
+import CountryScreen from './Screens/CountryScreen';
 
 
 function App() {
@@ -18,14 +19,15 @@ function App() {
       <Header />
       <Container>
         <div className="App">
-          
+
           <Route path='/login' component={LoginScreen} />
           <Route path='/register' component={RegisterScreen} />
-          <Route path='/userlist' component={UserListScreen}/>
-          <Route path='/materials' component={MaterialsScreen}/>
-          <Route path='/shipments' component={ShipmentScreen}/>
-          <Route path='/customers' component={CustomersScreen}/>
-          <Route path='/warehouse-countings' component={WarehouseCountingsScreen}/>
+          <Route path='/userlist' component={UserListScreen} />
+          <Route path='/materials' component={MaterialsScreen} />
+          <Route path='/shipments' component={ShipmentScreen} />
+          <Route path='/customers' component={CustomersScreen} />
+          <Route path='/warehouse-countings' component={WarehouseCountingsScreen} />
+          <Route path='/countries' component={CountryScreen} />
           <Route path='/' component={HomeScreen} exact />
 
         </div>
