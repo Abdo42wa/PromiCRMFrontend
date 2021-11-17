@@ -24,7 +24,7 @@ export const getNonStandartWorks = (callback) => async(dispatch,getState)=>{
     }
 }
 
-export const createNonStandartWork = (postObj, callback) => (dispatch,getState) =>{
+export const createNonStandartWork = (postObj, callback) => async(dispatch,getState) =>{
     try{
         dispatch({
             type: 'NON_STANDART_WORKS_CREATE_REQUEST'
@@ -49,7 +49,7 @@ export const createNonStandartWork = (postObj, callback) => (dispatch,getState) 
 }
 
 
-export const updateNonStandartWork = (postObj,reducerObj,callback) => (dispatch,getState) =>{
+export const updateNonStandartWork = (postObj,reducerObj,callback) => async(dispatch,getState) =>{
     try{
         dispatch({
             type: 'NON_STANDART_WORKS_UPDATE_REQUEST'

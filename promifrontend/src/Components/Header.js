@@ -68,9 +68,14 @@ const Header = () => {
                                                 <i class="fas fa-globe"></i> šalyse
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/non-standart-works'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-tools"></i> Nestandartiniai darbai
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
 
-
+                                   
                                     <LinkContainer to='/login'>
                                         <Nav.Link onClick={logoutHandler} >
                                             <i class="fas fa-sign-out-alt"></i> Log Out

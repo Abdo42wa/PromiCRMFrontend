@@ -76,7 +76,6 @@ class WarehouseCountingsScreen extends React.Component {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getWarehouseData(() => {
                 //clone warehouseData. do not work directly
-
                 const warehouseDataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
                 console.log(JSON.stringify(warehouseDataClone))
                 this.setState({
