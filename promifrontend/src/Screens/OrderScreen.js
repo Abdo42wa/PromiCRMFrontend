@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder } from '../Actions/orderAction'
+import { getOrders, addOrder, updateOrder } from '../Actions/orderAction'
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddOrderComponent from '../Components/order_components/AddOrderComponent';
+import UpdateOrderComponent from '../Components/order_components/UpdateOrderComponent';
 import moment from 'moment';
 
 
@@ -13,7 +14,11 @@ class OrderScrenn extends React.Component {
         super(props);
         this.state = {
             orders: [],
-            addOrderVisibility: false
+            addOrderVisibility: false,
+            updateOrder: {
+                visibility: false,
+                record: null
+            }
         }
     }
 
@@ -38,6 +43,36 @@ class OrderScrenn extends React.Component {
         })
     }
 
+
+    showOrderModal = (record) => {
+        const obj = {
+            visibility: true,
+            record: record
+        }
+        this.setState({
+            updateOrder: obj
+        })
+    }
+    unshowOrderModal = () => {
+        const obj = {
+            visibility: false,
+            record: null
+        }
+        this.setState({
+            updateOrder: obj
+        });
+    }
+    saveOrder = (postObj, reducerObj) => {
+        this.props.updateOrder(postObj, reducerObj, () => {
+
+            const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
+            this.setState({
+                orders: dataClone
+            });
+            this.unshowOrderModal();
+        });
+    }
+
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getOrders(() => {
@@ -56,7 +91,7 @@ class OrderScrenn extends React.Component {
                 title: 'Atnaujinti',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Button>Atnaujinti</Button>
+                    <Button onClick={(e) => this.showOrderModal(record)}>Atnaujinti</Button>
                 )
             },
             {
@@ -183,6 +218,10 @@ class OrderScrenn extends React.Component {
                     <AddOrderComponent visible={this.state.addOrderVisibility} save={this.saveAddOrder}
                         onClose={this.unshowAddOrderModal} />
                     : null}
+                {this.state.updateOrder.visibility !== false ?
+                    <UpdateOrderComponent visible={this.state.updateOrder.visibility} record={this.state.updateOrder.record}
+                        save={this.saveOrder} onClose={this.unshowOrderModal} /> :
+                    null}
 
             </>
         )
@@ -198,6 +237,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder })(withRouter(OrderScrenn))
 
 
