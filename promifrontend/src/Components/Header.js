@@ -21,7 +21,7 @@ const Header = () => {
             <Navbar bg='dark' variant="dark" expand='lg' className='py-4'>
                 <Container>
                     <LinkContainer to='/'>
-                        <Navbar.Brand style={{fontSize:'30px !important;'}}>Primo</Navbar.Brand>
+                        <Navbar.Brand style={{fontSize:'30px !important;'}}>Promi</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
