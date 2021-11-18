@@ -71,12 +71,13 @@ function AddOrderComponent(props) {
             "comment": dataOrder.comment,
             "shipmentTypeId": dataOrder.shipmentTypeId,
             "customerId": dataOrder.customerId,
+            "address": dataOrder.address,
+            "countryId": dataOrder.countryId,
             "price": dataOrder.price,
             "currencyId": dataOrder.currencyId,
             "vat": dataOrder.vat,
             "orderFinishDate": dataOrder.orderFinishDate,
         }
-
         props.save(postObj);
     }
     useEffect(() => {
