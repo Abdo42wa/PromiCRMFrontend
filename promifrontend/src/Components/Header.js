@@ -21,7 +21,7 @@ const Header = () => {
             <Navbar bg='dark' variant="dark" expand='lg' className='py-4'>
                 <Container>
                     <LinkContainer to='/'>
-                        <Navbar.Brand style={{fontSize:'30px !important;'}}>Promi</Navbar.Brand>
+                        <Navbar.Brand style={{ fontSize: '30px !important;' }}>Promi</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -73,9 +73,14 @@ const Header = () => {
                                                 <i class="fas fa-tools"></i> Nestandartiniai darbai
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/orders'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-tools"></i> įsakymus
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
 
-                                   
+
                                     <LinkContainer to='/login'>
                                         <Nav.Link onClick={logoutHandler} >
                                             <i class="fas fa-sign-out-alt"></i> Log Out
