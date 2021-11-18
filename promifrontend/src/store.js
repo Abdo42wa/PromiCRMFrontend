@@ -11,9 +11,10 @@ import { customersReducer } from './Reducers/customersReducer';
 import { warehouseReducer } from './Reducers/warehouseReducer';
 import { nonStandartWorksReducer } from './Reducers/nonStandartWorksReducer';
 import { countryReducer } from './Reducers/countryReducer'
-import {orderReducer} from './Reducers/orderReducer'
+import { orderReducer } from './Reducers/orderReducer'
 import { bonusReducer } from './Reducers/bonusReducer';
-import {currencyReducer} from './Reducers/currencyReducer'
+import { currencyReducer } from './Reducers/currencyReducer'
+import { servicesReducer } from './Reducers/servicesReducer'
 
 
 const allReducers = combineReducers({
@@ -28,7 +29,8 @@ const allReducers = combineReducers({
     countryReducer,
     orderReducer,
     bonusReducer,
-    currencyReducer
+    currencyReducer,
+    servicesReducer
 });
 
 

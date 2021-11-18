@@ -31,7 +31,7 @@ export const addProduct = (postObject, callback) => async (dispatch, getState) =
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`/api/Products`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
+        const response = await axios.post(`https://localhost:44324/api/Products`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'PRODUCTS_CREATE_SUCCESS',
             payload: response.data
