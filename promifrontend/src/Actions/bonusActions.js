@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getBonuses = (callback) => async (dispatch, getState) => {
+export const getBonuses = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'BONUSES_FETCH_REQUEST'
@@ -12,7 +12,6 @@ export const getBonuses = (callback) => async (dispatch, getState) => {
             type: 'BONUSES_FETCH_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'BONUSES_FETCH_FAIL',
@@ -24,7 +23,7 @@ export const getBonuses = (callback) => async (dispatch, getState) => {
     }
 }
 
-export const createBonus = (postObj, callback) => async (dispatch, getState) => {
+export const createBonus = (postObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'BONUSES_CREATE_REQUEST'
@@ -36,7 +35,6 @@ export const createBonus = (postObj, callback) => async (dispatch, getState) => 
             type: 'BONUSES_CREATE_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'BONUSES_CREATE_FAIL',
@@ -49,7 +47,7 @@ export const createBonus = (postObj, callback) => async (dispatch, getState) => 
 }
 
 
-export const updateBonus = (postObj,reducerObj,callback) => async(dispatch,getState) => {
+export const updateBonus = (postObj,reducerObj) => async(dispatch,getState) => {
     try{
         dispatch({
             type: 'BONUSES_UPDATE_REQUEST'
@@ -61,7 +59,6 @@ export const updateBonus = (postObj,reducerObj,callback) => async(dispatch,getSt
             type: 'BONUSES_UPDATE_SUCCESS',
             payload: reducerObj
         });
-        callback();
     }catch (error) {
         dispatch({
             type: 'BONUSES_UPDATE_FAIL',
