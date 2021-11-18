@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrders } from '../../Actions/orderActions';
+import { getOrders } from '../../Actions/orderAction';
 import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment'
 
-const {Option} = Select;
+const { Option } = Select;
 
 function UpdateWarehouseDataComponent(props) {
     const dispatch = useDispatch();
@@ -20,20 +20,20 @@ function UpdateWarehouseDataComponent(props) {
     }
     const onDataChange = (value, inputName) => {
         // setWarehouseData to what was previously in state and change only that field value that needs to be changed
-        if(inputName === 'orderId'){
-            setWarehouseData(prevState => ({
-                ...prevState,
-                [inputName]:Number(value)
-            }))
-        }else if(inputName === 'quantityProductWarehouse'){
+        if (inputName === 'orderId') {
             setWarehouseData(prevState => ({
                 ...prevState,
                 [inputName]: Number(value)
             }))
-        }else if(inputName === 'photo'){
+        } else if (inputName === 'quantityProductWarehouse') {
             setWarehouseData(prevState => ({
                 ...prevState,
-                [inputName]:value
+                [inputName]: Number(value)
+            }))
+        } else if (inputName === 'photo') {
+            setWarehouseData(prevState => ({
+                ...prevState,
+                [inputName]: value
             }))
         }
     }
@@ -52,7 +52,7 @@ function UpdateWarehouseDataComponent(props) {
             "photo": dataClone.photo,
             "lastTimeChanging": moment().format('YYYY/MM/DD')
         }
-        props.save(postObj,reducerObj);
+        props.save(postObj, reducerObj);
     }
 
     useEffect(() => {

@@ -1,21 +1,21 @@
 import axios from "axios";
 
-export const getOrders = (callback) => async(dispatch, getState) =>{
-    try{
+export const getCurrencies = (callback) => async (dispatch, getState) => {
+    try {
         dispatch({
-            type: 'ORDERS_FETCH_REQUEST'
+            type: 'CURRENCY_FETCH_REQUEST'
         });
-        //get token from usersReducer
+        //get token from users reducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`/api/Orders`, {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.get(`/api/Currencies`, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
-            type: 'ORDERS_FETCH_SUCCESS',
+            type: 'CURRENCY_FETCH_SUCCESS',
             payload: response.data
         });
         callback();
-    }catch (error) {
+    } catch (error) {
         dispatch({
-            type: 'ORDERS_FETCH_FAIL',
+            type: 'CURRENCY_FETCH_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
