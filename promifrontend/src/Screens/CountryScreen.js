@@ -140,8 +140,8 @@ class CountryScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <Typography.Title>šalyse</Typography.Title>
-                                    <Typography.Text>Pridėkite ir atnaujinkite šaly</Typography.Text>
+                                    <Typography.Title>Šalyse</Typography.Title>
+                                    <Typography.Text>Pridėkite ir atnaujinkite šalis</Typography.Text>
                                 </div>
                             </Col>
                         </Row>

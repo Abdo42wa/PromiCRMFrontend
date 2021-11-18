@@ -35,42 +35,47 @@ const Header = () => {
                                     <NavDropdown title='Admin' id='adminmenu'>
                                         <LinkContainer to='/register'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-user-plus"></i> Pridėti naudotojus
+                                                <i className="fas fa-user-plus"></i> Pridėti naudotojus
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/userlist'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-users"></i> Naudotojai
+                                                <i className="fas fa-users"></i> Naudotojai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/materials'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-toolbox"></i> Materialai
+                                                <i className="fas fa-toolbox"></i> Materialai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/shipments'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-shipping-fast"></i> Pristatymai
+                                                <i className="fas fa-shipping-fast"></i> Pristatymai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/customers'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-user-friends"></i> Klientai
+                                                <i className="fas fa-user-friends"></i> Klientai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/warehouse-countings'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-boxes"></i> Sandėlys
+                                                <i className="fas fa-boxes"></i> Sandėlys
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/countries'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-globe"></i> šalyse
+                                                <i className="fas fa-globe"></i> šalyse
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/non-standart-works'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-tools"></i> Nestandartiniai darbai
+                                                <i className="fas fa-tools"></i> Nestandartiniai darbai
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/bonuses'>
+                                            <NavDropdown.Item>
+                                            <i className="fas fa-money-check"></i> Bonusai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/orders'>
@@ -83,7 +88,7 @@ const Header = () => {
 
                                     <LinkContainer to='/login'>
                                         <Nav.Link onClick={logoutHandler} >
-                                            <i class="fas fa-sign-out-alt"></i> Log Out
+                                            <i className="fas fa-sign-out-alt"></i> Log Out
                                         </Nav.Link>
                                     </LinkContainer>
 
