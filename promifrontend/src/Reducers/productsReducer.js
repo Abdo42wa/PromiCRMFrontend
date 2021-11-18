@@ -20,6 +20,8 @@ export const productsReducer = (state = { products: [] }, action) => {
             const cloneProduct = JSON.parse(JSON.stringify(state.products));
             cloneProduct.map((element, index) => {
                 if (element.id === action.payload.id) {
+                    element.orderId = action.payload.orderId;
+                    element.serviceId = action.payload.serviceId;
                     element.photo = action.payload.photo;
                     element.link = action.payload.link;
                     element.code = action.payload.code;
@@ -27,7 +29,6 @@ export const productsReducer = (state = { products: [] }, action) => {
                     element.name = action.payload.name;
                     element.lengthWithoutPackaging = action.payload.lengthWithoutPackaging;
                     element.widthWithoutPackaging = action.payload.widthWithoutPackaging;
-                    element.shipmentTypeId = action.payload.shipmentTypeId;
                     element.heightWithoutPackaging = action.payload.heightWithoutPackaging;
                     element.weightGross = action.payload.weightGross;
                     element.packagingBoxCode = action.payload.packagingBoxCode;

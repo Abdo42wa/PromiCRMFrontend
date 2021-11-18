@@ -56,7 +56,7 @@ export const updateProduct = (postObj, reducerObj, callback) => async (dispatch,
         });
         // get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`/api/Products/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.put(`https://localhost:44324/api/Products/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'PRODUCTS_UPDATE_SUCCESS',
             payload: reducerObj
