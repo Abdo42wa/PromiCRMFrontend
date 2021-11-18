@@ -75,12 +75,17 @@ const Header = () => {
                                         </LinkContainer>
                                         <LinkContainer to='/bonuses'>
                                             <NavDropdown.Item>
-                                            <i className="fas fa-money-check"></i> Bonusai
+                                                <i className="fas fa-money-check"></i> Bonusai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/orders'>
                                             <NavDropdown.Item>
                                                 <i class="fas fa-tools"></i> įsakymus
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/products'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-boxes"></i> Produktai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                     </NavDropdown>

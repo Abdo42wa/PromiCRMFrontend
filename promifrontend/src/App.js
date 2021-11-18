@@ -14,6 +14,7 @@ import CountryScreen from './Screens/CountryScreen';
 import NonStandartWorksScreen from './Screens/NonStandartWorksScreen';
 import OrderScreen from './Screens/OrderScreen';
 import BonusScreen from './Screens/BonusScreen';
+import ProductsScreen from './Screens/ProductsScreen';
 
 
 function App() {
@@ -33,7 +34,8 @@ function App() {
           <Route path='/countries' component={CountryScreen} />
           <Route path='/non-standart-works' component={NonStandartWorksScreen} />
           <Route path='/orders' component={OrderScreen} />
-          <Route path='/bonuses' component={BonusScreen}/>
+          <Route path='/bonuses' component={BonusScreen} />
+          <Route path='/products' component={ProductsScreen} />
           <Route path='/' component={HomeScreen} exact />
 
         </div>

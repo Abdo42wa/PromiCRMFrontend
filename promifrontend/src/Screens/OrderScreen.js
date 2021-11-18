@@ -206,7 +206,7 @@ class OrderScrenn extends React.Component {
                                         pagination={{ pageSize: 15 }}
                                         bordered
                                         scroll={{ x: 'calc(700px + 50%)' }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti nestandartinį darbą</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti įsakyma</Button></Space>)}
                                     />
 
                                 </Card>
