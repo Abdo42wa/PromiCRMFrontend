@@ -15,7 +15,7 @@ function AddWarehouseDataComponent(props) {
         "lastTimeChanging": moment().format("YYYY/MM/DD"),
         "orderId": 0
     });
-    const ordersReducer = useSelector((state) => state.ordersReducer)
+    const orderReducer = useSelector((state) => state.orderReducer)
     const onBack = () => {
         props.onClose();
     }
@@ -41,7 +41,7 @@ function AddWarehouseDataComponent(props) {
     }
     useEffect(() => {
         dispatch(getOrders(() => {
-            console.log('Orders:' + ordersReducer.orders)
+            //console.log('Orders:' + ordersReducer.orders)
         }))
     }, []);
     return (
@@ -76,7 +76,7 @@ function AddWarehouseDataComponent(props) {
                     optionFilterProp="children"
                     onChange={(e) => onDataChange(e, "orderId")}
                 >
-                    {ordersReducer.orders.map((element, index) => {
+                    {orderReducer.orders.map((element, index) => {
                         return (<Option key={element.id} value={element.id}>{element.orderNumber}</Option>)
                     })}
                 </Select>

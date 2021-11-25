@@ -11,7 +11,7 @@ function UpdateWarehouseDataComponent(props) {
     const dispatch = useDispatch();
     const [warehouseData, setWarehouseData] = useState({});
 
-    const ordersReducer = useSelector((state) => state.ordersReducer);
+    const orderReducer = useSelector((state) => state.orderReducer);
     const onBack = () => {
         props.onClose();
     }
@@ -72,7 +72,7 @@ function UpdateWarehouseDataComponent(props) {
                 footer={
                     <div>
                         <Button key="customCancel" onClick={onCancel}>Atšaukti</Button>
-                        <Button key="customSubmit" form="myForm" onClick={saveChanges} htmlType="submit" type={'primary'}>Pridėti</Button>
+                        <Button key="customSubmit" form="myForm" onClick={saveChanges} htmlType="submit" type={'primary'}>Atnaujinti</Button>
                     </div>
                 }
             >
@@ -92,7 +92,7 @@ function UpdateWarehouseDataComponent(props) {
                     value={warehouseData.orderId}
                     onChange={(e) => onDataChange(e, "orderId")}
                 >
-                    {ordersReducer.orders.map((element, index) => {
+                    {orderReducer.orders.map((element, index) => {
                         return (<Option key={element.id} value={element.id}>{element.orderNumber}</Option>)
                     })}
                 </Select>
