@@ -3,10 +3,13 @@ import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../Actions/userAction'
+import Cookies from 'universal-cookie'
 
 const titleStyle = {
     fontSize: '20px'
 }
+
+const cookies = new Cookies();
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -14,7 +17,8 @@ const Header = () => {
     const { currentUser } = usersReducer
 
     const logoutHandler = () => {
-        dispatch(logout())
+        
+        console.log(JSON.stringify(cookies.get('jwt').value))
     }
     return (
         <div>
