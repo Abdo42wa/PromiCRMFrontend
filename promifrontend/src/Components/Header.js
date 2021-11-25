@@ -92,6 +92,11 @@ const Header = () => {
                                                 <i class="fas fa-boxes"></i> Produktai
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to='/weeklyWorkScheduleScreen'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-calendar-week"></i> Savaitės darbo grafikas
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
 
 

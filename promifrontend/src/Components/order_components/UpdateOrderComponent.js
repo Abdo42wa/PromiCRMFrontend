@@ -38,7 +38,7 @@ function UpdateOrderComponent(props) {
 
         if (inputName === 'orderNumber' ||
             inputName === 'customerId' || inputName === 'currencyId' ||
-            inputName === 'countryId' || inputName === 'shipmentTypeId') {
+            inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
             setOrders(prevState => ({
                 ...prevState,
                 [inputName]: Number(value)
@@ -53,9 +53,12 @@ function UpdateOrderComponent(props) {
     const saveChanges = () => {
         const dataOrder = JSON.parse(JSON.stringify(orders));
         const postObj = {
+            "userId": props.record.userId,
+            "orderType": dataOrder.orderType,
+            "status": dataOrder.status,
             "orderNumber": dataOrder.orderNumber,
             "date": dataOrder.date,
-            "platformas": dataOrder.platformas,
+            "platforma": dataOrder.platforma,
             "moreInfo": dataOrder.moreInfo,
             "quantity": dataOrder.quantity,
             "photo": dataOrder.photo,
@@ -63,6 +66,8 @@ function UpdateOrderComponent(props) {
             "comment": dataOrder.comment,
             "shipmentTypeId": dataOrder.shipmentTypeId,
             "customerId": dataOrder.customerId,
+            "device": dataOrder.device,
+            "productionTime": dataOrder.productionTime,
             "address": dataOrder.address,
             "countryId": dataOrder.countryId,
             "price": dataOrder.price,
@@ -72,9 +77,12 @@ function UpdateOrderComponent(props) {
         }
         const reducerObj = {
             "id": props.record.id,
+            "userId": props.record.userId,
+            "orderType": props.record.orderType,
+            "status": props.record.status,
             "orderNumber": props.record.orderNumber,
             "date": props.record.date,
-            "platformas": props.record.platformas,
+            "platforma": props.record.platforma,
             "moreInfo": props.record.moreInfo,
             "quantity": props.record.quantity,
             "photo": props.record.photo,
@@ -82,6 +90,8 @@ function UpdateOrderComponent(props) {
             "comment": props.record.comment,
             "shipmentTypeId": props.record.shipmentTypeId,
             "customerId": props.record.customerId,
+            "device": props.record.device,
+            "productionTime": props.record.productionTime,
             "address": props.record.address,
             "countryId": props.record.countryId,
             "price": props.record.price,
@@ -90,6 +100,8 @@ function UpdateOrderComponent(props) {
             "orderFinishDate": props.record.orderFinishDate,
         }
         props.save(postObj, reducerObj);
+        console.log(JSON.stringify(postObj));
+        console.log(JSON.stringify(reducerObj));
     }
     useEffect(() => {
         dispatch(getCurrencies(() => {
@@ -97,9 +109,12 @@ function UpdateOrderComponent(props) {
                 dispatch(getCustomers(() => {
                     const obj = {
                         "id": props.record.id,
+                        "userId": props.record.userId,
+                        "orderType": props.record.orderType,
+                        "status": props.record.status,
                         "orderNumber": props.record.orderNumber,
                         "date": moment(props.record.date).format('YYYY/MM/DD'),
-                        "platformas": props.record.platformas,
+                        "platforma": props.record.platforma,
                         "moreInfo": props.record.moreInfo,
                         "quantity": props.record.quantity,
                         "photo": props.record.photo,
@@ -107,6 +122,8 @@ function UpdateOrderComponent(props) {
                         "comment": props.record.comment,
                         "shipmentTypeId": props.record.shipmentTypeId,
                         "customerId": props.record.customerId,
+                        "device": props.record.device,
+                        "productionTime": props.record.productionTime,
                         "address": props.record.address,
                         "countryId": props.record.countryId,
                         "price": props.record.price,
@@ -115,6 +132,7 @@ function UpdateOrderComponent(props) {
                         "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD'),
                     }
                     setOrders(obj);
+
 
                 }))
             }))
@@ -138,12 +156,14 @@ function UpdateOrderComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
+                    <p style={{ ...textStyle }}>Užsakymo tipas</p>
+                    <Input style={{ width: '100%' }} placeholder="Įrašykite užsakymo tipas" value={orders.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
                     <p style={{ ...textStyle }}>Užsakymo numeris</p>
                     <InputNumber style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={orders.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     <p style={{ ...textStyle }}>Data</p>
                     <Input style={{ width: '100%' }} placeholder="Įrašykite datą" value={orders.date} onChange={(e) => onDataChange(e.target.value, "date")} />
                     <p style={{ ...textStyle }}>platformas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite platformas" value={orders.platformas} onChange={(e) => onDataChange(e.target.value, "platformas")} />
+                    <Input style={{ width: '100%' }} placeholder="Įrašykite platformas" value={orders.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} />
                     <p style={{ ...textStyle }}>Daugiau informacijos</p>
                     <Input style={{ width: '100%' }} placeholder="Įrašykite Daugiau informacijos" value={orders.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     <p style={{ ...textStyle }}>Kiekis</p>
@@ -152,6 +172,10 @@ function UpdateOrderComponent(props) {
                     <Input style={{ width: '100%' }} placeholder="Įrašykite Nuotrauka" value={orders.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
                     <p style={{ ...textStyle }}>Prekės kodas</p>
                     <Input style={{ width: '100%' }} placeholder="Įrašykite Prekės kodas" value={orders.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
+                    <p style={{ ...textStyle }}>Gamybos laikas</p>
+                    <InputNumber style={{ width: '100%' }} placeholder="Įrašykite gamybos laikas" value={orders.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
+                    <p style={{ ...textStyle }}> įrenginys</p>
+                    <Input style={{ width: '100%' }} placeholder="Įrašykite įrenginys" value={orders.device} onChange={(e) => onDataChange(e.target.value, "device")} />
                     <p style={{ ...textStyle }}>Adresu</p>
                     <Input style={{ width: '100%' }} placeholder="Įrašykite Adresu" value={orders.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     <p style={{ ...textStyle }}>Komentaras</p>
@@ -162,6 +186,20 @@ function UpdateOrderComponent(props) {
                     <Input style={{ width: '100%' }} placeholder="Įrašykite vat" value={orders.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                     <p style={{ ...textStyle }}>Užsakymo pabaigos data</p>
                     <Input style={{ width: '100%' }} placeholder="Įrašykite Užsakymo pabaigos data" value={orders.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+
+                    <p style={{ marginBottom: '5px' }}>Siuntos statusą</p>
+                    <Select
+                        showSearch
+                        style={{ width: '320px' }}
+                        placeholder="Priskirkite statusą"
+                        optionFilterProp="children"
+                        defaultValue={orders.status}
+                        value={orders.status}
+                        onChange={(e) => onDataChange(e, "status")}
+                    >
+                        <Option key={1} value={true}>{'Atlikta'}</Option>
+                        <Option key={2} value={false}>{'Neatlikta'}</Option>
+                    </Select>
 
                     <p style={{ marginBottom: '5px' }}>Siuntos tipo</p>
                     <Select

@@ -20,15 +20,19 @@ export const orderReducer = (state = { orders: [] }, action) => {
             const cloneOrder = JSON.parse(JSON.stringify(state.orders));
             cloneOrder.map((element, index) => {
                 if (element.id === action.payload.id) {
+                    element.orderType = action.payload.orderType;
+                    element.status = action.payload.status;
                     element.orderNumber = action.payload.orderNumber;
                     element.date = action.payload.date;
-                    element.platformas = action.payload.platformas;
+                    element.platforma = action.payload.platforma;
                     element.moreInfo = action.payload.moreInfo;
                     element.quantity = action.payload.quantity;
                     element.photo = action.payload.photo;
                     element.productCode = action.payload.productCode;
                     element.shipmentTypeId = action.payload.shipmentTypeId;
                     element.customerId = action.payload.customerId;
+                    element.device = action.payload.device;
+                    element.productionTime = action.payload.productionTime;
                     element.address = action.payload.address;
                     element.countryId = action.payload.countryId;
                     element.comment = action.payload.comment;
