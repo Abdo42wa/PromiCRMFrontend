@@ -4,13 +4,16 @@ import { getBonuses, createBonus, updateBonus } from '../Actions/bonusActions'
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router';
+import AddBonusComponent from '../Components/bonus_components/AddBonusComponent'
+import UpdateBonusComponent from '../Components/bonus_components/UpdateBonusComponent'
 
 class BonusScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            Bonuses: [],
             addBonusVisibility: false,
-            updateBonus: {
+            updateBonussVisibility: {
                 visibility: false,
                 record: null
             }
@@ -28,7 +31,16 @@ class BonusScreen extends React.Component {
         })
     }
     saveAddBonus = (postObj) => {
-        console.log('Save postObj:' + JSON.stringify(postObj))
+        this.props.createBonus(postObj, () => {
+
+            const dataClone = JSON.parse(JSON.stringify(this.props.bonusReducer.bonuses));
+            this.setState({
+                Bonuses: dataClone,
+                addBonusVisibility: false
+            })
+
+        })
+        this.unshowAddBonusModal();
     }
 
     //for UpdateBonusComponent
@@ -38,21 +50,28 @@ class BonusScreen extends React.Component {
             record: record
         }
         this.setState({
-            updateBonus: obj
+            updateBonussVisibility: obj
         })
     }
-    unshowUpdateBonusModal = (record) => {
+    unshowUpdateBonusModal = () => {
         const obj = {
             visibility: false,
             record: null
         }
         this.setState({
-            updateBonus: obj
-        })
+            updateBonussVisibility: obj
+        });
+        console.log('cliced')
     }
     saveUpdateBonus = (postObj, reducerObj) => {
-        console.log('PostObj:' + JSON.stringify(postObj))
-        console.log('ReducerObj:' + JSON.stringify(reducerObj))
+        this.props.updateBonus(postObj, reducerObj, () => {
+
+            const dataClone = JSON.parse(JSON.stringify(this.props.bonusReducer.bonuses));
+            this.setState({
+                bonuses: dataClone
+            });
+        });
+        this.unshowUpdateBonusModal();
     }
 
     componentDidMount() {
@@ -121,20 +140,20 @@ class BonusScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.props.bonusReducer.bonuses}
                                         pagination={{ pageSize: 15 }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddCountry} >Pridėti šaly</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddBonusModal} >Pridėti bonusus</Button></Space>)}
                                     />
                                 </Card>
                             </Col>
                         </Row>
                     </Col>
                 </div>
-                {/* {this.state.addCountryVisibility !== false ? <AddCountryComponents visible={this.state.addCountryVisibility} onClose={this.unshowAddCountry}
-                    save={this.saveCountry} /> : null}
-                {this.state.updateCountryVisibility.visibility !== false ?
-                    <UpdateCountryComponents visible={this.state.updateCountryVisibility.visibility} record={this.state.updateCountryVisibility.record}
-                        save={this.saveUpdateCountry} onClose={this.unshowUpdateCountry} /> :
-                    null} */}
 
+                {this.state.addBonusVisibility !== false ? <AddBonusComponent visible={this.state.addBonusVisibility} onClose={this.unshowAddBonusModal}
+                    save={this.saveAddBonus} /> : null}
+                {this.state.updateBonussVisibility.visibility !== false ?
+                    <UpdateBonusComponent visible={this.state.updateBonussVisibility.visibility} record={this.state.updateBonussVisibility.record}
+                        save={this.saveUpdateBonus} onClose={this.unshowUpdateBonusModal} /> :
+                    null}
 
             </>
         )
