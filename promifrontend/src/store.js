@@ -15,6 +15,7 @@ import { orderReducer } from './Reducers/orderReducer'
 import { bonusReducer } from './Reducers/bonusReducer';
 import { currencyReducer } from './Reducers/currencyReducer'
 import { servicesReducer } from './Reducers/servicesReducer'
+import { weeklyWorkScheduleReducer } from './Reducers/WeeklyWorkScheduleReducer'
 
 
 const allReducers = combineReducers({
@@ -30,7 +31,8 @@ const allReducers = combineReducers({
     orderReducer,
     bonusReducer,
     currencyReducer,
-    servicesReducer
+    servicesReducer,
+    weeklyWorkScheduleReducer
 });
 
 
