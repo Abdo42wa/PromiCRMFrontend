@@ -65,7 +65,7 @@ class MaterialsScreen extends React.Component {
     }
     saveUpdateMaterial = (postObj, id, reducerObj) => {
         console.log(JSON.stringify(postObj))
-        this.props.updateItem(id, postObj, reducerObj, ()=>{
+        this.props.updateItem(id, postObj, reducerObj, () => {
             const materialsClone = this.props.materialsReducer.materials;
             this.setState({
                 materials: materialsClone,
@@ -85,6 +85,13 @@ class MaterialsScreen extends React.Component {
         } else {
             this.props.history.push('/')
         }
+    }
+
+    getProducttName = (id) => {
+        const username = this.state.materials.map((x) => x.product)
+        const result = username.filter(word => word.id === id);
+        const name = result.map((x) => x.name)
+        return name;
     }
     render() {
         const columns = [
@@ -106,9 +113,12 @@ class MaterialsScreen extends React.Component {
                 width: '20%'
             },
             {
-                title: 'Produkto id',
+                title: 'Produkto',
                 dataIndex: 'productId',
-                width: '20%'
+                width: '20%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.getProducttName(text)}</Typography.Text>
+                )
             }
         ]
         return (

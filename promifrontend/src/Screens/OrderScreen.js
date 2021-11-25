@@ -86,9 +86,36 @@ class OrderScrenn extends React.Component {
         }
     }
 
-    getName = () => {
-        const array = this.state.orders;
+    getUserName = (id) => {
+        const username = this.state.orders.map((x) => x.user)
+        const result = username.filter(word => word.id === id);
+        const name = result.map((x) => x.name)
+        return name;
+    }
+    getCountryName = (id) => {
+        const username = this.state.orders.map((x) => x.country)
+        const result = username.filter(word => word.id === id);
+        const name = result.map((x) => x.name)
+        return name;
+    }
+    getCustomerName = (id) => {
+        const username = this.state.orders.map((x) => x.customer)
+        const result = username.filter(word => word.id === id);
+        const name = result.map((x) => x.name)
+        return name;
+    }
 
+    getCurrencyName = (id) => {
+        const username = this.state.orders.map((x) => x.currency)
+        const result = username.filter(word => word.id === id);
+        const name = result.map((x) => x.name)
+        return name;
+    }
+    getShipmentName = (id) => {
+        const username = this.state.orders.map((x) => x.shipment)
+        const result = username.filter(word => word.id === id);
+        const name = result.map((x) => x.type)
+        return name;
     }
     render() {
         const columns = [
@@ -102,7 +129,10 @@ class OrderScrenn extends React.Component {
             {
                 title: 'Vartotojo ID',
                 dataIndex: 'userId',
-                width: '10%'
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.getUserName(text)}</Typography.Text>
+                )
             },
             {
                 title: 'Užsakymo tipas',
@@ -158,12 +188,18 @@ class OrderScrenn extends React.Component {
             {
                 title: 'siuntos tipo ID',
                 dataIndex: 'shipmentTypeId',
-                width: '10%'
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.getShipmentName(text)}</Typography.Text>
+                )
             },
             {
-                title: 'Kliento id',
+                title: 'Kliento',
                 dataIndex: 'customerId',
-                width: '10%'
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.getCustomerName(text)}</Typography.Text>
+                )
             },
             {
                 title: 'įrenginys',
@@ -181,9 +217,12 @@ class OrderScrenn extends React.Component {
                 width: '10%'
             },
             {
-                title: 'šalies ID',
+                title: 'šalies',
                 dataIndex: 'countryId',
-                width: '10%'
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.getCountryName(text)}</Typography.Text>
+                )
             },
             {
                 title: 'Komentaras',
@@ -196,9 +235,12 @@ class OrderScrenn extends React.Component {
                 width: '10%'
             },
             {
-                title: 'valiutos ID',
+                title: 'valiutos',
                 dataIndex: 'currencyId',
-                width: '10%'
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.getCurrencyName(text)}</Typography.Text>
+                )
             },
             {
                 title: 'vat',

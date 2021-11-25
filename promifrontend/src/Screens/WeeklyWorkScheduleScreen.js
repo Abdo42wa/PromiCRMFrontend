@@ -89,6 +89,14 @@ class WeeklyWorkScheduleScreen extends React.Component {
         } else {
             this.props.history.push('/');
         }
+
+    }
+
+    getUserName = (id) => {
+        const username = this.state.Works.map((x) => x.user)
+        const result = username.filter(word => word.id === id);
+        const name = result.map((x) => x.name)
+        return name;
     }
     render() {
         const columns = [
@@ -102,7 +110,10 @@ class WeeklyWorkScheduleScreen extends React.Component {
             {
                 title: 'Vartotojo vardas',
                 dataIndex: 'userId',
-                width: '10%'
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.getUserName(text)}</Typography.Text>
+                )
             },
             {
                 title: 'Darbas apibūdinimas',

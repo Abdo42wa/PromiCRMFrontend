@@ -81,6 +81,12 @@ class BonusScreen extends React.Component {
             this.props.history.push('/login')
         }
     }
+    getUserName = (id) => {
+        const username = this.props.bonusReducer.bonuses.map((x) => x.user)
+        const result = username.filter(word => word.id === id);
+        const name = result.map((x) => x.name)
+        return name;
+    }
 
     render() {
         const columns = [
@@ -94,7 +100,10 @@ class BonusScreen extends React.Component {
             {
                 title: 'Naudotojas',
                 dataIndex: 'userId',
-                width: '15%'
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.getUserName(text)}</Typography.Text>
+                )
             },
             {
                 title: 'Kiekis',
