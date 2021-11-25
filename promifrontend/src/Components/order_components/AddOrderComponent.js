@@ -12,15 +12,19 @@ const { Option } = Select;
 function AddOrderComponent(props) {
     const dispatch = useDispatch();
     const [orders, setOrders] = useState({
+        "orderType": "",
+        "status": false,
         "orderNumber": 0,
         "date": moment().format('YYYY/MM/DD'),
-        "platformas": "",
+        "platforma": "",
         "moreInfo": "",
         "quantity": 0,
         "photo": "",
         "productCode": "",
         "shipmentTypeId": 0,
         "customerId": 0,
+        "device": "",
+        "productionTime": 0,
         "address": "",
         "countryId": 0,
         "comment": "",
@@ -43,7 +47,7 @@ function AddOrderComponent(props) {
 
         if (inputName === 'orderNumber' ||
             inputName === 'customerId' || inputName === 'currencyId' ||
-            inputName === 'countryId' || inputName === 'shipmentTypeId') {
+            inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
             setOrders(prevState => ({
                 ...prevState,
                 [inputName]: Number(value)
@@ -59,11 +63,14 @@ function AddOrderComponent(props) {
     const saveChanges = () => {
         const dataOrder = JSON.parse(JSON.stringify(orders));
         //const dataClone = orders;
-        console.log(JSON.parse(JSON.stringify(orders)))
+        //console.log(JSON.parse(JSON.stringify(orders)))
         const postObj = {
+            "userId": "C9490C27-1B89-4E39-8F2E-99B48DCC709E",
+            "orderType": dataOrder.orderType,
+            "status": dataOrder.status,
             "orderNumber": dataOrder.orderNumber,
             "date": dataOrder.date,
-            "platformas": dataOrder.platformas,
+            "platforma": dataOrder.platforma,
             "moreInfo": dataOrder.moreInfo,
             "quantity": dataOrder.quantity,
             "photo": dataOrder.photo,
@@ -71,6 +78,8 @@ function AddOrderComponent(props) {
             "comment": dataOrder.comment,
             "shipmentTypeId": dataOrder.shipmentTypeId,
             "customerId": dataOrder.customerId,
+            "device": dataOrder.device,
+            "productionTime": dataOrder.productionTime,
             "address": dataOrder.address,
             "countryId": dataOrder.countryId,
             "price": dataOrder.price,
@@ -79,6 +88,7 @@ function AddOrderComponent(props) {
             "orderFinishDate": dataOrder.orderFinishDate,
         }
         props.save(postObj);
+        console.log(postObj)
     }
     useEffect(() => {
 
@@ -104,15 +114,17 @@ function AddOrderComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-
-                    <Form.Item key="name" name="name" label="Užsakymo numeris">
+                    <Form.Item key="name" name="name" label="Užsakymo tipas">
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite užsakymo tipas" value={orders.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
+                    </Form.Item>
+                    <Form.Item key="name1" name="name1" label="Užsakymo numeris">
                         <InputNumber style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={orders.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Data">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite datą" value={orders.date} onChange={(e) => onDataChange(e.target.value, "date")} />
                     </Form.Item>
                     <Form.Item key="name3" name="name3" label="Užsakymo platformas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite platformas" value={orders.platformas} onChange={(e) => onDataChange(e.target.value, "platformas")} />
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite platformas" value={orders.platformas} onChange={(e) => onDataChange(e.target.value, "platforma")} />
                     </Form.Item>
                     <Form.Item key="name4" name="name4" label="Daugiau informacijos">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite Daugiau informacijos" value={orders.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
@@ -126,19 +138,25 @@ function AddOrderComponent(props) {
                     <Form.Item key="name7" name="name7" label="Prekės kodas">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite Prekės kodas" value={orders.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
                     </Form.Item>
-                    <Form.Item key="name8" name="name8" label="Adresu">
+                    <Form.Item key="name8" name="name8" label="Gamybos laikas">
+                        <InputNumber style={{ width: '100%' }} placeholder="Įrašykite gamybos laikas" value={orders.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
+                    </Form.Item>
+                    <Form.Item key="name9" name="name9" label="įrenginys">
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite įrenginys" value={orders.device} onChange={(e) => onDataChange(e.target.value, "device")} />
+                    </Form.Item>
+                    <Form.Item key="name10" name="name10" label="Adresu">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite Adresu" value={orders.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     </Form.Item>
-                    <Form.Item key="name9" name="name9" label="Komentaras">
+                    <Form.Item key="name11" name="name11" label="Komentaras">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={orders.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
                     </Form.Item>
-                    <Form.Item key="name10" name="name10" label="Kaina">
+                    <Form.Item key="name12" name="name12" label="Kaina">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite Kaina" value={orders.price} onChange={(e) => onDataChange(e.target.value, "price")} />
                     </Form.Item>
-                    <Form.Item key="name11" name="name11" label="vat">
+                    <Form.Item key="name13" name="name13" label="vat">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite vat" value={orders.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                     </Form.Item>
-                    <Form.Item key="name12" name="name12" label="Užsakymo pabaigos data">
+                    <Form.Item key="name14" name="name14" label="Užsakymo pabaigos data">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite Užsakymo pabaigos data" value={orders.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
                     </Form.Item>
 

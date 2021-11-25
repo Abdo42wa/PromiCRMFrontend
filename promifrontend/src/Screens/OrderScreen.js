@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getOrders, addOrder, updateOrder } from '../Actions/orderAction'
-import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, Tag } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddOrderComponent from '../Components/order_components/AddOrderComponent';
@@ -85,6 +85,11 @@ class OrderScrenn extends React.Component {
             this.props.history.push('/');
         }
     }
+
+    getName = () => {
+        const array = this.state.orders;
+
+    }
     render() {
         const columns = [
             {
@@ -92,6 +97,24 @@ class OrderScrenn extends React.Component {
                 width: '10%',
                 render: (text, record, index) => (
                     <Button onClick={(e) => this.showOrderModal(record)}>Atnaujinti</Button>
+                )
+            },
+            {
+                title: 'Vartotojo ID',
+                dataIndex: 'userId',
+                width: '10%'
+            },
+            {
+                title: 'Užsakymo tipas',
+                dataIndex: 'orderType',
+                width: '10%'
+            },
+            {
+                title: 'statusą',
+                dataIndex: 'status',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                 )
             },
             {
@@ -108,8 +131,8 @@ class OrderScrenn extends React.Component {
                 )
             },
             {
-                title: 'Platformas',
-                dataIndex: 'platformas',
+                title: 'platformas',
+                dataIndex: 'platforma',
                 width: '10%'
             },
             {
@@ -140,6 +163,16 @@ class OrderScrenn extends React.Component {
             {
                 title: 'Kliento id',
                 dataIndex: 'customerId',
+                width: '10%'
+            },
+            {
+                title: 'įrenginys',
+                dataIndex: 'device',
+                width: '10%'
+            },
+            {
+                title: 'Gamybos laikas',
+                dataIndex: 'productionTime',
                 width: '10%'
             },
             {
