@@ -62,7 +62,7 @@ class WarehouseCountingsScreen extends React.Component {
         });
     }
     saveUpdateWarehouseData = (postObj, reducerObj) => {
-        this.props.updateWarehouseData(postObj,reducerObj,()=>{
+        this.props.updateWarehouseData(postObj, reducerObj, () => {
             //get clone of updated warehouseData state from reducer
             const dataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
             this.setState({
@@ -106,7 +106,13 @@ class WarehouseCountingsScreen extends React.Component {
             {
                 title: 'Fotografija',
                 dataIndex: 'photo',
-                width: '20%'
+                width: '20%',
+                render: (text, record, index) => (
+                    <Image
+                        width={100}
+                        src={text}
+                    />
+                )
             },
             {
                 title: 'Paskutini kartą keista',

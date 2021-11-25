@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { getProducts, addProduct, updateProduct } from '../Actions/productsActions'
-import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddProductComponent from '../Components/products_components/AddProductComponent';
@@ -102,7 +102,13 @@ class ProductsScrenn extends React.Component {
             {
                 title: 'Nuotrauka',
                 dataIndex: 'photo',
-                width: '10%'
+                width: '10%',
+                render: (text, record, index) => (
+                    <Image
+                        width={100}
+                        src={text}
+                    />
+                )
             },
             {
                 title: 'Nuoroda',
