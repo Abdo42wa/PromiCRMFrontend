@@ -91,16 +91,6 @@ class CountryScreen extends React.Component {
             });
         });
     }
-    saveUpdateCustomer = (postObj, reducerObj) => {
-        this.props.updateCustomer(postObj, reducerObj, () => {
-            //get updated customers from redux state. clone it
-            const customersClone = JSON.parse(JSON.stringify(this.props.customersReducer.customers));
-            this.setState({
-                customers: customersClone
-            });
-            this.unshowUpdateCustomer();
-        });
-    }
 
     render() {
         const columns = [

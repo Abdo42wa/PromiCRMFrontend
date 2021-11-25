@@ -61,14 +61,14 @@ class BonusScreen extends React.Component {
         this.setState({
             updateBonussVisibility: obj
         });
-        console.log('cliced')
+
     }
     saveUpdateBonus = (postObj, reducerObj) => {
         this.props.updateBonus(postObj, reducerObj, () => {
-
-            const dataClone = JSON.parse(JSON.stringify(this.props.bonusReducer.bonuses));
+            const bonusClone = this.props.bonusReducer.bonuses;
             this.setState({
-                bonuses: dataClone
+                bonuses: bonusClone,
+                updateBonussVisibility: false
             });
         });
         this.unshowUpdateBonusModal();

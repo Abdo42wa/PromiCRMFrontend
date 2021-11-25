@@ -48,26 +48,23 @@ function UpdateBonusComponent(props) {
         }
     }
     const saveChanges = () => {
-        const dataWork = JSON.parse(JSON.stringify(bonus));
+        const bonusClone = JSON.parse(JSON.stringify(bonus));
         const postObj = {
-            "userId": dataWork.userId,
-            "quantity": dataWork.quantity,
-            "accumulated": dataWork.accumulated,
-            "bonusas": dataWork.bonusas,
-            "leftUntil": dataWork.leftUntil,
+            "userId": bonusClone.userId,
+            "quantity": bonusClone.quantity,
+            "accumulated": bonusClone.accumulated,
+            "bonusas": bonusClone.bonusas,
+            "leftUntil": bonusClone.leftUntil
         }
         const reducerObj = {
-            "id": props.record.id,
-            "userId": props.record.userId,
-            "quantity": props.record.quantity,
-            "accumulated": props.record.accumulated,
-            "bonusas": props.record.bonusas,
-            "leftUntil": props.record.leftUntil,
+            "id": bonusClone.id,
+            "userId": bonusClone.userId,
+            "quantity": bonusClone.quantity,
+            "accumulated": bonusClone.accumulated,
+            "bonusas": bonusClone.bonusas,
+            "leftUntil": bonusClone.leftUntil
         }
         props.save(postObj, reducerObj);
-        console.log(reducerObj);
-        console.log(postObj);
-
     }
     useEffect(() => {
         dispatch(getUsers(() => {
