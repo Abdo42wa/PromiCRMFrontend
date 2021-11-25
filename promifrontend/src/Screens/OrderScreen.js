@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getOrders, addOrder, updateOrder } from '../Actions/orderAction'
-import { Table, Space, Card, Typography, Col, Row, Button, Tag } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddOrderComponent from '../Components/order_components/AddOrderComponent';
@@ -41,6 +41,7 @@ class OrderScrenn extends React.Component {
                 addOrderVisibility: false
             })
         })
+        this.unshowAddOrderModal();
     }
 
 
@@ -178,7 +179,13 @@ class OrderScrenn extends React.Component {
             {
                 title: 'Nuotrauka',
                 dataIndex: 'photo',
-                width: '10%'
+                width: '10%',
+                render: (text, record, index) => (
+                    <Image
+                        width={100}
+                        src={text}
+                    />
+                )
             },
             {
                 title: 'Prekės kodas',
