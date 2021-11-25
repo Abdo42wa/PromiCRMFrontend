@@ -76,28 +76,28 @@ function UpdateOrderComponent(props) {
             "orderFinishDate": dataOrder.orderFinishDate,
         }
         const reducerObj = {
-            "id": props.record.id,
-            "userId": props.record.userId,
-            "orderType": props.record.orderType,
-            "status": props.record.status,
-            "orderNumber": props.record.orderNumber,
-            "date": props.record.date,
-            "platforma": props.record.platforma,
-            "moreInfo": props.record.moreInfo,
-            "quantity": props.record.quantity,
-            "photo": props.record.photo,
-            "productCode": props.record.productCode,
-            "comment": props.record.comment,
-            "shipmentTypeId": props.record.shipmentTypeId,
-            "customerId": props.record.customerId,
-            "device": props.record.device,
-            "productionTime": props.record.productionTime,
-            "address": props.record.address,
-            "countryId": props.record.countryId,
-            "price": props.record.price,
-            "currencyId": props.record.currencyId,
-            "vat": props.record.vat,
-            "orderFinishDate": props.record.orderFinishDate,
+            "id": dataOrder.id,
+            "userId": dataOrder.userId,
+            "orderType": dataOrder.orderType,
+            "status": dataOrder.status,
+            "orderNumber": dataOrder.orderNumber,
+            "date": dataOrder.date,
+            "platforma": dataOrder.platforma,
+            "moreInfo": dataOrder.moreInfo,
+            "quantity": dataOrder.quantity,
+            "photo": dataOrder.photo,
+            "productCode": dataOrder.productCode,
+            "comment": dataOrder.comment,
+            "shipmentTypeId": dataOrder.shipmentTypeId,
+            "customerId": dataOrder.customerId,
+            "device": dataOrder.device,
+            "productionTime": dataOrder.productionTime,
+            "address": dataOrder.address,
+            "countryId": dataOrder.countryId,
+            "price": dataOrder.price,
+            "currencyId": dataOrder.currencyId,
+            "vat": dataOrder.vat,
+            "orderFinishDate": dataOrder.orderFinishDate,
         }
         props.save(postObj, reducerObj);
         console.log(JSON.stringify(postObj));
@@ -157,35 +157,35 @@ function UpdateOrderComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Užsakymo tipas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite užsakymo tipas" value={orders.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite užsakymo tipas" value={orders.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
                     <p style={{ ...textStyle }}>Užsakymo numeris</p>
-                    <InputNumber style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={orders.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={orders.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     <p style={{ ...textStyle }}>Data</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite datą" value={orders.date} onChange={(e) => onDataChange(e.target.value, "date")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={orders.date} onChange={(e) => onDataChange(e.target.value, "date")} />
                     <p style={{ ...textStyle }}>platformas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite platformas" value={orders.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite platformas" value={orders.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} />
                     <p style={{ ...textStyle }}>Daugiau informacijos</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite Daugiau informacijos" value={orders.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Daugiau informacijos" value={orders.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     <p style={{ ...textStyle }}>Kiekis</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite Kiekis" value={orders.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Kiekis" value={orders.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
                     <p style={{ ...textStyle }}>Nuotrauka</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite Nuotrauka" value={orders.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Nuotrauka" value={orders.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
                     <p style={{ ...textStyle }}>Prekės kodas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite Prekės kodas" value={orders.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Prekės kodas" value={orders.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
                     <p style={{ ...textStyle }}>Gamybos laikas</p>
-                    <InputNumber style={{ width: '100%' }} placeholder="Įrašykite gamybos laikas" value={orders.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laikas" value={orders.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
                     <p style={{ ...textStyle }}> įrenginys</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite įrenginys" value={orders.device} onChange={(e) => onDataChange(e.target.value, "device")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginys" value={orders.device} onChange={(e) => onDataChange(e.target.value, "device")} />
                     <p style={{ ...textStyle }}>Adresu</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite Adresu" value={orders.address} onChange={(e) => onDataChange(e.target.value, "address")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Adresu" value={orders.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     <p style={{ ...textStyle }}>Komentaras</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={orders.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={orders.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
                     <p style={{ ...textStyle }}>Kaina</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite Kaina" value={orders.price} onChange={(e) => onDataChange(e.target.value, "price")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Kaina" value={orders.price} onChange={(e) => onDataChange(e.target.value, "price")} />
                     <p style={{ ...textStyle }}>vat</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite vat" value={orders.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite vat" value={orders.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                     <p style={{ ...textStyle }}>Užsakymo pabaigos data</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite Užsakymo pabaigos data" value={orders.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Užsakymo pabaigos data" value={orders.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
 
                     <p style={{ marginBottom: '5px' }}>Siuntos statusą</p>
                     <Select
