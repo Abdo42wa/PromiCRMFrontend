@@ -68,20 +68,20 @@ function UpdateProductComponent(props) {
 
         }
         const reducerObj = {
-            "id": props.record.id,
-            "photo": props.record.photo,
-            "link": props.record.link,
-            "code": props.record.code,
-            "category": props.record.category,
-            "name": props.record.name,
-            "lengthWithoutPackaging": props.record.lengthWithoutPackaging,
-            "widthWithoutPackaging": props.record.widthWithoutPackaging,
-            "heightWithoutPackaging": props.record.heightWithoutPackaging,
-            "weightGross": props.record.weightGross,
-            "packagingBoxCode": props.record.packagingBoxCode,
-            "packingTime": props.record.packingTime,
-            "serviceId": props.record.serviceId,
-            "orderId": props.record.orderId,
+            "id": dataProduct.id,
+            "photo": dataProduct.photo,
+            "link": dataProduct.link,
+            "code": dataProduct.code,
+            "category": dataProduct.category,
+            "name": dataProduct.name,
+            "lengthWithoutPackaging": dataProduct.lengthWithoutPackaging,
+            "widthWithoutPackaging": dataProduct.widthWithoutPackaging,
+            "heightWithoutPackaging": dataProduct.heightWithoutPackaging,
+            "weightGross": dataProduct.weightGross,
+            "packagingBoxCode": dataProduct.packagingBoxCode,
+            "packingTime": dataProduct.packingTime,
+            "serviceId": dataProduct.serviceId,
+            "orderId": dataProduct.orderId,
         }
         props.save(postObj, reducerObj);
     }
