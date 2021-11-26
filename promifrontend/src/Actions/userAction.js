@@ -37,7 +37,28 @@ export const logout = () => (dispatch) => {
 
 }
 
-export const register = (firstName, lastName, phoneNumber, position, email, password) => async (dispatch) => {
+export const getUserTypes = (callback) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'USER_TYPES_FETCH_REQUEST'
+        });
+        const token = getState().usersReducer.currentUser;
+        const response = await axios.get('/api/Accounts/types',{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'USER_TYPES_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'USER_TYPES_FETCH_FAIL',
+            payload: error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+        })
+    }
+}
+
+export const register = (postObj) => async (dispatch,getState) => {
 
     try {
 
@@ -45,16 +66,10 @@ export const register = (firstName, lastName, phoneNumber, position, email, pass
             type: 'USER_REGISTER_REQUEST'
         })
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }
+        const token = getState().usersReducer.currentUser;
 
-        const { data } = await axios.post('https://localhost:44324/api/Accounts/register',
-            { firstName, lastName, phoneNumber, position, email, password },
-            config
-        )
+        const { data } = await axios.post('https://localhost:44324/api/Accounts/register',postObj,{headers: {Authorization: `Bearer ${token}`}})
+
 
         dispatch({
             type: 'USER_REGISTER_SUCCESS',

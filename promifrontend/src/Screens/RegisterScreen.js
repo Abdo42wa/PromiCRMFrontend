@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import {Select} from 'antd'
 import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { register } from '../Actions/userAction'
+import { register, getUserTypes } from '../Actions/userAction'
+
+const {Option} = Select;
 
 const RegisterScreen = ({ history, location }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [position, setPosition] = useState('');
+    const [type, setType] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,13 +19,17 @@ const RegisterScreen = ({ history, location }) => {
     const dispatch = useDispatch()
     const usersReducer = useSelector((state) => state.usersReducer)
     const { loading, error } = usersReducer
+    const userTypesReducer = useSelector((state) => state.userTypesReducer)
 
 
 
 
     useEffect(() => {
-
-    }, [])
+        dispatch(getUserTypes(() => {
+            const userTypes = JSON.parse(JSON.stringify(userTypesReducer.userTypes))
+            setType(userTypes[1].id)
+        }));
+    }, [dispatch])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -31,7 +37,16 @@ const RegisterScreen = ({ history, location }) => {
         if (password !== confirmPassword) {
             setMessage('password do not match')
         } else {
-            dispatch(register(firstName, lastName, phoneNumber, position, email, password))
+            const postObj = {
+                "email": email,
+                "password": password,
+                "phoneNumber": phoneNumber,
+                "name": firstName,
+                "surname": lastName,
+                "typeId": type,
+            }
+            dispatch(register(postObj))
+            history.push('/userlist')
         }
 
     }
@@ -81,18 +96,20 @@ const RegisterScreen = ({ history, location }) => {
                             >
                             </Form.Control>
                         </Form.Group>
+                        <p>Naudotojo tipas</p>
+                        <Select
+                            showSearch
+                            style={{ width: '100%' }}
+                            placeholder="Priskirkite naudotojui tipą"
+                            optionFilterProp="children"
+                            value={type}
+                            onChange={(e) => setType(e)}
+                        >
+                            {userTypesReducer.userTypes.map((element, index) => {
 
-                        <Form.Group controlId='text'>
-                            <Form.Label>Position</Form.Label>
-                            <Form.Control
-                                type='name'
-                                placeholder='Enter position'
-                                value={position}
-                                onChange={(e) => setPosition(e.target.value)}
-                            >
-                            </Form.Control>
-                        </Form.Group>
-
+                                return (<Option key={element.id} value={element.id}>{element.title}</Option>)
+                            })}
+                        </Select>
                         <Form.Group controlId='email'>
                             <Form.Label>Email</Form.Label>
                             <Form.Control
