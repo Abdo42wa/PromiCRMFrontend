@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form, Space, Select, Input } from 'antd';
+import { Modal, Button, Form, Space, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 function AddCustomerComponent(props) {

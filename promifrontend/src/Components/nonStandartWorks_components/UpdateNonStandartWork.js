@@ -106,7 +106,8 @@ function UpdateNonStandartWorkComponent(props) {
                 setNonStandartWork(obj);
             }))
         }));
-    }, []);
+        // eslint-disable-next-line
+    }, [dispatch]);
     return (
         <>
             <Modal

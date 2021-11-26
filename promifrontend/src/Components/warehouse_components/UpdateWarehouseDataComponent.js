@@ -59,7 +59,8 @@ function UpdateWarehouseDataComponent(props) {
         dispatch(getOrders(() => {
             setWarehouseData(props.record)
         }));
-    }, []);
+        // eslint-disable-next-line
+    }, [dispatch]);
     return (
         <>
             <Modal

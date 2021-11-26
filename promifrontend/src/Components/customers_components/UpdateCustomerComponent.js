@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Space, Select, Input } from 'antd';
+import { Modal, Button, Form, Space, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../../styles/customStyles.js';
 
 const textStyle = {
     fontSize: '18px',
@@ -53,6 +52,7 @@ function UpdateCustomerComponent(props) {
     //onComponent load set customer
     useEffect(() => {
         setCustomer(props.record)
+        // eslint-disable-next-line
     }, [])
     return (
         <>

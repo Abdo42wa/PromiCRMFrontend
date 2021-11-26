@@ -5,9 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../Actions/userAction'
 import Cookies from 'universal-cookie'
 
-const titleStyle = {
-    fontSize: '20px'
-}
 
 //const cookies = new Cookies();
 

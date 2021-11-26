@@ -4,14 +4,7 @@ import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getProducts } from '../../Actions/productsActions';
 import { withRouter } from 'react-router-dom'
-import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../../styles/customStyles.js';
 
-const aboutTitleTextStyle = {
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '20px',
-    marginBottom: '16px',
-}
 
 const textStyle = {
     fontSize: '18px',

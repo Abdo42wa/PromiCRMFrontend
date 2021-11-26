@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getNonStandartWorks, createNonStandartWork, updateNonStandartWork } from '../Actions/nonStandartWorksActions'
-import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddNonStandartWorkComponent from '../Components/nonStandartWorks_components/AddNonStandartWorkComponent';
 import moment from 'moment';
 import UpdateNonStandartWorkComponent from '../Components/nonStandartWorks_components/UpdateNonStandartWork';
 
-const { Option } = Select;
 
 class NonStandartWorksScrenn extends React.Component {
     constructor(props) {
@@ -63,11 +62,11 @@ class NonStandartWorksScrenn extends React.Component {
         });
     }
     saveUpdateWork = (postObj, reducerObj) => {
-        this.props.updateNonStandartWork(postObj,reducerObj,()=>{
+        this.props.updateNonStandartWork(postObj, reducerObj, () => {
             //clone updated nonStandartWorks state from redux
             const dataClone = JSON.parse(JSON.stringify(this.props.nonStandartWorksReducer.nonStandartWorks));
             this.setState({
-                nonStandartWorks:dataClone
+                nonStandartWorks: dataClone
             });
             this.unshowUpdateWorkModal();
         });

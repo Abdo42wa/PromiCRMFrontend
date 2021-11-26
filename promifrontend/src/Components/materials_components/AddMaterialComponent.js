@@ -54,7 +54,7 @@ function AddMaterialComponent(props) {
         dispatch(getProducts(() => {
             // console.log(JSON.stringify(productsReducer.products))
         }));
-    }, [])
+    }, [dispatch])
 
     return (
         <>

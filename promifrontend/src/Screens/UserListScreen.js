@@ -1,26 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal } from 'antd'
+import { Table, Space, Card, Typography, Col, Row } from 'antd'
 import Button from "react-bootstrap/Button";
 import { getUsers } from '../Actions/userListActions'
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 
-const aboutTitleTextStyle = {
-    fontStyle: 'normal',
-    fontWeight: '600',
-    fontSize: '20px',
-    marginBottom: '16px',
-}
-
-const textStyle = {
-    fontSize: '14px',
-    color: '#8C8C8C',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    lineHeight: '22px',
-    marginRight: '40px',
-}
 
 
 class UserListScreen extends React.Component {
@@ -31,7 +16,7 @@ class UserListScreen extends React.Component {
         }
     }
 
-    registerUser = () =>{
+    registerUser = () => {
         this.props.history.push('/register');
     }
 

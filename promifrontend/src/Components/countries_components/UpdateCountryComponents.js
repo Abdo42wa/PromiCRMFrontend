@@ -47,6 +47,7 @@ function UpdateCountryComponent(props) {
     }
     useEffect(() => {
         setCountry(props.record)
+        // eslint-disable-next-line
     }, [])
     return (
         <>

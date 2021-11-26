@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getWarehouseData, createWarehouseData, updateWarehouseData } from '../Actions/warehouseActions'
-import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button, Image } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddWarehouseDataComponent from '../Components/warehouse_components/AddWarehouseDataComponent'
 import moment from 'moment';

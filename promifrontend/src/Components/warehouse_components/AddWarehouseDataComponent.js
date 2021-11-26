@@ -43,7 +43,7 @@ function AddWarehouseDataComponent(props) {
         dispatch(getOrders(() => {
             //console.log('Orders:' + ordersReducer.orders)
         }))
-    }, []);
+    }, [dispatch]);
     return (
         <>
             <Modal
