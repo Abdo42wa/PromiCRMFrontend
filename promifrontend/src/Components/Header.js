@@ -9,7 +9,7 @@ const titleStyle = {
     fontSize: '20px'
 }
 
-const cookies = new Cookies();
+//const cookies = new Cookies();
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -17,8 +17,9 @@ const Header = () => {
     const { currentUser } = usersReducer
 
     const logoutHandler = () => {
-        
-        console.log(JSON.stringify(cookies.get('jwt').value))
+
+        //console.log(JSON.stringify(cookies.get('jwt').value))
+        dispatch(logout())
     }
     return (
         <div>
