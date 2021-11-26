@@ -74,10 +74,10 @@ function AddMaterialComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <Form.Item key="name" name="name" label="Pavadinimas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite pavadinimą" value={material.name} onChange={(e) => onDataChange(e.target.value, "name")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite pavadinimą" value={material.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Panaudotas materialas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite panaudotą materialą" value={material.materialUsed} onChange={(e) => onDataChange(e.target.value, "materialUsed")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite panaudotą materialą" value={material.materialUsed} onChange={(e) => onDataChange(e.target.value, "materialUsed")} />
                     </Form.Item>
                     <p style={{ marginBottom: '5px' }}>Produktas</p>
                     <Select

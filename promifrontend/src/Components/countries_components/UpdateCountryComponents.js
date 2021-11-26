@@ -66,11 +66,11 @@ function UpdateCountryComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Pavadinimas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite pavadinimas" value={country.name} onChange={(e) => onDataChange(e.target.value, "name")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite pavadinimas" value={country.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     <p style={{ ...textStyle }}>Trumpas pavadinimas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite trumpas pavadinimas" value={country.shortName} onChange={(e) => onDataChange(e.target.value, "shortName")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite trumpas pavadinimas" value={country.shortName} onChange={(e) => onDataChange(e.target.value, "shortName")} />
                     <p style={{ ...textStyle }}>kontinentas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite kontinentas" value={country.continent} onChange={(e) => onDataChange(e.target.value, "continent")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kontinentas" value={country.continent} onChange={(e) => onDataChange(e.target.value, "continent")} />
                 </Form>
             </Modal>
         </>

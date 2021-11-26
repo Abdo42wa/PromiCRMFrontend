@@ -78,9 +78,9 @@ function UpdateWarehouseDataComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ marginBottom: '5px' }}>Produktų kiekis</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={warehouseData.quantityProductWarehouse} onChange={(e) => onDataChange(e.target.value, "quantityProductWarehouse")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={warehouseData.quantityProductWarehouse} onChange={(e) => onDataChange(e.target.value, "quantityProductWarehouse")} />
                     <p style={{ marginBottom: '5px' }}>Fotografija</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite fotografiją" value={warehouseData.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite fotografiją" value={warehouseData.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
                 </Form>
                 <p style={{ marginBottom: '5px' }}>Užsakymas</p>
                 <Select

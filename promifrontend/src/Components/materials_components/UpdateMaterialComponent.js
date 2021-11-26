@@ -103,9 +103,9 @@ class UpdateMaterialComponent extends React.Component {
                 >
                     <Form layout="vertical" id="myForm" name="myForm">
                         <p style={{ ...textStyle }}>Pavadinimas</p>
-                        <Input style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite pavadinimą" defaultValue={this.state.material.name} value={this.state.material.name} onChange={(e) => this.onDataChange(e.target.value, "name")} />
+                        <Input required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite pavadinimą" defaultValue={this.state.material.name} value={this.state.material.name} onChange={(e) => this.onDataChange(e.target.value, "name")} />
                         <p style={{ ...textStyle }}>Panaudotas materialas</p>
-                        <Input style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite panaudotą materialą" defaultValue={this.state.material.materialUsed} value={material.materialUsed} onChange={(e) => this.onDataChange(e.target.value, "materialUsed")} />
+                        <Input required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite panaudotą materialą" defaultValue={this.state.material.materialUsed} value={material.materialUsed} onChange={(e) => this.onDataChange(e.target.value, "materialUsed")} />
                         <p style={{ ...textStyle }}>Produktai</p>
                         <Select
                             showSearch

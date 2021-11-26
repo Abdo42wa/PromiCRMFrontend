@@ -79,19 +79,19 @@ function AddShipmentComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <Form.Item key="name" name="name" label="Tipas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite tipą" value={shipment.type} onChange={(e) => onDataChange(e.target.value, "type")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite tipą" value={shipment.type} onChange={(e) => onDataChange(e.target.value, "type")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Periodas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite periodą" value={shipment.period} onChange={(e) => onDataChange(e.target.value, "period")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite periodą" value={shipment.period} onChange={(e) => onDataChange(e.target.value, "period")} />
                     </Form.Item>
                     <Form.Item key="name3" name="name3" label="Pristatymo kaina">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite kainą" value={shipment.shippingCost} onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={shipment.shippingCost} onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
                     </Form.Item>
                     <Form.Item key="name4" name="name4" label="Pristatymo numeris">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite numerį" value={shipment.shippingNumber} onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite numerį" value={shipment.shippingNumber} onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
                     </Form.Item>
                     <Form.Item key="name5" name="name5" label="Pristatymo informacija">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite informaciją" value={shipment.shipmentInfo} onChange={(e) => onDataChange(e.target.value, "shipmentInfo")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite informaciją" value={shipment.shipmentInfo} onChange={(e) => onDataChange(e.target.value, "shipmentInfo")} />
                     </Form.Item>
                 </Form>
             </Modal>

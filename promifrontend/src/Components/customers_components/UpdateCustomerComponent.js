@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../../styles/customStyles.js';
@@ -72,15 +72,15 @@ function UpdateCustomerComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Vardas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite vardą" value={customer.name} onChange={(e) => onDataChange(e.target.value, "name")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite vardą" value={customer.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     <p style={{ ...textStyle }}>Pavardė</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite pavardę" value={customer.lastName} onChange={(e) => onDataChange(e.target.value, "lastName")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite pavardę" value={customer.lastName} onChange={(e) => onDataChange(e.target.value, "lastName")} />
                     <p style={{ ...textStyle }}>El. paštas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite el. paštą" value={customer.email} onChange={(e) => onDataChange(e.target.value, "email")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite el. paštą" value={customer.email} onChange={(e) => onDataChange(e.target.value, "email")} />
                     <p style={{ ...textStyle }}>Telefono numeris</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite telefono numerį" value={customer.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite telefono numerį" value={customer.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
                     <p style={{ ...textStyle }}>Firmos pavadinimas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite firmos pavadinimą" value={customer.companyName} onChange={(e) => onDataChange(e.target.value, "companyName")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite firmos pavadinimą" value={customer.companyName} onChange={(e) => onDataChange(e.target.value, "companyName")} />
                 </Form>
             </Modal>
         </>

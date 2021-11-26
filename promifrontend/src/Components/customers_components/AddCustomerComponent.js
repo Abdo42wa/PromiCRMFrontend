@@ -13,14 +13,14 @@ function AddCustomerComponent(props) {
     const onCancel = () => {
         props.onClose();
     }
-    const onBack = () =>{
+    const onBack = () => {
         props.onClose();
     }
     const onDataChange = (value, inputName) => {
         // setCustomer to what was already in state, change only that value that needs to be changed
-        setCustomer(prevState =>({
+        setCustomer(prevState => ({
             ...prevState,
-            [inputName]:value
+            [inputName]: value
         }));
     }
     const saveChanges = () => {
@@ -29,9 +29,9 @@ function AddCustomerComponent(props) {
         const postObj = {
             "name": customerClone.name,
             "lastName": customerClone.lastName,
-            "email":customerClone.email,
-            "phoneNumber":customerClone.phoneNumber,
-            "companyName":customerClone.companyName
+            "email": customerClone.email,
+            "phoneNumber": customerClone.phoneNumber,
+            "companyName": customerClone.companyName
         }
         props.save(postObj);
     }
@@ -54,19 +54,19 @@ function AddCustomerComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <Form.Item key="name" name="name" label="Vardas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite vardą" value={customer.name} onChange={(e) => onDataChange(e.target.value, "name")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite vardą" value={customer.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Pavardė">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite pavardę" value={customer.lastName} onChange={(e) => onDataChange(e.target.value, "lastName")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite pavardę" value={customer.lastName} onChange={(e) => onDataChange(e.target.value, "lastName")} />
                     </Form.Item>
                     <Form.Item key="name3" name="name3" label="El. paštas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite el. paštą" value={customer.email} onChange={(e) => onDataChange(e.target.value, "email")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite el. paštą" value={customer.email} onChange={(e) => onDataChange(e.target.value, "email")} />
                     </Form.Item>
                     <Form.Item key="name4" name="name4" label="Telefono numeris">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite telefono numerį" value={customer.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite telefono numerį" value={customer.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
                     </Form.Item>
                     <Form.Item key="name5" name="name5" label="Firmos pavadinimas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite firmos pavadinimą" value={customer.companyName} onChange={(e) => onDataChange(e.target.value, "companyName")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite firmos pavadinimą" value={customer.companyName} onChange={(e) => onDataChange(e.target.value, "companyName")} />
                     </Form.Item>
                 </Form>
             </Modal>

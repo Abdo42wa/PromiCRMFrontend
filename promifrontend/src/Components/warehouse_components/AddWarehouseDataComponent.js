@@ -62,10 +62,10 @@ function AddWarehouseDataComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <Form.Item key="name1" name="name1" label="Kiekis sandėlyje">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={warehouseData.quantityProductWarehouse} onChange={(e) => onDataChange(e.target.value, "quantityProductWarehouse")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={warehouseData.quantityProductWarehouse} onChange={(e) => onDataChange(e.target.value, "quantityProductWarehouse")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Fotografija">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite fotografiją" value={warehouseData.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite fotografiją" value={warehouseData.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
                     </Form.Item>
                 </Form>
                 <p style={{ marginBottom: '5px' }}>Užsakymas</p>

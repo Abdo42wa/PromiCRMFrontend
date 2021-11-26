@@ -89,7 +89,7 @@ function UpdateWeeklyWorkScheduleComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Darbo apibūdinimas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite darbo apibūdinimas" value={works.darbasApibūdinimas} onChange={(e) => onDataChange(e.target.value, "darbasApibūdinimas")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite darbo apibūdinimas" value={works.darbasApibūdinimas} onChange={(e) => onDataChange(e.target.value, "darbasApibūdinimas")} />
 
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>
