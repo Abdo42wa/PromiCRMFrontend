@@ -126,7 +126,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                 dataIndex: 'atlikta',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='Atlikta'>Atlikta</Tag>}</Typography.Text>
+                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                 )
             },
         ]

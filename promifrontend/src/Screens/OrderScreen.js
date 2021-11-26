@@ -72,7 +72,6 @@ class OrderScrenn extends React.Component {
                 orders: dataClone
             });
             this.unshowOrderModal();
-            //window.location.reload();
         });
 
     }
