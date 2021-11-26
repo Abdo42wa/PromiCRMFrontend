@@ -32,17 +32,17 @@ function UpdateWeeklyWorkScheduleComponent(props) {
     const onDataChange = (value, inputName) => {
 
 
-        if (inputName === 'orderNumber') {
-            setWorks(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else {
-            setWorks(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }))
-        }
+        // if (inputName === 'orderNumber') {
+        //     setWorks(prevState => ({
+        //         ...prevState,
+        //         [inputName]: Number(value)
+        //     }))
+        // } else {
+        setWorks(prevState => ({
+            ...prevState,
+            [inputName]: value
+        }))
+        // }
     }
     const saveChanges = () => {
         const dataWork = JSON.parse(JSON.stringify(works));
@@ -52,15 +52,12 @@ function UpdateWeeklyWorkScheduleComponent(props) {
             "atlikta": dataWork.atlikta,
         }
         const reducerObj = {
-            "id": props.record.id,
-            "userId": props.record.userId,
-            "darbasApibūdinimas": props.record.darbasApibūdinimas,
-            "atlikta": props.record.atlikta,
+            "id": dataWork.id,
+            "userId": dataWork.userId,
+            "darbasApibūdinimas": dataWork.darbasApibūdinimas,
+            "atlikta": dataWork.atlikta
         }
         props.save(postObj, reducerObj);
-        console.log(reducerObj);
-        console.log(postObj);
-
     }
     useEffect(() => {
         dispatch(getUsers(() => {
@@ -71,7 +68,6 @@ function UpdateWeeklyWorkScheduleComponent(props) {
                 "atlikta": props.record.atlikta
             }
             setWorks(obj);
-
         }))
         // eslint-disable-next-line
     }, [dispatch]);
@@ -93,7 +89,7 @@ function UpdateWeeklyWorkScheduleComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Darbo apibūdinimas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite darbo apibūdinimas" value={works.darbasApibūdinimas} onChange={(e) => onDataChange(e.target.value, "darbasApibūdinimas")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite darbo apibūdinimas" value={works.darbasApibūdinimas} onChange={(e) => onDataChange(e.target.value, "darbasApibūdinimas")} />
 
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>

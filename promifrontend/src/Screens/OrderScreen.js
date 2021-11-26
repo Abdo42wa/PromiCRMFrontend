@@ -42,6 +42,7 @@ class OrderScrenn extends React.Component {
             })
         })
         this.unshowAddOrderModal();
+        window.location.reload();
     }
 
 
@@ -72,6 +73,7 @@ class OrderScrenn extends React.Component {
             });
             this.unshowOrderModal();
         });
+
     }
 
     componentDidMount() {
@@ -86,38 +88,6 @@ class OrderScrenn extends React.Component {
             this.props.history.push('/');
         }
     }
-
-    getUserName = (id) => {
-        const username = this.state.orders.map((x) => x.user)
-        const result = username.filter(word => word.id === id);
-        const name = result.map((x) => x.name)
-        return name;
-    }
-    getCountryName = (id) => {
-        const username = this.state.orders.map((x) => x.country)
-        const result = username.filter(word => word.id === id);
-        const name = result.map((x) => x.name)
-        return name;
-    }
-    getCustomerName = (id) => {
-        const username = this.state.orders.map((x) => x.customer)
-        const result = username.filter(word => word.id === id);
-        const name = result.map((x) => x.name)
-        return name;
-    }
-
-    getCurrencyName = (id) => {
-        const username = this.state.orders.map((x) => x.currency)
-        const result = username.filter(word => word.id === id);
-        const name = result.map((x) => x.name)
-        return name;
-    }
-    getShipmentName = (id) => {
-        const username = this.state.orders.map((x) => x.shipment)
-        const result = username.filter(word => word.id === id);
-        const name = result.map((x) => x.type)
-        return name;
-    }
     render() {
         const columns = [
             {
@@ -129,10 +99,10 @@ class OrderScrenn extends React.Component {
             },
             {
                 title: 'Vartotojo ID',
-                dataIndex: 'userId',
+                dataIndex: 'user',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getUserName(text)}</Typography.Text>
+                    <Typography.Text>{text.name}</Typography.Text>
                 )
             },
             {
@@ -194,18 +164,18 @@ class OrderScrenn extends React.Component {
             },
             {
                 title: 'siuntos tipo ID',
-                dataIndex: 'shipmentTypeId',
+                dataIndex: 'shipment',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getShipmentName(text)}</Typography.Text>
+                    <Typography.Text>{text.type}</Typography.Text>
                 )
             },
             {
                 title: 'Kliento',
-                dataIndex: 'customerId',
+                dataIndex: 'customer',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getCustomerName(text)}</Typography.Text>
+                    <Typography.Text>{text.name}</Typography.Text>
                 )
             },
             {
@@ -225,10 +195,10 @@ class OrderScrenn extends React.Component {
             },
             {
                 title: 'šalies',
-                dataIndex: 'countryId',
+                dataIndex: 'country',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getCountryName(text)}</Typography.Text>
+                    <Typography.Text>{text.name}</Typography.Text>
                 )
             },
             {
@@ -243,10 +213,10 @@ class OrderScrenn extends React.Component {
             },
             {
                 title: 'valiutos',
-                dataIndex: 'currencyId',
+                dataIndex: 'currency',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getCurrencyName(text)}</Typography.Text>
+                    <Typography.Text>{text.name}</Typography.Text>
                 )
             },
             {
@@ -285,7 +255,7 @@ class OrderScrenn extends React.Component {
                                         rowKey="id"
                                         columns={columns}
                                         dataSource={this.state.orders}
-                                        pagination={{ pageSize: 15 }}
+                                        pagination={{ pageSize: 10 }}
                                         bordered
                                         scroll={{ x: 'calc(700px + 50%)' }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti įsakyma</Button></Space>)}

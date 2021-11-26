@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getCustomers, createCustomer, updateCustomer } from '../Actions/customersActions'
-import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddCustomerComponent from '../Components/customers_components/AddCustomerComponent';
 import UpdateCustomerComponent from '../Components/customers_components/UpdateCustomerComponent';
@@ -61,7 +61,7 @@ class CustomersScreen extends React.Component {
         });
     }
     saveUpdateCustomer = (postObj, reducerObj) => {
-        this.props.updateCustomer(postObj,reducerObj, () =>{
+        this.props.updateCustomer(postObj, reducerObj, () => {
             //get updated customers from redux state. clone it
             const customersClone = JSON.parse(JSON.stringify(this.props.customersReducer.customers));
             this.setState({

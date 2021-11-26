@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { getMaterials, createMaterial, updateItem } from '../Actions/materialsActions'
-import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddMaterialComponent from '../Components/materials_components/AddMaterialComponent';
 import UpdateMaterialComponent from '../Components/materials_components/UpdateMaterialComponent';
@@ -41,6 +41,7 @@ class MaterialsScreen extends React.Component {
                 addMaterialVisibility: false
             });
         });
+        window.location.reload();
     }
 
     //FOR UpdateMaterialComponent
@@ -114,10 +115,10 @@ class MaterialsScreen extends React.Component {
             },
             {
                 title: 'Produkto',
-                dataIndex: 'productId',
+                dataIndex: 'product',
                 width: '20%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getProducttName(text)}</Typography.Text>
+                    <Typography.Text>{text.name}</Typography.Text>
                 )
             }
         ]

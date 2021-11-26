@@ -101,37 +101,37 @@ function AddProductComponent(props) {
                 <Form layout="vertical" id="myForm" name="myForm">
 
                     <Form.Item key="name" name="name" label="Produkto nuotrauka">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite produkto nuotrauka" value={products.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite produkto nuotrauka" value={products.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Nuoroda">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite nuoroda" value={products.link} onChange={(e) => onDataChange(e.target.value, "link")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite nuoroda" value={products.link} onChange={(e) => onDataChange(e.target.value, "link")} />
                     </Form.Item>
                     <Form.Item key="name3" name="name3" label=" Prekės kodas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite prekės kodas" value={products.code} onChange={(e) => onDataChange(e.target.value, "code")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite prekės kodas" value={products.code} onChange={(e) => onDataChange(e.target.value, "code")} />
                     </Form.Item>
                     <Form.Item key="name4" name="name4" label="Produkto kategorija">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite produkto kategorija" value={products.category} onChange={(e) => onDataChange(e.target.value, "category")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite produkto kategorija" value={products.category} onChange={(e) => onDataChange(e.target.value, "category")} />
                     </Form.Item>
                     <Form.Item key="name5" name="name5" label="Produkto pavadinimas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite produkto pavadinimas" value={products.name} onChange={(e) => onDataChange(e.target.value, "name")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite produkto pavadinimas" value={products.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     </Form.Item>
                     <Form.Item key="name6" name="name6" label="Produkto ilgis Be pakuotės">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite ilgis Be pakuotės" value={products.lengthWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "lengthWithoutPackaging")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite ilgis Be pakuotės" value={products.lengthWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "lengthWithoutPackaging")} />
                     </Form.Item>
                     <Form.Item key="name7" name="name7" label="Produkto plotis Be pakuotės">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite plotis Be pakuotė" value={products.widthWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "widthWithoutPackaging")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite plotis Be pakuotė" value={products.widthWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "widthWithoutPackaging")} />
                     </Form.Item>
                     <Form.Item key="name8" name="name8" label="Produkto aukštis Be pakuotės">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite aukštis Be pakuotės" value={products.heightWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "heightWithoutPackaging")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite aukštis Be pakuotės" value={products.heightWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "heightWithoutPackaging")} />
                     </Form.Item>
                     <Form.Item key="name9" name="name9" label="Produkto svoris Bruto">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite svoris Bruto" value={products.weightGross} onChange={(e) => onDataChange(e.target.value, "weightGross")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite svoris Bruto" value={products.weightGross} onChange={(e) => onDataChange(e.target.value, "weightGross")} />
                     </Form.Item>
                     <Form.Item key="name10" name="name10" label="Pakuotės dėžutės kodas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite dėžutės kodas" value={products.packagingBoxCode} onChange={(e) => onDataChange(e.target.value, "packagingBoxCode")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite dėžutės kodas" value={products.packagingBoxCode} onChange={(e) => onDataChange(e.target.value, "packagingBoxCode")} />
                     </Form.Item>
                     <Form.Item key="name11" name="name11" label="Pakavimo laikas">
-                        <Input style={{ width: '100%' }} placeholder="Įrašykite pakavimo laikas" value={products.packingTime} onChange={(e) => onDataChange(e.target.value, "packingTime")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite pakavimo laikas" value={products.packingTime} onChange={(e) => onDataChange(e.target.value, "packingTime")} />
                     </Form.Item>
 
                     <p style={{ marginBottom: '5px' }}>Paslaugos </p>

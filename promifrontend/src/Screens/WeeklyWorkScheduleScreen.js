@@ -45,6 +45,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                 addWorkVisibility: false
             })
         })
+        window.location.reload();
     }
 
     showWorkModal = (record) => {
@@ -92,12 +93,12 @@ class WeeklyWorkScheduleScreen extends React.Component {
 
     }
 
-    getUserName = (id) => {
-        const username = this.state.Works.map((x) => x.user)
-        const result = username.filter(word => word.id === id);
-        const name = result.map((x) => x.name)
-        return name;
-    }
+    // getUserName = (id) => {
+    //     const username = this.state.Works.map((x) => x.user)
+    //     const result = username.filter(word => word.id === id);
+    //     const name = result.map((x) => x.name)
+    //     return name;
+    // }
     render() {
         const columns = [
             {
@@ -109,10 +110,10 @@ class WeeklyWorkScheduleScreen extends React.Component {
             },
             {
                 title: 'Vartotojo vardas',
-                dataIndex: 'userId',
+                dataIndex: 'user',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getUserName(text)}</Typography.Text>
+                    <Typography.Text>{text.name}</Typography.Text>
                 )
             },
             {
@@ -125,7 +126,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                 dataIndex: 'atlikta',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='Atlikta'>Atlikta</Tag>}</Typography.Text>
+                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                 )
             },
         ]

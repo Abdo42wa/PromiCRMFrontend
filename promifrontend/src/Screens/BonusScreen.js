@@ -40,6 +40,7 @@ class BonusScreen extends React.Component {
             })
 
         })
+        window.location.reload();
         this.unshowAddBonusModal();
     }
 
@@ -70,23 +71,42 @@ class BonusScreen extends React.Component {
                 bonuses: bonusClone,
                 updateBonussVisibility: false
             });
+
         });
         this.unshowUpdateBonusModal();
     }
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getBonuses();
+            this.props.getBonuses(() => {
+            });
         } else {
             this.props.history.push('/login')
         }
     }
-    getUserName = (id) => {
-        const username = this.props.bonusReducer.bonuses.map((x) => x.user)
-        const result = username.filter(word => word.id === id);
-        const name = result.map((x) => x.name)
-        return name;
-    }
+    // getUserName = (id) => {
+    //     const username = this.props.bonusReducer.bonuses.map((x) => x.user)
+    //     if (username === null) {
+
+    //         return;
+    //     } else {
+
+    //         const result = username.filter(word => word.id === id);
+    //         const name = result.map((x) => x.name)
+    //         console.log(name);
+    //         return name[0];
+    //     }
+    // }
+
+    // getUserName = (id) => {
+    //     //this.props.getUsers();
+    //     //const username = this.props.userListReducer.users;
+    //     const result = this.props.usersListReducer.users.filter(word => word.id === id);
+    //     const name = result.map((x) => x.name)
+    //     console.log(name);
+    //     return name[0];
+    // }
+
 
     render() {
         const columns = [
@@ -99,10 +119,10 @@ class BonusScreen extends React.Component {
             },
             {
                 title: 'Naudotojas',
-                dataIndex: 'userId',
+                dataIndex: 'user',
                 width: '15%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getUserName(text)}</Typography.Text>
+                    <Typography.Text>{text.name === null || text.name === '' ? '' : text.name} </Typography.Text>
                 )
             },
             {
@@ -126,7 +146,6 @@ class BonusScreen extends React.Component {
                 width: '20%'
             }
         ]
-
         return (
             <>
 
@@ -173,7 +192,8 @@ class BonusScreen extends React.Component {
 const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
-        bonusReducer: state.bonusReducer
+        bonusReducer: state.bonusReducer,
+        usersListReducer: state.usersListReducer
     }
 }
 

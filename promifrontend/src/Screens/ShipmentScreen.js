@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import { getShipments, createShipment, updateShipment } from '../Actions/shipmentsActions'
-import { Table, Space, Select, Card, Typography, Col, Row, Input, Modal, Button } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddShipmentComponent from '../Components/shipments_components/AddShipmentComponent';
 import UpdateShipmentComponent from '../Components/shipments_components/UpdateShipmentComponent';
@@ -65,7 +65,7 @@ class ShipmentScreen extends React.Component {
 
     saveUpdateShipment = (postObj, reducerObj) => {
         // console.log('Save update:' + JSON.stringify(postObj))
-        this.props.updateShipment(postObj, reducerObj, () =>{
+        this.props.updateShipment(postObj, reducerObj, () => {
             //get clone of shipments reducer state which just updated
             const shipmentsClone = JSON.parse(JSON.stringify(this.props.shipmentsReducer.shipments));
             this.setState({

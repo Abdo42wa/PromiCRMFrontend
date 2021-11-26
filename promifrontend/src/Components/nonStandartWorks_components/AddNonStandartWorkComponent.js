@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getMaterials } from '../../Actions/materialsActions'
 import { getCustomers } from '../../Actions/customersActions'
-import { Modal, Button, Form, Space, Select, Input,InputNumber } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -42,9 +42,9 @@ function AddNonStandartWorkComponent(props) {
             }))
         } else if (inputName === 'status') {
             let boolValue = false;
-            if(value === 'true'){
+            if (value === 'true') {
                 boolValue = true;
-            }else{
+            } else {
                 boolValue = false;
             }
             setNonStandartWork(prevState => ({
@@ -79,7 +79,7 @@ function AddNonStandartWorkComponent(props) {
             dispatch(getCustomers(() => {
             }))
         }));
-    }, []);
+    }, [dispatch]);
     return (
         <>
             <Modal
@@ -97,7 +97,7 @@ function AddNonStandartWorkComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-                    
+
                     <Form.Item key="name" name="name" label="Užsakymo numeris">
                         <InputNumber style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={nonStandartWork.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     </Form.Item>

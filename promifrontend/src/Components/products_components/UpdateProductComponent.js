@@ -68,20 +68,20 @@ function UpdateProductComponent(props) {
 
         }
         const reducerObj = {
-            "id": props.record.id,
-            "photo": props.record.photo,
-            "link": props.record.link,
-            "code": props.record.code,
-            "category": props.record.category,
-            "name": props.record.name,
-            "lengthWithoutPackaging": props.record.lengthWithoutPackaging,
-            "widthWithoutPackaging": props.record.widthWithoutPackaging,
-            "heightWithoutPackaging": props.record.heightWithoutPackaging,
-            "weightGross": props.record.weightGross,
-            "packagingBoxCode": props.record.packagingBoxCode,
-            "packingTime": props.record.packingTime,
-            "serviceId": props.record.serviceId,
-            "orderId": props.record.orderId,
+            "id": dataProduct.id,
+            "photo": dataProduct.photo,
+            "link": dataProduct.link,
+            "code": dataProduct.code,
+            "category": dataProduct.category,
+            "name": dataProduct.name,
+            "lengthWithoutPackaging": dataProduct.lengthWithoutPackaging,
+            "widthWithoutPackaging": dataProduct.widthWithoutPackaging,
+            "heightWithoutPackaging": dataProduct.heightWithoutPackaging,
+            "weightGross": dataProduct.weightGross,
+            "packagingBoxCode": dataProduct.packagingBoxCode,
+            "packingTime": dataProduct.packingTime,
+            "serviceId": dataProduct.serviceId,
+            "orderId": dataProduct.orderId,
         }
         props.save(postObj, reducerObj);
     }
@@ -129,27 +129,27 @@ function UpdateProductComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Produkto nuotrauka</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite produkto nuotrauka" value={products.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite produkto nuotrauka" value={products.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
                     <p style={{ ...textStyle }}>Produkto nuoroda</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite nuoroda" value={products.link} onChange={(e) => onDataChange(e.target.value, "link")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite nuoroda" value={products.link} onChange={(e) => onDataChange(e.target.value, "link")} />
                     <p style={{ ...textStyle }}>Prekės kodas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite prekės kodas" value={products.code} onChange={(e) => onDataChange(e.target.value, "code")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite prekės kodas" value={products.code} onChange={(e) => onDataChange(e.target.value, "code")} />
                     <p style={{ ...textStyle }}>Produkto kategorija</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite produkto kategorija" value={products.category} onChange={(e) => onDataChange(e.target.value, "category")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite produkto kategorija" value={products.category} onChange={(e) => onDataChange(e.target.value, "category")} />
                     <p style={{ ...textStyle }}>Produkto pavadinimas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite produkto pavadinimas" value={products.name} onChange={(e) => onDataChange(e.target.value, "name")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite produkto pavadinimas" value={products.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     <p style={{ ...textStyle }}>Ilgis Be pakuotės</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite ilgis Be pakuotės" value={products.lengthWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "lengthWithoutPackaging")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite ilgis Be pakuotės" value={products.lengthWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "lengthWithoutPackaging")} />
                     <p style={{ ...textStyle }}>Plotis Be pakuotė</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite plotis Be pakuotė" value={products.widthWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "widthWithoutPackaging")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite plotis Be pakuotė" value={products.widthWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "widthWithoutPackaging")} />
                     <p style={{ ...textStyle }}>Aukštis Be pakuotės</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite aukštis Be pakuotės" value={products.heightWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "heightWithoutPackaging")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite aukštis Be pakuotės" value={products.heightWithoutPackaging} onChange={(e) => onDataChange(e.target.value, "heightWithoutPackaging")} />
                     <p style={{ ...textStyle }}>Svoris Bruto</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite svoris Bruto" value={products.weightGross} onChange={(e) => onDataChange(e.target.value, "weightGross")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite svoris Bruto" value={products.weightGross} onChange={(e) => onDataChange(e.target.value, "weightGross")} />
                     <p style={{ ...textStyle }}>Dėžutės kodas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite dėžutės kodas" value={products.packagingBoxCode} onChange={(e) => onDataChange(e.target.value, "packagingBoxCode")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite dėžutės kodas" value={products.packagingBoxCode} onChange={(e) => onDataChange(e.target.value, "packagingBoxCode")} />
                     <p style={{ ...textStyle }}>Pakavimo laikas</p>
-                    <Input style={{ width: '100%' }} placeholder="Įrašykite pakavimo laikas" value={products.packingTime} onChange={(e) => onDataChange(e.target.value, "packingTime")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite pakavimo laikas" value={products.packingTime} onChange={(e) => onDataChange(e.target.value, "packingTime")} />
 
 
                     <p style={{ marginBottom: '5px' }}>Paslaugos </p>

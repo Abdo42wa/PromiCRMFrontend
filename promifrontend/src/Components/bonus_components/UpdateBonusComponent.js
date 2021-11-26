@@ -100,16 +100,16 @@ function UpdateBonusComponent(props) {
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Kiekis</p>
 
-                    <InputNumber style={{ width: '100%' }} placeholder="Įrašykite Kiekis" value={bonus.quantity} onChange={(e) => onDataChange(e, "quantity")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Kiekis" value={bonus.quantity} onChange={(e) => onDataChange(e, "quantity")} />
                     <p style={{ ...textStyle }}>Sukaupta</p>
 
-                    <InputNumber style={{ width: '100%' }} placeholder="Įrašykite Sukaupta" value={bonus.accumulated} onChange={(e) => onDataChange(e, "accumulated")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Sukaupta" value={bonus.accumulated} onChange={(e) => onDataChange(e, "accumulated")} />
                     <p style={{ ...textStyle }}>Bonusas</p>
 
-                    <InputNumber style={{ width: '100%' }} placeholder="Įrašykite Bonusas" value={bonus.bonusas} onChange={(e) => onDataChange(e, "bonusas")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Bonusas" value={bonus.bonusas} onChange={(e) => onDataChange(e, "bonusas")} />
                     <p style={{ ...textStyle }}>Liko iki</p>
 
-                    <InputNumber style={{ width: '100%' }} placeholder="Įrašykite Liko iki" value={bonus.leftUntil} onChange={(e) => onDataChange(e, "leftUntil")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Liko iki" value={bonus.leftUntil} onChange={(e) => onDataChange(e, "leftUntil")} />
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>
                     <Select
