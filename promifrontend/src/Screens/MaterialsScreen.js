@@ -41,6 +41,7 @@ class MaterialsScreen extends React.Component {
                 addMaterialVisibility: false
             });
         });
+        window.location.reload();
     }
 
     //FOR UpdateMaterialComponent
@@ -114,10 +115,10 @@ class MaterialsScreen extends React.Component {
             },
             {
                 title: 'Produkto',
-                dataIndex: 'productId',
+                dataIndex: 'product',
                 width: '20%',
                 render: (text, record, index) => (
-                    <Typography.Text>{this.getProducttName(text)}</Typography.Text>
+                    <Typography.Text>{text.name}</Typography.Text>
                 )
             }
         ]
