@@ -7,7 +7,7 @@ export const getCustomers = (callback) => async (dispatch, getState) => {
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`/api/Customers`, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Customers`, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'CUSTOMERS_FETCH_SUCCESS',
             payload: response.data
@@ -31,7 +31,7 @@ export const createCustomer = (postObj, callback) => async (dispatch, getState) 
         });
         //getting token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`/api/Customers`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/Customers`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'CUSTOMERS_CREATE_SUCCESS',
             payload: response.data
@@ -50,20 +50,20 @@ export const createCustomer = (postObj, callback) => async (dispatch, getState) 
 
 
 export const updateCustomer = (postObj, reducerObj, callback) => async (dispatch, getState) => {
-    try{
+    try {
         dispatch({
             type: 'CUSTOMER_UPDATE_REQUEST'
         });
         //getting token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`/api/Customers/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/Customers/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'CUSTOMER_UPDATE_SUCCESS',
             payload: reducerObj
         });
         callback();
-    }catch (error) {
-        console.log('Error:'+JSON.stringify(error))
+    } catch (error) {
+        console.log('Error:' + JSON.stringify(error))
         dispatch({
             type: 'CUSTOMER_UPDATE_FAIL',
             payload:

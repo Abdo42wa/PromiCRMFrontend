@@ -1,18 +1,18 @@
 import axios from 'axios'
-export const getMaterials = (callback) => async(dispatch,getState) =>{
-    try{
+export const getMaterials = (callback) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'MATERIALS_FETCH_REQUEST'
         });
         //getting token from usersReducer state
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`/api/Materials`, {headers: { Authorization: `Bearer ${token}` }})
+        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Materials`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIALS_FETCH_SUCCESS',
             payload: response.data
         });
         callback();
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'MATERIALS_FETCH_FAIL',
             payload:
@@ -23,20 +23,20 @@ export const getMaterials = (callback) => async(dispatch,getState) =>{
     }
 }
 
-export const createMaterial = (postObject,callback) => async(dispatch,getState) =>{
-    try{
+export const createMaterial = (postObject, callback) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'MATERIALS_CREATE_REQUEST'
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`/api/Materials`, postObject, {headers:{Authorization: `Bearer ${token}`}})
+        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/Materials`, postObject, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIALS_CREATE_SUCCESS',
             payload: response.data
         });
         callback();
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'MATERIALS_CREATE_FAIL',
             payload:
@@ -48,20 +48,20 @@ export const createMaterial = (postObject,callback) => async(dispatch,getState) 
 }
 
 
-export const updateItem = (id, postObj, reducerObj, callback) => async(dispatch,getState) => {
-    try{
+export const updateItem = (id, postObj, reducerObj, callback) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'MATERIAL_UPDATE_REQUEST'
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`/api/Materials/${id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/Materials/${id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIAL_UPDATE_SUCCESS',
             payload: reducerObj
         });
         callback();
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'MATERIAL_UPDATE_SUCCESS',
             payload:

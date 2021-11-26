@@ -1,6 +1,6 @@
 {
   "name": "promifrontend",
-  "proxy": "https://localhost:44324",
+  "proxy": "https://promicrm20211126160923.azurewebsites.net",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

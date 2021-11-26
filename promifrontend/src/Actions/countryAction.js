@@ -6,7 +6,7 @@ export const getCountries = (callback) => async (dispatch, getState) => {
         });
         //getting token from usersReducer state
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`/api/Countries`, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Countries`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'COUNTRY_FETCH_SUCCESS',
             payload: response.data
@@ -29,7 +29,7 @@ export const addCountry = (postObject, callback) => async (dispatch, getState) =
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`/api/Countries`, postObject, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/Countries`, postObject, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'COUNTRY_CREATE_SUCCESS',
             payload: response.data
@@ -54,7 +54,7 @@ export const updateCountry = (postObj, reducerObj, callback) => async (dispatch,
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`/api/Countries/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/Countries/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'COUNTRY_UPDATE_SUCCESS',
             payload: reducerObj

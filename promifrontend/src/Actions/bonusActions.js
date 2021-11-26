@@ -7,7 +7,7 @@ export const getBonuses = () => async (dispatch, getState) => {
         });
         //get user token
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`/api/Bonus`, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Bonus`, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'BONUSES_FETCH_SUCCESS',
             payload: response.data
@@ -30,7 +30,7 @@ export const createBonus = (postObj) => async (dispatch, getState) => {
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`/api/Bonus`,postObj, {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/Bonus`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'BONUSES_CREATE_SUCCESS',
             payload: response.data
@@ -47,19 +47,19 @@ export const createBonus = (postObj) => async (dispatch, getState) => {
 }
 
 
-export const updateBonus = (postObj,reducerObj) => async(dispatch,getState) => {
-    try{
+export const updateBonus = (postObj, reducerObj) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'BONUSES_UPDATE_REQUEST'
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`/api/Bonus/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/Bonus/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'BONUSES_UPDATE_SUCCESS',
             payload: reducerObj
         });
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'BONUSES_UPDATE_FAIL',
             payload:

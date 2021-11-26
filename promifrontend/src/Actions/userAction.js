@@ -12,7 +12,7 @@ export const login = (email, password) => async (dispatch) => {
             }
         }
 
-        const { data } = await axios.post('https://localhost:44324/api/Accounts/login', { email, password }, config)
+        const { data } = await axios.post('https://promicrm20211126160923.azurewebsites.net/api/Accounts/login', { email, password }, config)
 
         dispatch({
             type: 'USER_LOGIN_SUCCESS',
@@ -37,18 +37,18 @@ export const logout = () => (dispatch) => {
 
 }
 
-export const getUserTypes = (callback) => async(dispatch,getState)=>{
-    try{
+export const getUserTypes = (callback) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'USER_TYPES_FETCH_REQUEST'
         });
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get('/api/Accounts/types',{headers: {Authorization: `Bearer ${token}`}})
+        const response = await axios.get('https://promicrm20211126160923.azurewebsites.net/api/Accounts/types', { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'USER_TYPES_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'USER_TYPES_FETCH_FAIL',
             payload: error.response && error.response.data.message
@@ -58,7 +58,7 @@ export const getUserTypes = (callback) => async(dispatch,getState)=>{
     }
 }
 
-export const register = (postObj) => async (dispatch,getState) => {
+export const register = (postObj) => async (dispatch, getState) => {
 
     try {
 
@@ -68,7 +68,7 @@ export const register = (postObj) => async (dispatch,getState) => {
 
         const token = getState().usersReducer.currentUser;
 
-        const { data } = await axios.post('https://localhost:44324/api/Accounts/register',postObj,{headers: {Authorization: `Bearer ${token}`}})
+        const { data } = await axios.post('https://promicrm20211126160923.azurewebsites.net/api/Accounts/register', postObj, { headers: { Authorization: `Bearer ${token}` } })
 
 
         dispatch({

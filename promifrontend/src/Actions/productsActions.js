@@ -7,7 +7,7 @@ export const getProducts = (callback) => async (dispatch, getState) => {
         });
         //get token form usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`/api/Products`, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Products`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'PRODUCTS_FETCH_SUCCESS',
             payload: response.data
@@ -31,7 +31,7 @@ export const addProduct = (postObject, callback) => async (dispatch, getState) =
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`https://localhost:44324/api/Products`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
+        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/Products`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'PRODUCTS_CREATE_SUCCESS',
             payload: response.data
@@ -56,7 +56,7 @@ export const updateProduct = (postObj, reducerObj, callback) => async (dispatch,
         });
         // get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`https://localhost:44324/api/Products/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/Products/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'PRODUCTS_UPDATE_SUCCESS',
             payload: reducerObj
