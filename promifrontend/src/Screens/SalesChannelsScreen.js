@@ -1,12 +1,13 @@
 import React from 'react';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import {getSalesChannels,createSalesChannel,updateSalesChannel} from '../Actions/salesChannelsActions'
+import { getSalesChannels, createSalesChannel, updateSalesChannel } from '../Actions/salesChannelsActions'
+import AddSalesChannel from '../Components/sales_channels_components/AddSalesChannel.js';
 
-class SalesChannelsScreen extends React.Component{
-    constructor(props){
+class SalesChannelsScreen extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             // salesChannels: [],
@@ -18,21 +19,24 @@ class SalesChannelsScreen extends React.Component{
         }
     }
     //for addSalesChannel component
-    showAddSalesChannel = () =>{
+    showAddSalesChannel = () => {
         this.setState({
             addSalesChannelVisibility: true
         })
     }
-    unshowSalesChannel = () =>{
+    unshowAddSalesChannel = () => {
         this.setState({
-           addSalesChannelVisibility: false 
+            addSalesChannelVisibility: false
         });
     }
-    saveSalesChannel = (postObj) =>{
-        console.log('postObj:'+JSON.stringify(postObj))
+    saveAddSalesChannel = (postObj) => {
+        this.props.createSalesChannel(postObj);
+        this.setState({
+            addSalesChannelVisibility: false
+        });
     }
     // for updateSalesChannel component
-    showUpdateSalesChannel = (record) =>{
+    showUpdateSalesChannel = (record) => {
         const obj = {
             record: record,
             visibility: true
@@ -41,7 +45,7 @@ class SalesChannelsScreen extends React.Component{
             updateSalesChannel: obj
         })
     }
-    unshowUpdateSalesChannel = () =>{
+    unshowUpdateSalesChannel = () => {
         const obj = {
             record: null,
             visibility: false
@@ -50,18 +54,18 @@ class SalesChannelsScreen extends React.Component{
             updateSalesChannel: obj
         })
     }
-    saveUpdateSalesChannel = (postObj,reducerObj) =>{
-        console.log('PostObj:'+JSON.stringify(postObj));
-        console.log('ReducerObj:'+JSON.stringify(reducerObj));
+    saveUpdateSalesChannel = (postObj, reducerObj) => {
+        console.log('PostObj:' + JSON.stringify(postObj));
+        console.log('ReducerObj:' + JSON.stringify(reducerObj));
     }
 
-    componentDidMount(){
-        if(this.props.usersReducer.currentUser !== null){
-            this.props.getSalesChannels(()=>{
+    componentDidMount() {
+        if (this.props.usersReducer.currentUser !== null) {
+            this.props.getSalesChannels(() => {
             });
         }
     }
-    render(){
+    render() {
         const columns = [
             {
                 title: 'Atnaujinti',
@@ -76,32 +80,38 @@ class SalesChannelsScreen extends React.Component{
                 width: '10%'
             },
             {
-                title: 'Gamybos terminas',
+                title: 'Kontaktinis asmuo',
                 dataIndex: 'contactPerson',
                 width: '15%'
             },
             {
-                title: 'Pristatymo kaina',
+                title: 'El. paštas',
                 dataIndex: 'email',
                 width: '15%'
             },
             {
-                title: 'Pristatymo numeris',
+                title: 'Telefono numeris',
                 dataIndex: 'phoneNumber',
                 width: '15%'
             },
             {
-                title: 'Pristatymo informacija',
+                title: 'Adresas siuntų pristatymui',
                 dataIndex: 'deliveryAddress',
                 width: '15%'
             },
             {
-                title: 'Pristatymo numeris',
+                title: 'Nuolaida',
+                dataIndex: 'discount',
+                width: '15%'
+            },
+
+            {
+                title: 'Tarpininkavimo mokestis',
                 dataIndex: 'brokerageFee',
                 width: '10%'
             },
             {
-                title: 'Pristatymo numeris',
+                title: 'Atsakingas asmuo',
                 dataIndex: 'userId',
                 width: '10%'
             },
@@ -137,6 +147,9 @@ class SalesChannelsScreen extends React.Component{
                         </Row>
                     </Col>
                 </div>
+                {this.state.addSalesChannelVisibility !== false ?
+                    <AddSalesChannel visible={this.state.addSalesChannelVisibility} onClose={this.unshowAddSalesChannel}
+                        save={this.saveAddSalesChannel} /> : null}
                 {/* {this.state.addShipmentVisibility !== false ?
                     <AddShipmentComponent onClose={this.unshowShipmentVisibility} save={this.saveAddShipment} visible={this.state.addShipmentVisibility}
                     /> : null}
@@ -150,11 +163,11 @@ class SalesChannelsScreen extends React.Component{
     }
 }
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
         salesChannelsReducer: state.salesChannelsReducer
     }
 }
 
-export default connect(mapStateToProps,{getSalesChannels,createSalesChannel,updateSalesChannel})(withRouter(SalesChannelsScreen))
+export default connect(mapStateToProps, { getSalesChannels, createSalesChannel, updateSalesChannel })(withRouter(SalesChannelsScreen))

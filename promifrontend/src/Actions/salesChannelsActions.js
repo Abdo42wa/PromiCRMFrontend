@@ -11,8 +11,8 @@ export const getSalesChannels = (callback) => async(dispatch,getState)=>{
         dispatch({
             type: 'SALES_CHANNELS_FETCH_SUCCESS',
             payload: response.data
-        })
-
+        })  
+        callback();
     }catch (error) {
         dispatch({
             type: 'SALES_CHANNELS_FETCH_FAIL',
@@ -31,7 +31,7 @@ export const createSalesChannel = (postObj) => async(dispatch,getState)=>{
         });
         //GET TOKEN
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`api/SalesChannels`,postObj, {headers: {Authorization: `Bearer ${token} `}})
+        const response = await promiAPI.post(`/api/SalesChannels`,postObj, {headers: {Authorization: `Bearer ${token} `}})
         dispatch({
             type: 'SALES_CHANNELS_CREATE_SUCCESS',
             payload: response.data
@@ -54,7 +54,7 @@ export const updateSalesChannel = (postObj,reducerObj) => async(dispatch,getStat
         });
         //get token
         const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`api/SalesChannels/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}})
+        await promiAPI.put(`/api/SalesChannels/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}})
         dispatch({
             type: 'SALES_CHANNELS_UPDATE_SUCCESS',
             payload: reducerObj
