@@ -17,6 +17,7 @@ import { currencyReducer } from './Reducers/currencyReducer'
 import { servicesReducer } from './Reducers/servicesReducer'
 import { weeklyWorkScheduleReducer } from './Reducers/WeeklyWorkScheduleReducer'
 import {userTypesReducer} from './Reducers/userTypesReducer'
+import {salesChannelsReducer} from './Reducers/salesChannelsReducer'
 
 const allReducers = combineReducers({
     usersReducer,
@@ -33,7 +34,8 @@ const allReducers = combineReducers({
     currencyReducer,
     servicesReducer,
     weeklyWorkScheduleReducer,
-    userTypesReducer
+    userTypesReducer,
+    salesChannelsReducer
 });
 
 
