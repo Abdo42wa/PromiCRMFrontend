@@ -1,4 +1,4 @@
-import axios from "axios"
+import promiAPI from './promiAPI';
 import jwtDecode from 'jwt-decode';
 export const login = (email, password) => async (dispatch) => {
     try {
@@ -12,7 +12,7 @@ export const login = (email, password) => async (dispatch) => {
             }
         }
 
-        const { data } = await axios.post('https://promicrm20211126160923.azurewebsites.net/api/Accounts/login', { email, password }, config)
+        const { data } = await promiAPI.post('/api/Accounts/login', { email, password }, config)
 
         dispatch({
             type: 'USER_LOGIN_SUCCESS',
@@ -43,7 +43,7 @@ export const getUserTypes = (callback) => async (dispatch, getState) => {
             type: 'USER_TYPES_FETCH_REQUEST'
         });
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get('https://promicrm20211126160923.azurewebsites.net/api/Accounts/types', { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.get('/api/Accounts/types', { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'USER_TYPES_FETCH_SUCCESS',
             payload: response.data
@@ -68,7 +68,7 @@ export const register = (postObj) => async (dispatch, getState) => {
 
         const token = getState().usersReducer.currentUser;
 
-        const { data } = await axios.post('https://promicrm20211126160923.azurewebsites.net/api/Accounts/register', postObj, { headers: { Authorization: `Bearer ${token}` } })
+        const { data } = await promiAPI.post('/api/Accounts/register', postObj, { headers: { Authorization: `Bearer ${token}` } })
 
 
         dispatch({

@@ -1,4 +1,4 @@
-import axios from "axios";
+import promiAPI from "./promiAPI";
 
 export const getShipments = (callback) => async (dispatch, getState) => {
     try {
@@ -7,7 +7,7 @@ export const getShipments = (callback) => async (dispatch, getState) => {
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Shipments`, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.get(`/api/Shipments`, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'SHIPMENTS_FETCH_SUCCESS',
             payload: response.data
@@ -31,7 +31,7 @@ export const createShipment = (postObj, callback) => async (dispatch, getState) 
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/Shipments`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.post(`/api/Shipments`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'SHIPMENTS_CREATE_SUCCESS',
             payload: response.data
@@ -56,7 +56,7 @@ export const updateShipment = (postObj, reducerObj, callback) => async (dispatch
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/Shipments/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.put(`/api/Shipments/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'SHIPMENT_UPDATE_SUCCESS',
             payload: reducerObj

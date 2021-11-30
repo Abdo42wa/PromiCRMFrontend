@@ -1,4 +1,4 @@
-import axios from "axios";
+import promiAPI from './promiAPI'
 
 export const getCurrencies = (callback) => async (dispatch, getState) => {
     try {
@@ -7,7 +7,7 @@ export const getCurrencies = (callback) => async (dispatch, getState) => {
         });
         //get token from users reducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Currencies`, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.get(`/api/Currencies`, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'CURRENCY_FETCH_SUCCESS',
             payload: response.data

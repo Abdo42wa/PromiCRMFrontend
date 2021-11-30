@@ -1,4 +1,4 @@
-import axios from "axios";
+import promiAPI from "./promiAPI";
 
 export const getNonStandartWorks = (callback) => async (dispatch, getState) => {
     try {
@@ -7,7 +7,7 @@ export const getNonStandartWorks = (callback) => async (dispatch, getState) => {
         });
         //get token from users reducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/NonStandardWorks`, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.get(`/api/NonStandardWorks`, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'NON_STANDART_WORKS_FETCH_SUCCESS',
             payload: response.data
@@ -31,7 +31,7 @@ export const createNonStandartWork = (postObj, callback) => async (dispatch, get
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/NonStandardWorks`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.post(`/api/NonStandardWorks`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'NON_STANDART_WORKS_CREATE_SUCCESS',
             payload: response.data
@@ -56,7 +56,7 @@ export const updateNonStandartWork = (postObj, reducerObj, callback) => async (d
         });
         // get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/NonStandardWorks/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.put(`/api/NonStandardWorks/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'NON_STANDART_WORKS_UPDATE_SUCCESS',
             payload: reducerObj

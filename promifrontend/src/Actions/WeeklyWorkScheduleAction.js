@@ -1,4 +1,4 @@
-import axios from 'axios'
+import promiAPI from "./promiAPI";
 
 export const getWorks = (callback) => async (dispatch, getState) => {
     try {
@@ -7,7 +7,7 @@ export const getWorks = (callback) => async (dispatch, getState) => {
         });
         //get token form usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/WeeklyWorkSchedules`, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.get(`/api/WeeklyWorkSchedules`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'WORKSCHEDULE_FETCH_SUCCESS',
             payload: response.data
@@ -31,7 +31,7 @@ export const addWork = (postObject, callback) => async (dispatch, getState) => {
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/WeeklyWorkSchedules`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.post(`/api/WeeklyWorkSchedules`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'WORKSCHEDULE_CREATE_SUCCESS',
             payload: response.data
@@ -55,7 +55,7 @@ export const updateWork = (postObj, reducerObj, callback) => async (dispatch, ge
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/WeeklyWorkSchedules/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.put(`/api/WeeklyWorkSchedules/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'WORKSCHEDULE_UPDATE_SUCCESS',
             payload: reducerObj

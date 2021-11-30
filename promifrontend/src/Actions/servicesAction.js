@@ -1,4 +1,5 @@
-import axios from "axios";
+import promiAPI from "./promiAPI";
+
 
 export const getServices = (callback) => async (dispatch, getState) => {
     try {
@@ -7,7 +8,7 @@ export const getServices = (callback) => async (dispatch, getState) => {
         });
         //get token from users reducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Services`, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.get(`/api/Services`, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'SERVICES_FETCH_SUCCESS',
             payload: response.data

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import promiAPI from './promiAPI';
 export const getMaterials = (callback) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -6,7 +6,7 @@ export const getMaterials = (callback) => async (dispatch, getState) => {
         });
         //getting token from usersReducer state
         const token = getState().usersReducer.currentUser;
-        const response = await axios.get(`https://promicrm20211126160923.azurewebsites.net/api/Materials`, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.get(`/api/Materials`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIALS_FETCH_SUCCESS',
             payload: response.data
@@ -30,7 +30,7 @@ export const createMaterial = (postObject, callback) => async (dispatch, getStat
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.post(`https://promicrm20211126160923.azurewebsites.net/api/Materials`, postObject, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.post(`/api/Materials`, postObject, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIALS_CREATE_SUCCESS',
             payload: response.data
@@ -55,7 +55,7 @@ export const updateItem = (id, postObj, reducerObj, callback) => async (dispatch
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await axios.put(`https://promicrm20211126160923.azurewebsites.net/api/Materials/${id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.put(`/api/Materials/${id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIAL_UPDATE_SUCCESS',
             payload: reducerObj
