@@ -56,7 +56,7 @@ function UpdateCountryComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti šaly</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti šalį</Space>}
                 visible={props.visible}
                 footer={
                     <div>

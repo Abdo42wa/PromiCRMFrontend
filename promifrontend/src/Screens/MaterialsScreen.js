@@ -136,7 +136,7 @@ class MaterialsScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <Typography.Title>Materialai</Typography.Title>
+                                    <Typography.Title>Produktams priskirti materialai</Typography.Title>
                                     <Typography.Text>Pridėkite ir atnaujinkite materialus</Typography.Text>
                                 </div>
                             </Col>

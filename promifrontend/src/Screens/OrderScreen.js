@@ -243,8 +243,8 @@ class OrderScrenn extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <Typography.Title>įsakymus</Typography.Title>
-                                    <Typography.Text>Pridėkite ir atnaujinkite įsakymus</Typography.Text>
+                                    <Typography.Title>Užsakymai</Typography.Title>
+                                    <Typography.Text>Pridėkite ir atnaujinkite užsakymus</Typography.Text>
                                 </div>
                             </Col>
                         </Row>
@@ -258,7 +258,7 @@ class OrderScrenn extends React.Component {
                                         pagination={{ pageSize: 10 }}
                                         bordered
                                         scroll={{ x: 'calc(700px + 50%)' }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti įsakyma</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti užsakymą</Button></Space>)}
                                     />
 
                                 </Card>

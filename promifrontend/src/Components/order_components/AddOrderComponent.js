@@ -104,7 +104,7 @@ function AddOrderComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują įsakymas</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują užsakymą</Space>}
                 visible={props.visible}
                 footer={
                     <div>

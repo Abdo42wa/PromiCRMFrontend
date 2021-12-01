@@ -68,7 +68,7 @@ function UpdateWarehouseDataComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti prie sandėlio</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti sandėlio produktą</Space>}
                 visible={props.visible}
                 footer={
                     <div>

@@ -68,7 +68,7 @@ function AddBonusComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują bonusas</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują bonusą</Space>}
                 visible={props.visible}
                 footer={
                     <div>

@@ -139,7 +139,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
                                     <Typography.Title>Savaitės darbo grafikas</Typography.Title>
-                                    <Typography.Text>Pridėkite savaitės darbo grafikas.</Typography.Text>
+                                    <Typography.Text>Pridėkite ir atnaujinkite darbo grafikus.</Typography.Text>
 
                                 </div>
                             </Col>
@@ -154,7 +154,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                                         pagination={{ pageSize: 15 }}
                                         bWorked
                                         scroll={{ x: 'calc(700px + 50%)' }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddWorkModal}>Pridėti įsakyma</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddWorkModal}>Pridėti grafiką</Button></Space>)}
                                     />
 
                                 </Card>

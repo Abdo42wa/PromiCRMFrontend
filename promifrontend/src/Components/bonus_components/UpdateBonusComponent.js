@@ -88,7 +88,7 @@ function UpdateBonusComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti bonus</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti bonusą</Space>}
                 visible={props.visible}
                 footer={
                     <div>

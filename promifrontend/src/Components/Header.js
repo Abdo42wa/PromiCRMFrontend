@@ -67,7 +67,7 @@ const Header = () => {
                                         </LinkContainer>
                                         <LinkContainer to='/countries'>
                                             <NavDropdown.Item>
-                                                <i className="fas fa-globe"></i> šalyse
+                                                <i className="fas fa-globe"></i> Šalys
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/non-standart-works'>
@@ -82,7 +82,7 @@ const Header = () => {
                                         </LinkContainer>
                                         <LinkContainer to='/orders'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-tools"></i> įsakymus
+                                                <i class="fas fa-tools"></i> Užsakymai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/products'>

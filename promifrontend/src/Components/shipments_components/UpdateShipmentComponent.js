@@ -87,7 +87,7 @@ function UpdateShipmentComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pristatymo atnaujinimas</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti pristatymą</Space>}
                 visible={props.visible}
                 footer={
                     <div>

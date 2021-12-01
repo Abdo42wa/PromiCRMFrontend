@@ -78,7 +78,7 @@ function UpdateWeeklyWorkScheduleComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti Darbo</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti darbo grafiką</Space>}
                 visible={props.visible}
                 footer={
                     <div>

@@ -146,7 +146,7 @@ function UpdateOrderComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti įsakymas</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Atnaujinti užsakymą</Space>}
                 visible={props.visible}
                 footer={
                     <div>

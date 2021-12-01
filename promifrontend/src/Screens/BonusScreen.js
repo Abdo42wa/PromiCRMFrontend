@@ -168,7 +168,7 @@ class BonusScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.props.bonusReducer.bonuses}
                                         pagination={{ pageSize: 15 }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddBonusModal} >Pridėti bonusus</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddBonusModal} >Pridėti bonusą</Button></Space>)}
                                     />
                                 </Card>
                             </Col>

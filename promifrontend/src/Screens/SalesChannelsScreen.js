@@ -112,7 +112,7 @@ class SalesChannelsScreen extends React.Component {
                 width: '10%'
             },
             {
-                title: 'Atsakingas asmens vardas',
+                title: 'Atsakingo asmens vardas',
                 dataIndex: 'user',
                 width: '10%',
                 render: (text,record,index)=>(
@@ -120,7 +120,7 @@ class SalesChannelsScreen extends React.Component {
                 )
             },
             {
-                title: 'Atsakingas asmens pavardė',
+                title: 'Atsakingo asmens pavardė',
                 dataIndex: 'user',
                 width: '10%',
                 render: (text,record,index)=>(
@@ -151,7 +151,7 @@ class SalesChannelsScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.props.salesChannelsReducer.salesChannels}
                                         pagination={{ pageSize: 15 }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddSalesChannel}>Pridėti pristatymą</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddSalesChannel}>Pridėti pardavimo kanalą</Button></Space>)}
                                     />
                                     {/* <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.addMaterial}>Pridėti materialą</Button></Space> */}
                                 </Card>

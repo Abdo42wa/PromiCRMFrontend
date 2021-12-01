@@ -63,7 +63,7 @@ function AddWeeklyWorkScheduleComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują darba</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują darbo grafiką</Space>}
                 visible={props.visible}
                 footer={
                     <div>

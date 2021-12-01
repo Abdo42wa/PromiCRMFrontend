@@ -40,7 +40,7 @@ function AddCountryComponents(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują šaly</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują šalį</Space>}
                 visible={props.visible}
                 footer={
                     <div>

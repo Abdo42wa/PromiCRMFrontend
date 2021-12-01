@@ -130,7 +130,7 @@ class CountryScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <Typography.Title>Šalyse</Typography.Title>
+                                    <Typography.Title>Šalys</Typography.Title>
                                     <Typography.Text>Pridėkite ir atnaujinkite šalis</Typography.Text>
                                 </div>
                             </Col>
@@ -144,7 +144,7 @@ class CountryScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.state.countries}
                                         pagination={{ pageSize: 15 }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddCountry} >Pridėti šaly</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddCountry} >Pridėti šalį</Button></Space>)}
                                     />
                                 </Card>
                             </Col>
