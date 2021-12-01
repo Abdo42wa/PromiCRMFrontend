@@ -47,7 +47,7 @@ const Header = () => {
                                         </LinkContainer>
                                         <LinkContainer to='/materials'>
                                             <NavDropdown.Item>
-                                                <i className="fas fa-toolbox"></i> Materialai
+                                                <i className="fas fa-toolbox"></i> Produktams priskirtos medžiagos
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/shipments'>

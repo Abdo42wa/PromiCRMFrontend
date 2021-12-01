@@ -85,7 +85,7 @@ class UpdateMaterialComponent extends React.Component {
                     saveChanges={this.saveChanges}
                     okButtonProps={{ disabled: false }}
                     cancelButtonProps={{ disabled: false }}
-                    title={<Space><ArrowLeftOutlined onClick={this.onBack} />Atnaujinti materialą</Space>}
+                    title={<Space><ArrowLeftOutlined onClick={this.onBack} />Atnaujinti medžiagą</Space>}
                     visible={this.props.visible}
                     footer={
                         <div>

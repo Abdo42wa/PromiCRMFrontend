@@ -98,7 +98,7 @@ class MaterialsScreen extends React.Component {
         const columns = [
             {
                 title: 'Atnaujinti',
-                width: '20%',
+                width: '10%',
                 render: (text, record, index) => (
                     <Button onClick={(e) => this.showUpdateMaterial(record)}>Atnaujinti</Button>
                 )
@@ -106,7 +106,7 @@ class MaterialsScreen extends React.Component {
             {
                 title: 'Produkto pavadinimas',
                 dataIndex: 'product',
-                width: '40%',
+                width: '30%',
                 render: (text, record, index) => (
                     <Typography.Text>{text.name}</Typography.Text>
                 )
@@ -114,7 +114,7 @@ class MaterialsScreen extends React.Component {
             {
                 title: 'Produkto kodas',
                 dataIndex: 'product',
-                width: '40%',
+                width: '30%',
                 render: (text, record, index) => (
                     <Typography.Text>{text.code}</Typography.Text>
                 )
@@ -122,7 +122,7 @@ class MaterialsScreen extends React.Component {
             {
                 title: 'Medžiaga',
                 dataIndex: 'materialWarehouse',
-                width: '40%',
+                width: '30%',
                 render: (text,record,index)=>(
                     <Typography.Text>{text.title}</Typography.Text>
                 )
@@ -136,8 +136,8 @@ class MaterialsScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <Typography.Title>Produktams priskirti materialai</Typography.Title>
-                                    <Typography.Text>Pridėkite ir atnaujinkite materialus</Typography.Text>
+                                    <Typography.Title>Produktams priskirtos medžiagos</Typography.Title>
+                                    <Typography.Text>Pridėkite ir atnaujinkite medžiagas</Typography.Text>
                                 </div>
                             </Col>
                         </Row>
@@ -151,7 +151,7 @@ class MaterialsScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.state.materials}
                                         pagination={{ pageSize: 15 }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddMaterial}>Pridėti materialą</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddMaterial}>Pridėti medžiagą</Button></Space>)}
                                     />
                                     {/* <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.addMaterial}>Pridėti materialą</Button></Space> */}
                                 </Card>

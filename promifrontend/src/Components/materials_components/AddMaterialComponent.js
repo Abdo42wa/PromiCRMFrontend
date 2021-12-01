@@ -63,7 +63,7 @@ function AddMaterialComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują materialą</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują medžiagą</Space>}
                 visible={props.visible}
                 footer={
                     <div>
