@@ -4,7 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { getSalesChannels, createSalesChannel, updateSalesChannel } from '../Actions/salesChannelsActions'
-import AddSalesChannel from '../Components/sales_channels_components/AddSalesChannel.js';
+import AddSalesChannelComponent from '../Components/sales_channels_components/AddSalesChannelComponent.js';
+import UpdateSalesChannelComponent from '../Components/sales_channels_components/UpdateSalesChannelComponent.js';
 
 class SalesChannelsScreen extends React.Component {
     constructor(props) {
@@ -55,8 +56,8 @@ class SalesChannelsScreen extends React.Component {
         })
     }
     saveUpdateSalesChannel = (postObj, reducerObj) => {
-        console.log('PostObj:' + JSON.stringify(postObj));
-        console.log('ReducerObj:' + JSON.stringify(reducerObj));
+        this.props.updateSalesChannel(postObj,reducerObj);
+        this.unshowUpdateSalesChannel();
     }
 
     componentDidMount() {
@@ -148,15 +149,13 @@ class SalesChannelsScreen extends React.Component {
                     </Col>
                 </div>
                 {this.state.addSalesChannelVisibility !== false ?
-                    <AddSalesChannel visible={this.state.addSalesChannelVisibility} onClose={this.unshowAddSalesChannel}
+                    <AddSalesChannelComponent visible={this.state.addSalesChannelVisibility} onClose={this.unshowAddSalesChannel}
                         save={this.saveAddSalesChannel} /> : null}
-                {/* {this.state.addShipmentVisibility !== false ?
-                    <AddShipmentComponent onClose={this.unshowShipmentVisibility} save={this.saveAddShipment} visible={this.state.addShipmentVisibility}
-                    /> : null}
-                {this.state.updateShipmentVisibility.visibility !== false ?
-                    <UpdateShipmentComponent visible={this.state.updateShipmentVisibility.visibility}
-                        save={this.saveUpdateShipment} onClose={this.unshowUpdateShipment}
-                        record={this.state.updateShipmentVisibility.record} /> : null} */}
+                {this.state.updateSalesChannel.visibility !== false?
+                <UpdateSalesChannelComponent visible={this.state.updateSalesChannel.visibility} record={this.state.updateSalesChannel.record}
+                    onClose={this.unshowUpdateSalesChannel} save={this.saveUpdateSalesChannel}
+                />:null}
+                
 
             </>
         )

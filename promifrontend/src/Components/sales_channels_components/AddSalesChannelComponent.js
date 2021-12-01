@@ -6,7 +6,7 @@ import { getUsers } from '../../Actions/userListActions'
 
 const { Option } = Select;
 
-function AddSalesChannel(props) {
+function AddSalesChannelComponent(props) {
     const dispatch = useDispatch();
     const [salesChannel, setSalesChannel] = useState({
         title: "",
@@ -34,7 +34,6 @@ function AddSalesChannel(props) {
         }));    
     }
     const saveChanges = () => {
-        const salesChannelClone = JSON.parse(JSON.stringify(salesChannel));
         const postObj = salesChannel;
         props.save(postObj);
     }
@@ -101,4 +100,4 @@ function AddSalesChannel(props) {
     )
 }
 
-export default AddSalesChannel;
+export default AddSalesChannelComponent;
