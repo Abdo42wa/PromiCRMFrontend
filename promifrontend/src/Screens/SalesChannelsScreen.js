@@ -83,27 +83,27 @@ class SalesChannelsScreen extends React.Component {
             {
                 title: 'Kontaktinis asmuo',
                 dataIndex: 'contactPerson',
-                width: '15%'
+                width: '10%'
             },
             {
                 title: 'El. paštas',
                 dataIndex: 'email',
-                width: '15%'
+                width: '10%'
             },
             {
                 title: 'Telefono numeris',
                 dataIndex: 'phoneNumber',
-                width: '15%'
+                width: '10%'
             },
             {
                 title: 'Adresas siuntų pristatymui',
                 dataIndex: 'deliveryAddress',
-                width: '15%'
+                width: '10%'
             },
             {
                 title: 'Nuolaida',
                 dataIndex: 'discount',
-                width: '15%'
+                width: '10%'
             },
 
             {
@@ -112,16 +112,27 @@ class SalesChannelsScreen extends React.Component {
                 width: '10%'
             },
             {
-                title: 'Atsakingas asmuo',
-                dataIndex: 'userId',
-                width: '10%'
+                title: 'Atsakingas asmens vardas',
+                dataIndex: 'user',
+                width: '10%',
+                render: (text,record,index)=>(
+                    <Typography.Text>{text.name}</Typography.Text>
+                )
+            },
+            {
+                title: 'Atsakingas asmens pavardė',
+                dataIndex: 'user',
+                width: '10%',
+                render: (text,record,index)=>(
+                    <Typography.Text>{text.surname}</Typography.Text>
+                )
             },
         ]
         return (
             <>
 
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
-                    <Col span={24} offset={2}>
+                    <Col span={24} offset={1}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -133,7 +144,7 @@ class SalesChannelsScreen extends React.Component {
                         {/* returns second column with table */}
                         {/* <FixedCostTable data={obj.types} countryVats={this.props.countryVats} category_title={obj.category_title} category_id={obj.category_id} /> */}
                         <Row gutter={16}>
-                            <Col span={22}>
+                            <Col span={23}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
                                     <Table
                                         rowKey="id"
