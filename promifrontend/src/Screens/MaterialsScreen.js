@@ -104,23 +104,29 @@ class MaterialsScreen extends React.Component {
                 )
             },
             {
-                title: 'Pavadinimas',
-                dataIndex: 'name',
-                width: '20%'
-            },
-            {
-                title: 'Panaudotas materialas',
-                dataIndex: 'materialUsed',
-                width: '20%'
-            },
-            {
-                title: 'Produkto',
+                title: 'Produkto pavadinimas',
                 dataIndex: 'product',
-                width: '20%',
+                width: '40%',
                 render: (text, record, index) => (
                     <Typography.Text>{text.name}</Typography.Text>
                 )
-            }
+            },
+            {
+                title: 'Produkto kodas',
+                dataIndex: 'product',
+                width: '40%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text.code}</Typography.Text>
+                )
+            },
+            {
+                title: 'Medžiaga',
+                dataIndex: 'materialWarehouse',
+                width: '40%',
+                render: (text,record,index)=>(
+                    <Typography.Text>{text.title}</Typography.Text>
+                )
+            },
         ]
         return (
             <>
