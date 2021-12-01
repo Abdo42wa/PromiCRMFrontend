@@ -6,6 +6,7 @@ import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import moment from 'moment'
 import AddMaterialWarehouseComponent from '../Components/materials_warehouse_components/AddMaterialWarehouseComponent';
+import UpdateMaterialWarehouseComponent from '../Components/materials_warehouse_components/UpdateMaterialWarehouseComponent';
 
 class MaterialsWarehouseScreen extends React.Component {
     constructor(props) {
@@ -57,8 +58,8 @@ class MaterialsWarehouseScreen extends React.Component {
         })
     }
     saveUpdateMaterialWarehouse = (postObj, reducerObj) => {
-        console.log('postobj: ' + JSON.stringify(postObj))
-        console.log('reducerObj: ' + JSON.stringify(reducerObj))
+        this.props.updateMaterialWarehouseData(postObj,reducerObj);
+        this.unshowUpdateMaterialComponent();
     }
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
@@ -151,6 +152,10 @@ class MaterialsWarehouseScreen extends React.Component {
                     <AddMaterialWarehouseComponent visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterialComponent}
                         save={this.saveAddMaterialWarehouse} />
                     : null}
+                {this.state.updateMaterialWarehouse.visibility !== false?
+                <UpdateMaterialWarehouseComponent visible={this.state.updateMaterialWarehouse.visibility} record={this.state.updateMaterialWarehouse.record}
+                onClose={this.unshowUpdateMaterialComponent} save={this.saveUpdateMaterialWarehouse} />
+                :null}
 
             </>
         )
