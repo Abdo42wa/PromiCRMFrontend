@@ -17,6 +17,7 @@ import BonusScreen from './Screens/BonusScreen';
 import ProductsScreen from './Screens/ProductsScreen';
 import WeeklyWorkScheduleScreen from './Screens/WeeklyWorkScheduleScreen';
 import SalesChannelsScreen from './Screens/SalesChannelsScreen';
+import MaterialsWarehouseScreen from './Screens/MaterialsWarehouseScreen';
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
           <Route path='/products' component={ProductsScreen} />
           <Route path='/weeklyWorkScheduleScreen' component={WeeklyWorkScheduleScreen} />
           <Route path='/sales-channels' component={SalesChannelsScreen}/>
+          <Route path='/materials-warehouse' component={MaterialsWarehouseScreen}/>
           <Route path='/' component={HomeScreen} exact />
 
         </div>

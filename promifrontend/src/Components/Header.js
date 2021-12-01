@@ -32,7 +32,7 @@ const Header = () => {
                             {currentUser ? (
                                 <>
                                     <LinkContainer to='/'>
-                                        <Nav.Link href="/">Home</Nav.Link>
+                                        <Nav.Link href="/">Pagrindinis</Nav.Link>
                                     </LinkContainer>
                                     <NavDropdown title='Admin' id='adminmenu'>
                                         <LinkContainer to='/register'>
@@ -48,6 +48,11 @@ const Header = () => {
                                         <LinkContainer to='/materials'>
                                             <NavDropdown.Item>
                                                 <i className="fas fa-toolbox"></i> Produktams priskirtos medžiagos
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/materials-warehouse'>
+                                            <NavDropdown.Item>
+                                                <i className="fas fa-pallet"></i> Medžiagų sandėlys
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/shipments'>

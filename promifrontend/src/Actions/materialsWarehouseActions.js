@@ -1,6 +1,6 @@
 import promiAPI from "./promiAPI";
 
-export const getMaterialsWarehouse = (callback) =>  async(dispatch,getState)=>{
+export const getMaterialsWarehouseData = () =>  async(dispatch,getState)=>{
     try{
         dispatch({
             type: 'WAREHOUSE_MATERIALS_FETCH_REQUEST'
@@ -12,7 +12,6 @@ export const getMaterialsWarehouse = (callback) =>  async(dispatch,getState)=>{
             type: 'WAREHOUSE_MATERIALS_FETCH_SUCCESS',
             payload: response.data
         });
-        callback();
     }catch (error) {
         dispatch({
             type: 'WAREHOUSE_MATERIALS_FETCH_FAIL',
@@ -24,7 +23,7 @@ export const getMaterialsWarehouse = (callback) =>  async(dispatch,getState)=>{
     }
 }
 
-export const createMaterialWarehouse = (postObj) => async(dispatch,getState)=>{
+export const createMaterialWarehouseData = (postObj) => async(dispatch,getState)=>{
     try{
         dispatch({
             type: 'WAREHOUSE_MATERIALS_CREATE_REQUEST'
@@ -47,7 +46,7 @@ export const createMaterialWarehouse = (postObj) => async(dispatch,getState)=>{
     }
 }
 
-export const updateMaterialWarehouse = (postObj,reducerObj) => async(dispatch,getState)=>{
+export const updateMaterialWarehouseData = (postObj,reducerObj) => async(dispatch,getState)=>{
     try{
         dispatch({
             type: 'WAREHOUSE_MATERIALS_UPDATE_REQUEST'
