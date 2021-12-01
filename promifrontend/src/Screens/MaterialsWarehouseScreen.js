@@ -1,13 +1,14 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import {getMaterialsWarehouseData,createMaterialWarehouseData,updateMaterialWarehouseData} from '../Actions/materialsWarehouseActions';
+import { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData } from '../Actions/materialsWarehouseActions';
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import moment from 'moment'
+import AddMaterialWarehouseComponent from '../Components/materials_warehouse_components/AddMaterialWarehouseComponent';
 
-class MaterialsWarehouseScreen extends React.Component{
-    constructor(props){
+class MaterialsWarehouseScreen extends React.Component {
+    constructor(props) {
         super(props);
         this.state = {
             addMaterialVisibility: false,
@@ -20,21 +21,24 @@ class MaterialsWarehouseScreen extends React.Component{
 
 
     //for AddMaterialWarehouseDataComponent
-    showAddMaterialComponent = () =>{
+    showAddMaterialComponent = () => {
         this.setState({
             addMaterialVisibility: true
         });
     }
-    unshowAddMaterialComponent = () =>{
+    unshowAddMaterialComponent = () => {
         this.setState({
             addMaterialVisibility: false
         })
     }
-    saveAddMaterialWarehouse = (postObj) =>{
-        console.log('Postobj:'+JSON.stringify(postObj));
+    saveAddMaterialWarehouse = (postObj) => {
+        this.props.createMaterialWarehouseData(postObj);
+        this.setState({
+            addMaterialVisibility: false
+        })
     }
     //For UpdateMaterialWarehouseDataComponent
-    showUpdateMaterialComponent = (record) =>{
+    showUpdateMaterialComponent = (record) => {
         const obj = {
             record: record,
             visibility: true
@@ -43,7 +47,7 @@ class MaterialsWarehouseScreen extends React.Component{
             updateMaterialWarehouse: obj
         })
     }
-    unshowUpdateMaterialComponent = () =>{
+    unshowUpdateMaterialComponent = () => {
         const obj = {
             record: null,
             visibility: false
@@ -52,16 +56,16 @@ class MaterialsWarehouseScreen extends React.Component{
             updateMaterialWarehouse: obj
         })
     }
-    saveUpdateMaterialWarehouse = (postObj,reducerObj) =>{
-        console.log('postobj: '+JSON.stringify(postObj))
-        console.log('reducerObj: '+JSON.stringify(reducerObj))
+    saveUpdateMaterialWarehouse = (postObj, reducerObj) => {
+        console.log('postobj: ' + JSON.stringify(postObj))
+        console.log('reducerObj: ' + JSON.stringify(reducerObj))
     }
-    componentDidMount(){
-        if(this.props.usersReducer.currentUser !== null){
+    componentDidMount() {
+        if (this.props.usersReducer.currentUser !== null) {
             this.props.getMaterialsWarehouseData();
         }
     }
-    render(){
+    render() {
         const columns = [
             {
                 title: 'Atnaujinti',
@@ -143,14 +147,10 @@ class MaterialsWarehouseScreen extends React.Component{
                         </Row>
                     </Col>
                 </div>
-                {/* {this.state.addWorkVisibility !== false ?
-                    <AddNonStandartWorkComponent visible={this.state.addWorkVisibility} save={this.saveAddWork}
-                        onClose={this.unshowAddWorkModal} />
+                {this.state.addMaterialVisibility !== false ?
+                    <AddMaterialWarehouseComponent visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterialComponent}
+                        save={this.saveAddMaterialWarehouse} />
                     : null}
-                {this.state.updateWork.visibility !== false ?
-                    <UpdateNonStandartWorkComponent visible={this.state.updateWork.visibility} record={this.state.updateWork.record}
-                        save={this.saveUpdateWork} onClose={this.unshowUpdateWorkModal} />
-                    : null} */}
 
             </>
         )
@@ -158,11 +158,11 @@ class MaterialsWarehouseScreen extends React.Component{
 }
 
 //get redux states
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
         materialsWarehouseReducer: state.materialsWarehouseReducer
     }
 }
 
-export default connect(mapStateToProps,{getMaterialsWarehouseData, createMaterialWarehouseData,updateMaterialWarehouseData})(withRouter(MaterialsWarehouseScreen))
+export default connect(mapStateToProps, { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData })(withRouter(MaterialsWarehouseScreen))
