@@ -94,7 +94,6 @@ function UpdateMaterialWarehouseComponent(props) {
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite terminą d.d." value={material.deliveryTime} onChange={(e) => onDataChange(e, "deliveryTime")} />
                     <p style={{ ...textStyle }}>Medžiagos vidutiniškai užteks</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite dienų kiekį" value={material.useDays} onChange={(e) => onDataChange(e, "useDays")} />
-                    <p style={{ ...textStyle }}>Medžiaga</p>
                     <p style={{ ...textStyle }}>Paskutinis papildymas</p>
                     <Input required defaultValue={material.lastAdittion} style={{ width: '100%' }} placeholder="Įrašykite papildymo datą" value={material.lastAdittion} onChange={(e) => onDataChange(e.target.value, "lastAdittion")} />
                 </Form>

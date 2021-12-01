@@ -7,6 +7,7 @@ import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/custo
 import moment from 'moment'
 import AddMaterialWarehouseComponent from '../Components/materials_warehouse_components/AddMaterialWarehouseComponent';
 import UpdateMaterialWarehouseComponent from '../Components/materials_warehouse_components/UpdateMaterialWarehouseComponent';
+import SuplementMaterialWarehouseComponent from '../Components/materials_warehouse_components/SuplementMaterialWarehouseComponent';
 
 class MaterialsWarehouseScreen extends React.Component {
     constructor(props) {
@@ -16,7 +17,8 @@ class MaterialsWarehouseScreen extends React.Component {
             updateMaterialWarehouse: {
                 record: null,
                 visibility: false
-            }
+            },
+            suplementMaterialVisibility: false
         }
     }
 
@@ -58,9 +60,28 @@ class MaterialsWarehouseScreen extends React.Component {
         })
     }
     saveUpdateMaterialWarehouse = (postObj, reducerObj) => {
-        this.props.updateMaterialWarehouseData(postObj,reducerObj);
+        this.props.updateMaterialWarehouseData(postObj, reducerObj);
         this.unshowUpdateMaterialComponent();
     }
+
+    // for SuplementMaterialComponent
+    showSuplementMaterialComponent = () => {
+        this.setState({
+            suplementMaterialVisibility: true
+        })
+    }
+    unshowSuplementMaterialComponent = () => {
+        this.setState({
+            suplementMaterialVisibility: false
+        })
+    }
+    saveSuplementMaterial = (postObj, reducerObj) => {
+        this.props.updateMaterialWarehouseData(postObj,reducerObj);
+        this.setState({
+            suplementMaterialVisibility: false
+        })
+    }
+
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getMaterialsWarehouseData();
@@ -140,9 +161,16 @@ class MaterialsWarehouseScreen extends React.Component {
                                         pagination={{ pageSize: 15 }}
                                         // bordered
                                         // scroll={{ x: 'calc(700px + 50%)' }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddMaterialComponent}>Pridėti medžiagą</Button></Space>)}
+                                        footer={() => (
+                                            <div style={{display: 'flex'}}>
+                                                <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddMaterialComponent}>Pridėti medžiagą</Button></Space>
+                                                <Space/>
+                                                <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showSuplementMaterialComponent}>Papildyti sandėlį</Button></Space>
+                                            </div>
+                                        )}
                                     />
-                                    {/* <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.addMaterial}>Pridėti materialą</Button></Space> */}
+                                    
+
                                 </Card>
                             </Col>
                         </Row>
@@ -152,10 +180,13 @@ class MaterialsWarehouseScreen extends React.Component {
                     <AddMaterialWarehouseComponent visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterialComponent}
                         save={this.saveAddMaterialWarehouse} />
                     : null}
-                {this.state.updateMaterialWarehouse.visibility !== false?
-                <UpdateMaterialWarehouseComponent visible={this.state.updateMaterialWarehouse.visibility} record={this.state.updateMaterialWarehouse.record}
-                onClose={this.unshowUpdateMaterialComponent} save={this.saveUpdateMaterialWarehouse} />
-                :null}
+                {this.state.updateMaterialWarehouse.visibility !== false ?
+                    <UpdateMaterialWarehouseComponent visible={this.state.updateMaterialWarehouse.visibility} record={this.state.updateMaterialWarehouse.record}
+                        onClose={this.unshowUpdateMaterialComponent} save={this.saveUpdateMaterialWarehouse} />
+                    : null}
+                {this.state.suplementMaterialVisibility !== false ?
+                    <SuplementMaterialWarehouseComponent visible={this.state.suplementMaterialVisibility} onClose={this.unshowSuplementMaterialComponent}
+                        save={this.saveSuplementMaterial} /> : null}
 
             </>
         )
