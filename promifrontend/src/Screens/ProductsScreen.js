@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { getProducts, addProduct, updateProduct } from '../Actions/productsActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
+import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
 import AddProductComponent from '../Components/products_components/AddProductComponent';
 import UpdateProductComponent from '../Components/products_components/UpdateProductComponent';
 
@@ -77,9 +77,13 @@ class ProductsScrenn extends React.Component {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getProducts(() => {
                 const dataClone = JSON.parse(JSON.stringify(this.props.productsReducer.products))
+                this.props.getMaterialsWarehouseData();
+                console.log(this.props.materialsWarehouseReducer);
                 this.setState({
                     products: dataClone
                 });
+
+                console.log(this.props.productsReducer.products.map((x) => x.name))
             })
         } else {
             this.props.history.push('/');
@@ -125,6 +129,19 @@ class ProductsScrenn extends React.Component {
                 dataIndex: 'category',
                 width: '10%'
             },
+            {
+                title: 'Medžiagos',
+                dataIndex: 'productMaterials',
+                width: '10%',
+                render: (text, record, index) => (
+                    <div>
+                        {record.productMaterials.map((obj, index) => (
+                            <Typography.Text>{obj.materialWarehouse.title},</Typography.Text>
+                        ))}
+                    </div>
+
+                )
+            },
 
             {
                 title: 'Produkto pavadinimas',
@@ -137,8 +154,18 @@ class ProductsScrenn extends React.Component {
                 width: '10%'
             },
             {
+                title: 'Ilgis su Pakuotės',
+                dataIndex: 'lengthWithPackaging',
+                width: '10%'
+            },
+            {
                 title: 'Plotis Be Pakuotės',
                 dataIndex: 'widthWithoutPackaging',
+                width: '10%'
+            },
+            {
+                title: 'Plotis su Pakuotės',
+                dataIndex: 'widthWithPackaging',
                 width: '10%'
             },
             {
@@ -147,8 +174,43 @@ class ProductsScrenn extends React.Component {
                 width: '10%'
             },
             {
+                title: 'Aukštis su pakuotės',
+                dataIndex: 'heightWithPackaging',
+                width: '10%'
+            },
+            {
                 title: 'svoris Bruto',
                 dataIndex: 'weightGross',
+                width: '10%'
+            },
+            {
+                title: 'svoris Netto',
+                dataIndex: 'weightNetto',
+                width: '10%'
+            },
+            {
+                title: 'surinkimo laikas',
+                dataIndex: 'collectionTime',
+                width: '10%'
+            },
+            {
+                title: 'Suklijavimo laikas',
+                dataIndex: 'bondingTime',
+                width: '10%'
+            },
+            {
+                title: 'Lazeriavimo  laikas',
+                dataIndex: 'laserTime',
+                width: '10%'
+            },
+            {
+                title: 'Dažymo laikas',
+                dataIndex: 'paintingTime',
+                width: '10%'
+            },
+            {
+                title: 'Frezavimo laikas',
+                dataIndex: 'milingTime',
                 width: '10%'
             },
             {
@@ -213,11 +275,12 @@ class ProductsScrenn extends React.Component {
 const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
-        productsReducer: state.productsReducer
+        productsReducer: state.productsReducer,
+        materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData
     }
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getProducts, addProduct, updateProduct })(withRouter(ProductsScrenn))
+export default connect(mapStateToProps, { getProducts, addProduct, updateProduct, getMaterialsWarehouseData })(withRouter(ProductsScrenn))
 
 
