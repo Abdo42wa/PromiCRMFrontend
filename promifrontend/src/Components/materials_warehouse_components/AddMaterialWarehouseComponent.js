@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Space, Input,InputNumber } from 'antd';
+import { Modal, Button, Form, Space, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment'
 
@@ -22,8 +22,16 @@ function AddMaterialWarehouseComponent(props) {
         "info": "",
         "deliveryTime": 0,
         "useDays": 0,
-        "lastAdittion": moment().format('YYYY/MM/DD')
+        "lastAdittion": moment().format('YYYY/MM/DD'),
     });
+    const [file, setFile] = useState();
+    const [fileName,setFileName] = useState();
+
+    const changeFile = (e) => {
+        console.log(e.target.files[0])
+        setFile(e.target.files[0]);
+        // setFileName(e.target.files[0].name);
+    }
     const onBack = () => {
         props.onClose()
     }
@@ -38,8 +46,18 @@ function AddMaterialWarehouseComponent(props) {
         }))
     }
     const saveChanges = () => {
-        const postObj = material;
-        props.save(postObj);
+        console.log(file)
+        console.log(fileName)
+        const formData = new FormData();
+        formData.append("title",material.title);
+        formData.append("measuringUnit",material.measuringUnit);
+        formData.append("quantity",material.quantity);
+        formData.append("info",material.info);
+        formData.append("deliveryTime",material.deliveryTime);
+        formData.append("useDays",material.useDays);
+        formData.append("lastAdittion",material.lastAdittion);
+        formData.append("file",file);
+        props.save(formData);
     }
 
     return (
@@ -77,6 +95,7 @@ function AddMaterialWarehouseComponent(props) {
                     <Form.Item key="name6" name="name6" label="Medžiagos vidutiniškai užteks">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite dienų kiekį" value={material.useDays} onChange={(e) => onDataChange(e, "useDays")} />
                     </Form.Item>
+                    <input type="file" onChange={changeFile} />
                     <p>Paskutinis papildymas</p>
                     <Input required defaultValue={material.lastAdittion} style={{ width: '100%' }} placeholder="Įrašykite papildymo datą" value={material.lastAdittion} onChange={(e) => onDataChange(e.target.value, "lastAdittion")} />
                 </Form>

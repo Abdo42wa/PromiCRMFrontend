@@ -30,7 +30,8 @@ export const createMaterialWarehouseData = (postObj) => async(dispatch,getState)
         });
         // get token
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/MaterialsWarehouse`,postObj, {headers: {Authorization: `Bearer ${token}`}});
+        const response = await promiAPI.post(`/api/MaterialsWarehouse`,postObj, {headers:{'Content-Type': 'multipart/form-data'}});
+        console.log('response data:'+JSON.stringify(response.data))
         dispatch({
             type: 'WAREHOUSE_MATERIALS_CREATE_SUCCESS',
             payload: response.data

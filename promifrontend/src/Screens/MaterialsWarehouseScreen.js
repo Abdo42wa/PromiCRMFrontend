@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData } from '../Actions/materialsWarehouseActions';
-import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button,Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import moment from 'moment'
 import AddMaterialWarehouseComponent from '../Components/materials_warehouse_components/AddMaterialWarehouseComponent';
@@ -105,6 +105,17 @@ class MaterialsWarehouseScreen extends React.Component {
                 title: 'Matavimo vnt.',
                 dataIndex: 'measuringUnit',
                 width: '10%'
+            },
+            {
+                title: 'Fotografijos url',
+                dataIndex: 'imagePath',
+                width: '10%',
+                render: (text,record,index)=>(
+                    <div>
+                        {text === null || text === undefined?
+                        <p></p>:<Image src={text}/>}
+                    </div>
+                )
             },
             {
                 title: 'Esamas kiekis',
