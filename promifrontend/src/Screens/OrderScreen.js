@@ -98,7 +98,7 @@ class OrderScrenn extends React.Component {
                 )
             },
             {
-                title: 'Vartotojo ID',
+                title: 'Atsakingas asmuo',
                 dataIndex: 'user',
                 width: '10%',
                 render: (text, record, index) => (
@@ -111,7 +111,7 @@ class OrderScrenn extends React.Component {
                 width: '10%'
             },
             {
-                title: 'statusą',
+                title: 'Status',
                 dataIndex: 'status',
                 width: '10%',
                 render: (text, record, index) => (
@@ -132,7 +132,7 @@ class OrderScrenn extends React.Component {
                 )
             },
             {
-                title: 'platformas',
+                title: 'Platforma',
                 dataIndex: 'platforma',
                 width: '10%'
             },
@@ -163,7 +163,7 @@ class OrderScrenn extends React.Component {
                 width: '10%'
             },
             {
-                title: 'siuntos tipo ID',
+                title: 'Siuntos tipas',
                 dataIndex: 'shipment',
                 width: '10%',
                 render: (text, record, index) => (
@@ -171,7 +171,7 @@ class OrderScrenn extends React.Component {
                 )
             },
             {
-                title: 'Kliento',
+                title: 'Klientas',
                 dataIndex: 'customer',
                 width: '10%',
                 render: (text, record, index) => (
@@ -179,7 +179,7 @@ class OrderScrenn extends React.Component {
                 )
             },
             {
-                title: 'įrenginys',
+                title: 'Įrenginys',
                 dataIndex: 'device',
                 width: '10%'
             },
@@ -189,12 +189,12 @@ class OrderScrenn extends React.Component {
                 width: '10%'
             },
             {
-                title: 'Adresu',
+                title: 'Adresas',
                 dataIndex: 'address',
                 width: '10%'
             },
             {
-                title: 'šalies',
+                title: 'Šalis',
                 dataIndex: 'country',
                 width: '10%',
                 render: (text, record, index) => (
@@ -212,7 +212,7 @@ class OrderScrenn extends React.Component {
                 width: '10%'
             },
             {
-                title: 'valiutos',
+                title: 'Valiuta',
                 dataIndex: 'currency',
                 width: '10%',
                 render: (text, record, index) => (
@@ -220,7 +220,7 @@ class OrderScrenn extends React.Component {
                 )
             },
             {
-                title: 'vat',
+                title: 'VAT',
                 dataIndex: 'vat',
                 width: '10%'
             },

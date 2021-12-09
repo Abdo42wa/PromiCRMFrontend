@@ -75,11 +75,6 @@ const Header = () => {
                                                 <i className="fas fa-globe"></i> Šalys
                                             </NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/non-standart-works'>
-                                            <NavDropdown.Item>
-                                                <i className="fas fa-tools"></i> Nestandartiniai darbai
-                                            </NavDropdown.Item>
-                                        </LinkContainer>
                                         <LinkContainer to='/bonuses'>
                                             <NavDropdown.Item>
                                                 <i className="fas fa-money-check"></i> Bonusai

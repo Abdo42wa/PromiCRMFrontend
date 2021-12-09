@@ -157,37 +157,37 @@ function UpdateOrderComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Užsakymo tipas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite užsakymo tipas" value={orders.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
+                    <Input required style={{ width: '100%' }} placeholder="Paprastas arba nestandartinis" value={orders.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
                     <p style={{ ...textStyle }}>Užsakymo numeris</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={orders.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     <p style={{ ...textStyle }}>Data</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={orders.date} onChange={(e) => onDataChange(e.target.value, "date")} />
-                    <p style={{ ...textStyle }}>platformas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite platformas" value={orders.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} />
+                    <p style={{ ...textStyle }}>Platforma</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={orders.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} />
                     <p style={{ ...textStyle }}>Daugiau informacijos</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Daugiau informacijos" value={orders.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
+                    <Input required style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={orders.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     <p style={{ ...textStyle }}>Kiekis</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Kiekis" value={orders.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={orders.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
                     <p style={{ ...textStyle }}>Nuotrauka</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Nuotrauka" value={orders.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
+                    <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={orders.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
                     <p style={{ ...textStyle }}>Prekės kodas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Prekės kodas" value={orders.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kodą" value={orders.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
                     <p style={{ ...textStyle }}>Gamybos laikas</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laikas" value={orders.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
-                    <p style={{ ...textStyle }}> įrenginys</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginys" value={orders.device} onChange={(e) => onDataChange(e.target.value, "device")} />
-                    <p style={{ ...textStyle }}>Adresu</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Adresu" value={orders.address} onChange={(e) => onDataChange(e.target.value, "address")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={orders.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
+                    <p style={{ ...textStyle }}> Įrenginys</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={orders.device} onChange={(e) => onDataChange(e.target.value, "device")} />
+                    <p style={{ ...textStyle }}>Adresas</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={orders.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     <p style={{ ...textStyle }}>Komentaras</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={orders.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
                     <p style={{ ...textStyle }}>Kaina</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Kaina" value={orders.price} onChange={(e) => onDataChange(e.target.value, "price")} />
-                    <p style={{ ...textStyle }}>vat</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite vat" value={orders.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={orders.price} onChange={(e) => onDataChange(e.target.value, "price")} />
+                    <p style={{ ...textStyle }}>Vat</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={orders.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                     <p style={{ ...textStyle }}>Užsakymo pabaigos data</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Užsakymo pabaigos data" value={orders.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={orders.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
 
-                    <p style={{ marginBottom: '5px' }}>Siuntos statusą</p>
+                    <p style={{ marginBottom: '5px' }}>Siuntos statusas</p>
                     <Select
                         showSearch
                         style={{ width: '320px' }}
@@ -201,7 +201,7 @@ function UpdateOrderComponent(props) {
                         <Option key={2} value={false}>{'Neatlikta'}</Option>
                     </Select>
 
-                    <p style={{ marginBottom: '5px' }}>Siuntos tipo</p>
+                    <p style={{ marginBottom: '5px' }}>Siuntos tipas</p>
                     <Select
                         showSearch
                         style={{ width: '320px' }}
@@ -233,7 +233,7 @@ function UpdateOrderComponent(props) {
                     <Select
                         showSearch
                         style={{ width: '320px' }}
-                        placeholder="Priskirkite Valiuta"
+                        placeholder="Priskirkite valiutą"
                         optionFilterProp="children"
                         defaultValue={orders.currencyId}
                         value={orders.currencyId}
