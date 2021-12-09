@@ -1,7 +1,9 @@
 import react, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Space, Input, InputNumber } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Modal, Button, Form, Space, Input, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { deleteMaterialImage } from '../../Actions/materialsWarehouseActions'
 
 const textStyle = {
     fontSize: '18px',
@@ -15,7 +17,11 @@ const textStyle = {
 }
 
 function UpdateMaterialWarehouseComponent(props) {
+    const dispatch = useDispatch();
     const [material, setMaterial] = useState({});
+    const [file, setFile] = useState();
+    const [fileChanged, setFileChanged] = useState(0)
+    const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer);
     const onBack = () => {
         props.onClose();
     }
@@ -31,28 +37,78 @@ function UpdateMaterialWarehouseComponent(props) {
     }
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(material))
-        const postObj = {
-            "title": clone.title,
-            "measuringUnit": clone.measuringUnit,
-            "quantity": clone.quantity,
-            "info": clone.info,
-            "deliveryTime": clone.deliveryTime,
-            "useDays": clone.useDays,
-            "lastAdittion": clone.lastAdittion
+        if (fileChanged === 0) {
+            console.log('IT HAS same image')
+            const postObj = {
+                "title": clone.title,
+                "measuringUnit": clone.measuringUnit,
+                "quantity": clone.quantity,
+                "info": clone.info,
+                "deliveryTime": clone.deliveryTime,
+                "useDays": clone.useDays,
+                "lastAdittion": clone.lastAdittion,
+                "imagePath": clone.imagePath,
+                "imageName": clone.imageName
+            }
+            const reducerObj = {
+                "id": clone.id,
+                "title": clone.title,
+                "measuringUnit": clone.measuringUnit,
+                "quantity": clone.quantity,
+                "info": clone.info,
+                "deliveryTime": clone.deliveryTime,
+                "useDays": clone.useDays,
+                "lastAdittion": clone.lastAdittion,
+                "imagePath": clone.imagePath,
+                "imageName": clone.imageName
+            }
+            props.save(postObj, reducerObj)
+            console.log(postObj)
+        } else {
+            console.log(file)
+            const formData = new FormData();
+            formData.append("title", material.title);
+            formData.append("measuringUnit", material.measuringUnit);
+            formData.append("quantity", material.quantity);
+            formData.append("info", material.info);
+            formData.append("deliveryTime", material.deliveryTime);
+            formData.append("useDays", material.useDays);
+            formData.append("lastAdittion", material.lastAdittion);
+            formData.append("file", file);
+            formData.append("imageName",material.imageName)
+
+            // const reducerObj = {
+            //     "id": clone.id,
+            //     "title": clone.title,
+            //     "measuringUnit": clone.measuringUnit,
+            //     "quantity": clone.quantity,
+            //     "info": clone.info,
+            //     "deliveryTime": clone.deliveryTime,
+            //     "useDays": clone.useDays,
+            //     "lastAdittion": clone.lastAdittion,
+            //     "imagePath": clone.imagePath,
+            //     "imageName": clone.imageName
+            // }
+            console.log('Image for update')
+            console.log(formData)
+            console.log(material.imageName)
+            props.saveWithImg(formData,clone.id)
         }
-        const reducerObj = {
-            "id": clone.id,
-            "title": clone.title,
-            "measuringUnit": clone.measuringUnit,
-            "quantity": clone.quantity,
-            "info": clone.info,
-            "deliveryTime": clone.deliveryTime,
-            "useDays": clone.useDays,
-            "lastAdittion": clone.lastAdittion
-        }
-        props.save(postObj, reducerObj)
+
     }
-    useEffect(()=>{
+    const deleteImage = () => {
+        const materialClone = JSON.parse(JSON.stringify(material))
+        // materialClone.imageName = null;
+        materialClone.imagePath = null;
+        // dispatch(deleteMaterialImage(material.id, material.imageName))
+        setMaterial(materialClone)
+    }
+    const changeFile = (e) => {
+        setFileChanged(1);
+        setFile(e.target.files[0])
+    }
+
+    useEffect(() => {
         const obj = {
             "id": props.record.id,
             "title": props.record.title,
@@ -61,10 +117,12 @@ function UpdateMaterialWarehouseComponent(props) {
             "info": props.record.info,
             "deliveryTime": props.record.deliveryTime,
             "useDays": props.record.useDays,
-            "lastAdittion": moment(props.record.lastAdittion).format('YYYY/MM/DD')
+            "lastAdittion": moment(props.record.lastAdittion).format('YYYY/MM/DD'),
+            "imagePath": props.record.imagePath,
+            "imageName": props.record.imageName
         }
         setMaterial(obj)
-    },[])
+    }, [])
     return (
         <>
             <Modal
@@ -96,6 +154,21 @@ function UpdateMaterialWarehouseComponent(props) {
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite dienų kiekį" value={material.useDays} onChange={(e) => onDataChange(e, "useDays")} />
                     <p style={{ ...textStyle }}>Paskutinis papildymas</p>
                     <Input required defaultValue={material.lastAdittion} style={{ width: '100%' }} placeholder="Įrašykite papildymo datą" value={material.lastAdittion} onChange={(e) => onDataChange(e.target.value, "lastAdittion")} />
+                    {material.imagePath !== null && material.imagePath !== undefined ?
+                        <div>
+                            <p style={{ ...textStyle }}>Nuotrauka</p>
+                            <Image key={material.imageName} src={material.imagePath} width={100} />
+                            <br></br>
+                            <Button onClick={deleteImage}>Ištrinti nuotrauką</Button>
+                        </div> :
+                        <div>
+                            <p style={{ ...textStyle }}>Nuotraukos ikėlimas</p>
+                            <input required type='file' onChange={changeFile} />
+                        </div>}
+
+
+                    {/* {material.imagePath === "" || material.imagePath === null?
+                    <Button onClick={deleteImage}>Prideti nuotrauką</Button>: null} */}
                 </Form>
             </Modal>
         </>

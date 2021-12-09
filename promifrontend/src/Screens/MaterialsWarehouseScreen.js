@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData } from '../Actions/materialsWarehouseActions';
+import { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData,updateMaterialWarehouseWithImage } from '../Actions/materialsWarehouseActions';
 import { Table, Space, Card, Typography, Col, Row, Button,Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import moment from 'moment'
@@ -60,9 +60,15 @@ class MaterialsWarehouseScreen extends React.Component {
         })
     }
     saveUpdateMaterialWarehouse = (postObj, reducerObj) => {
-        this.props.updateMaterialWarehouseData(postObj, reducerObj);
-        this.unshowUpdateMaterialComponent();
+            this.props.updateMaterialWarehouseData(postObj, reducerObj);
+            this.unshowUpdateMaterialComponent();
+        
     }
+    saveUpdateMaterialWarehouseWithImg = (postObj, id) => {
+        this.props.updateMaterialWarehouseWithImage(postObj, id);
+        this.unshowUpdateMaterialComponent();
+    
+}
 
     // for SuplementMaterialComponent
     showSuplementMaterialComponent = () => {
@@ -88,6 +94,7 @@ class MaterialsWarehouseScreen extends React.Component {
         }
     }
     render() {
+        console.log(this.props.materialsWarehouseReducer.materialsWarehouseData)
         const columns = [
             {
                 title: 'Atnaujinti',
@@ -193,7 +200,8 @@ class MaterialsWarehouseScreen extends React.Component {
                     : null}
                 {this.state.updateMaterialWarehouse.visibility !== false ?
                     <UpdateMaterialWarehouseComponent visible={this.state.updateMaterialWarehouse.visibility} record={this.state.updateMaterialWarehouse.record}
-                        onClose={this.unshowUpdateMaterialComponent} save={this.saveUpdateMaterialWarehouse} />
+                        onClose={this.unshowUpdateMaterialComponent} save={this.saveUpdateMaterialWarehouse}
+                        saveWithImg={this.saveUpdateMaterialWarehouseWithImg} />
                     : null}
                 {this.state.suplementMaterialVisibility !== false ?
                     <SuplementMaterialWarehouseComponent visible={this.state.suplementMaterialVisibility} onClose={this.unshowSuplementMaterialComponent}
@@ -212,4 +220,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData })(withRouter(MaterialsWarehouseScreen))
+export default connect(mapStateToProps, { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData, updateMaterialWarehouseWithImage })(withRouter(MaterialsWarehouseScreen))
