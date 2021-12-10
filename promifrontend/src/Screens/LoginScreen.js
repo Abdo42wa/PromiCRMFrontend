@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Col, Row, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { login } from '../Actions/userAction'
+import { Spin, Space } from 'antd';
 
 const LoginScreen = ({ history }) => {
 
@@ -31,7 +32,9 @@ const LoginScreen = ({ history }) => {
                 <Col xs={12} md={6}>
                     <h1>Login </h1>
                     {error && <h1>{error}</h1>}
-                    {loading ? (<h1>Loading...</h1>) : (
+                    {loading ? (<div className='text-center'>
+                        <Spin size="large" />
+                    </div>) : (
                         <Form onSubmit={submitHandler}>
                             <Form.Group controlId='email'>
                                 <Form.Label>Password</Form.Label>
