@@ -96,7 +96,7 @@ class CountryScreen extends React.Component {
         const columns = [
             {
                 title: 'Atnaujinti',
-                width: '20%',
+                width: '25%',
                 render: (text, record, index) => (
                     <Button onClick={(e) => this.showUpdateCountry(record)}>Atnaujinti</Button>
                 )
@@ -104,22 +104,17 @@ class CountryScreen extends React.Component {
             {
                 title: 'Pavadinimas',
                 dataIndex: 'name',
-                width: '20%'
+                width: '25%'
             },
             {
-                title: 'Trumpas pavadinimas',
+                title: 'Trumpinys',
                 dataIndex: 'shortName',
-                width: '20%'
+                width: '25%'
             },
             {
-                title: 'kontinentas',
+                title: 'Kontinentas',
                 dataIndex: 'continent',
-                width: '20%'
-            },
-            {
-                title: 'šalys Id',
-                dataIndex: 'id',
-                width: '20%'
+                width: '25%'
             }
         ]
         return (

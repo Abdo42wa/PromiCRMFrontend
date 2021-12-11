@@ -114,7 +114,7 @@ class MaterialsWarehouseScreen extends React.Component {
                 width: '10%'
             },
             {
-                title: 'Fotografijos url',
+                title: 'Nuotrauka',
                 dataIndex: 'imagePath',
                 width: '10%',
                 render: (text,record,index)=>(

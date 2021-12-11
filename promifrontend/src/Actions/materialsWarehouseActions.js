@@ -31,7 +31,7 @@ export const createMaterialWarehouseData = (postObj) => async(dispatch,getState)
         });
         // get token
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/MaterialsWarehouse`,postObj, {headers:{'Content-Type': 'multipart/form-data'}});
+        const response = await promiAPI.post(`/api/MaterialsWarehouse`,postObj, {headers:{Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data'}});
         console.log('response data:'+JSON.stringify(response.data))
         dispatch({
             type: 'WAREHOUSE_MATERIALS_CREATE_SUCCESS',
@@ -55,7 +55,7 @@ export const updateMaterialWarehouseData = (postObj,reducerObj) => async(dispatc
         });
         //get token
         const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/MaterialsWarehouse/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}});
+        await promiAPI.put(`/api/MaterialsWarehouse/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data'}});
         dispatch({
             type: 'WAREHOUSE_MATERIALS_UPDATE_SUCCESS',
             payload: reducerObj

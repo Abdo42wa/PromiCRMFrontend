@@ -95,6 +95,7 @@ function AddMaterialWarehouseComponent(props) {
                     <Form.Item key="name6" name="name6" label="Medžiagos vidutiniškai užteks">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite dienų kiekį" value={material.useDays} onChange={(e) => onDataChange(e, "useDays")} />
                     </Form.Item>
+                    <p>Nuotrauka</p>
                     <input type="file" onChange={changeFile} />
                     <p>Paskutinis papildymas</p>
                     <Input required defaultValue={material.filePath} style={{ width: '100%' }} placeholder="Įrašykite papildymo datą" value={material.lastAdittion} onChange={(e) => onDataChange(e.target.value, "lastAdittion")} />

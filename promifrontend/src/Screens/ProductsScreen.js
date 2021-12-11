@@ -105,13 +105,13 @@ class ProductsScrenn extends React.Component {
             },
             {
                 title: 'Nuotrauka',
-                dataIndex: 'photo',
+                dataIndex: 'imagePath',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Image
-                        width={100}
-                        src={text}
-                    />
+                    <div>
+                        {text === null || text === undefined ?
+                            <p></p> : <Image src={text} />}
+                    </div>
                 )
             },
             {

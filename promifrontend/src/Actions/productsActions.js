@@ -31,7 +31,7 @@ export const addProduct = (postObject, callback) => async (dispatch, getState) =
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/Products`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.post(`/api/Products`, postObject, { headers: {Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data'} });
         dispatch({
             type: 'PRODUCTS_CREATE_SUCCESS',
             payload: response.data
@@ -56,7 +56,7 @@ export const updateProduct = (postObj, reducerObj, callback) => async (dispatch,
         });
         // get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Products/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.put(`/api/Products/${reducerObj.id}`, postObj, { headers: {Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data' } });
         dispatch({
             type: 'PRODUCTS_UPDATE_SUCCESS',
             payload: reducerObj

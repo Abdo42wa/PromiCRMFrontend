@@ -13,7 +13,6 @@ function AddProductComponent(props) {
     const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer);
 
     const [products, setProduct] = useState({
-        "photo": "",
         "link": "",
         "code": "",
         "category": "",
@@ -38,7 +37,14 @@ function AddProductComponent(props) {
 
     });
 
+    const [file, setFile] = useState();
+    const [fileName,setFileName] = useState();
 
+    const changeFile = (e) => {
+        console.log(e.target.files[0])
+        setFile(e.target.files[0]);
+        // setFileName(e.target.files[0].name);
+    }
     const onBack = () => {
         props.onClose();
     }
@@ -74,34 +80,33 @@ function AddProductComponent(props) {
             }
             array.push(obj)
         })
-        console.log(JSON.parse(JSON.stringify(products)))
-        const postObj = {
-            "photo": dataProduct.photo,
-            "link": dataProduct.link,
-            "code": dataProduct.code,
-            "category": dataProduct.category,
-            "name": dataProduct.name,
-            "lengthWithoutPackaging": dataProduct.lengthWithoutPackaging,
-            "widthWithoutPackaging": dataProduct.widthWithoutPackaging,
-            "heightWithoutPackaging": dataProduct.heightWithoutPackaging,
-            "weightGross": dataProduct.weightGross,
-            "packagingBoxCode": dataProduct.packagingBoxCode,
-            "packingTime": dataProduct.packingTime,
-            "orderId": dataProduct.orderId,
-            "heightWithPackaging": dataProduct.heightWithPackaging,
-            "widthWithPackaging": dataProduct.widthWithPackaging,
-            "lengthWithPackaging": dataProduct.lengthWithPackaging,
-            "weightNetto": dataProduct.weightNetto,
-            "collectionTime": dataProduct.collectionTime,
-            "bondingTime": dataProduct.bondingTime,
-            "paintingTime": dataProduct.paintingTime,
-            "laserTime": dataProduct.laserTime,
-            "milingTime": dataProduct.milingTime,
-            "productMaterials": array
+        // console.log(JSON.parse(JSON.stringify(products)))
 
-        }
-        props.save(postObj);
-        console.log(JSON.stringify(postObj));
+        const formData = new FormData();
+        formData.append("link",dataProduct.link)
+        formData.append("code",dataProduct.code)
+        formData.append("category",dataProduct.category)
+        formData.append("name",dataProduct.name)
+        formData.append("lengthWithoutPackaging",dataProduct.lengthWithoutPackaging)
+        formData.append("widthWithoutPackaging",dataProduct.widthWithoutPackaging)
+        formData.append("heightWithoutPackaging",dataProduct.heightWithoutPackaging)
+        formData.append("weightGross",dataProduct.weightGross)
+        formData.append("packagingBoxCode",dataProduct.packagingBoxCode)
+        formData.append("packingTime",dataProduct.packingTime)
+        formData.append("orderId",dataProduct.orderId)
+        formData.append("heightWithPackaging",dataProduct.heightWithPackaging)
+        formData.append("widthWithPackaging",dataProduct.widthWithPackaging)
+        formData.append("lengthWithPackaging",dataProduct.lengthWithPackaging)
+        formData.append("weightNetto",dataProduct.weightNetto)
+        formData.append("collectionTime",dataProduct.collectionTime)
+        formData.append("bondingTime",dataProduct.bondingTime)
+        formData.append("paintingTime",dataProduct.paintingTime)
+        formData.append("laserTime",dataProduct.laserTime)
+        formData.append("milingTime",dataProduct.milingTime)
+        formData.append("productMaterials",array)
+        formData.append("file",file)
+        props.save(formData);
+        console.log(formData);
     }
     useEffect(() => {
 
@@ -117,7 +122,7 @@ function AddProductComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują Produktas</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują produktą</Space>}
                 visible={props.visible}
                 footer={
                     <div>
@@ -127,10 +132,6 @@ function AddProductComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-
-                    <Form.Item key="name" name="name" label="Produkto nuotrauka">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite produkto nuotrauka" value={products.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
-                    </Form.Item>
                     <Form.Item key="name2" name="name2" label="Nuoroda">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite nuoroda" value={products.link} onChange={(e) => onDataChange(e.target.value, "link")} />
                     </Form.Item>
@@ -188,8 +189,10 @@ function AddProductComponent(props) {
                     <Form.Item key="name20" name="name20" label="Frezavimo laikas">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laikas" value={products.milingTime} onChange={(e) => onDataChange(e.target.value, "milingTime")} />
                     </Form.Item>
+                    <p>Nuotrauka</p>
+                    <input type="file" onChange={changeFile} />
 
-                    <p style={{ marginBottom: '5px' }}>Mazegos </p>
+                    <p style={{ marginBottom: '5px' }}>Medžiagos </p>
                     <Select
                         showSearch
                         mode="multiple"
@@ -204,7 +207,7 @@ function AddProductComponent(props) {
                         })}
                     </Select>
 
-                    <p style={{ marginBottom: '5px' }}>įsakymas</p>
+                    <p style={{ marginBottom: '5px' }}>Užsakymas</p>
                     <Select
                         showSearch
                         style={{ width: '320px' }}
