@@ -106,7 +106,6 @@ function AddProductComponent(props) {
         formData.append("productMaterials",array)
         formData.append("file",file)
         props.save(formData);
-        console.log(formData);
     }
     useEffect(() => {
 

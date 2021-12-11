@@ -33,10 +33,38 @@ export const productsReducer = (state = { products: [] }, action) => {
                     element.weightGross = action.payload.weightGross;
                     element.packagingBoxCode = action.payload.packagingBoxCode;
                     element.packingTime = action.payload.packingTime;
+                    element.imageName = action.payload.imageName;
+                    element.imagePath = action.payload.imagePath;
                 }
             })
             return { ...state, loading: false, products: cloneProduct }
         case 'PRODUCTS_UPDATE_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        case 'PRODUCTS_IMAGE_UPDATE_REQUEST':
+            return { ...state, loading: true }
+        case 'PRODUCTS_IMAGE_UPDATE_SUCCESS':
+            const productsClone = JSON.parse(JSON.stringify(state.products));
+            productsClone.map((element, index) => {
+                if (element.id === action.payload.id) {
+                    element.orderId = action.payload.orderId;
+                    element.serviceId = action.payload.serviceId;
+                    element.photo = action.payload.photo;
+                    element.link = action.payload.link;
+                    element.code = action.payload.code;
+                    element.category = action.payload.category;
+                    element.name = action.payload.name;
+                    element.lengthWithoutPackaging = action.payload.lengthWithoutPackaging;
+                    element.widthWithoutPackaging = action.payload.widthWithoutPackaging;
+                    element.heightWithoutPackaging = action.payload.heightWithoutPackaging;
+                    element.weightGross = action.payload.weightGross;
+                    element.packagingBoxCode = action.payload.packagingBoxCode;
+                    element.packingTime = action.payload.packingTime;
+                    element.imageName = action.payload.imageName;
+                    element.imagePath = action.payload.imagePath;
+                }
+            })
+            return { ...state, loading: false, products: productsClone }
+        case 'PRODUCTS_IMAGE_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
         default:
             return state;

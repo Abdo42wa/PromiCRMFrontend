@@ -76,22 +76,6 @@ function UpdateMaterialWarehouseComponent(props) {
             formData.append("lastAdittion", material.lastAdittion);
             formData.append("file", file);
             formData.append("imageName",material.imageName)
-
-            // const reducerObj = {
-            //     "id": clone.id,
-            //     "title": clone.title,
-            //     "measuringUnit": clone.measuringUnit,
-            //     "quantity": clone.quantity,
-            //     "info": clone.info,
-            //     "deliveryTime": clone.deliveryTime,
-            //     "useDays": clone.useDays,
-            //     "lastAdittion": clone.lastAdittion,
-            //     "imagePath": clone.imagePath,
-            //     "imageName": clone.imageName
-            // }
-            console.log('Image for update')
-            console.log(formData)
-            console.log(material.imageName)
             props.saveWithImg(formData,clone.id)
         }
 

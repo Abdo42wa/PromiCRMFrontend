@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getProducts, addProduct, updateProduct } from '../Actions/productsActions'
+import { getProducts, addProduct, updateProduct, updateProductWithImage} from '../Actions/productsActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
@@ -13,7 +13,6 @@ class ProductsScrenn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            products: [],
             addProductVisibility: false,
             updateProduct: {
                 visibility: false,
@@ -34,10 +33,7 @@ class ProductsScrenn extends React.Component {
     }
     saveAddProduct = (postObj) => {
         this.props.addProduct(postObj, () => {
-
-            const dataClone = JSON.parse(JSON.stringify(this.props.productsReducer.products));
             this.setState({
-                products: dataClone,
                 addProductVisibility: false
             })
         })
@@ -64,26 +60,18 @@ class ProductsScrenn extends React.Component {
     }
     saveProduct = (postObj, reducerObj) => {
         this.props.updateProduct(postObj, reducerObj, () => {
-
-            const dataClone = JSON.parse(JSON.stringify(this.props.productsReducer.products));
-            this.setState({
-                products: dataClone
-            });
             this.unshowProductModal();
         });
+    }
+    saveProductWithImg = (postObj, id) => {
+        this.props.updateProductWithImage(postObj,id);
+        this.unshowProductModal();
     }
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getProducts(() => {
-                const dataClone = JSON.parse(JSON.stringify(this.props.productsReducer.products))
                 this.props.getMaterialsWarehouseData();
-                console.log(this.props.materialsWarehouseReducer);
-                this.setState({
-                    products: dataClone
-                });
-
-                console.log(this.props.productsReducer.products.map((x) => x.name))
             })
         } else {
             this.props.history.push('/');
@@ -245,7 +233,7 @@ class ProductsScrenn extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={columns}
-                                        dataSource={this.state.products}
+                                        dataSource={this.props.productsReducer.products}
                                         pagination={{ pageSize: 15 }}
                                         bordered
                                         scroll={{ x: 'calc(700px + 50%)' }}
@@ -263,7 +251,7 @@ class ProductsScrenn extends React.Component {
                     : null}
                 {this.state.updateProduct.visibility !== false ?
                     <UpdateProductComponent visible={this.state.updateProduct.visibility} record={this.state.updateProduct.record}
-                        save={this.saveProduct} onClose={this.unshowProductModal} /> :
+                        save={this.saveProduct} saveWithImg={this.saveProductWithImg} onClose={this.unshowProductModal} /> :
                     null}
 
             </>
@@ -281,6 +269,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getProducts, addProduct, updateProduct, getMaterialsWarehouseData })(withRouter(ProductsScrenn))
+export default connect(mapStateToProps, { getProducts, addProduct, updateProduct,updateProductWithImage, getMaterialsWarehouseData })(withRouter(ProductsScrenn))
 
 
