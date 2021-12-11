@@ -7,6 +7,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
+import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
+import { getProducts } from '../Actions/productsActions'
 import moment from 'moment';
 
 
@@ -16,7 +18,8 @@ class HomeScreen extends React.Component {
         super(props);
         this.state = {
             Works: [],
-            orders: []
+            orders: [],
+            products: []
         }
     }
     // const dispatch = useDispatch();
@@ -40,20 +43,19 @@ class HomeScreen extends React.Component {
                     console.log(this.state.Works)
 
                 })
+
+                this.props.getProducts(() => {
+                    this.props.getMaterialsWarehouseData();
+                    const productsDataClone = JSON.parse(JSON.stringify(this.props.productsReducer.products));
+                    this.setState({
+                        products: productsDataClone
+                    });
+                })
             })
         } else {
             this.props.history.push('/login');
         }
 
-    }
-    daysDelayed = () => {
-        var date1 = new Date("06/30/2019");
-
-        var Difference_In_Time = new Date() - date1.getTime();
-
-        // To calculate the no. of days between two dates
-        var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-        return Difference_In_Days;
     }
     datediff(first) {
         var future = moment(first);
@@ -226,9 +228,140 @@ class HomeScreen extends React.Component {
                 title: 'Vėluojama dienų',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Tag className='Neatlikta'>{this.datediff(record.orderFinishDate)}</Tag>
+                    // <Tag className='Neatlikta'>{record.status ? 'Atlikta' : this.datediff(record.orderFinishDate)}</Tag>
+                    <Typography.Text>{record.status ? <Tag className='atlikta'>Atlikta</Tag> : <Tag className='atlikta'>{this.datediff(record.orderFinishDate)}</Tag>}</Typography.Text>
 
                 )
+            }
+
+
+        ]
+
+        const productColumns = [
+            {
+                title: 'Produkto id',
+                dataIndex: 'id',
+                width: '10%'
+            },
+            {
+                title: 'Nuotrauka',
+                dataIndex: 'imagePath',
+                width: '10%',
+                render: (text, record, index) => (
+                    <div>
+                        {text === null || text === undefined ?
+                            <p></p> : <Image src={text} />}
+                    </div>
+                )
+            },
+            {
+                title: 'Nuoroda',
+                dataIndex: 'link',
+                width: '10%'
+            },
+            {
+                title: 'Prekės kodas',
+                dataIndex: 'code',
+                width: '10%'
+            },
+            {
+                title: 'Kategorija',
+                dataIndex: 'category',
+                width: '10%'
+            },
+            {
+                title: 'Medžiagos',
+                dataIndex: 'productMaterials',
+                width: '10%',
+                render: (text, record, index) => (
+                    <div>
+                        {record.productMaterials.map((obj, index) => (
+                            <Typography.Text>{obj.materialWarehouse.title},</Typography.Text>
+                        ))}
+                    </div>
+
+                )
+            },
+
+            {
+                title: 'Produkto pavadinimas',
+                dataIndex: 'name',
+                width: '10%'
+            },
+            {
+                title: 'Ilgis Be Pakuotės',
+                dataIndex: 'lengthWithoutPackaging',
+                width: '10%'
+            },
+            {
+                title: 'Ilgis su Pakuotės',
+                dataIndex: 'lengthWithPackaging',
+                width: '10%'
+            },
+            {
+                title: 'Plotis Be Pakuotės',
+                dataIndex: 'widthWithoutPackaging',
+                width: '10%'
+            },
+            {
+                title: 'Plotis su Pakuotės',
+                dataIndex: 'widthWithPackaging',
+                width: '10%'
+            },
+            {
+                title: 'Aukštis Be pakuotės',
+                dataIndex: 'heightWithoutPackaging',
+                width: '10%'
+            },
+            {
+                title: 'Aukštis su pakuotės',
+                dataIndex: 'heightWithPackaging',
+                width: '10%'
+            },
+            {
+                title: 'svoris Bruto',
+                dataIndex: 'weightGross',
+                width: '10%'
+            },
+            {
+                title: 'svoris Netto',
+                dataIndex: 'weightNetto',
+                width: '10%'
+            },
+            {
+                title: 'surinkimo laikas',
+                dataIndex: 'collectionTime',
+                width: '10%'
+            },
+            {
+                title: 'Suklijavimo laikas',
+                dataIndex: 'bondingTime',
+                width: '10%'
+            },
+            {
+                title: 'Lazeriavimo  laikas',
+                dataIndex: 'laserTime',
+                width: '10%'
+            },
+            {
+                title: 'Dažymo laikas',
+                dataIndex: 'paintingTime',
+                width: '10%'
+            },
+            {
+                title: 'Frezavimo laikas',
+                dataIndex: 'milingTime',
+                width: '10%'
+            },
+            {
+                title: 'Pakavimo dėžutės kodas',
+                dataIndex: 'packagingBoxCode',
+                width: '10%'
+            },
+            {
+                title: 'Pakavimo laikas',
+                dataIndex: 'packingTime',
+                width: '10%'
             }
 
 
@@ -287,6 +420,31 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
+
+                    <Col span={24} offset={2} style={{ marginTop: '60px', bottom: '50px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h5>Naujausi produktai</h5>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={productColumns}
+                                        dataSource={this.state.products.slice(-3)}
+                                        pagination={{ pageSize: 15 }}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
                 </div>
 
 
@@ -300,8 +458,10 @@ const mapStateToProps = (state) => {
         usersReducer: state.usersReducer,
         weeklyWorkScheduleReducer: state.weeklyWorkScheduleReducer,
         usersListReducer: state.usersListReducer,
-        orderReducer: state.orderReducer
+        orderReducer: state.orderReducer,
+        productsReducer: state.productsReducer,
+        materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData
     }
 }
-export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getMaterialsWarehouseData, getProducts })(withRouter(HomeScreen))
 
