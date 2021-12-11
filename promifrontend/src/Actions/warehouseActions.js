@@ -72,3 +72,27 @@ export const updateWarehouseData = (postObj, reducerObj, callback) => async (dis
         })
     }
 }
+
+
+export const updateWarehouseWithImg = (postObj, id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'WAREHOUSES_UPDATE_IMAGE_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.put(`/api/WarehouseCountings/image/${id}`, postObj, { headers: { Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data' } });
+        dispatch({
+            type: 'WAREHOUSES_UPDATE_IMAGE_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'WAREHOUSES_UPDATE_IMAGE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}

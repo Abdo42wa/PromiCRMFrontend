@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData,updateMaterialWarehouseWithImage } from '../Actions/materialsWarehouseActions';
-import { Table, Space, Card, Typography, Col, Row, Button,Image } from 'antd'
+import { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData, updateMaterialWarehouseWithImage } from '../Actions/materialsWarehouseActions';
+import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import moment from 'moment'
 import AddMaterialWarehouseComponent from '../Components/materials_warehouse_components/AddMaterialWarehouseComponent';
@@ -60,15 +60,15 @@ class MaterialsWarehouseScreen extends React.Component {
         })
     }
     saveUpdateMaterialWarehouse = (postObj, reducerObj) => {
-            this.props.updateMaterialWarehouseData(postObj, reducerObj);
-            this.unshowUpdateMaterialComponent();
-        
+        this.props.updateMaterialWarehouseData(postObj, reducerObj);
+        this.unshowUpdateMaterialComponent();
+
     }
     saveUpdateMaterialWarehouseWithImg = (postObj, id) => {
         this.props.updateMaterialWarehouseWithImage(postObj, id);
         this.unshowUpdateMaterialComponent();
-    
-}
+
+    }
 
     // for SuplementMaterialComponent
     showSuplementMaterialComponent = () => {
@@ -82,7 +82,7 @@ class MaterialsWarehouseScreen extends React.Component {
         })
     }
     saveSuplementMaterial = (postObj, reducerObj) => {
-        this.props.updateMaterialWarehouseData(postObj,reducerObj);
+        this.props.updateMaterialWarehouseData(postObj, reducerObj);
         this.setState({
             suplementMaterialVisibility: false
         })
@@ -117,10 +117,10 @@ class MaterialsWarehouseScreen extends React.Component {
                 title: 'Nuotrauka',
                 dataIndex: 'imagePath',
                 width: '10%',
-                render: (text,record,index)=>(
+                render: (text, record, index) => (
                     <div>
-                        {text === null || text === undefined?
-                        <p></p>:<Image src={text}/>}
+                        {text === null || text === undefined ?
+                            <p></p> : <Image src={text} />}
                     </div>
                 )
             },
@@ -180,14 +180,14 @@ class MaterialsWarehouseScreen extends React.Component {
                                         // bordered
                                         // scroll={{ x: 'calc(700px + 50%)' }}
                                         footer={() => (
-                                            <div style={{display: 'flex'}}>
+                                            <div style={{ display: 'flex' }}>
                                                 <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddMaterialComponent}>Pridėti medžiagą</Button></Space>
-                                                <Space/>
+                                                <Space />
                                                 <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showSuplementMaterialComponent}>Papildyti sandėlį</Button></Space>
                                             </div>
                                         )}
                                     />
-                                    
+
 
                                 </Card>
                             </Col>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getWarehouseData, createWarehouseData, updateWarehouseData } from '../Actions/warehouseActions'
+import { getWarehouseData, createWarehouseData, updateWarehouseData, updateWarehouseWithImg } from '../Actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddWarehouseDataComponent from '../Components/warehouse_components/AddWarehouseDataComponent'
@@ -12,7 +12,6 @@ class WarehouseCountingsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            warehouseData: [],
             addWarehouseVisibility: false,
             updateWarehouse: {
                 visibility: false,
@@ -33,10 +32,7 @@ class WarehouseCountingsScreen extends React.Component {
     }
     saveAddWarehouseData = (postObj) => {
         this.props.createWarehouseData(postObj, () => {
-            //get updated warehouseData redux state
-            const dataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
             this.setState({
-                warehouseData: dataClone,
                 addWarehouseVisibility: false
             });
         });
@@ -63,24 +59,20 @@ class WarehouseCountingsScreen extends React.Component {
     }
     saveUpdateWarehouseData = (postObj, reducerObj) => {
         this.props.updateWarehouseData(postObj, reducerObj, () => {
-            //get clone of updated warehouseData state from reducer
-            const dataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
-            this.setState({
-                warehouseData: dataClone,
-            });
             this.unshowUpdateWarehouseData();
         });
     }
 
+    saveUpdateWarehouseWithImg = (postObj,id) => {
+        this.props.updateWarehouseWithImg(postObj,id);
+        this.unshowUpdateWarehouseData();
+    }
+
+
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getWarehouseData(() => {
-                //clone warehouseData. do not work directly
-                const warehouseDataClone = JSON.parse(JSON.stringify(this.props.warehouseReducer.warehouseData));
-                console.log(JSON.stringify(warehouseDataClone))
-                this.setState({
-                    warehouseData: warehouseDataClone
-                });
+
             });
         }
     }
@@ -104,14 +96,14 @@ class WarehouseCountingsScreen extends React.Component {
                 width: '20%'
             },
             {
-                title: 'Fotografija',
-                dataIndex: 'photo',
+                title: 'Nuotrauka',
+                dataIndex: 'imagePath',
                 width: '20%',
                 render: (text, record, index) => (
-                    <Image
-                        width={100}
-                        src={text}
-                    />
+                    <div>
+                        {text === null || text === undefined ?
+                            <p></p> : <Image src={text} />}
+                    </div>
                 )
             },
             {
@@ -144,7 +136,7 @@ class WarehouseCountingsScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={columns}
-                                        dataSource={this.state.warehouseData}
+                                        dataSource={this.props.warehouseReducer.warehouseData}
                                         pagination={{ pageSize: 15 }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddWarehouseData}>Pridėti prie sandėlio</Button></Space>)}
                                     />
@@ -158,7 +150,8 @@ class WarehouseCountingsScreen extends React.Component {
                         save={this.saveAddWarehouseData} /> : null}
                 {this.state.updateWarehouse.visibility !== false ?
                     <UpdateWarehouseDataComponent visible={this.state.updateWarehouse.visibility} save={this.saveUpdateWarehouseData}
-                        record={this.state.updateWarehouse.record} onClose={this.unshowUpdateWarehouseData} />
+                        record={this.state.updateWarehouse.record} onClose={this.unshowUpdateWarehouseData}
+                        saveWithImg={this.saveUpdateWarehouseWithImg} />
                     : null}
 
             </>
@@ -174,5 +167,5 @@ const mapStateToProps = (state) => {
     }
 }
 //connect to redux states, defining all actions that will be used
-export default connect(mapStateToProps, { getWarehouseData, createWarehouseData, updateWarehouseData })(withRouter(WarehouseCountingsScreen))
+export default connect(mapStateToProps, { getWarehouseData, createWarehouseData, updateWarehouseData, updateWarehouseWithImg })(withRouter(WarehouseCountingsScreen))
 
