@@ -40,10 +40,45 @@ export const orderReducer = (state = { orders: [] }, action) => {
                     element.currencyId = action.payload.currencyId;
                     element.vat = action.payload.vat;
                     element.orderFinishDate = action.payload.orderFinishDate;
+                    element.imageName = action.payload.imageName;
+                    element.imagePath = action.payload.imagePath;
                 }
             })
             return { ...state, loading: false, orders: cloneOrder }
         case 'ORDER_UPDATE_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        case 'ORDER_UPDATE_IMAGE_REQUEST':
+            return { ...state, loading: true }
+        case 'ORDER_UPDATE_IMAGE_SUCCESS':
+            const clone = JSON.parse(JSON.stringify(state.orders));
+            clone.map((element, index) => {
+                if (element.id === action.payload.id) {
+                    element.orderType = action.payload.orderType;
+                    element.status = action.payload.status;
+                    element.orderNumber = action.payload.orderNumber;
+                    element.date = action.payload.date;
+                    element.platforma = action.payload.platforma;
+                    element.moreInfo = action.payload.moreInfo;
+                    element.quantity = action.payload.quantity;
+                    element.photo = action.payload.photo;
+                    element.productCode = action.payload.productCode;
+                    element.shipmentTypeId = action.payload.shipmentTypeId;
+                    element.customerId = action.payload.customerId;
+                    element.device = action.payload.device;
+                    element.productionTime = action.payload.productionTime;
+                    element.address = action.payload.address;
+                    element.countryId = action.payload.countryId;
+                    element.comment = action.payload.comment;
+                    element.price = action.payload.price;
+                    element.currencyId = action.payload.currencyId;
+                    element.vat = action.payload.vat;
+                    element.orderFinishDate = action.payload.orderFinishDate;
+                    element.imageName = action.payload.imageName;
+                    element.imagePath = action.payload.imagePath;
+                }
+            })
+            return { ...state, loading: false, orders: clone }
+        case 'ORDER_UPDATE_IMAGE_FAIL':
             return { ...state, loading: false, error: action.payload }
         default:
             return state;

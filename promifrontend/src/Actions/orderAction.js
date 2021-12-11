@@ -72,3 +72,26 @@ export const updateOrder = (postObj, reducerObj, callback) => async (dispatch, g
         })
     }
 }
+
+
+export const updateOrderWithImage = (postObj,id) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDER_UPDATE_IMAGE_REQUEST'
+        });
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.put(`/api/Orders/image/${id}`,postObj, {headers: {Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data'}})
+        dispatch({
+            type: 'ORDER_UPDATE_IMAGE_SUCCESS',
+            payload: response.data
+        });
+    }catch (error) {
+        dispatch({
+            type: 'ORDER_UPDATE_IMAGE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder, updateOrder } from '../Actions/orderAction'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage } from '../Actions/orderAction'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
@@ -75,6 +75,10 @@ class OrderScrenn extends React.Component {
         });
 
     }
+    updateOrderWithImg = (postObj,id) => {
+        this.props.updateOrderWithImage(postObj,id);
+        this.unshowOrderModal();
+    }
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
@@ -119,6 +123,17 @@ class OrderScrenn extends React.Component {
                 )
             },
             {
+                title: 'Nuotrauka',
+                dataIndex: 'imagePath',
+                width: '10%',
+                render: (text, record, index) => (
+                    <div>
+                        {text === null || text === undefined ?
+                            <p></p> : <Image src={text} />}
+                    </div>
+                )
+            },
+            {
                 title: 'Užsakymo numeris',
                 dataIndex: 'orderNumber',
                 width: '10%'
@@ -145,17 +160,6 @@ class OrderScrenn extends React.Component {
                 title: 'Kiekis',
                 dataIndex: 'quantity',
                 width: '10%'
-            },
-            {
-                title: 'Nuotrauka',
-                dataIndex: 'photo',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Image
-                        width={100}
-                        src={text}
-                    />
-                )
             },
             {
                 title: 'Prekės kodas',
@@ -272,7 +276,8 @@ class OrderScrenn extends React.Component {
                     : null}
                 {this.state.updateOrder.visibility !== false ?
                     <UpdateOrderComponent visible={this.state.updateOrder.visibility} record={this.state.updateOrder.record}
-                        save={this.saveOrder} onClose={this.unshowOrderModal} /> :
+                        save={this.saveOrder} onClose={this.unshowOrderModal}
+                        saveWithImg={this.updateOrderWithImg} /> :
                     null}
 
             </>
@@ -289,6 +294,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder,updateOrderWithImage })(withRouter(OrderScrenn))
 
 

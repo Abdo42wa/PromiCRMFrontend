@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getCurrencies } from '../../Actions/currencyAction'
 import { getCustomers } from '../../Actions/customersActions'
 import { getCountries } from '../../Actions/countryAction'
-import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
+import { getUsers } from '../../Actions/userListActions'
+import { Modal, Button, Form, Space, Select, Input, InputNumber,Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -22,10 +23,13 @@ const textStyle = {
 
 function UpdateOrderComponent(props) {
     const dispatch = useDispatch();
-    const [orders, setOrders] = useState({});
+    const [order, setOrder] = useState({});
+    const [file, setFile] = useState();
+    const [fileChanged, setFileChanged] = useState(0)
     const customersReducer = useSelector((state) => state.customersReducer);
     const currencyReducer = useSelector((state) => state.currencyReducer);
     const countryReducer = useSelector((state) => state.countryReducer);
+    const usersListReducer = useSelector((state) => state.usersListReducer)
 
     const onBack = () => {
         props.onClose();
@@ -39,70 +43,108 @@ function UpdateOrderComponent(props) {
         if (inputName === 'orderNumber' ||
             inputName === 'customerId' || inputName === 'currencyId' ||
             inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
-            setOrders(prevState => ({
+            setOrder(prevState => ({
                 ...prevState,
                 [inputName]: Number(value)
             }))
         } else {
-            setOrders(prevState => ({
+            setOrder(prevState => ({
                 ...prevState,
                 [inputName]: value
             }))
         }
     }
     const saveChanges = () => {
-        const dataOrder = JSON.parse(JSON.stringify(orders));
-        const postObj = {
-            "userId": props.record.userId,
-            "orderType": dataOrder.orderType,
-            "status": dataOrder.status,
-            "orderNumber": dataOrder.orderNumber,
-            "date": dataOrder.date,
-            "platforma": dataOrder.platforma,
-            "moreInfo": dataOrder.moreInfo,
-            "quantity": dataOrder.quantity,
-            "photo": dataOrder.photo,
-            "productCode": dataOrder.productCode,
-            "comment": dataOrder.comment,
-            "shipmentTypeId": dataOrder.shipmentTypeId,
-            "customerId": dataOrder.customerId,
-            "device": dataOrder.device,
-            "productionTime": dataOrder.productionTime,
-            "address": dataOrder.address,
-            "countryId": dataOrder.countryId,
-            "price": dataOrder.price,
-            "currencyId": dataOrder.currencyId,
-            "vat": dataOrder.vat,
-            "orderFinishDate": dataOrder.orderFinishDate,
+        const clone = JSON.parse(JSON.stringify(order));
+        if (fileChanged === 0) {
+            const postObj = {
+                "userId": clone.userId,
+                "orderType": clone.orderType,
+                "status": clone.status,
+                "orderNumber": clone.orderNumber,
+                "date": clone.date,
+                "platforma": clone.platforma,
+                "moreInfo": clone.moreInfo,
+                "quantity": clone.quantity,
+                "photo": clone.photo,
+                "productCode": clone.productCode,
+                "comment": clone.comment,
+                "shipmentTypeId": clone.shipmentTypeId,
+                "customerId": clone.customerId,
+                "device": clone.device,
+                "productionTime": clone.productionTime,
+                "address": clone.address,
+                "countryId": clone.countryId,
+                "price": clone.price,
+                "currencyId": clone.currencyId,
+                "vat": clone.vat,
+                "orderFinishDate": clone.orderFinishDate,
+            }
+            const reducerObj = {
+                "id": clone.id,
+                "userId": clone.userId,
+                "orderType": clone.orderType,
+                "status": clone.status,
+                "orderNumber": clone.orderNumber,
+                "date": clone.date,
+                "platforma": clone.platforma,
+                "moreInfo": clone.moreInfo,
+                "quantity": clone.quantity,
+                "photo": clone.photo,
+                "productCode": clone.productCode,
+                "comment": clone.comment,
+                "shipmentTypeId": clone.shipmentTypeId,
+                "customerId": clone.customerId,
+                "device": clone.device,
+                "productionTime": clone.productionTime,
+                "address": clone.address,
+                "countryId": clone.countryId,
+                "price": clone.price,
+                "currencyId": clone.currencyId,
+                "vat": clone.vat,
+                "orderFinishDate": clone.orderFinishDate,
+            }
+            props.save(postObj, reducerObj);
+        } else {
+            const formData = new FormData();
+            formData.append("userId", clone.userId)
+            formData.append("orderType", clone.orderType)
+            formData.append("status", clone.status)
+            formData.append("orderNumber", clone.orderNumber)
+            formData.append("date", clone.date)
+            formData.append("platforma", clone.platforma)
+            formData.append("moreInfo", clone.moreInfo)
+            formData.append("quantity", clone.quantity)
+            formData.append("productCode", clone.productCode)
+            formData.append("comment", clone.comment)
+            formData.append("shipmentTypeId", clone.shipmentTypeId)
+            formData.append("customerId", clone.customerId)
+            formData.append("device", clone.device)
+            formData.append("productionTime", clone.productionTime)
+            formData.append("address", clone.address)
+            formData.append("countryId", clone.countryId)
+            formData.append("price", clone.price)
+            formData.append("currencyId", clone.currencyId)
+            formData.append("vat", clone.vat)
+            formData.append("orderFinishDate", clone.orderFinishDate)
+            formData.append("file", file)
+            formData.append("imageName",clone.imageName)
+            props.saveWithImg(formData,clone.id)
         }
-        const reducerObj = {
-            "id": dataOrder.id,
-            "userId": dataOrder.userId,
-            "orderType": dataOrder.orderType,
-            "status": dataOrder.status,
-            "orderNumber": dataOrder.orderNumber,
-            "date": dataOrder.date,
-            "platforma": dataOrder.platforma,
-            "moreInfo": dataOrder.moreInfo,
-            "quantity": dataOrder.quantity,
-            "photo": dataOrder.photo,
-            "productCode": dataOrder.productCode,
-            "comment": dataOrder.comment,
-            "shipmentTypeId": dataOrder.shipmentTypeId,
-            "customerId": dataOrder.customerId,
-            "device": dataOrder.device,
-            "productionTime": dataOrder.productionTime,
-            "address": dataOrder.address,
-            "countryId": dataOrder.countryId,
-            "price": dataOrder.price,
-            "currencyId": dataOrder.currencyId,
-            "vat": dataOrder.vat,
-            "orderFinishDate": dataOrder.orderFinishDate,
-        }
-        props.save(postObj, reducerObj);
-        console.log(JSON.stringify(postObj));
-        console.log(JSON.stringify(reducerObj));
     }
+
+    const deleteImage = () => {
+        const clone = JSON.parse(JSON.stringify(order))
+        // materialClone.imageName = null;
+        clone.imagePath = null;
+        // dispatch(deleteMaterialImage(material.id, material.imageName))
+        setOrder(clone)
+    }
+    const changeFile = (e) => {
+        setFileChanged(1);
+        setFile(e.target.files[0])
+    }
+
     useEffect(() => {
         dispatch(getCurrencies(() => {
             dispatch(getCountries(() => {
@@ -130,13 +172,16 @@ function UpdateOrderComponent(props) {
                         "currencyId": props.record.currencyId,
                         "vat": props.record.vat,
                         "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD'),
+                        "imagePath": props.record.imagePath,
+                        "imageName": props.record.imageName
                     }
-                    setOrders(obj);
+                    setOrder(obj);
 
 
                 }))
             }))
         }));
+        
         // eslint-disable-next-line
     }, [dispatch]);
     return (
@@ -157,44 +202,56 @@ function UpdateOrderComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Užsakymo tipas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Paprastas arba nestandartinis" value={orders.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
+                    <Input required style={{ width: '100%' }} placeholder="Paprastas arba nestandartinis" value={order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
                     <p style={{ ...textStyle }}>Užsakymo numeris</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={orders.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     <p style={{ ...textStyle }}>Data</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={orders.date} onChange={(e) => onDataChange(e.target.value, "date")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} onChange={(e) => onDataChange(e.target.value, "date")} />
                     <p style={{ ...textStyle }}>Platforma</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={orders.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={order.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} />
                     <p style={{ ...textStyle }}>Daugiau informacijos</p>
-                    <Input required style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={orders.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
+                    <Input required style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     <p style={{ ...textStyle }}>Kiekis</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={orders.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
                     <p style={{ ...textStyle }}>Nuotrauka</p>
-                    <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={orders.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
+                    <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={order.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
                     <p style={{ ...textStyle }}>Prekės kodas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kodą" value={orders.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
                     <p style={{ ...textStyle }}>Gamybos laikas</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={orders.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
                     <p style={{ ...textStyle }}> Įrenginys</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={orders.device} onChange={(e) => onDataChange(e.target.value, "device")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} />
                     <p style={{ ...textStyle }}>Adresas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={orders.address} onChange={(e) => onDataChange(e.target.value, "address")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     <p style={{ ...textStyle }}>Komentaras</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={orders.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={order.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
                     <p style={{ ...textStyle }}>Kaina</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={orders.price} onChange={(e) => onDataChange(e.target.value, "price")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e.target.value, "price")} />
                     <p style={{ ...textStyle }}>Vat</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={orders.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                     <p style={{ ...textStyle }}>Užsakymo pabaigos data</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={orders.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
 
+                    {/* for IMAGE */}
+                    {order.imagePath !== null && order.imagePath !== undefined ?
+                        <div>
+                            <p style={{ ...textStyle }}>Nuotrauka</p>
+                            <Image key={order.imageName} src={order.imagePath} width={100} />
+                            <br></br>
+                            <Button onClick={deleteImage}>Ištrinti nuotrauką</Button>
+                        </div> :
+                        <div>
+                            <p style={{ ...textStyle }}>Nuotraukos ikėlimas</p>
+                            <input required type='file' onChange={changeFile} />
+                        </div>}
                     <p style={{ marginBottom: '5px' }}>Siuntos statusas</p>
                     <Select
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite statusą"
                         optionFilterProp="children"
-                        defaultValue={orders.status}
-                        value={orders.status}
+                        defaultValue={order.status}
+                        value={order.status}
                         onChange={(e) => onDataChange(e, "status")}
                     >
                         <Option key={1} value={true}>{'Atlikta'}</Option>
@@ -207,8 +264,8 @@ function UpdateOrderComponent(props) {
                         style={{ width: '320px' }}
                         placeholder="Priskirkite tipo"
                         optionFilterProp="children"
-                        defaultValue={orders.shipmentTypeId}
-                        value={orders.shipmentTypeId}
+                        defaultValue={order.shipmentTypeId}
+                        value={order.shipmentTypeId}
                         onChange={(e) => onDataChange(e, "shipmentTypeId")}
                     >
                         <Option key={1} value={1}>{'Skubus'}</Option>
@@ -220,8 +277,8 @@ function UpdateOrderComponent(props) {
                         style={{ width: '320px' }}
                         placeholder="Priskirkite klientą"
                         optionFilterProp="children"
-                        defaultValue={orders.customerId}
-                        value={orders.customerId}
+                        defaultValue={order.customerId}
+                        value={order.customerId}
                         onChange={(e) => onDataChange(e, "customerId")}
                     >
                         {customersReducer.customers.map((element, index) => {
@@ -235,8 +292,8 @@ function UpdateOrderComponent(props) {
                         style={{ width: '320px' }}
                         placeholder="Priskirkite valiutą"
                         optionFilterProp="children"
-                        defaultValue={orders.currencyId}
-                        value={orders.currencyId}
+                        defaultValue={order.currencyId}
+                        value={order.currencyId}
                         onChange={(e) => onDataChange(e, "currencyId")}
                     >
                         {currencyReducer.currency.map((element, index) => {
@@ -250,12 +307,26 @@ function UpdateOrderComponent(props) {
                         style={{ width: '320px' }}
                         placeholder="Priskirkite šalį"
                         optionFilterProp="children"
-                        defaultValue={orders.countryId}
-                        value={orders.countryId}
+                        defaultValue={order.countryId}
+                        value={order.countryId}
                         onChange={(e) => onDataChange(e, "countryId")}
                     >
                         {countryReducer.countries.map((element, index) => {
                             return (<Option key={element.id} value={element.id}>{element.name}/{element.shortName}</Option>)
+                        })}
+                    </Select>
+                    <p style={{ marginBottom: '5px' }}>Priskirtas darbuotojas</p>
+                    <Select
+                        showSearch
+                        style={{ width: '320px' }}
+                        placeholder="Priskirkite darbuotoją"
+                        optionFilterProp="children"
+                        defaultValue={order.userId}
+                        value={order.userId}
+                        onChange={(e) => onDataChange(e, "userId")}
+                    >
+                        {usersListReducer.users.map((element, index) => {
+                            return (<Option key={element.id} value={element.id}>{element.name}  {element.surname}</Option>)
                         })}
                     </Select>
                 </Form>
