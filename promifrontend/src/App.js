@@ -17,6 +17,7 @@ import ProductsScreen from './Screens/ProductsScreen';
 import WeeklyWorkScheduleScreen from './Screens/WeeklyWorkScheduleScreen';
 import SalesChannelsScreen from './Screens/SalesChannelsScreen';
 import MaterialsWarehouseScreen from './Screens/MaterialsWarehouseScreen';
+import OrderProducts from './Screens/OrderProducts';
 
 
 function App() {
@@ -33,10 +34,10 @@ function App() {
           <Route path='/shipments' component={ShipmentScreen} />
           <Route path='/customers' component={CustomersScreen} />
           <Route path='/warehouse-countings' component={WarehouseCountingsScreen} />
-          <Route path='/countries' component={CountryScreen} />
-          <Route path='/orders' component={OrderScreen} />
+          <Route path='/orders' component={OrderScreen} exact/>
           <Route path='/bonuses' component={BonusScreen} />
           <Route path='/products' component={ProductsScreen} />
+          <Route path='/orders/product/:id' component={OrderProducts}/>
           <Route path='/weeklyWorkScheduleScreen' component={WeeklyWorkScheduleScreen} />
           <Route path='/sales-channels' component={SalesChannelsScreen}/>
           <Route path='/materials-warehouse' component={MaterialsWarehouseScreen}/>

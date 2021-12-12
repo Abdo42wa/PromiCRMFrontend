@@ -80,6 +80,10 @@ class OrderScrenn extends React.Component {
         this.unshowOrderModal();
     }
 
+    addProductsForOrder = (id) =>{
+        this.props.history.push(`/orders/product/${id}`);
+    }
+
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getOrders(() => {
@@ -99,6 +103,13 @@ class OrderScrenn extends React.Component {
                 width: '10%',
                 render: (text, record, index) => (
                     <Button onClick={(e) => this.showOrderModal(record)}>Atnaujinti</Button>
+                )
+            },
+            {
+                title: 'Pridėti produktus',
+                width: '5%',
+                render: (text,record,index)=>(
+                    <Button onClick={(e) => this.addProductsForOrder(record.id)}>Pridėti</Button>
                 )
             },
             {

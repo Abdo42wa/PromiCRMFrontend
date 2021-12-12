@@ -24,6 +24,28 @@ export const getProducts = (callback) => async (dispatch, getState) => {
     }
 }
 
+export const getProductsByOrder = (orderId) => async(dispatch,getState) => {
+    try{
+        dispatch({
+            type: 'PRODUCTS_BY_ORDER_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Products/order/${orderId}`,{headers: {Authorization: `Bearer ${token}`}});
+        dispatch({
+            type: 'PRODUCTS_BY_ORDER_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'PRODUCTS_BY_ORDER_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const addProduct = (postObject, callback) => async (dispatch, getState) => {
     try {
         dispatch({

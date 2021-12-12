@@ -6,6 +6,12 @@ export const productsReducer = (state = { products: [] }, action) => {
             return { ...state, loading: false, products: action.payload }
         case 'PRODUCTS_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
+        case 'PRODUCTS_BY_ORDER_FETCH_REQUEST':
+            return {...state,loading: true}
+        case 'PRODUCTS_BY_ORDER_FETCH_SUCCESS':
+            return {...state, loading: false, products: action.payload}
+        case 'PRODUCTS_BY_ORDER_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
         case 'PRODUCTS_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'PRODUCTS_CREATE_SUCCESS':
