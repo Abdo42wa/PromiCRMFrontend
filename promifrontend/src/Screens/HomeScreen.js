@@ -1,12 +1,12 @@
 import React from 'react'
 import { getUsers } from '../Actions/userListActions'
-import { Table, Card, Typography, Col, Row, Checkbox, Tag } from 'antd'
-import { Button, Image, Space } from 'antd'
+import { Table, Card, Typography, Col, Row, Tag } from 'antd'
+import { Image } from 'antd'
 import { getOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
-import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
+import { tableCardStyle, tableCardBodyStyle } from '../styles/customStyles.js';
 import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
 import { getProducts } from '../Actions/productsActions'
 import moment from 'moment';
@@ -19,7 +19,13 @@ class HomeScreen extends React.Component {
         this.state = {
             Works: [],
             orders: [],
-            products: []
+            products: [],
+            collectionTime: 0,
+            bondingTime: 0,
+            laserTime: 0,
+            paintingTime: 0,
+            milingTime: 0,
+            packingTime: 0
         }
     }
     // const dispatch = useDispatch();
@@ -50,6 +56,7 @@ class HomeScreen extends React.Component {
                     this.setState({
                         products: productsDataClone
                     });
+                    console.log(this.getTime());
                 })
             })
         } else {
@@ -62,6 +69,36 @@ class HomeScreen extends React.Component {
         var today = new Date();
         var start = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
         return future.diff(start, 'days');
+    }
+
+    getTime(type) {
+        const array = this.state.products //.map((x) => x.collectionTime)
+        var sum = array.map((x) => x.collectionTime).reduce((a, b) => {
+            return a + b;
+        });
+        var sum1 = array.map((x) => x.bondingTime).reduce((a, b) => {
+            return a + b;
+        });
+        var sum2 = array.map((x) => x.laserTime).reduce((a, b) => {
+            return a + b;
+        });
+        var sum3 = array.map((x) => x.paintingTime).reduce((a, b) => {
+            return a + b;
+        });
+        var sum4 = array.map((x) => x.milingTime).reduce((a, b) => {
+            return a + b;
+        });
+        var sum5 = array.map((x) => x.packingTime).reduce((a, b) => {
+            return a + b;
+        });
+        this.setState({
+            collectionTime: sum,
+            bondingTime: sum1,
+            laserTime: sum2,
+            paintingTime: sum3,
+            milingTime: sum4,
+            packingTime: sum5
+        })
     }
     render() {
         const columns = [
@@ -87,6 +124,51 @@ class HomeScreen extends React.Component {
                     // <Checkbox value={record.id} onChange={(e) => this.onChange(e)} checked={text === false ? false : true}>Atlikta</Checkbox>
                 )
             },
+        ]
+        const workColumns = [
+            {
+                title: 'surinkimo laikas',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.state.collectionTime} min</Typography.Text>
+                )
+            },
+            {
+                title: 'Suklijavimo laikas',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.state.bondingTime} min</Typography.Text>
+                )
+            },
+            {
+                title: 'Lazeriavimo laikas',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.state.laserTime} min</Typography.Text>
+                )
+            },
+            {
+                title: 'Dažymo laikas',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.state.paintingTime} min</Typography.Text>
+                )
+            },
+            {
+                title: 'Frezavimo laikas',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.state.milingTime} min</Typography.Text>
+                )
+            },
+            {
+                title: 'Pakavimo laikas',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{this.state.packingTime} min</Typography.Text>
+                )
+            },
+
         ]
         const orderColumns = [
             {
@@ -370,33 +452,62 @@ class HomeScreen extends React.Component {
             <>
                 <h1>Home</h1>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
-                    <Col span={12} offset={2}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Savaitės darbo grafikas</h5>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={columns}
-                                        dataSource={this.state.Works}
-                                        pagination={{ pageSize: 15 }}
-                                        bWorked
-                                        scroll={{ x: 'calc(300px + 50%)' }}
+                    <Row>
+                        <Col span={10} >
+                            {/* <Row gutter={16}>
+                                <Col span={16}> */}
+                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                <h5>Savaitės darbo grafikas</h5>
+                            </div>
+                            {/* </Col>
+                            </Row> */}
+                            {/* <Row gutter={16}> */}
+                            {/* <Col span={24}> */}
+                            <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                <Table
+                                    rowKey="id"
+                                    columns={columns}
+                                    dataSource={this.state.Works}
+                                    pagination={{ pageSize: 15 }}
+                                    bWorked
+                                    scroll={{ x: 'calc(200px + 50%)' }}
 
-                                    />
+                                />
 
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
+                            </Card>
+                            {/* </Col> */}
+                            {/* </Row> */}
+                        </Col>
+                        <Col span={12} offset={1} >
+                            {/* <Row gutter={16}>
+                                <Col span={16}> */}
+                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                <h5>Suplanuotas darbo laikas</h5>
+                            </div>
+                            {/* </Col>
+                            </Row> */}
+                            {/* <Row gutter={16}> */}
+                            {/* <Col span={24}> */}
+                            <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                <Table
+                                    rowKey="id"
+                                    columns={workColumns}
+                                    dataSource={this.state.Works}
+                                    pagination={{ pageSize: 15 }}
+                                    bWorked
+                                    scroll={{ x: 'calc(200px + 50%)' }}
 
-                    <Col span={24} offset={2} style={{ marginTop: '20px' }}>
+                                />
+
+                            </Card>
+                            {/* </Col> */}
+                            {/* </Row> */}
+                        </Col>
+
+                    </Row>
+
+
+                    <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -421,7 +532,7 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
-                    <Col span={24} offset={2} style={{ marginTop: '60px', bottom: '50px' }}>
+                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
