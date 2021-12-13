@@ -78,7 +78,7 @@ export const updateProduct = (postObj, reducerObj, callback) => async (dispatch,
         });
         // get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Products/${reducerObj.id}`, postObj, { headers: {Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data' } });
+        const response = await promiAPI.put(`/api/Products/${reducerObj.id}`, postObj, {headers: {Authorization: `Bearer ${token}`}});
         dispatch({
             type: 'PRODUCTS_UPDATE_SUCCESS',
             payload: reducerObj
@@ -95,7 +95,7 @@ export const updateProduct = (postObj, reducerObj, callback) => async (dispatch,
     }
 }
 
-export const updateProductWithImage = (postObj,id) => async(dispatch,getState)=>{
+export const updateProductWithImage = (postObj,id,callback) => async(dispatch,getState)=>{
     try{
         dispatch({
             type: 'PRODUCTS_IMAGE_UPDATE_REQUEST'
@@ -106,6 +106,7 @@ export const updateProductWithImage = (postObj,id) => async(dispatch,getState)=>
             type: 'PRODUCTS_IMAGE_UPDATE_SUCCESS',
             payload: response.data
         });
+        callback();
     }catch (error) {
         dispatch({
             type: 'PRODUCTS_IMAGE_UPDATE_FAIL',

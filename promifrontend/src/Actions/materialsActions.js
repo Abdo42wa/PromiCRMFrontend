@@ -23,6 +23,29 @@ export const getMaterials = (callback) => async (dispatch, getState) => {
     }
 }
 
+export const getMaterialsByProduct = (id) => async(dispatch,getState)=>{
+    try {
+        dispatch({
+            type: 'MATERIALS_PRODUCT_FETCH_REQUEST'
+        });
+        //getting token from usersReducer state
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Materials/product/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'MATERIALS_PRODUCT_FETCH_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'MATERIALS_PRODUCT_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const createMaterial = (postObject, callback) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -64,6 +87,31 @@ export const updateItem = (id, postObj, reducerObj, callback) => async (dispatch
     } catch (error) {
         dispatch({
             type: 'MATERIAL_UPDATE_SUCCESS',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+
+export const updateManyMaterials = (postObj, reducerObj) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'MATERIAL_UPDATE_MANY_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.put(`/api/Materials/update`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'MATERIAL_UPDATE_MANY_SUCCESS',
+            payload: reducerObj
+        });
+    } catch (error) {
+        dispatch({
+            type: 'MATERIAL_UPDATE_MANY_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

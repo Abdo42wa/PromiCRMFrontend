@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Modal, Button, Form, Space, Select, Input,Image } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getOrders } from '../../Actions/orderAction'
 import { getMaterialsWarehouseData } from '../../Actions/materialsWarehouseActions'
@@ -25,6 +25,7 @@ function UpdateProductComponent(props) {
     const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer);
 
     const [product, setProduct] = useState({});
+    const [productMaterials, setProductMaterials] = useState([])
     const [file, setFile] = useState();
     const [fileChanged, setFileChanged] = useState(0)
 
@@ -50,15 +51,36 @@ function UpdateProductComponent(props) {
                 ...prevState,
                 [inputName]: value
             }))
-            console.log(value);
         }
+    }
+
+    const onMaterialChange = (value, id) => {
+        const array = JSON.parse(JSON.stringify(productMaterials))
+        array.forEach(element => {
+            if (element.id === id) {
+                element.materialWarehouseId = value;
+            }
+        });
+        setProductMaterials(array)
     }
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(product));
+        const clone1 = JSON.parse(JSON.stringify(productMaterials))
+        const materialsArray = [];
+        // just materialsArray without all unnecessary things
+        clone1.forEach(element => {
+            const obj = {
+                "id": element.id,
+                "productId": element.productId,
+                "materialWarehouseId": element.materialWarehouseId
+            }
+            materialsArray.push(obj);
+        })
         if (fileChanged === 0) {
-            console.log('IT HAS same image');
             const postObj = {
-                "photo": clone.photo,
+                "orderId": clone.orderId,
+                "imageName": clone.imageName,
+                "imagePath": clone.imagePath,
                 "link": clone.link,
                 "code": clone.code,
                 "category": clone.category,
@@ -66,16 +88,24 @@ function UpdateProductComponent(props) {
                 "lengthWithoutPackaging": clone.lengthWithoutPackaging,
                 "widthWithoutPackaging": clone.widthWithoutPackaging,
                 "heightWithoutPackaging": clone.heightWithoutPackaging,
+                "lengthWithPackaging": clone.lengthWithPackaging,
+                "widthWithPackaging": clone.widthWithPackaging,
+                "heightWithPackaging": clone.heightWithPackaging,
                 "weightGross": clone.weightGross,
+                "weightNetto": clone.weightNetto,
+                "collectionTime": clone.collectionTime,
+                "bondingTime": clone.bondingTime,
+                "paintingTime": clone.paintingTime,
+                "laserTime": clone.laserTime,
+                "milingTime": clone.milingTime,
                 "packagingBoxCode": clone.packagingBoxCode,
-                "packingTime": clone.packingTime,
-                "serviceId": clone.serviceId,
-                "orderId": clone.orderId,
-
+                "packingTime": clone.packingTime
             }
             const reducerObj = {
                 "id": clone.id,
-                "photo": clone.photo,
+                "orderId": clone.orderId,
+                "imageName": clone.imageName,
+                "imagePath": clone.imagePath,
                 "link": clone.link,
                 "code": clone.code,
                 "category": clone.category,
@@ -83,14 +113,23 @@ function UpdateProductComponent(props) {
                 "lengthWithoutPackaging": clone.lengthWithoutPackaging,
                 "widthWithoutPackaging": clone.widthWithoutPackaging,
                 "heightWithoutPackaging": clone.heightWithoutPackaging,
+                "lengthWithPackaging": clone.lengthWithPackaging,
+                "widthWithPackaging": clone.widthWithPackaging,
+                "heightWithPackaging": clone.heightWithPackaging,
                 "weightGross": clone.weightGross,
+                "weightNetto": clone.weightNetto,
+                "collectionTime": clone.collectionTime,
+                "bondingTime": clone.bondingTime,
+                "paintingTime": clone.paintingTime,
+                "laserTime": clone.laserTime,
+                "milingTime": clone.milingTime,
                 "packagingBoxCode": clone.packagingBoxCode,
-                "packingTime": clone.packingTime,
-                "serviceId": clone.serviceId,
-                "orderId": clone.orderId,
+                "packingTime": clone.packingTime
             }
-            // props.save(postObj, reducerObj);
-            console.log(JSON.stringify(postObj))
+        
+            props.save(postObj, reducerObj,materialsArray);
+            // console.log(JSON.stringify(postObj))
+            // console.log(JSON.stringify(materialsArray))
         } else {
             console.log(file)
             const formData = new FormData();
@@ -114,10 +153,10 @@ function UpdateProductComponent(props) {
             formData.append("paintingTime", clone.paintingTime)
             formData.append("laserTime", clone.laserTime)
             formData.append("milingTime", clone.milingTime)
-            formData.append("productMaterials", clone.productMaterials)
+            // formData.append("productMaterials", materialsArray)
             formData.append("file", file)
-            formData.append("imageName",clone.imageName)
-            props.saveWithImg(formData, clone.id)
+            formData.append("imageName", clone.imageName)
+            props.saveWithImg(formData, clone.id, materialsArray)
         }
 
 
@@ -164,10 +203,10 @@ function UpdateProductComponent(props) {
                 "milingTime": props.record.milingTime,
                 "imagePath": props.record.imagePath,
                 "imageName": props.record.imageName,
-                "productMaterials": props.record.productMaterials.map((x) => x.materialWarehouseId)
+                // "productMaterials": props.record.productMaterials.map((x) => x.materialWarehouseId)
             }
             setProduct(obj);
-            console.log(props.record.productMaterials.map((x) => x.materialWarehouseId))
+            setProductMaterials(props.record.productMaterials);
         }));
         // eslint-disable-next-line
     }, [dispatch]);
@@ -244,7 +283,7 @@ function UpdateProductComponent(props) {
                         </div>}
 
                     <p style={{ marginBottom: '5px' }}>Medžiagos </p>
-                    <Select
+                    {/* <Select
                         showSearch
                         mode="multiple"
                         allowClear
@@ -258,7 +297,32 @@ function UpdateProductComponent(props) {
                         {materialsWarehouseReducer.materialsWarehouseData.map((element, index) => {
                             return (<Option key={element.id} value={element.id}>{element.title}</Option>)
                         })}
-                    </Select>
+                    </Select> */}
+                    {productMaterials.length > 0 ?
+                        <div>
+                            {productMaterials.map((element, index) => (
+                                <Select
+                                    showSearch
+                                    // mode="multiple"
+                                    allowClear
+                                    style={{ width: '320px' }}
+                                    placeholder="Priskirkite medžiagą"
+                                    optionFilterProp="children"
+                                    // defaultValue={element.id}
+                                    value={element.materialWarehouseId}
+                                    onChange={(e) => onMaterialChange(e, element.id)}
+                                >
+                                    {materialsWarehouseReducer.materialsWarehouseData.map((element, index) => {
+                                        return (<Option key={element.id} value={element.id}>{element.title}</Option>)
+                                    })}
+                                </Select>
+                            ))}
+                        </div>
+                        : null}
+                    {productMaterials.length <= 5?
+                    <Button>
+                        Pridėti medžiagą
+                    </Button>:null}
 
                     <p style={{ marginBottom: '5px' }}>Užsakymas</p>
                     <Select

@@ -5,6 +5,7 @@ import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
+import {updateManyMaterials} from '../Actions/materialsActions'
 import AddProductComponent from '../Components/products_components/AddProductComponent';
 import UpdateProductComponent from '../Components/products_components/UpdateProductComponent';
 
@@ -58,14 +59,20 @@ class ProductsScrenn extends React.Component {
             updateProduct: obj
         });
     }
-    saveProduct = (postObj, reducerObj) => {
+    saveProduct = (postObj, reducerObj,productMaterials) => {
+        this.props.updateManyMaterials(productMaterials, productMaterials)
+        console.log("post:"+JSON.stringify(postObj))
+        console.log("reducer:"+JSON.stringify(reducerObj))
         this.props.updateProduct(postObj, reducerObj, () => {
             this.unshowProductModal();
         });
     }
-    saveProductWithImg = (postObj, id) => {
-        this.props.updateProductWithImage(postObj,id);
-        this.unshowProductModal();
+    saveProductWithImg = (postObj, id, productMaterials) => {
+        this.props.updateManyMaterials(productMaterials, productMaterials)
+        this.props.updateProductWithImage(postObj,id, () =>{
+            this.unshowProductModal();
+        });
+        
     }
 
     componentDidMount() {
@@ -264,11 +271,12 @@ const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
         productsReducer: state.productsReducer,
-        materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData
+        materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
+        materialsReducer: state.materialsReducer
     }
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getProducts, addProduct, updateProduct,updateProductWithImage, getMaterialsWarehouseData })(withRouter(ProductsScrenn))
+export default connect(mapStateToProps, { getProducts, addProduct, updateProduct,updateProductWithImage, updateManyMaterials, getMaterialsWarehouseData })(withRouter(ProductsScrenn))
 
 
