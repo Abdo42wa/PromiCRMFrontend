@@ -3,18 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getProducts } from '../../Actions/productsActions';
+import { getMaterialsWarehouseData } from '../../Actions/materialsWarehouseActions'
 
 const { Option } = Select;
 
 function AddMaterialComponent(props) {
     const dispatch = useDispatch();
     const [material, setMaterial] = useState({
-        name: "",
-        materialUsed: "",
-        productId: 0
+        "productId": 0,
+        "materialWarehouseId": 0,
     });
 
     const productsReducer = useSelector((state) => state.productsReducer);
+    const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer);
 
     const onBack = () => {
         props.onClose();
@@ -23,36 +24,24 @@ function AddMaterialComponent(props) {
         props.onClose();
     }
     const onDataChange = (value, inputName) => {
-        if (inputName === "name") {
-            setMaterial(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }));
-        } else if (inputName === "materialUsed") {
-            setMaterial(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }));
-        } else if (inputName === "productId") {
-            setMaterial(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }));
-        }
+        setMaterial(prevState => ({
+            ...prevState,
+            [inputName]: Number(value)
+        }));
     }
     const saveChanges = () => {
         const materialClone = JSON.parse(JSON.stringify(material));
         const postObj = {
-            "name": materialClone.name,
-            "materialUsed": materialClone.materialUsed,
-            "productId": Number(materialClone.productId)
+            "materialWarehouseId": materialClone.materialWarehouseId,
+            "productId": materialClone.productId
         }
-        // console.log('Post obj:'+JSON.stringify(postObj))
+        console.log('Post obj:'+JSON.stringify(postObj))
         props.save(postObj);
     }
     useEffect(() => {
         dispatch(getProducts(() => {
             // console.log(JSON.stringify(productsReducer.products))
+            dispatch(getMaterialsWarehouseData());
         }));
     }, [dispatch])
 
@@ -73,12 +62,18 @@ function AddMaterialComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-                    <Form.Item key="name" name="name" label="Pavadinimas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite pavadinimą" value={material.name} onChange={(e) => onDataChange(e.target.value, "name")} />
-                    </Form.Item>
-                    <Form.Item key="name2" name="name2" label="Panaudotas materialas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite panaudotą materialą" value={material.materialUsed} onChange={(e) => onDataChange(e.target.value, "materialUsed")} />
-                    </Form.Item>
+                    <p style={{ marginBottom: '5px' }}>Medžiaga</p>
+                    <Select
+                        showSearch
+                        style={{ width: '320px' }}
+                        placeholder="Priskirkite medžiagą"
+                        optionFilterProp="children"
+                        onChange={(e) => onDataChange(e, "materialWarehouseId")}
+                    >
+                        {materialsWarehouseReducer.materialsWarehouseData.map((element, index) => {
+                            return (<Option key={element.id} value={element.id}>{element.title}</Option>)
+                        })}
+                    </Select>
                     <p style={{ marginBottom: '5px' }}>Produktas</p>
                     <Select
                         showSearch

@@ -23,7 +23,7 @@ export const getMaterials = (callback) => async (dispatch, getState) => {
     }
 }
 
-export const getMaterialsByProduct = (id) => async(dispatch,getState)=>{
+export const getMaterialsByProduct = (id,callback) => async(dispatch,getState)=>{
     try {
         dispatch({
             type: 'MATERIALS_PRODUCT_FETCH_REQUEST'
@@ -35,6 +35,7 @@ export const getMaterialsByProduct = (id) => async(dispatch,getState)=>{
             type: 'MATERIALS_PRODUCT_FETCH_SUCCESS',
             payload: response.data
         });
+        callback()
     } catch (error) {
         dispatch({
             type: 'MATERIALS_PRODUCT_FETCH_FAIL',

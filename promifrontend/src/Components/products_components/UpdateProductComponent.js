@@ -4,7 +4,7 @@ import { Modal, Button, Form, Space, Select, Input, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getOrders } from '../../Actions/orderAction'
 import { getMaterialsWarehouseData } from '../../Actions/materialsWarehouseActions'
-import { getMaterialsByProduct, createMaterial} from '../../Actions/materialsActions'
+import { getMaterialsByProduct, createMaterial, getMaterials} from '../../Actions/materialsActions'
 import AddMaterialComponent from '../materials_components/AddMaterialComponent';
 const { Option } = Select;
 const textStyle = {
@@ -188,8 +188,10 @@ function UpdateProductComponent(props) {
 
     const saveAddMaterial = (postObject) => {
         dispatch(createMaterial(postObject, () => {
-            const materialsClone = materialsReducer.materials;
-            setProductMaterials(materialsClone)
+            // const array = JSON.parse(JSON.stringify(productMaterials))
+            // array.push(postObject);
+            setProductMaterials(oldArray => [...oldArray, postObject])
+            setAddMaterialVisibility(false)
         }));
         // window.location.reload();
 
@@ -203,7 +205,6 @@ function UpdateProductComponent(props) {
     }
 
     useEffect(() => {
-
         dispatch(getOrders(() => {
             dispatch(getMaterialsWarehouseData())
             const obj = {
@@ -234,12 +235,14 @@ function UpdateProductComponent(props) {
                 "imageName": props.record.imageName,
                 // "productMaterials": props.record.productMaterials.map((x) => x.materialWarehouseId)
             }
+            dispatch(getMaterialsByProduct(props.record.id, () =>{
+                setProductMaterials(props.record.productMaterials)
+            }))
             setProduct(obj);
-            setProductMaterials(props.record.productMaterials)
+            // setProductMaterials(props.record.productMaterials)
             // setProductMaterials(props.record.productMaterials);
         }));
-        // eslint-disable-next-line
-    }, [dispatch, props.visible, props.record]);
+    }, [dispatch,props.record.id, props.record]);
     return (
         <>
             <Modal
