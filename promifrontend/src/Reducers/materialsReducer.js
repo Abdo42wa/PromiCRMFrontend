@@ -6,6 +6,12 @@ export const materialsReducer = (state = { materials: [] }, action) => {
             return { ...state, loading: false, materials: action.payload }
         case 'MATERIALS_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
+        case 'MATERIALS_PRODUCT_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'MATERIALS_PRODUCT_FETCH_SUCCESS':
+            return {...state, loading: false, materials: action.payload}
+        case 'MATERIALS_PRODUCT_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
         case 'MATERIALS_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'MATERIALS_CREATE_SUCCESS':
