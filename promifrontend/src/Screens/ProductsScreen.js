@@ -1,20 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getProducts, addProduct, updateProduct, updateProductWithImage} from '../Actions/productsActions'
+import { getProducts, addProduct, updateProduct, updateProductWithImage, updateManyMaterials} from '../Actions/productsActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
-import {updateManyMaterials} from '../Actions/materialsActions'
+// import {updateManyMaterials} from '../Actions/materialsActions'
 import AddProductComponent from '../Components/products_components/AddProductComponent';
 import UpdateProductComponent from '../Components/products_components/UpdateProductComponent';
-
+import ProductMaterialsComponent from '../Components/products_components/ProductMaterialsComponent';
 
 class ProductsScrenn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             addProductVisibility: false,
+            productMaterials: {
+                visibility: false,
+                record: null
+            },
             updateProduct: {
                 visibility: false,
                 record: null
@@ -59,16 +63,39 @@ class ProductsScrenn extends React.Component {
             updateProduct: obj
         });
     }
-    saveProduct = (postObj, reducerObj,productMaterials) => {
-        this.props.updateManyMaterials(productMaterials, productMaterials)
-        console.log("post:"+JSON.stringify(postObj))
-        console.log("reducer:"+JSON.stringify(reducerObj))
+    //FOR materials
+    showProductMaterialsComponent = (record) =>{
+        const obj = {
+            visibility: true,
+            record: record
+        }
+        this.setState({
+            productMaterials: obj
+        })
+    }
+    unshowProductMaterialsComponent = () => {
+        const obj = {
+            visibility: false,
+            record: null
+        }
+        this.setState({
+            productMaterials: obj
+        })
+    }
+    saveProductMaterials = (postObj)=>{
+        this.props.updateManyMaterials(postObj, () => {
+            this.unshowProductMaterialsComponent();
+        })
+    }
+    //for AddProduct component
+    saveProduct = (postObj, reducerObj) => {
+        // this.props.updateManyMaterials(productMaterials, productMaterials)
         this.props.updateProduct(postObj, reducerObj, () => {
             this.unshowProductModal();
         });
     }
-    saveProductWithImg = (postObj, id, productMaterials) => {
-        this.props.updateManyMaterials(productMaterials, productMaterials)
+    saveProductWithImg = (postObj, id) => {
+        // this.props.updateManyMaterials(productMaterials, productMaterials)
         this.props.updateProductWithImage(postObj,id, () =>{
             this.unshowProductModal();
         });
@@ -91,6 +118,13 @@ class ProductsScrenn extends React.Component {
                 width: '10%',
                 render: (text, record, index) => (
                     <Button onClick={(e) => this.showProductModal(record)}>Atnaujinti</Button>
+                )
+            },
+            {
+                title: 'Medžiagų pridėjimas, atnaujinimas',
+                width: '5%',
+                render: (text,record,index)=>(
+                    <Button onClick={(e) => this.showProductMaterialsComponent(record)}>Pridėti & Atnaujinti</Button>
                 )
             },
             {
@@ -260,6 +294,10 @@ class ProductsScrenn extends React.Component {
                     <UpdateProductComponent visible={this.state.updateProduct.visibility} record={this.state.updateProduct.record}
                         save={this.saveProduct} saveWithImg={this.saveProductWithImg} onClose={this.unshowProductModal} /> :
                     null}
+                {this.state.productMaterials.visibility !== false?
+                <ProductMaterialsComponent visible={this.state.productMaterials.visibility} onClose={this.unshowProductMaterialsComponent}
+                save={this.saveProductMaterials} record={this.state.productMaterials.record}/>:null
+                }
 
             </>
         )

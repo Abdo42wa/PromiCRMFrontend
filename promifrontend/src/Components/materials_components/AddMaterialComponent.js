@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Form, Space, Select, Input } from 'antd';
+import { Modal, Button, Form, Space, Select, Input,InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getProducts } from '../../Actions/productsActions';
 import { getMaterialsWarehouseData } from '../../Actions/materialsWarehouseActions'
@@ -12,6 +12,7 @@ function AddMaterialComponent(props) {
     const [material, setMaterial] = useState({
         "productId": 0,
         "materialWarehouseId": 0,
+        "quantity": 1
     });
 
     const productsReducer = useSelector((state) => state.productsReducer);
@@ -33,9 +34,10 @@ function AddMaterialComponent(props) {
         const materialClone = JSON.parse(JSON.stringify(material));
         const postObj = {
             "materialWarehouseId": materialClone.materialWarehouseId,
-            "productId": materialClone.productId
+            "productId": materialClone.productId,
+            "quantity": materialClone.quantity
         }
-        console.log('Post obj:'+JSON.stringify(postObj))
+        console.log('Post obj:' + JSON.stringify(postObj))
         props.save(postObj);
     }
     useEffect(() => {
@@ -62,6 +64,9 @@ function AddMaterialComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
+                    <Form.Item key="name" name="name" label="Kiekis">
+                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={material.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
+                    </Form.Item>
                     <p style={{ marginBottom: '5px' }}>Medžiaga</p>
                     <Select
                         showSearch

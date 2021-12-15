@@ -4,7 +4,7 @@ import { Modal, Button, Form, Space, Select, Input, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getOrders } from '../../Actions/orderAction'
 import { getMaterialsWarehouseData } from '../../Actions/materialsWarehouseActions'
-import { getMaterialsByProduct, createMaterial, getMaterials} from '../../Actions/materialsActions'
+import { getMaterialsByProduct, createMaterial, getMaterials } from '../../Actions/materialsActions'
 import AddMaterialComponent from '../materials_components/AddMaterialComponent';
 const { Option } = Select;
 const textStyle = {
@@ -27,7 +27,7 @@ function UpdateProductComponent(props) {
     const materialsReducer = useSelector((state) => state.materialsReducer)
 
     const [product, setProduct] = useState({});
-    const [productMaterials, setProductMaterials] = useState([])
+    // const [productMaterials, setProductMaterials] = useState([])
     const [file, setFile] = useState();
     const [fileChanged, setFileChanged] = useState(0)
     const [addMaterialVisibility, setAddMaterialVisibility] = useState(false)
@@ -57,28 +57,29 @@ function UpdateProductComponent(props) {
         }
     }
 
-    const onMaterialChange = (value, id) => {
-        const array = JSON.parse(JSON.stringify(productMaterials))
-        array.forEach(element => {
-            if (element.id === id) {
-                element.materialWarehouseId = value;
-            }
-        });
-        setProductMaterials(array)
-    }
+    // const onMaterialChange = (value, id) => {
+    //     const array = JSON.parse(JSON.stringify(productMaterials))
+    //     array.forEach(element => {
+    //         if (element.id === id) {
+    //             element.materialWarehouseId = value;
+    //         }
+    //     });
+    //     setProductMaterials(array)
+    // }
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(product));
-        const clone1 = JSON.parse(JSON.stringify(productMaterials))
+        // const clone1 = JSON.parse(JSON.stringify(productMaterials))
         const materialsArray = [];
         // just materialsArray without all unnecessary things
-        clone1.forEach(element => {
-            const obj = {
-                "id": element.id,
-                "productId": element.productId,
-                "materialWarehouseId": element.materialWarehouseId
-            }
-            materialsArray.push(obj);
-        })
+
+        // clone1.forEach(element => {
+        //     const obj = {
+        //         "id": element.id,
+        //         "productId": element.productId,
+        //         "materialWarehouseId": element.materialWarehouseId
+        //     }
+        //     materialsArray.push(obj);
+        // })
         if (fileChanged === 0) {
             const postObj = {
                 "orderId": clone.orderId,
@@ -190,18 +191,9 @@ function UpdateProductComponent(props) {
         dispatch(createMaterial(postObject, () => {
             // const array = JSON.parse(JSON.stringify(productMaterials))
             // array.push(postObject);
-            setProductMaterials(oldArray => [...oldArray, postObject])
-            setAddMaterialVisibility(false)
+            // setProductMaterials(oldArray => [...oldArray, postObject])
+            // setAddMaterialVisibility(false)
         }));
-        // window.location.reload();
-
-
-
-        // console.log(JSON.stringify(postObj))
-        // dispatch(getMaterialsByProduct(props.record.id, () => {
-        //     console.log(JSON.stringify(materialsReducer.materials))
-        //     console.log(JSON.stringify(props.record.productMaterials))
-        // }))
     }
 
     useEffect(() => {
@@ -235,14 +227,14 @@ function UpdateProductComponent(props) {
                 "imageName": props.record.imageName,
                 // "productMaterials": props.record.productMaterials.map((x) => x.materialWarehouseId)
             }
-            dispatch(getMaterialsByProduct(props.record.id, () =>{
-                setProductMaterials(props.record.productMaterials)
-            }))
+            // dispatch(getMaterialsByProduct(props.record.id, () =>{
+            //     setProductMaterials(props.record.productMaterials)
+            // }))
             setProduct(obj);
             // setProductMaterials(props.record.productMaterials)
             // setProductMaterials(props.record.productMaterials);
         }));
-    }, [dispatch,props.record.id, props.record]);
+    }, [dispatch, props.record.id, props.record]);
     return (
         <>
             <Modal
@@ -315,22 +307,7 @@ function UpdateProductComponent(props) {
                             <input required type='file' onChange={changeFile} />
                         </div>}
 
-                    <p style={{ marginBottom: '5px' }}>Medžiagos </p>
-                    {/* <Select
-                        showSearch
-                        mode="multiple"
-                        allowClear
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite medžiagą"
-                        optionFilterProp="children"
-                        defaultValue={product.productMaterials}
-                        value={product.productMaterials}
-                        onChange={(e) => onDataChange(e, "productMaterials")}
-                    >
-                        {materialsWarehouseReducer.materialsWarehouseData.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.title}</Option>)
-                        })}
-                    </Select> */}
+                    {/* <p style={{ marginBottom: '5px' }}>Medžiagos </p>
                     {productMaterials.length > 0 ?
                         <div>
                             {productMaterials.map((element, index) => (
@@ -355,7 +332,7 @@ function UpdateProductComponent(props) {
                     {productMaterials.length <= 5 ?
                         <Button onClick={showAddMaterial}>
                             Pridėti medžiagą
-                        </Button> : null}
+                        </Button> : null} */}
 
                     <p style={{ marginBottom: '5px' }}>Užsakymas</p>
                     <Select
@@ -375,10 +352,10 @@ function UpdateProductComponent(props) {
                 </Form>
 
             </Modal>
-            {addMaterialVisibility !== false ?
+            {/* {addMaterialVisibility !== false ?
                 <AddMaterialComponent save={saveAddMaterial} onClose={unshowAddMaterial}
                     visible={addMaterialVisibility}
-                /> : null}
+                /> : null} */}
         </>
     )
 

@@ -106,7 +106,7 @@ class MaterialsScreen extends React.Component {
             {
                 title: 'Produkto pavadinimas',
                 dataIndex: 'product',
-                width: '30%',
+                width: '20%',
                 render: (text, record, index) => (
                     <Typography.Text>{text.name}</Typography.Text>
                 )
@@ -114,7 +114,7 @@ class MaterialsScreen extends React.Component {
             {
                 title: 'Produkto kodas',
                 dataIndex: 'product',
-                width: '30%',
+                width: '25%',
                 render: (text, record, index) => (
                     <Typography.Text>{text.code}</Typography.Text>
                 )
@@ -122,11 +122,16 @@ class MaterialsScreen extends React.Component {
             {
                 title: 'Medžiaga',
                 dataIndex: 'materialWarehouse',
-                width: '30%',
+                width: '25%',
                 render: (text,record,index)=>(
                     <Typography.Text>{text.title}</Typography.Text>
                 )
             },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '20%'
+            }
         ]
         return (
             <>

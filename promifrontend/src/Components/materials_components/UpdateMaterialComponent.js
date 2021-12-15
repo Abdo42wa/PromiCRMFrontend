@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { Modal, Button, Form, Space, Select, Input } from 'antd';
+import { Modal, Button, Form, Space, Select, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getProducts } from '../../Actions/productsActions';
+import {getMaterialsWarehouseData} from '../../Actions/materialsWarehouseActions'
 import { withRouter } from 'react-router-dom'
 
 
@@ -68,6 +69,7 @@ class UpdateMaterialComponent extends React.Component {
 
     componentDidMount() {
         this.props.getProducts(() => {
+            this.props.getMaterialsWarehouseData();
             const recordClone = JSON.parse(JSON.stringify(this.props.data));
             this.setState({
                 material: recordClone,
@@ -95,11 +97,9 @@ class UpdateMaterialComponent extends React.Component {
                     }
                 >
                     <Form layout="vertical" id="myForm" name="myForm">
-                        <p style={{ ...textStyle }}>Pavadinimas</p>
-                        <Input required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite pavadinimą" defaultValue={this.state.material.name} value={this.state.material.name} onChange={(e) => this.onDataChange(e.target.value, "name")} />
-                        <p style={{ ...textStyle }}>Panaudotas materialas</p>
-                        <Input required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite panaudotą materialą" defaultValue={this.state.material.materialUsed} value={material.materialUsed} onChange={(e) => this.onDataChange(e.target.value, "materialUsed")} />
-                        <p style={{ ...textStyle }}>Produktai</p>
+                        <p style={{ ...textStyle }}>Kiekis</p>
+                        <InputNumber required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite kiekį" value={material.quantity} onChange={(e) => this.onDataChange(e.target.value, "quantity")} />
+                        <p style={{ ...textStyle }}>Produktas</p>
                         <Select
                             showSearch
                             style={{ width: '320px', fontSize: '18px' }}
@@ -113,6 +113,20 @@ class UpdateMaterialComponent extends React.Component {
                                 return (<Option key={element.id} value={element.id}>{element.name}</Option>)
                             })}
                         </Select>
+                        <p style={{...textStyle}}>Medžiaga</p>
+                        <Select
+                            showSearch
+                            style={{ width: '320px', fontSize: '18px' }}
+                            placeholder="Priskirkite medžiagą"
+                            optionFilterProp="children"
+                            defaultValue={this.state.material.materialWarehouseId}
+                            value={this.state.material.materialWarehouseId}
+                            onChange={(e) => this.onDataChange(e, "materialWarehouseId")}
+                        >
+                            {this.props.materialsWarehouseReducer.materialsWarehouseData.map((element, index) => {
+                                return (<Option key={element.id} value={element.title}>{element.name}</Option>)
+                            })}
+                        </Select>
                     </Form>
                 </Modal>
             </>
@@ -123,8 +137,9 @@ class UpdateMaterialComponent extends React.Component {
 //get redux states. map them to props
 const mapStateToProps = (state) => {
     return {
-        productsReducer: state.productsReducer
+        productsReducer: state.productsReducer,
+        materialsWarehouseReducer: state.materialsWarehouseReducer
     }
 }
 
-export default connect(mapStateToProps, { getProducts })(withRouter(UpdateMaterialComponent))
+export default connect(mapStateToProps, { getProducts,getMaterialsWarehouseData })(withRouter(UpdateMaterialComponent))
