@@ -141,3 +141,27 @@ export const updateManyMaterials = (postObj,callback) => async (dispatch, getSta
         })
     }
 }
+
+export const insertManyMaterials = (postObj,callback) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'PRODUCT_MATERIAL_INSERT_MANY_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.post(`/api/Materials/insert`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'PRODUCT_MATERIAL_INSERT_MANY_SUCCESS',
+            payload: response.data
+        });
+        callback()
+    } catch (error) {
+        dispatch({
+            type: 'PRODUCT_MATERIAL_INSERT_MANY_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}

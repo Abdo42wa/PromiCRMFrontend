@@ -90,9 +90,23 @@ export const productsReducer = (state = { products: [] }, action) => {
                     })
                 }
             })
-            
+
             return { ...state, loading: false, products: cloneProducts }
         case 'PRODUCT_MATERIAL_UPDATE_MANY_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        case 'PRODUCT_MATERIAL_INSERT_MANY_REQUEST':
+            return { ...state, loading: true }
+        case 'PRODUCT_MATERIAL_INSERT_MANY_SUCCESS':
+            const cloneOfProducts = JSON.parse(JSON.stringify(state.products));
+            const returnedProductMaterials = action.payload
+            cloneOfProducts.forEach(element => {
+                if (element.id === returnedProductMaterials[0].productId) {
+                    element.productMaterials = returnedProductMaterials;
+                }
+            })
+
+            return { ...state, loading: false, products: cloneOfProducts }
+        case 'PRODUCT_MATERIAL_INSERT_MANY_FAIL':
             return { ...state, loading: false, error: action.payload }
         default:
             return state;

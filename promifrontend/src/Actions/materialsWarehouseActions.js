@@ -114,3 +114,26 @@ export const deleteMaterialImage = (id,fileName) => async(dispatch,getState)=>{
         })
     }
 }
+
+export const updateManyWarehouseMaterials = (postObj,callback) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'WAREHOUSE_MATERIALS_UPDATE_MANY_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/MaterialsWarehouse/update`,postObj, {headers: {Authorization: `Bearer ${token}`}});
+        dispatch({
+            type: 'WAREHOUSE_MATERIALS_UPDATE_MANY_SUCCESS',
+            payload: postObj
+        })
+        callback();
+    }catch (error) {
+        dispatch({
+            type: 'WAREHOUSE_MATERIALS_UPDATE_MANY_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
