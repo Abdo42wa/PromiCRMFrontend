@@ -1,14 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getProducts, addProduct, updateProduct, updateProductWithImage, updateManyMaterials} from '../Actions/productsActions'
+import { getProducts, addProduct, updateProduct, updateProductWithImage, updateManyMaterials, insertManyMaterials } from '../Actions/productsActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
-import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
+import { getMaterialsWarehouseData, updateManyWarehouseMaterials } from '../Actions/materialsWarehouseActions';
 // import {updateManyMaterials} from '../Actions/materialsActions'
 import AddProductComponent from '../Components/products_components/AddProductComponent';
 import UpdateProductComponent from '../Components/products_components/UpdateProductComponent';
 import ProductMaterialsComponent from '../Components/products_components/ProductMaterialsComponent';
+import AddProductMaterialsComponent from '../Components/products_components/addMaterials/AddProductMaterialsComponent';
 
 class ProductsScrenn extends React.Component {
     constructor(props) {
@@ -19,10 +20,15 @@ class ProductsScrenn extends React.Component {
                 visibility: false,
                 record: null
             },
+            addProductMaterials: {
+                visibility: false,
+                record: null
+            },
             updateProduct: {
                 visibility: false,
                 record: null
-            }
+            },
+
         }
     }
 
@@ -64,7 +70,7 @@ class ProductsScrenn extends React.Component {
         });
     }
     //FOR materials
-    showProductMaterialsComponent = (record) =>{
+    showProductMaterialsComponent = (record) => {
         const obj = {
             visibility: true,
             record: record
@@ -82,11 +88,95 @@ class ProductsScrenn extends React.Component {
             productMaterials: obj
         })
     }
-    saveProductMaterials = (postObj)=>{
-        this.props.updateManyMaterials(postObj, () => {
-            this.unshowProductMaterialsComponent();
+    saveProductMaterials = (postObj) => {
+        const productMaterials = JSON.parse(JSON.stringify(postObj));
+        const warehouseMaterialsClone = JSON.parse(JSON.stringify(this.props.materialsWarehouseReducer.materialsWarehouseData))
+        const array = []
+        const productMaterialsArray = []
+        productMaterials.forEach(element => {
+            warehouseMaterialsClone.forEach(element2 => {
+                if (element2.id === element.materialWarehouseId && element.subtractQuantity !== undefined && element.subtractQuantity !== null) {
+                    const obj = {
+                        id: element2.id,
+                        title: element2.title,
+                        quantity: (element2.quantity - element.subtractQuantity),
+                        measuringUnit: element2.measuringUnit,
+                        info: element2.info,
+                        deliveryTime: element2.deliveryTime,
+                        useDays: element2.useDays,
+                        lastAdittion: element2.lastAdittion,
+                        imageName: element2.imageName,
+                        imagePath: element2.imagePath
+
+                    }
+                    array.push(obj)
+                }
+            })
+        })
+        productMaterials.forEach(element => {
+            if (element.subtractQuantity !== undefined && element.subtractQuantity !== null) {
+                productMaterialsArray.push({ id: element.id, productId: element.productId, materialWarehouseId: element.materialWarehouseId, quantity: element.quantity })
+            }
+        })
+        //turi tapti 3475 is 3490 nes prie quantity pridejau 15. veikiiia!!!
+        this.props.updateManyMaterials(productMaterialsArray, () => {
+            this.props.updateManyWarehouseMaterials(array, () => {
+                this.unshowProductMaterialsComponent();
+            })
         })
     }
+
+    //for AddProductMaterialsComponent
+    showAddProductMaterials = (record) => {
+        const obj = {
+            visibility: true,
+            record: record
+        }
+        this.setState({
+            addProductMaterials: obj
+        })
+    }
+    unshowAddProductMaterials = (record) => {
+        const obj = {
+            visibility: false,
+            record: null
+        }
+        this.setState({
+            addProductMaterials: obj
+        })
+    }
+    saveAddProductMaterials = (postObj) => {
+        const productMaterials = JSON.parse(JSON.stringify(postObj));
+        const warehouseMaterialsClone = JSON.parse(JSON.stringify(this.props.materialsWarehouseReducer.materialsWarehouseData))
+        const array = []
+        productMaterials.forEach(element => {
+            warehouseMaterialsClone.forEach(element2 => {
+                if (element2.id === element.materialWarehouseId) {
+                    const obj = {
+                        id: element2.id,
+                        title: element2.title,
+                        quantity: (element2.quantity - element.quantity),
+                        measuringUnit: element2.measuringUnit,
+                        info: element2.info,
+                        deliveryTime: element2.deliveryTime,
+                        useDays: element2.useDays,
+                        lastAdittion: element2.lastAdittion,
+                        imageName: element2.imageName,
+                        imagePath: element2.imagePath
+                    }
+                    array.push(obj)
+                }
+            })
+        })
+        this.props.insertManyMaterials(postObj, () => {
+            this.props.updateManyWarehouseMaterials(array, () => {
+                this.unshowAddProductMaterials();
+            })
+        })
+    }
+
+
+
     //for AddProduct component
     saveProduct = (postObj, reducerObj) => {
         // this.props.updateManyMaterials(productMaterials, productMaterials)
@@ -96,10 +186,10 @@ class ProductsScrenn extends React.Component {
     }
     saveProductWithImg = (postObj, id) => {
         // this.props.updateManyMaterials(productMaterials, productMaterials)
-        this.props.updateProductWithImage(postObj,id, () =>{
+        this.props.updateProductWithImage(postObj, id, () => {
             this.unshowProductModal();
         });
-        
+
     }
 
     componentDidMount() {
@@ -121,10 +211,17 @@ class ProductsScrenn extends React.Component {
                 )
             },
             {
-                title: 'Medžiagų pridėjimas, atnaujinimas',
+                title: 'Medžiagų atnaujinimas',
                 width: '5%',
-                render: (text,record,index)=>(
-                    <Button onClick={(e) => this.showProductMaterialsComponent(record)}>Pridėti & Atnaujinti</Button>
+                render: (text, record, index) => (
+                    <Button onClick={(e) => this.showProductMaterialsComponent(record)}>Atnaujinimas</Button>
+                )
+            },
+            {
+                title: 'Medžiagų pridėjimas',
+                width: '5%',
+                render: (text, record, index) => (
+                    <Button onClick={(e) => this.showAddProductMaterials(record)}>Pridėjimas</Button>
                 )
             },
             {
@@ -294,10 +391,16 @@ class ProductsScrenn extends React.Component {
                     <UpdateProductComponent visible={this.state.updateProduct.visibility} record={this.state.updateProduct.record}
                         save={this.saveProduct} saveWithImg={this.saveProductWithImg} onClose={this.unshowProductModal} /> :
                     null}
-                {this.state.productMaterials.visibility !== false?
-                <ProductMaterialsComponent visible={this.state.productMaterials.visibility} onClose={this.unshowProductMaterialsComponent}
-                save={this.saveProductMaterials} record={this.state.productMaterials.record}/>:null
+                {this.state.productMaterials.visibility !== false ?
+                    <ProductMaterialsComponent visible={this.state.productMaterials.visibility} onClose={this.unshowProductMaterialsComponent}
+                        save={this.saveProductMaterials} record={this.state.productMaterials.record} /> : null
                 }
+
+                {this.state.addProductMaterials.visibility !== false ?
+                    <AddProductMaterialsComponent visible={this.state.addProductMaterials.visibility}
+                        onClose={this.unshowAddProductMaterials} record={this.state.addProductMaterials.record}
+                        save={this.saveAddProductMaterials} materialsWarehouseData={this.props.materialsWarehouseReducer.materialsWarehouseData}
+                    /> : null}
 
             </>
         )
@@ -309,12 +412,12 @@ const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
         productsReducer: state.productsReducer,
-        materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
+        materialsWarehouseReducer: state.materialsWarehouseReducer,
         materialsReducer: state.materialsReducer
     }
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getProducts, addProduct, updateProduct,updateProductWithImage, updateManyMaterials, getMaterialsWarehouseData })(withRouter(ProductsScrenn))
+export default connect(mapStateToProps, { getProducts, addProduct, updateProduct, updateProductWithImage, updateManyMaterials, getMaterialsWarehouseData, updateManyWarehouseMaterials, insertManyMaterials })(withRouter(ProductsScrenn))
 
 

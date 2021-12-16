@@ -1,36 +1,38 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateManyMaterials } from '../../Actions/productsActions'
+import { updateManyMaterials } from '../../../Actions/productsActions'
 import { withRouter } from 'react-router-dom'
 import { Button, Form, Modal, Space, Input, InputNumber, Typography } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
+import AddNewMaterial from './AddNewMaterial'
 
-class ProductMaterialsComponent extends React.Component {
+class AddProductMaterialsComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             productMaterials: this.props.record.productMaterials,
-            addMaterialsVisibility: false,
-            originalProductMaterials: this.props.record.productMaterials
+            addMaterialVisibility: false
         }
     }
     // For AddMaterialsComponent
-    showAddMaterialsComponent = () =>{ 
+    showAddMaterialsComponent = () => {
         this.setState({
-            addMaterialsVisibility:true
+            addMaterialVisibility: true
         })
     }
-    unshowAddMaterialsComponent = () =>{ 
+    unshowAddMaterialsComponent = () => {
         this.setState({
-            addMaterialsVisibility:false
+            addMaterialVisibility: false
         })
     }
     saveAddMaterialComponent = (postObj) => {
+        // add new obj to productMaterials array. keep whats already there
         this.setState(prevState => ({
-            productMaterials: [...prevState.productMaterials, postObj]
+            productMaterials: [...prevState.productMaterials, postObj],
+            addMaterialVisibility: false
         }))
     }
-    
+
     onBack = () => {
         this.props.onClose();
     }
@@ -38,19 +40,30 @@ class ProductMaterialsComponent extends React.Component {
         this.props.onClose();
     }
     onDataChange = (value, index) => {
-        //spread operator
-        let productMaterials = [...this.state.productMaterials]
-        let originalMaterials = [...this.state.originalProductMaterials]
-        //leave whats already in particular obj, change only what need
-        productMaterials[index] = {...productMaterials[index], quantity: value}
-        let newQuantity = value - originalMaterials[index].quantity;
-        productMaterials[index] = {...productMaterials[index], subtractQuantity: newQuantity}
-        this.setState({productMaterials})
+        // //spread operator
+        // let productMaterials = [...this.state.productMaterials]
+        // //leave whats already in particular obj, change only what need
+        // productMaterials[index] = {...productMaterials[index], quantity: value}
+        // this.setState({productMaterials})
     }
     saveChanges = () => {
-        this.props.save(this.state.productMaterials)
-        // console.log(JSON.stringify(this.state.productMaterials))
+        // this.props.save(this.state.productMaterials)
+        const clone = JSON.parse(JSON.stringify(this.state.productMaterials));
+        const array = []
+        clone.forEach(element => {
+            if (element.id === null || element.id === undefined) {
+                const obj = {
+                    "materialWarehouseId": element.materialWarehouseId,
+                    "productId": element.productId,
+                    "quantity": element.quantity,
+                }
+                array.push(obj)
+            }
+        })
+        console.log('material to add'+JSON.stringify(array))
+        this.props.save(array)
     }
+    com
     render() {
         return (
             <>
@@ -77,13 +90,18 @@ class ProductMaterialsComponent extends React.Component {
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <Typography.Text>Kiekis</Typography.Text>
-                                    <InputNumber value={element.quantity} onChange={(e) => this.onDataChange(e, index)} />
+                                    <InputNumber disabled value={element.quantity} onChange={(e) => this.onDataChange(e, index)} />
                                 </div>
                             </div>
                         ))}
-                    
+                        <Button onClick={this.showAddMaterialsComponent}>Pridėti</Button>
+
                     </Form>
                 </Modal>
+                {this.state.addMaterialVisibility !== false ?
+                    <AddNewMaterial visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterialsComponent}
+                        save={this.saveAddMaterialComponent} productId={this.props.record.id} />
+                    : null}
             </>
         )
     }
@@ -96,5 +114,5 @@ const mapStateToProps = (state) => {
     }
 }
 //connect to redux states, define actions
-export default connect(mapStateToProps, { updateManyMaterials })(withRouter(ProductMaterialsComponent))
+export default connect(mapStateToProps, { updateManyMaterials })(withRouter(AddProductMaterialsComponent))
 
