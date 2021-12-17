@@ -222,7 +222,7 @@ class HomeScreen extends React.Component {
             },
             {
                 title: 'Nuotrauka',
-                dataIndex: 'photo',
+                dataIndex: 'imagePath',
                 width: '10%',
                 render: (text, record, index) => (
                     <Image
@@ -311,7 +311,7 @@ class HomeScreen extends React.Component {
                 width: '10%',
                 render: (text, record, index) => (
                     // <Tag className='Neatlikta'>{record.status ? 'Atlikta' : this.datediff(record.orderFinishDate)}</Tag>
-                    <Typography.Text>{record.status ? <Tag className='atlikta'>Atlikta</Tag> : <Tag className='Neatlikta'>{this.datediff(record.orderFinishDate)}</Tag>}</Typography.Text>
+                    <Typography.Text>{record.status ? <Tag className='atlikta'>Atlikta</Tag> : this.datediff(record.orderFinishDate) < 0 ? <Tag className='Neatlikta'>{Math.abs(this.datediff(record.orderFinishDate))}</Tag> : <Tag className='atlikta'>{Math.abs(this.datediff(record.orderFinishDate))}</Tag>} </Typography.Text>
 
                 )
             }
