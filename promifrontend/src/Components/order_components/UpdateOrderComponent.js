@@ -206,7 +206,7 @@ function UpdateOrderComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Užsakymo tipas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Paprastas arba nestandartinis" value={order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
+                    <Input disabled style={{ width: '100%' }} placeholder="Paprastas arba nestandartinis" value={order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
                     <p style={{ ...textStyle }}>Užsakymo numeris</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     <p style={{ ...textStyle }}>Data</p>
@@ -217,8 +217,8 @@ function UpdateOrderComponent(props) {
                     <Input required style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     <p style={{ ...textStyle }}>Kiekis</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
-                    <p style={{ ...textStyle }}>Nuotrauka</p>
-                    <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={order.photo} onChange={(e) => onDataChange(e.target.value, "photo")} />
+                    {/* <p style={{ ...textStyle }}>Nuotrauka</p>
+                    <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={order.photo} onChange={(e) => onDataChange(e.target.value, "photo")} /> */}
                     <p style={{ ...textStyle }}>Prekės kodas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
                     <p style={{ ...textStyle }}>Gamybos laikas</p>

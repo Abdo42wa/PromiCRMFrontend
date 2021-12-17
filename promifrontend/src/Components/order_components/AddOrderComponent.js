@@ -107,35 +107,17 @@ function AddOrderComponent(props) {
         formData.append("file", file)
 
 
-        props.save(formData);
+        // props.save(formData);
 
         console.log(clone)
-        // if (order.orderType === "Sandėlis") {
+        if (order.orderType === "Sandėlis") {
 
-        //     //setTimeout(() => {
-        //         console.log(orderReducer.orders);
-        //         const orderID = orderReducer.orders.find((element) => element.orderNumber === clone.orderNumber);
-        //         console.log(orderID)
-        //         const id = orderID.id
-        //         console.log(id)
-        //         formData1.append("orderId", id);
-        //         formData1.append("quantityProductWarehouse", clone.quantity);
-        //         formData1.append("lastTimeChanging", clone.lastTimeChanging);
-        //         formData1.append("file", file);
-        //         console.log(orderID);
-        //         console.log(clone)
-        //         // props.saveorderwarehouse(formData1);
-        //         props.save(formData);
-        //         //const tt = orderReducer.orders.find((element) => element.orderNumber === clone.orderNumber);
-        //         console.log(orderID.id)
-        //     //}, 6000);
-        //     console.log("we done ")
+            props.saveorderwarehouse(formData);
 
-
-        // } else {
-        //     //props.save(formData);
-        //     console.log("no done ")
-        // }
+        } else {
+            props.save(formData);
+            console.log("no done ")
+        }
 
     }
     useEffect(() => {
@@ -145,13 +127,6 @@ function AddOrderComponent(props) {
         dispatch(getCurrencies());
         dispatch(getCountries());
         dispatch(getUsers())
-
-        return function cleanup() {
-            const clone = JSON.parse(JSON.stringify(order));
-            console.log()
-            console.log(orderReducer.orders.find((element) => element.orderNumber === clone.orderNumber));
-            console.log('come');
-        }
 
     }, [dispatch]);
     return (

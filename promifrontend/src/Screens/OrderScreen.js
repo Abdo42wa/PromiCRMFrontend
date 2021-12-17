@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage } from '../Actions/orderAction'
-import { createWarehouseData } from '../Actions/warehouseActions'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse } from '../Actions/orderAction'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
@@ -43,17 +42,17 @@ class OrderScrenn extends React.Component {
             })
         })
         this.unshowAddOrderModal();
-        //window.location.reload();
+        window.location.reload();
     }
 
     saveorderwarehouse = (postObj) => {
-        // this.props.createWarehouseData(postObj, () => {
-        //     this.setState({
-        //         addOrderVisibility: false
-        //     });
-        // });
+        this.props.addOrderWarehouse(postObj, () => {
+            this.setState({
+                addOrderVisibility: false
+            });
+        });
         console.log("saveorderwarehouse working");
-        //window.location.reload();
+        window.location.reload();
     }
 
 
@@ -295,7 +294,7 @@ class OrderScrenn extends React.Component {
                 {this.state.addOrderVisibility !== false ?
                     <AddOrderComponent visible={this.state.addOrderVisibility} save={this.saveAddOrder}
                         onClose={this.unshowAddOrderModal}
-                    //saveorderwarehouse={this.saveorderwarehouse} 
+                        saveorderwarehouse={this.saveorderwarehouse}
                     />
                     : null}
                 {this.state.updateOrder.visibility !== false ?
@@ -318,6 +317,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createWarehouseData })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse })(withRouter(OrderScrenn))
 
 
