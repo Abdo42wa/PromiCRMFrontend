@@ -98,7 +98,7 @@ export const updateItem = (id, postObj, reducerObj, callback) => async (dispatch
 
 
 
-export const updateManyMaterials = (postObj, reducerObj) => async (dispatch, getState) => {
+export const updateManyMaterials = (postObj,callback) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'MATERIAL_UPDATE_MANY_REQUEST'
@@ -108,8 +108,9 @@ export const updateManyMaterials = (postObj, reducerObj) => async (dispatch, get
         const response = await promiAPI.put(`/api/Materials/update`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIAL_UPDATE_MANY_SUCCESS',
-            payload: reducerObj
+            payload: postObj
         });
+        callback()
     } catch (error) {
         dispatch({
             type: 'MATERIAL_UPDATE_MANY_FAIL',

@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Form, Space, Select, Input,InputNumber } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, InputNumber, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { getProducts } from '../../Actions/productsActions';
-import { getMaterialsWarehouseData } from '../../Actions/materialsWarehouseActions'
 
 const { Option } = Select;
 
-function AddMaterialComponent(props) {
-    const dispatch = useDispatch();
+function AddNewMaterial(props) {
+
     const [material, setMaterial] = useState({
-        "productId": 0,
+        "productId": props.productId,
         "materialWarehouseId": 0,
         "quantity": 1
     });
-
-    const productsReducer = useSelector((state) => state.productsReducer);
-    const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer);
+    const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer)
 
     const onBack = () => {
         props.onClose();
@@ -32,20 +28,18 @@ function AddMaterialComponent(props) {
     }
     const saveChanges = () => {
         const materialClone = JSON.parse(JSON.stringify(material));
+        const clone = JSON.parse(JSON.stringify(materialsWarehouseReducer.materialsWarehouseData))
+        const obj = clone.find(x => x.id === materialClone.materialWarehouseId)
         const postObj = {
             "materialWarehouseId": materialClone.materialWarehouseId,
             "productId": materialClone.productId,
-            "quantity": materialClone.quantity
+            "quantity": materialClone.quantity,
+            "materialWarehouse":{
+                "title":obj.title
+            }
         }
-        console.log('Post obj:' + JSON.stringify(postObj))
         props.save(postObj);
     }
-    useEffect(() => {
-        dispatch(getProducts(() => {
-            // console.log(JSON.stringify(productsReducer.products))
-            dispatch(getMaterialsWarehouseData());
-        }));
-    }, [dispatch])
 
     return (
         <>
@@ -54,7 +48,7 @@ function AddMaterialComponent(props) {
                 saveChanges={saveChanges}
                 okButtonProps={{ disabled: false }}
                 cancelButtonProps={{ disabled: false }}
-                title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują medžiagą</Space>}
+                title={<Space><ArrowLeftOutlined onClick={onBack} />Priskirti naują medžiagą</Space>}
                 visible={props.visible}
                 footer={
                     <div>
@@ -64,13 +58,13 @@ function AddMaterialComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-                    <Form.Item key="name" name="name" label="Kiekis">
-                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={material.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
-                    </Form.Item>
-                    <p style={{ marginBottom: '5px' }}>Medžiaga</p>
+                    <Typography.Text>Produktas</Typography.Text>
+                    <Input style={{ fontSize: '18px' }} disabled value={material.productId} />
+                    <Typography.Text>Medžiaga</Typography.Text>
+                    <br></br>
                     <Select
                         showSearch
-                        style={{ width: '320px' }}
+                        style={{ width: '100%', fontSize: '18px', padding: '0px', margin: '0px' }}
                         placeholder="Priskirkite medžiagą"
                         optionFilterProp="children"
                         onChange={(e) => onDataChange(e, "materialWarehouseId")}
@@ -79,18 +73,10 @@ function AddMaterialComponent(props) {
                             return (<Option key={element.id} value={element.id}>{element.title}</Option>)
                         })}
                     </Select>
-                    <p style={{ marginBottom: '5px' }}>Produktas</p>
-                    <Select
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite produktą"
-                        optionFilterProp="children"
-                        onChange={(e) => onDataChange(e, "productId")}
-                    >
-                        {productsReducer.products.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.name}</Option>)
-                        })}
-                    </Select>
+                    <Form.Item key="name" name="name" label="Kiekis">
+                        <InputNumber required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite kiekį" value={material.quantity} onChange={(e) => onDataChange(e, "quantity")} />
+                    </Form.Item>
+                    
 
                 </Form>
             </Modal>
@@ -98,4 +84,4 @@ function AddMaterialComponent(props) {
     )
 }
 
-export default AddMaterialComponent;
+export default AddNewMaterial;

@@ -67,6 +67,19 @@ export const materialsWarehouseReducer = (state = { materialsWarehouseData: [] }
             return { ...state, loading: false, materialsWarehouseData: warehouseMaterialsClone }
         case 'WAREHOUSE_MATERIALS_IMAGE_DELETE_FAIL':
             return { ...state, loading: false, error: action.payload }
+        case 'WAREHOUSE_MATERIALS_UPDATE_MANY_REQUEST':
+            return {...state, laoding: true}
+        case 'WAREHOUSE_MATERIALS_UPDATE_MANY_SUCCESS':
+            const warehouseDataClone = JSON.parse(JSON.stringify(state.materialsWarehouseData))
+            const actionData = action.payload;
+            actionData.forEach(element => {
+                warehouseDataClone.forEach(obj => {
+                    if(obj.id === element.id){
+                        obj.quantity = element.quantity;
+                    }
+                })
+            })
+            return {...state, loading: false, materialsWarehouseData: warehouseDataClone}
         default:
             return state;
     }

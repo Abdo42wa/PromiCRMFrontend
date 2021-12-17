@@ -70,18 +70,10 @@ function AddProductComponent(props) {
         }
         console.log('product:' + JSON.stringify(product))
     }
+
+    
     const saveChanges = () => {
         const dataProduct = JSON.parse(JSON.stringify(product));
-        const array = [];
-        // console.log("heheheheheheh" + JSON.stringify(productMaterials))
-        dataProduct.productMaterials.map((element, index) => {
-            const obj = {
-                "materialWarehouseId": element
-            }
-            array.push(obj)
-        })
-        // console.log(JSON.parse(JSON.stringify(product)))
-
         const formData = new FormData();
         formData.append("link", dataProduct.link)
         formData.append("code", dataProduct.code)
@@ -103,7 +95,6 @@ function AddProductComponent(props) {
         formData.append("paintingTime", dataProduct.paintingTime)
         formData.append("laserTime", dataProduct.laserTime)
         formData.append("milingTime", dataProduct.milingTime)
-        formData.append("productMaterials", array)
         formData.append("file", file)
         props.save(formData);
     }
@@ -191,7 +182,7 @@ function AddProductComponent(props) {
                     <p>Nuotrauka</p>
                     <input type="file" onChange={changeFile} />
 
-                    <p style={{ marginBottom: '5px' }}>Medžiagos </p>
+                    {/* <p style={{ marginBottom: '5px' }}>Medžiagos </p>
                     <Select
                         showSearch
                         mode="multiple"
@@ -204,7 +195,7 @@ function AddProductComponent(props) {
                         {materialsWarehouseReducer.materialsWarehouseData.map((element, index) => {
                             return (<Option key={element.id} value={element.id}>{element.title}</Option>)
                         })}
-                    </Select>
+                    </Select> */}
 
                     <p style={{ marginBottom: '5px' }}>Užsakymas</p>
                     <Select
