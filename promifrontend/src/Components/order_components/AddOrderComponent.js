@@ -4,6 +4,7 @@ import { getCurrencies } from '../../Actions/currencyAction'
 import { getCustomers } from '../../Actions/customersActions'
 import { getCountries } from '../../Actions/countryAction'
 import { getUsers } from '../../Actions/userListActions'
+import { createWarehouseData } from '../../Actions/warehouseActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -32,7 +33,9 @@ function AddOrderComponent(props) {
         "price": 0,
         "currencyId": 0,
         "vat": 0,
-        "orderFinishDate": moment().format('YYYY/MM/DD')
+        "orderFinishDate": moment().format('YYYY/MM/DD'),
+        "orderId": 0,
+        "lastTimeChanging": moment().format("YYYY/MM/DD")
     });
     const [file, setFile] = useState();
     const [fileName, setFileName] = useState();
@@ -41,6 +44,7 @@ function AddOrderComponent(props) {
     const currencyReducer = useSelector((state) => state.currencyReducer);
     const countryReducer = useSelector((state) => state.countryReducer);
     const usersListReducer = useSelector((state) => state.usersListReducer)
+    const orderReducer = useSelector((state) => state.orderReducer)
 
     const changeFile = (e) => {
         console.log(e.target.files[0])
@@ -53,6 +57,8 @@ function AddOrderComponent(props) {
     const onCancel = () => {
         props.onClose();
     }
+
+
     const onDataChange = (value, inputName) => {
 
         if (inputName === 'orderNumber' ||
@@ -70,9 +76,14 @@ function AddOrderComponent(props) {
             console.log(value);
         }
     }
+
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(order));
         const formData = new FormData();
+        const formData1 = new FormData();
+
+
+
         formData.append("userId", clone.userId)
         formData.append("orderType", clone.orderType)
         formData.append("status", clone.status)
@@ -95,7 +106,37 @@ function AddOrderComponent(props) {
         formData.append("orderFinishDate", clone.orderFinishDate)
         formData.append("file", file)
 
+
         props.save(formData);
+
+        console.log(clone)
+        // if (order.orderType === "Sandėlis") {
+
+        //     //setTimeout(() => {
+        //         console.log(orderReducer.orders);
+        //         const orderID = orderReducer.orders.find((element) => element.orderNumber === clone.orderNumber);
+        //         console.log(orderID)
+        //         const id = orderID.id
+        //         console.log(id)
+        //         formData1.append("orderId", id);
+        //         formData1.append("quantityProductWarehouse", clone.quantity);
+        //         formData1.append("lastTimeChanging", clone.lastTimeChanging);
+        //         formData1.append("file", file);
+        //         console.log(orderID);
+        //         console.log(clone)
+        //         // props.saveorderwarehouse(formData1);
+        //         props.save(formData);
+        //         //const tt = orderReducer.orders.find((element) => element.orderNumber === clone.orderNumber);
+        //         console.log(orderID.id)
+        //     //}, 6000);
+        //     console.log("we done ")
+
+
+        // } else {
+        //     //props.save(formData);
+        //     console.log("no done ")
+        // }
+
     }
     useEffect(() => {
 
@@ -104,6 +145,14 @@ function AddOrderComponent(props) {
         dispatch(getCurrencies());
         dispatch(getCountries());
         dispatch(getUsers())
+
+        return function cleanup() {
+            const clone = JSON.parse(JSON.stringify(order));
+            console.log()
+            console.log(orderReducer.orders.find((element) => element.orderNumber === clone.orderNumber));
+            console.log('come');
+        }
+
     }, [dispatch]);
     return (
         <>
@@ -122,9 +171,21 @@ function AddOrderComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-                    <Form.Item key="name" name="name" label="Užsakymo tipas">
+                    <p style={{ marginBottom: '5px' }}>Užsakymo tipas</p>
+                    <Select
+                        showSearch
+                        style={{ width: '320px' }}
+                        placeholder="Įrašykite tipą"
+                        optionFilterProp="children"
+                        onChange={(e) => onDataChange(e, "orderType")}
+                    >
+                        <Option key={1} value={'Standartinis'}>{'Standartinis'}</Option>
+                        <Option key={2} value={'Ne-standartinis'}>{'Ne-standartinis'}</Option>
+                        <Option key={3} value={'Sandėlis'}>{'Sandėlis'}</Option>
+                    </Select>
+                    {/* <Form.Item key="name" name="name" label="Užsakymo tipas">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite tipą" value={order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item key="name1" name="name1" label="Užsakymo numeris">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     </Form.Item>

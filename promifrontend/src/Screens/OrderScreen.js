@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getOrders, addOrder, updateOrder, updateOrderWithImage } from '../Actions/orderAction'
+import { createWarehouseData } from '../Actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
@@ -42,7 +43,17 @@ class OrderScrenn extends React.Component {
             })
         })
         this.unshowAddOrderModal();
-        window.location.reload();
+        //window.location.reload();
+    }
+
+    saveorderwarehouse = (postObj) => {
+        // this.props.createWarehouseData(postObj, () => {
+        //     this.setState({
+        //         addOrderVisibility: false
+        //     });
+        // });
+        console.log("saveorderwarehouse working");
+        //window.location.reload();
     }
 
 
@@ -75,12 +86,12 @@ class OrderScrenn extends React.Component {
         });
 
     }
-    updateOrderWithImg = (postObj,id) => {
-        this.props.updateOrderWithImage(postObj,id);
+    updateOrderWithImg = (postObj, id) => {
+        this.props.updateOrderWithImage(postObj, id);
         this.unshowOrderModal();
     }
 
-    addProductsForOrder = (id) =>{
+    addProductsForOrder = (id) => {
         this.props.history.push(`/orders/product/${id}`);
     }
 
@@ -108,7 +119,7 @@ class OrderScrenn extends React.Component {
             {
                 title: 'Pridėti produktus',
                 width: '5%',
-                render: (text,record,index)=>(
+                render: (text, record, index) => (
                     <Button onClick={(e) => this.addProductsForOrder(record.id)}>Pridėti</Button>
                 )
             },
@@ -283,7 +294,9 @@ class OrderScrenn extends React.Component {
                 </div>
                 {this.state.addOrderVisibility !== false ?
                     <AddOrderComponent visible={this.state.addOrderVisibility} save={this.saveAddOrder}
-                        onClose={this.unshowAddOrderModal} />
+                        onClose={this.unshowAddOrderModal}
+                    //saveorderwarehouse={this.saveorderwarehouse} 
+                    />
                     : null}
                 {this.state.updateOrder.visibility !== false ?
                     <UpdateOrderComponent visible={this.state.updateOrder.visibility} record={this.state.updateOrder.record}
@@ -305,6 +318,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder,updateOrderWithImage })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createWarehouseData })(withRouter(OrderScrenn))
 
 

@@ -31,7 +31,7 @@ export const addOrder = (postObject, callback) => async (dispatch, getState) => 
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/Orders`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
+        const response = await promiAPI.post(`/api/Orders/warehouse`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'ORDER_CREATE_SUCCESS',
             payload: response.data
@@ -74,18 +74,18 @@ export const updateOrder = (postObj, reducerObj, callback) => async (dispatch, g
 }
 
 
-export const updateOrderWithImage = (postObj,id) => async(dispatch,getState)=>{
-    try{
+export const updateOrderWithImage = (postObj, id) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDER_UPDATE_IMAGE_REQUEST'
         });
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Orders/image/${id}`,postObj, {headers: {Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data'}})
+        const response = await promiAPI.put(`/api/Orders/image/${id}`, postObj, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
         dispatch({
             type: 'ORDER_UPDATE_IMAGE_SUCCESS',
             payload: response.data
         });
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'ORDER_UPDATE_IMAGE_FAIL',
             payload:

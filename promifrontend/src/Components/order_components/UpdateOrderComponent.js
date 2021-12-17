@@ -4,7 +4,7 @@ import { getCurrencies } from '../../Actions/currencyAction'
 import { getCustomers } from '../../Actions/customersActions'
 import { getCountries } from '../../Actions/countryAction'
 import { getUsers } from '../../Actions/userListActions'
-import { Modal, Button, Form, Space, Select, Input, InputNumber,Image } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
 
@@ -104,6 +104,8 @@ function UpdateOrderComponent(props) {
                 "vat": clone.vat,
                 "orderFinishDate": clone.orderFinishDate,
             }
+            console.log(postObj)
+            console.log(reducerObj)
             props.save(postObj, reducerObj);
         } else {
             const formData = new FormData();
@@ -128,8 +130,10 @@ function UpdateOrderComponent(props) {
             formData.append("vat", clone.vat)
             formData.append("orderFinishDate", clone.orderFinishDate)
             formData.append("file", file)
-            formData.append("imageName",clone.imageName)
-            props.saveWithImg(formData,clone.id)
+            formData.append("imageName", clone.imageName)
+            props.saveWithImg(formData, clone.id)
+            console.log(clone.imageName)
+            console.log(file)
         }
     }
 
@@ -181,7 +185,7 @@ function UpdateOrderComponent(props) {
                 }))
             }))
         }));
-        
+
         // eslint-disable-next-line
     }, [dispatch]);
     return (

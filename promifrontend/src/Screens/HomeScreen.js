@@ -311,7 +311,7 @@ class HomeScreen extends React.Component {
                 width: '10%',
                 render: (text, record, index) => (
                     // <Tag className='Neatlikta'>{record.status ? 'Atlikta' : this.datediff(record.orderFinishDate)}</Tag>
-                    <Typography.Text>{record.status ? <Tag className='atlikta'>Atlikta</Tag> : <Tag className='atlikta'>{this.datediff(record.orderFinishDate)}</Tag>}</Typography.Text>
+                    <Typography.Text>{record.status ? <Tag className='atlikta'>Atlikta</Tag> : <Tag className='Neatlikta'>{this.datediff(record.orderFinishDate)}</Tag>}</Typography.Text>
 
                 )
             }

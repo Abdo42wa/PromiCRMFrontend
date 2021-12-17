@@ -63,8 +63,8 @@ class WarehouseCountingsScreen extends React.Component {
         });
     }
 
-    saveUpdateWarehouseWithImg = (postObj,id) => {
-        this.props.updateWarehouseWithImg(postObj,id);
+    saveUpdateWarehouseWithImg = (postObj, id) => {
+        this.props.updateWarehouseWithImg(postObj, id);
         this.unshowUpdateWarehouseData();
     }
 
@@ -78,13 +78,13 @@ class WarehouseCountingsScreen extends React.Component {
     }
     render() {
         const columns = [
-            {
-                title: 'Atnaujinti',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Button onClick={(e) => this.showUpdateWarehouseData(record)}>Atnaujinti</Button>
-                )
-            },
+            // {
+            //     title: 'Atnaujinti',
+            //     width: '10%',
+            //     render: (text, record, index) => (
+            //         <Button onClick={(e) => this.showUpdateWarehouseData(record)}>Atnaujinti</Button>
+            //     )
+            // },
             {
                 title: 'Užsakymo numeris',
                 dataIndex: 'orderId',
@@ -97,12 +97,12 @@ class WarehouseCountingsScreen extends React.Component {
             },
             {
                 title: 'Nuotrauka',
-                dataIndex: 'imagePath',
+                dataIndex: 'order',
                 width: '20%',
                 render: (text, record, index) => (
                     <div>
                         {text === null || text === undefined ?
-                            <p></p> : <Image src={text} />}
+                            <p></p> : <Image src={text.imagePath} />}
                     </div>
                 )
             },
@@ -111,7 +111,7 @@ class WarehouseCountingsScreen extends React.Component {
                 dataIndex: 'lastTimeChanging',
                 width: '20%',
                 render: (text, record, index) => (
-                    <p>{moment(text).format('YYYY/MM-DD')}</p>
+                    <p>{moment(text).format('YYYY/MM/DD')}</p>
                 )
             }
         ]
@@ -138,7 +138,7 @@ class WarehouseCountingsScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.props.warehouseReducer.warehouseData}
                                         pagination={{ pageSize: 15 }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddWarehouseData}>Pridėti prie sandėlio</Button></Space>)}
+                                    //footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddWarehouseData}>Pridėti prie sandėlio</Button></Space>)}
                                     />
                                 </Card>
                             </Col>
