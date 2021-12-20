@@ -48,7 +48,7 @@ export const getUncompletedOrders = () => async(dispatch,getState)=>{
 }
 
 
-export const getUncompletedExpressOrders = () => async(dispatch,getState)=>{
+export const getUncompletedExpressOrders = (callback) => async(dispatch,getState)=>{
     try{
         dispatch({
             type: 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_REQUEST'
@@ -59,6 +59,7 @@ export const getUncompletedExpressOrders = () => async(dispatch,getState)=>{
             type: 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_SUCCESS',
             payload: response.data
         })
+        callback()
     }catch (error) {
         dispatch({
             type: 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_FAIL',

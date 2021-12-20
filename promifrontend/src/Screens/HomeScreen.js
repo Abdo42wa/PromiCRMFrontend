@@ -61,8 +61,11 @@ class HomeScreen extends React.Component {
                 })
 
                 this.props.getRecentWorks();
-                this.props.getUncompletedOrders();
-                this.props.getUncompletedExpressOrders();
+                // this.props.getUncompletedOrders();
+                this.props.getUncompletedExpressOrders(() =>{
+                    console.log('got it')
+                    console.log(JSON.stringify(this.props.uncompletedOrdersReducer))
+                });
             })
         } else {
             this.props.history.push('/login');
@@ -501,6 +504,70 @@ class HomeScreen extends React.Component {
                 )
             },
         ]
+        const uncompletedExpressOrderColumns = [
+            {
+                title: 'Užsakymo pabaigos data',
+                dataIndex: 'orderFinishDate',
+                width: '10%',
+                render: (text, record, index) => (
+                    <p>{moment(text).format('YYYY/MM/DD')}</p>
+                )
+            },
+            {
+                title: 'Nr',
+                dataIndex: 'orderNumber',
+                width: '10%'
+            },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '10%'
+            },
+            {
+                title: 'Prekės kodas',
+                dataIndex: 'productCode',
+                width: '10%'
+            },
+            {
+                title: 'Nuotrauka',
+                dataIndex: 'imagePath',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Image
+                        width={100}
+                        src={text}
+                    />
+                )
+            },
+            {
+                title: 'Platforma',
+                dataIndex: 'platforma',
+                width: '10%'
+            },
+            {
+                title: 'Status',
+                dataIndex: 'status',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
+                )
+            },
+            {
+                title: 'Atsakingas asmuo',
+                dataIndex: 'user',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text.name}</Typography.Text>
+                )
+            },
+            {
+                title: 'Užsakymo tipas',
+                dataIndex: 'orderType',
+                width: '10%'
+            }
+
+
+        ]
         return (
             <>
                 <h1>Pagrindinis</h1>
@@ -584,6 +651,31 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
+
+                    {/* <Col span={24} style={{ marginTop: '20px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h5>Express neatlikti užsakymai</h5>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={uncompletedExpressOrderColumns}
+                                        dataSource={this.props.uncompletedOrdersReducer.uncompletedExpressOrders}
+                                        pagination={{ pageSize: 10 }}
+                                        bordered
+                                        scroll={{ x: 'calc(200px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col> */}
 
                     <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>

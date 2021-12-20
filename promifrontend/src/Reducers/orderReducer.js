@@ -1,4 +1,4 @@
-export const orderReducer = (state = { orders: [] }, action) => {
+export const orderReducer = (state = { orders: [],  }, action) => {
     switch (action.type) {
         case 'ORDER_FETCH_REQUEST':
             return { ...state, loading: true }
