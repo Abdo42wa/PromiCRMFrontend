@@ -4,7 +4,9 @@ import { withRouter } from 'react-router-dom'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { getRecentWorks, createRecentWork, updateRecentWork, deleteRecentWork } from '../Actions/recentWorksActions'
-
+import AddRecentWorkComponent from '../Components/recent_works_components/AddRecentWorkComponent.js';
+import moment from 'moment'
+import UpdateRecentWorkComponent from '../Components/recent_works_components/UpdateRecentWorkComponent.js';
 class RecentWorksScreen extends React.Component {
     constructor(props) {
         super(props)
@@ -28,6 +30,7 @@ class RecentWorksScreen extends React.Component {
     }
     saveAddWork = (postObj) => {
         this.props.createRecentWork(postObj);
+        this.unshowAddWork();
     }
     showUpdateWork = (record) => {
         const obj = {
@@ -38,7 +41,7 @@ class RecentWorksScreen extends React.Component {
             updateRecentWorkComponent: obj
         })
     }
-    unshowUpdateWork = (record) => {
+    unshowUpdateWork = () => {
         const obj = {
             record: null,
             visibility: false
@@ -49,44 +52,63 @@ class RecentWorksScreen extends React.Component {
     }
     saveUpdateWork = (postObj, reducerObj) => {
         this.props.updateRecentWork(postObj, reducerObj)
+        this.unshowUpdateWork()
     }
-    componentDidMount(){
+    componentDidMount() {
         this.props.getRecentWorks();
     }
 
     render() {
         const columns = [
             {
-                title: "Laikas",
-                dataIndex: "time",
-                width: '15%'
+                title: 'Atnaujinti',
+                width: '10%',
+                render: (text, record, index) => (
+                    <Button onClick={(e) => this.showUpdateWork(record)}>Atnaujinti</Button>
+                )
             },
             {
-                title: "Darbuotojas",
+                title: "Laikas",
+                dataIndex: "time",
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{moment(text).format("HH:mm")}  {moment(text).format("YYYY/MM/DD")}</Typography.Text>
+                )
+            },
+            {
+                title: "Darbo pavadinimas",
+                dataIndex: 'workTitle',
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text}</Typography.Text>
+                )
+            },
+            {
+                title: "",
                 dataIndex: 'user',
                 width: '15%',
-                render: (text, record, index) => {
+                render: (text, record, index) => (
                     <Typography.Text>{text.name}</Typography.Text>
-                }
+                )
             },
             {
                 title: 'Nr',
                 dataIndex: 'product',
                 width: '15%',
-                render: (text, record, index) => {
+                render: (text, record, index) => (
                     <Typography.Text>{text.orderId}</Typography.Text>
-                }
+                )
             },
             {
                 title: 'Foto',
                 dataIndex: 'product',
                 width: '15%',
-                render: (text, record, index) => {
+                render: (text, record, index) => (
                     <div>
                         {text.imagePath === null || text.imagePath === undefined ?
                             <p></p> : <Image src={text.imagePath} />}
                     </div>
-                }
+                )
             },
             {
                 title: 'Kiekis',
@@ -116,7 +138,7 @@ class RecentWorksScreen extends React.Component {
                                         pagination={{ pageSize: 15 }}
                                         bordered
                                         scroll={{ x: 'calc(700px + 50%)' }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddProductModal}>Pridėti Produktas</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddWork}>Pridėti atliktą darbą</Button></Space>)}
                                     />
 
                                 </Card>
@@ -124,17 +146,23 @@ class RecentWorksScreen extends React.Component {
                         </Row>
                     </Col>
                 </div>
+                {this.state.addRecentWorkVisibility !== false ?
+                    <AddRecentWorkComponent onClose={this.unshowAddWork} save={this.saveAddWork}
+                        visible={this.state.addRecentWorkVisibility} /> : null}
+                {this.state.updateRecentWorkComponent.visibility !== false ?
+                <UpdateRecentWorkComponent onClose={this.unshowUpdateWork} save={this.saveUpdateWork}
+                visible={this.state.updateRecentWorkComponent.visibility} record={this.state.updateRecentWorkComponent.record} />:null}
             </>
         )
     }
 }
 
 //get redux states
-const mapStateToProps = (state)=>{
+const mapStateToProps = (state) => {
     return {
         recentWorksReducer: state.recentWorksReducer,
     }
 }
 
-export default connect(mapStateToProps,{getRecentWorks,createRecentWork,updateRecentWork,deleteRecentWork})(withRouter(RecentWorksScreen))
+export default connect(mapStateToProps, { getRecentWorks, createRecentWork, updateRecentWork, deleteRecentWork })(withRouter(RecentWorksScreen))
 

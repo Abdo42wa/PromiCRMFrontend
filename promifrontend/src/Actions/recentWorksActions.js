@@ -29,7 +29,7 @@ export const createRecentWork = (postObj) => async(dispatch,getState)=>{
             type: 'RECENT_WORKS_CREATE_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/RecentWorks`,postObj, {Authorization: `Bearer ${token}`});
+        const response = await promiAPI.post(`/api/RecentWorks`,postObj, {headers: {Authorization: `Bearer ${token}`}});
         dispatch({
             type: 'RECENT_WORKS_CREATE_SUCCESS',
             payload: response.data
