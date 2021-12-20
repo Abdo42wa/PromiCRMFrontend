@@ -18,6 +18,7 @@ import WeeklyWorkScheduleScreen from './Screens/WeeklyWorkScheduleScreen';
 import SalesChannelsScreen from './Screens/SalesChannelsScreen';
 import MaterialsWarehouseScreen from './Screens/MaterialsWarehouseScreen';
 import OrderProducts from './Screens/OrderProducts';
+import RecentWorksScreen from './Screens/RecentWorksScreen';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
           <Route path='/weeklyWorkScheduleScreen' component={WeeklyWorkScheduleScreen} />
           <Route path='/sales-channels' component={SalesChannelsScreen}/>
           <Route path='/materials-warehouse' component={MaterialsWarehouseScreen}/>
+          <Route path='/recent-works' component={RecentWorksScreen}/>
           <Route path='/' component={HomeScreen} exact />
 
         </div>
