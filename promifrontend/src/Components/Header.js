@@ -100,6 +100,12 @@ const Header = () => {
                                                 <i class="fas fa-truck-loading"></i> Pardavimo kanalai
                                             </NavDropdown.Item>
                                         </LinkContainer>
+
+                                        <LinkContainer to='/recent-works'>
+                                            <NavDropdown.Item>
+                                                <i class="fas fa-tools"></i> Atlikti darbai
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
 
 
