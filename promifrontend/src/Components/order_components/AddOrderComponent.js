@@ -80,7 +80,6 @@ function AddOrderComponent(props) {
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(order));
         const formData = new FormData();
-        const formData1 = new FormData();
 
 
 
@@ -104,10 +103,8 @@ function AddOrderComponent(props) {
         formData.append("currencyId", clone.currencyId)
         formData.append("vat", clone.vat)
         formData.append("orderFinishDate", clone.orderFinishDate)
-        formData.append("file", file)
+        //formData.append("file", file)
 
-
-        // props.save(formData);
 
         console.log(clone)
         if (order.orderType === "Sandėlis") {
@@ -116,7 +113,6 @@ function AddOrderComponent(props) {
 
         } else {
             props.save(formData);
-            console.log("no done ")
         }
 
     }
@@ -201,8 +197,8 @@ function AddOrderComponent(props) {
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
                     </Form.Item>
                     {/* for IMAGE */}
-                    <p>Nuotrauka</p>
-                    <input type="file" onChange={changeFile} />
+                    {/* <p>Nuotrauka</p>
+                    <input type="file" onChange={changeFile} /> */}
 
                     <p style={{ marginBottom: '5px' }}>Siuntos tipas</p>
                     <Select
