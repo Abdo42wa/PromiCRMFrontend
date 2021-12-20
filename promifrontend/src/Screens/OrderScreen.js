@@ -6,6 +6,7 @@ import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/custo
 import { withRouter } from 'react-router-dom';
 import AddOrderComponent from '../Components/order_components/AddOrderComponent';
 import UpdateOrderComponent from '../Components/order_components/UpdateOrderComponent';
+import { getProducts } from '../Actions/productsActions'
 import moment from 'moment';
 
 
@@ -14,6 +15,7 @@ class OrderScrenn extends React.Component {
         super(props);
         this.state = {
             orders: [],
+            imgPath: [],
             addOrderVisibility: false,
             updateOrder: {
                 visibility: false,
@@ -42,7 +44,7 @@ class OrderScrenn extends React.Component {
             })
         })
         this.unshowAddOrderModal();
-        window.location.reload();
+        //window.location.reload();
     }
 
     saveorderwarehouse = (postObj) => {
@@ -96,16 +98,36 @@ class OrderScrenn extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getOrders(() => {
-                const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders))
-                this.setState({
-                    orders: dataClone
-                });
-            })
+            this.props.getProducts(() => {
+
+
+                this.props.getOrders(() => {
+                    const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders))
+                    this.setState({
+                        orders: dataClone
+                    });
+
+                })
+                //this.getOrderImage();
+            });
+
         } else {
             this.props.history.push('/');
         }
     }
+
+    getOrderImage(kodas) {
+        //console.log(this.props.productsReducer.products.filter(word => word.code === "555GG"))
+        const img = this.props.productsReducer.products.filter(word => word.code === kodas);
+        console.log(img.map((x) => x.imagePath))
+        // this.setState({
+        //     imgPath: img
+        // }, () => console.log(this.state.imgPath))
+        const arr = img.map((x) => x.imagePath)
+        console.log(arr[0])
+        return arr[0]
+    }
+
     render() {
         const columns = [
             {
@@ -145,13 +167,10 @@ class OrderScrenn extends React.Component {
             },
             {
                 title: 'Nuotrauka',
-                dataIndex: 'imagePath',
+                //dataIndex: 'imagePath',
                 width: '10%',
                 render: (text, record, index) => (
-                    <div>
-                        {text === null || text === undefined ?
-                            <p></p> : <Image src={text} />}
-                    </div>
+                    <Image src={this.getOrderImage(record.productCode)} />
                 )
             },
             {
@@ -203,11 +222,11 @@ class OrderScrenn extends React.Component {
                     <Typography.Text>{text.name}</Typography.Text>
                 )
             },
-            {
-                title: 'Įrenginys',
-                dataIndex: 'device',
-                width: '10%'
-            },
+            // {
+            //     title: 'Įrenginys',
+            //     dataIndex: 'device',
+            //     width: '10%'
+            // },
             {
                 title: 'Gamybos laikas',
                 dataIndex: 'productionTime',
@@ -312,11 +331,12 @@ class OrderScrenn extends React.Component {
 const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
+        productsReducer: state.productsReducer,
         orderReducer: state.orderReducer
     }
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, getProducts })(withRouter(OrderScrenn))
 
 
