@@ -71,7 +71,7 @@ function AddProductComponent(props) {
         console.log('product:' + JSON.stringify(product))
     }
 
-    
+
     const saveChanges = () => {
         const dataProduct = JSON.parse(JSON.stringify(product));
         const formData = new FormData();
@@ -97,6 +97,7 @@ function AddProductComponent(props) {
         formData.append("milingTime", dataProduct.milingTime)
         formData.append("file", file)
         props.save(formData);
+        console.log(dataProduct);
     }
     useEffect(() => {
         dispatch(getOrders(() => {
@@ -126,7 +127,7 @@ function AddProductComponent(props) {
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite nuorodą" value={product.link} onChange={(e) => onDataChange(e.target.value, "link")} />
                     </Form.Item>
                     <Form.Item key="name3" name="name3" label=" Prekės kodas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite prekės kodą" value={product.code} onChange={(e) => onDataChange(e.target.value, "code")} />
+                        <Input required style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite prekės kodą" value={product.code} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "code")} />
                     </Form.Item>
                     <Form.Item key="name4" name="name4" label="Produkto kategorija">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite kategoriją" value={product.category} onChange={(e) => onDataChange(e.target.value, "category")} />

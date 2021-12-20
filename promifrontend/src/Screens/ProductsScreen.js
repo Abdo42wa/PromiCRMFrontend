@@ -48,6 +48,8 @@ class ProductsScrenn extends React.Component {
                 addProductVisibility: false
             })
         })
+        console.log(postObj);
+
     }
 
 
@@ -261,7 +263,7 @@ class ProductsScrenn extends React.Component {
                 width: '10%',
                 render: (text, record, index) => (
                     <div>
-                        {record.productMaterials.map((obj, index) => (
+                        {record.productMaterials != null && record.productMaterials.map((obj, index) => (
                             <Typography.Text>{obj.materialWarehouse.title},</Typography.Text>
                         ))}
                     </div>
