@@ -76,27 +76,19 @@ class RecentWorksScreen extends React.Component {
                 )
             },
             {
-                title: "Darbo pavadinimas",
-                dataIndex: 'workTitle',
-                width: '15%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text}</Typography.Text>
-                )
-            },
-            {
-                title: "",
-                dataIndex: 'user',
-                width: '15%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
-                )
-            },
-            {
                 title: 'Nr',
                 dataIndex: 'product',
                 width: '15%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.orderId}</Typography.Text>
+                    <Typography.Text>{text.order.orderNumber}</Typography.Text>
+                )
+            },
+            {
+                title: 'Kodas',
+                dataIndex: 'product',
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text.code}</Typography.Text>
                 )
             },
             {
@@ -114,7 +106,14 @@ class RecentWorksScreen extends React.Component {
                 title: 'Kiekis',
                 dataIndex: 'quantity',
                 width: '15%'
-            }
+            },
+            {
+                title: "Vardas",
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{record.user.name}  {record.workTitle}</Typography.Text>
+                )
+            },
         ]
         return (
             <>

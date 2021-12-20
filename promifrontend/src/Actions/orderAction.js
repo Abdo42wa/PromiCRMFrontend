@@ -24,6 +24,52 @@ export const getOrders = (callback) => async (dispatch, getState) => {
     }
 }
 
+export const getUncompletedOrders = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'UNCOMPLETED_ORDERS_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/uncompleted`,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'UNCOMPLETED_ORDERS_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'UNCOMPLETED_ORDERS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+    
+}
+
+
+export const getUncompletedExpressOrders = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/express`,{headers: {Authorization: `Bearer ${token}`}});
+        dispatch({
+            type: 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const addOrder = (postObject, callback) => async (dispatch, getState) => {
     try {
         dispatch({

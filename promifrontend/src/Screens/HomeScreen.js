@@ -2,13 +2,14 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag } from 'antd'
 import { Image } from 'antd'
-import { getOrders } from '../Actions/orderAction'
+import { getOrders,getUncompletedOrders,getUncompletedExpressOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
 import { tableCardStyle, tableCardBodyStyle } from '../styles/customStyles.js';
 import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
 import { getProducts } from '../Actions/productsActions'
+import { getRecentWorks } from '../Actions/recentWorksActions'
 import moment from 'moment';
 
 
@@ -58,6 +59,10 @@ class HomeScreen extends React.Component {
                     });
                     console.log(this.getTime());
                 })
+
+                this.props.getRecentWorks();
+                this.props.getUncompletedOrders();
+                this.props.getUncompletedExpressOrders();
             })
         } else {
             this.props.history.push('/login');
@@ -445,12 +450,60 @@ class HomeScreen extends React.Component {
                 dataIndex: 'packingTime',
                 width: '10%'
             }
+        ]
 
-
+        const recentWorksColumns = [
+            {
+                title: "Laikas",
+                dataIndex: "time",
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{moment(text).format("HH:mm")}  {moment(text).format("YYYY/MM/DD")}</Typography.Text>
+                )
+            },
+            {
+                title: 'Nr',
+                dataIndex: 'product',
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text.order.orderNumber}</Typography.Text>
+                )
+            },
+            {
+                title: 'Kodas',
+                dataIndex: 'product',
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text.code}</Typography.Text>
+                )
+            },
+            {
+                title: 'Foto',
+                dataIndex: 'product',
+                width: '15%',
+                render: (text, record, index) => (
+                    <div>
+                        {text.imagePath === null || text.imagePath === undefined ?
+                            <p></p> : <Image src={text.imagePath} />}
+                    </div>
+                )
+            },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '15%'
+            },
+            {
+                title: "Vardas",
+                width: '15%',
+                render: (text, record, index) => (
+                    <Typography.Text>{record.user.name}  {record.workTitle}</Typography.Text>
+                )
+            },
         ]
         return (
             <>
-                <h1>Home</h1>
+                <h1>Pagrindinis</h1>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
                     <Row>
                         <Col span={10} >
@@ -556,6 +609,32 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
+
+
+                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h5>Naujausi atlikti darbai</h5>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={recentWorksColumns}
+                                        dataSource={this.props.recentWorksReducer.recent_works.slice(0,10)}
+                                        pagination={false}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
                 </div>
 
 
@@ -571,8 +650,9 @@ const mapStateToProps = (state) => {
         usersListReducer: state.usersListReducer,
         orderReducer: state.orderReducer,
         productsReducer: state.productsReducer,
-        materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData
+        materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
+        recentWorksReducer: state.recentWorksReducer
     }
 }
-export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getMaterialsWarehouseData, getProducts })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders,getUncompletedOrders,getUncompletedExpressOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
 

@@ -20,6 +20,7 @@ import {userTypesReducer} from './Reducers/userTypesReducer'
 import {salesChannelsReducer} from './Reducers/salesChannelsReducer'
 import { materialsWarehouseReducer } from './Reducers/materialsWarehouseReducer';
 import { recentWorksReducer } from './Reducers/recentWorksReducer';
+import { uncompletedOrdersReducer } from './Reducers/uncompletedOrdersReducer';
 
 const allReducers = combineReducers({
     usersReducer,
@@ -39,7 +40,8 @@ const allReducers = combineReducers({
     userTypesReducer,
     salesChannelsReducer,
     materialsWarehouseReducer,
-    recentWorksReducer
+    recentWorksReducer,
+    uncompletedOrdersReducer
 });
 
 
