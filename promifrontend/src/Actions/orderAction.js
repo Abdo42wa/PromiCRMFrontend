@@ -1,6 +1,6 @@
 import promiAPI from "./promiAPI";
 
-export const getOrders = (callback) => async (dispatch, getState) => {
+export const getOrders = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDER_FETCH_REQUEST'
@@ -12,7 +12,6 @@ export const getOrders = (callback) => async (dispatch, getState) => {
             type: 'ORDER_FETCH_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'ORDER_FETCH_FAIL',

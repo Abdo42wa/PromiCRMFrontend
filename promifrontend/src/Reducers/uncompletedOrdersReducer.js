@@ -1,4 +1,4 @@
-export const uncompletedOrdersReducer = (state = { uncompletedExpressOrders: []},action)=>{
+export const uncompletedOrdersReducer = (state = { uncompleted_express_orders: []},action)=>{
     switch(action.type){
         //uncompletedOrders: [],
         // case 'UNCOMPLETED_ORDERS_FETCH_REQUEST':
@@ -10,7 +10,8 @@ export const uncompletedOrdersReducer = (state = { uncompletedExpressOrders: []}
         case 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_REQUEST':
             return {...state, loading: true}
         case 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_SUCCESS':
-            return {...state, loading: false, uncompletedExpressOrders: action.payload}
+            const uncompleted_express_orders = action.payload;
+            return {...state, loading: false, uncompleted_express_orders: uncompleted_express_orders}
         case 'UNCOMPLETED_EXPRESS_ORDERS_FETCH_FAIL':
             return {...state, loading: false, error: action.payload}
         default:

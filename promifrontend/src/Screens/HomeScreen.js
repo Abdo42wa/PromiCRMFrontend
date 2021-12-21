@@ -26,7 +26,8 @@ class HomeScreen extends React.Component {
             laserTime: 0,
             paintingTime: 0,
             milingTime: 0,
-            packingTime: 0
+            packingTime: 0,
+            uncompletedExpressOrders: []
         }
     }
     // const dispatch = useDispatch();
@@ -62,10 +63,7 @@ class HomeScreen extends React.Component {
 
                 this.props.getRecentWorks();
                 // this.props.getUncompletedOrders();
-                this.props.getUncompletedExpressOrders(() =>{
-                    console.log('got it')
-                    console.log(JSON.stringify(this.props.uncompletedOrdersReducer))
-                });
+                this.props.getUncompletedExpressOrders();
             })
         } else {
             this.props.history.push('/login');
@@ -652,7 +650,7 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
-                    {/* <Col span={24} style={{ marginTop: '20px' }}>
+                    <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -666,7 +664,7 @@ class HomeScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={uncompletedExpressOrderColumns}
-                                        dataSource={this.props.uncompletedOrdersReducer.uncompletedExpressOrders}
+                                        dataSource={this.props.uncompletedOrdersReducer.uncompleted_express_orders}
                                         pagination={{ pageSize: 10 }}
                                         bordered
                                         scroll={{ x: 'calc(200px + 50%)' }}
@@ -675,7 +673,7 @@ class HomeScreen extends React.Component {
                                 </Card>
                             </Col>
                         </Row>
-                    </Col> */}
+                    </Col> 
 
                     <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
@@ -743,7 +741,8 @@ const mapStateToProps = (state) => {
         orderReducer: state.orderReducer,
         productsReducer: state.productsReducer,
         materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
-        recentWorksReducer: state.recentWorksReducer
+        recentWorksReducer: state.recentWorksReducer,
+        uncompletedOrdersReducer: state.uncompletedOrdersReducer
     }
 }
 export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders,getUncompletedOrders,getUncompletedExpressOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
