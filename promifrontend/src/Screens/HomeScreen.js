@@ -27,12 +27,35 @@ class HomeScreen extends React.Component {
             paintingTime: 0,
             milingTime: 0,
             packingTime: 0,
-            uncompletedExpressOrders: []
+            uncompletedExpressOrders: [],
+            completedOrdersWarehouse: []
         }
     }
     // const dispatch = useDispatch();
     // const usersReducer = useSelector(state => state.usersReducer)
     // const { currentUser } = usersReducer
+    setCompletedWarehouseOrders = () => {
+        const warehouseOrders = JSON.parse(JSON.stringify(this.props.orderDetailsReducer.completed_warehouse_orders))
+        const products = JSON.parse(JSON.stringify(this.state.products))
+        const array = []
+        warehouseOrders.forEach(element => {
+            let obj = products.find((obj)=>obj.code === element.productCode);
+            if(obj !== undefined){
+                const order = {
+                    productCode: element.productCode,
+                    quantity: element.quantity,
+                    imagePath: obj.imagePath
+                }
+                array.push(order)
+            }else{
+                array.push(element)
+            }
+        });
+        this.setState({
+            completedOrdersWarehouse: array
+        })
+    }
+
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
@@ -65,7 +88,9 @@ class HomeScreen extends React.Component {
                 this.props.getRecentWorks();
                 // this.props.getUncompletedOrders();
                 this.props.getUncompletedExpressOrders();
-                this.props.getCompletedWarehouseOrders();
+                this.props.getCompletedWarehouseOrders(() => {
+                    this.setCompletedWarehouseOrders();
+                });
             })
         } else {
             this.props.history.push('/login');
@@ -323,8 +348,6 @@ class HomeScreen extends React.Component {
 
                 )
             }
-
-
         ]
 
         const productColumns = [
@@ -574,13 +597,24 @@ class HomeScreen extends React.Component {
             {
                 title: 'Kodas',
                 dataIndex: 'productCode',
-                width: '50%'
+                width: '30%'
             },
             {
                 title: 'Kiekis',
                 dataIndex: 'quantity',
-                width: '50%'
-            }
+                width: '30%'
+            },
+            {
+                title: 'Nuotrauka',
+                dataIndex: 'imagePath',
+                width: '30%',
+                render: (text, record, index) => (
+                    <div>
+                        {text === null || text === undefined ?
+                            <p></p> : <Image src={text} height={70}/>}
+                    </div>
+                )
+            },
         ]
         return (
             <>
@@ -729,7 +763,7 @@ class HomeScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={completedWarehouseOrders}
-                                        dataSource={this.props.orderDetailsReducer.completed_warehouse_orders}
+                                        dataSource={this.state.completedOrdersWarehouse}
                                         pagination={false}
                                         bordered
                                         scroll={{ x: 'calc(300px + 50%)' }}

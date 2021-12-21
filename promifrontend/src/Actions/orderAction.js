@@ -71,7 +71,7 @@ export const getUncompletedExpressOrders = (callback) => async(dispatch,getState
     }
 }
 
-export const getCompletedWarehouseOrders = () => async(dispatch,getState)=>{
+export const getCompletedWarehouseOrders = (callback) => async(dispatch,getState)=>{
     try{
         dispatch({
             type: 'COMPLETED_WAREHOUSE_ORDERS_FETCH_REQUEST'
@@ -82,6 +82,7 @@ export const getCompletedWarehouseOrders = () => async(dispatch,getState)=>{
             type: 'COMPLETED_WAREHOUSE_ORDERS_FETCH_SUCCESS',
             payload: response.data
         });
+        callback()
     }catch (error) {
         dispatch({
             type: 'COMPLETED_WAREHOUSE_ORDERS_FETCH_FAIL',
