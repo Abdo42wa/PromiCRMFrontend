@@ -107,7 +107,7 @@ function AddOrderComponent(props) {
 
 
         console.log(clone)
-        if (order.orderType === "Sandėlis") {
+        if (order.orderType === "Sandelis") {
 
             props.saveorderwarehouse(formData);
 
@@ -152,7 +152,7 @@ function AddOrderComponent(props) {
                     >
                         <Option key={1} value={'Standartinis'}>{'Standartinis'}</Option>
                         <Option key={2} value={'Ne-standartinis'}>{'Ne-standartinis'}</Option>
-                        <Option key={3} value={'Sandėlis'}>{'Sandėlis'}</Option>
+                        <Option key={3} value={'Sandelis'}>{'Sandelis'}</Option>
                     </Select>
                     {/* <Form.Item key="name" name="name" label="Užsakymo tipas">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite tipą" value={order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />

@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag } from 'antd'
 import { Image } from 'antd'
-import { getOrders,getUncompletedOrders,getUncompletedExpressOrders } from '../Actions/orderAction'
+import { getOrders,getUncompletedOrders,getUncompletedExpressOrders, getCompletedWarehouseOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -44,7 +44,7 @@ class HomeScreen extends React.Component {
                 this.props.getOrders(() => {
 
                     const orderDataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
-
+                    console.log('orders:'+JSON.stringify(orderDataClone))
                     this.setState({
                         orders: orderDataClone
                     });
@@ -59,11 +59,13 @@ class HomeScreen extends React.Component {
                         products: productsDataClone
                     });
                     console.log(this.getTime());
+
                 })
 
                 this.props.getRecentWorks();
                 // this.props.getUncompletedOrders();
                 this.props.getUncompletedExpressOrders();
+                this.props.getCompletedWarehouseOrders();
             })
         } else {
             this.props.history.push('/login');
@@ -566,6 +568,20 @@ class HomeScreen extends React.Component {
 
 
         ]
+
+
+        const completedWarehouseOrders = [
+            {
+                title: 'Kodas',
+                dataIndex: 'productCode',
+                width: '50%'
+            },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '50%'
+            }
+        ]
         return (
             <>
                 <h1>Pagrindinis</h1>
@@ -664,7 +680,7 @@ class HomeScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={uncompletedExpressOrderColumns}
-                                        dataSource={this.props.uncompletedOrdersReducer.uncompleted_express_orders}
+                                        dataSource={this.props.orderDetailsReducer.uncompleted_express_orders}
                                         pagination={{ pageSize: 10 }}
                                         bordered
                                         scroll={{ x: 'calc(200px + 50%)' }}
@@ -699,7 +715,30 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
+                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h5>Gaminių kiekis sandėlyje</h5>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={completedWarehouseOrders}
+                                        dataSource={this.props.orderDetailsReducer.completed_warehouse_orders}
+                                        pagination={false}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
+                                    />
 
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
 
                     <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
@@ -742,8 +781,8 @@ const mapStateToProps = (state) => {
         productsReducer: state.productsReducer,
         materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
         recentWorksReducer: state.recentWorksReducer,
-        uncompletedOrdersReducer: state.uncompletedOrdersReducer
+        orderDetailsReducer: state.orderDetailsReducer
     }
 }
-export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders,getUncompletedOrders,getUncompletedExpressOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders,getUncompletedOrders,getUncompletedExpressOrders, getCompletedWarehouseOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
 

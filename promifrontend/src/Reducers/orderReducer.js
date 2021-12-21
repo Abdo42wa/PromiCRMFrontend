@@ -1,4 +1,4 @@
-export const orderReducer = (state = { orders: [],  }, action) => {
+export const orderReducer = (state = { orders: [] }, action) => {
     switch (action.type) {
         case 'ORDER_FETCH_REQUEST':
             return { ...state, loading: true }
@@ -9,7 +9,6 @@ export const orderReducer = (state = { orders: [],  }, action) => {
         case 'ORDER_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'ORDER_CREATE_SUCCESS':
-
             const newOrder = [...state.orders, { ...action.payload }]
             return { ...state, loading: false, orders: newOrder }
         case 'ORDER_CREATE_FAIL':
