@@ -173,7 +173,7 @@ function AddOrderComponent(props) {
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
                     </Form.Item>
                     <Form.Item key="name7" name="name7" label="Prekės kodas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite prekės kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
+                        <Input required style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite prekės kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
                     </Form.Item>
                     <Form.Item key="name8" name="name8" label="Gamybos laikas">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />

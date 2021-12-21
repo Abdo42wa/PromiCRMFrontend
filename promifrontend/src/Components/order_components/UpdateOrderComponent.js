@@ -220,7 +220,7 @@ function UpdateOrderComponent(props) {
                     {/* <p style={{ ...textStyle }}>Nuotrauka</p>
                     <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={order.photo} onChange={(e) => onDataChange(e.target.value, "photo")} /> */}
                     <p style={{ ...textStyle }}>Prekės kodas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value, "productCode")} />
+                    <Input required style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
                     <p style={{ ...textStyle }}>Gamybos laikas</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
                     <p style={{ ...textStyle }}> Įrenginys</p>

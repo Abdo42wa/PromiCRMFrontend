@@ -255,7 +255,7 @@ function UpdateProductComponent(props) {
                     <p style={{ ...textStyle }}>Produkto nuoroda</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite nuorodą" value={product.link} onChange={(e) => onDataChange(e.target.value, "link")} />
                     <p style={{ ...textStyle }}>Prekės kodas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite prekės kodą" value={product.code} onChange={(e) => onDataChange(e.target.value, "code")} />
+                    <Input required style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite prekės kodą" value={product.code} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "code")} />
                     <p style={{ ...textStyle }}>Produkto kategorija</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite kategoriją" value={product.category} onChange={(e) => onDataChange(e.target.value, "category")} />
                     <p style={{ ...textStyle }}>Produkto pavadinimas</p>
