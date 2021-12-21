@@ -1,8 +1,8 @@
 import React from 'react'
 import { getUsers } from '../Actions/userListActions'
-import { Table, Card, Typography, Col, Row, Tag } from 'antd'
+import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders,getUncompletedOrders,getUncompletedExpressOrders, getCompletedWarehouseOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -28,7 +28,8 @@ class HomeScreen extends React.Component {
             milingTime: 0,
             packingTime: 0,
             uncompletedExpressOrders: [],
-            completedOrdersWarehouse: []
+            completedOrdersWarehouse: [],
+            done: false
         }
     }
     // const dispatch = useDispatch();
@@ -39,15 +40,15 @@ class HomeScreen extends React.Component {
         const products = JSON.parse(JSON.stringify(this.state.products))
         const array = []
         warehouseOrders.forEach(element => {
-            let obj = products.find((obj)=>obj.code === element.productCode);
-            if(obj !== undefined){
+            let obj = products.find((obj) => obj.code === element.productCode);
+            if (obj !== undefined) {
                 const order = {
                     productCode: element.productCode,
                     quantity: element.quantity,
                     imagePath: obj.imagePath
                 }
                 array.push(order)
-            }else{
+            } else {
                 array.push(element)
             }
         });
@@ -67,7 +68,7 @@ class HomeScreen extends React.Component {
                 this.props.getOrders(() => {
 
                     const orderDataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
-                    console.log('orders:'+JSON.stringify(orderDataClone))
+                    console.log('orders:' + JSON.stringify(orderDataClone))
                     this.setState({
                         orders: orderDataClone
                     });
@@ -106,31 +107,71 @@ class HomeScreen extends React.Component {
 
     getTime(type) {
         const array = this.state.products //.map((x) => x.collectionTime)
-        var sum = array.map((x) => x.collectionTime).reduce((a, b) => {
-            return a + b;
+        const orderarray = this.state.orders
+        const orderCode = orderarray.map((x) => x.productCode)
+        const orderStatus = orderarray.map((x) => x.status)
+        const productCode = array.map((x) => x.code)
+        console.log(orderCode)
+        console.log(productCode)
+
+        orderCode.forEach(element => {
+            productCode.forEach(element1 => {
+                orderStatus.forEach(element2 => {
+                    console.log(element)
+                    console.log(element1)
+                    if (element === element1 && element2 === false) {
+                        console.log('true')
+                        var sum = array.map((x) => x.collectionTime).reduce((a, b) => {
+                            return a + b;
+                        });
+                        var sum1 = array.map((x) => x.bondingTime).reduce((a, b) => {
+                            return a + b;
+                        });
+                        var sum2 = array.map((x) => x.laserTime).reduce((a, b) => {
+                            return a + b;
+                        });
+                        var sum3 = array.map((x) => x.paintingTime).reduce((a, b) => {
+                            return a + b;
+                        });
+                        var sum4 = array.map((x) => x.milingTime).reduce((a, b) => {
+                            return a + b;
+                        });
+                        var sum5 = array.map((x) => x.packingTime).reduce((a, b) => {
+                            return a + b;
+                        });
+                        this.setState({
+                            collectionTime: sum,
+                            bondingTime: sum1,
+                            laserTime: sum2,
+                            paintingTime: sum3,
+                            milingTime: sum4,
+                            packingTime: sum5
+                        })
+                    }
+                })
+            })
         });
-        var sum1 = array.map((x) => x.bondingTime).reduce((a, b) => {
-            return a + b;
-        });
-        var sum2 = array.map((x) => x.laserTime).reduce((a, b) => {
-            return a + b;
-        });
-        var sum3 = array.map((x) => x.paintingTime).reduce((a, b) => {
-            return a + b;
-        });
-        var sum4 = array.map((x) => x.milingTime).reduce((a, b) => {
-            return a + b;
-        });
-        var sum5 = array.map((x) => x.packingTime).reduce((a, b) => {
-            return a + b;
-        });
+
+
+    }
+    onChange(e, id, userID, discription) {
+        const postObj = {
+            "userId": userID,
+            "darbasApibūdinimas": discription,
+            "atlikta": e.target.value,
+        }
+        const reducerObj = {
+            "id": id,
+            "userId": userID,
+            "darbasApibūdinimas": discription,
+            "atlikta": e.target.value
+        }
+        this.props.updateWork(postObj, reducerObj);
+        console.log(postObj)
+        console.log(reducerObj)
+
         this.setState({
-            collectionTime: sum,
-            bondingTime: sum1,
-            laserTime: sum2,
-            paintingTime: sum3,
-            milingTime: sum4,
-            packingTime: sum5
+            done: !this.state.done
         })
     }
     render() {
@@ -153,8 +194,8 @@ class HomeScreen extends React.Component {
                 dataIndex: 'atlikta',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
-                    // <Checkbox value={record.id} onChange={(e) => this.onChange(e)} checked={text === false ? false : true}>Atlikta</Checkbox>
+                    // <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
+                    <Checkbox onChange={(e) => this.onChange(e, record.id, record.user.id, record.darbasApibūdinimas)} value={this.state.done} defaultChecked={text} />
                 )
             },
         ]
@@ -611,7 +652,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => (
                     <div>
                         {text === null || text === undefined ?
-                            <p></p> : <Image src={text} height={70}/>}
+                            <p></p> : <Image src={text} height={70} />}
                     </div>
                 )
             },
@@ -723,7 +764,7 @@ class HomeScreen extends React.Component {
                                 </Card>
                             </Col>
                         </Row>
-                    </Col> 
+                    </Col>
 
                     <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
@@ -788,7 +829,7 @@ class HomeScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={recentWorksColumns}
-                                        dataSource={this.props.recentWorksReducer.recent_works.slice(0,10)}
+                                        dataSource={this.props.recentWorksReducer.recent_works.slice(0, 10)}
                                         pagination={false}
                                         bordered
                                         scroll={{ x: 'calc(300px + 50%)' }}
@@ -818,5 +859,5 @@ const mapStateToProps = (state) => {
         orderDetailsReducer: state.orderDetailsReducer
     }
 }
-export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders,getUncompletedOrders,getUncompletedExpressOrders, getCompletedWarehouseOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getUncompletedOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
 
