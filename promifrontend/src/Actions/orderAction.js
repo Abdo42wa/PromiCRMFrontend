@@ -24,20 +24,20 @@ export const getOrders = (callback) => async (dispatch, getState) => {
     }
 }
 
-export const getUncompletedOrders = () => async(dispatch,getState)=>{
+export const getUncompletedWarehouseOrders = () => async(dispatch,getState)=>{
     try{
         dispatch({
-            type: 'UNCOMPLETED_ORDERS_FETCH_REQUEST'
+            type: 'UNCOMPLETED_WAREHOUSE_ORDERS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/uncompleted`,{headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/warehouseUncompleted`,{headers: {Authorization: `Bearer ${token}`}})
         dispatch({
-            type: 'UNCOMPLETED_ORDERS_FETCH_SUCCESS',
+            type: 'UNCOMPLETED_WAREHOUSE_ORDERS_FETCH_SUCCESS',
             payload: response.data
         })
     }catch (error) {
         dispatch({
-            type: 'UNCOMPLETED_ORDERS_FETCH_FAIL',
+            type: 'UNCOMPLETED_WAREHOUSE_ORDERS_FETCH_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
