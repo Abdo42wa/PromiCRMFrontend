@@ -3,6 +3,7 @@ import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../Actions/userAction'
+import promiLogo from '../Images/promi-logo_baltas2.png'
 import Cookies from 'universal-cookie'
 
 
@@ -23,7 +24,16 @@ const Header = () => {
             <Navbar bg='dark' variant="dark" expand='lg' className='py-4'>
                 <Container>
                     <LinkContainer to='/'>
-                        <Navbar.Brand style={{ fontSize: '30px !important;' }}>Promi</Navbar.Brand>
+                        <Navbar.Brand href="/" style={{ fontSize: '30px !important;' }}>
+                            <img
+                                src={promiLogo}
+                                width="100%"
+                                height="100%"
+                                className="d-inline-block align-top"
+                                alt="Promi"
+                            />
+                            {/*  */}
+                        </Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
