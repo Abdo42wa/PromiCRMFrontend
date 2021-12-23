@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -69,6 +69,7 @@ class HomeScreen extends React.Component {
                 this.props.getUncompletedExpressOrders();
                 this.props.getCompletedWarehouseOrders();
                 this.props.getUncompletedWarehouseOrders();
+                this.props.getOrdersUncompleted();
             })
         } else {
             this.props.history.push('/login');
@@ -634,6 +635,41 @@ class HomeScreen extends React.Component {
                 )
             },
         ]
+
+        //daugiausia nepagamintu produktu
+        const uncompletedOrders = [
+            {
+                title: 'Kodas',
+                dataIndex: 'productCode',
+                width: '25%'
+            },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '25%'
+            },
+            {
+                title: 'Nuotrauka',
+                dataIndex: 'imagePath',
+                width: '25%',
+                render: (text, record, index) => (
+                    <div>
+                        {text === null === text === undefined || text.trim() === ""?
+                            <p></p> : <Image src={text} height={70} />}
+                    </div>
+                )
+            },
+            {
+                title: 'Deadline',
+                dataIndex: 'orderFinishDate',
+                width: '25%',
+                render: (text,record,index)=>(
+                    <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
+                )
+            }
+        ]
+
+
         const uncompletedWarehouseOrders = [
             {
                 title: 'Kodas',
@@ -798,6 +834,33 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
+
+                    {/* daugiausia nepagamintu produkt */}
+                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h5>Daugiausia nepagamintų produktų</h5>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={uncompletedOrders}
+                                        dataSource={this.props.orderDetailsReducer.uncompleted_orders}
+                                        pagination={false}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+
                     <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
@@ -891,5 +954,5 @@ const mapStateToProps = (state) => {
         orderDetailsReducer: state.orderDetailsReducer
     }
 }
-export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,getOrdersUncompleted, getCompletedWarehouseOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
 
