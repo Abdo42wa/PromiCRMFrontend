@@ -16,6 +16,7 @@ class OrderScrenn extends React.Component {
         this.state = {
             orders: [],
             imgPath: [],
+            productDevices: [],
             addOrderVisibility: false,
             updateOrder: {
                 visibility: false,
@@ -44,7 +45,7 @@ class OrderScrenn extends React.Component {
             })
         })
         this.unshowAddOrderModal();
-        //window.location.reload();
+        window.location.reload();
     }
 
     saveorderwarehouse = (postObj) => {
@@ -106,9 +107,10 @@ class OrderScrenn extends React.Component {
                     this.setState({
                         orders: dataClone
                     });
+                    this.getOrDerdevice();
 
                 })
-                //this.getOrderImage();
+
             });
 
         } else {
@@ -120,12 +122,25 @@ class OrderScrenn extends React.Component {
         //console.log(this.props.productsReducer.products.filter(word => word.code === "555GG"))
         const img = this.props.productsReducer.products.filter(word => word.code === kodas);
         console.log(img.map((x) => x.imagePath))
-        // this.setState({
-        //     imgPath: img
-        // }, () => console.log(this.state.imgPath))
         const arr = img.map((x) => x.imagePath)
         console.log(arr[0])
         return arr[0]
+    }
+
+    getOrDerdevice() {
+        const product = this.props.productsReducer.products.filter(word => word.code === "555GG");
+        const laserTime = product.map((x) => x.laserTime[0])
+        const milingTime = product.map((x) => x.milingTime[0])
+        const collectionTime = product.map((x) => x.collectionTime[0])
+        const packingTime = product.map((x) => x.packingTime[0])
+        const paintingTime = product.map((x) => x.paintingTime[0])
+        const bondingTime = product.map((x) => x.bondingTime[0])
+        console.log(product.mpa((x) => x.code))
+        console.log(product)
+
+        this.state.productDevices.push({ laserTime, milingTime, collectionTime, packingTime, paintingTime, bondingTime })
+        //return this.state.productDevices
+        console.log(this.state.productDevices)
     }
 
     render() {
@@ -222,11 +237,19 @@ class OrderScrenn extends React.Component {
                     <Typography.Text>{text.name}</Typography.Text>
                 )
             },
-            // {
-            //     title: 'Įrenginys',
-            //     dataIndex: 'device',
-            //     width: '10%'
-            // },
+            {
+                title: 'Įrenginys',
+                dataIndex: 'device',
+                width: '10%',
+                // render: (text, record, index) => (
+                //     <Typography.Text>{this.state.productDevices.forEach(element => {
+                //         (
+                //             <p>{element}</p>
+                //         )
+                //     })}</Typography.Text>
+
+                // )
+            },
             {
                 title: 'Gamybos laikas',
                 dataIndex: 'productionTime',

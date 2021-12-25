@@ -4,6 +4,7 @@ import { getCurrencies } from '../../Actions/currencyAction'
 import { getCustomers } from '../../Actions/customersActions'
 import { getCountries } from '../../Actions/countryAction'
 import { getUsers } from '../../Actions/userListActions'
+import { getSalesChannels } from '../../Actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -30,6 +31,7 @@ function UpdateOrderComponent(props) {
     const currencyReducer = useSelector((state) => state.currencyReducer);
     const countryReducer = useSelector((state) => state.countryReducer);
     const usersListReducer = useSelector((state) => state.usersListReducer)
+    const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
 
     const onBack = () => {
         props.onClose();
@@ -211,8 +213,22 @@ function UpdateOrderComponent(props) {
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
                     <p style={{ ...textStyle }}>Data</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} onChange={(e) => onDataChange(e.target.value, "date")} />
-                    <p style={{ ...textStyle }}>Platforma</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={order.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} />
+
+                    {/* <p style={{ ...textStyle }}>Platforma</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={order.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} /> */}
+                    <p style={{ marginBottom: '5px' }}>Platforma</p>
+                    <Select
+                        showSearch
+                        style={{ width: '320px' }}
+                        placeholder="Priskirkite platforma"
+                        optionFilterProp="children"
+                        value={order.platforma}
+                        onChange={(e) => onDataChange(e, "platforma")}
+                    >
+                        {salesChannelsReducer.salesChannels.map((element, index) => {
+                            return (<Option key={element.id} value={element.title}>{element.title}</Option>)
+                        })}
+                    </Select>
                     <p style={{ ...textStyle }}>Daugiau informacijos</p>
                     <Input required style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     <p style={{ ...textStyle }}>Kiekis</p>
@@ -223,8 +239,8 @@ function UpdateOrderComponent(props) {
                     <Input required style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
                     <p style={{ ...textStyle }}>Gamybos laikas</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
-                    <p style={{ ...textStyle }}> Įrenginys</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} />
+                    {/* <p style={{ ...textStyle }}> Įrenginys</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} /> */}
                     <p style={{ ...textStyle }}>Adresas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     <p style={{ ...textStyle }}>Komentaras</p>
