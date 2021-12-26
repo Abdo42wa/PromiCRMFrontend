@@ -5,6 +5,8 @@ import { getCustomers } from '../../Actions/customersActions'
 import { getCountries } from '../../Actions/countryAction'
 import { getUsers } from '../../Actions/userListActions'
 import { createWarehouseData } from '../../Actions/warehouseActions'
+import { getOrders } from '../../Actions/orderAction'
+import { getSalesChannels } from '../../Actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -44,6 +46,7 @@ function AddOrderComponent(props) {
     const currencyReducer = useSelector((state) => state.currencyReducer);
     const countryReducer = useSelector((state) => state.countryReducer);
     const usersListReducer = useSelector((state) => state.usersListReducer)
+    const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
     const orderReducer = useSelector((state) => state.orderReducer)
 
     const changeFile = (e) => {
@@ -58,15 +61,24 @@ function AddOrderComponent(props) {
         props.onClose();
     }
 
+    const getOrderNumber = () => {
+        const lastOrder = orderReducer.orders.slice(-1)
+        const orderNumber = lastOrder.map((x) => x.orderNumber)
+        console.log(orderNumber[0])
+        return orderNumber[0] + 1;
+    }
+
 
     const onDataChange = (value, inputName) => {
 
         if (inputName === 'orderNumber' ||
             inputName === 'customerId' || inputName === 'currencyId' ||
             inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
+            console.log(value);
             setOrder(prevState => ({
                 ...prevState,
                 [inputName]: Number(value)
+
             }))
         } else {
             setOrder(prevState => ({
@@ -122,8 +134,11 @@ function AddOrderComponent(props) {
         }));
         dispatch(getCurrencies());
         dispatch(getCountries());
-        dispatch(getUsers())
-
+        dispatch(getUsers());
+        dispatch(getSalesChannels(() => {
+        }));
+        dispatch(getOrders())
+        getOrderNumber();
     }, [dispatch]);
     return (
         <>
@@ -154,18 +169,28 @@ function AddOrderComponent(props) {
                         <Option key={2} value={'Ne-standartinis'}>{'Ne-standartinis'}</Option>
                         <Option key={3} value={'Sandelis'}>{'Sandelis'}</Option>
                     </Select>
-                    {/* <Form.Item key="name" name="name" label="Užsakymo tipas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite tipą" value={order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
-                    </Form.Item> */}
                     <Form.Item key="name1" name="name1" label="Užsakymo numeris">
-                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
+                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} defaultValue={getOrderNumber()} onChange={(e) => onDataChange(e, "orderNumber")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Data">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} onChange={(e) => onDataChange(e.target.value, "date")} />
                     </Form.Item>
-                    <Form.Item key="name3" name="name3" label="Užsakymo platforma">
+
+                    <p style={{ marginBottom: '5px' }}>Platforma</p>
+                    <Select
+                        showSearch
+                        style={{ width: '320px' }}
+                        placeholder="Priskirkite platforma"
+                        optionFilterProp="children"
+                        onChange={(e) => onDataChange(e, "platforma")}
+                    >
+                        {salesChannelsReducer.salesChannels.map((element, index) => {
+                            return (<Option key={element.id} value={element.title}>{element.title}</Option>)
+                        })}
+                    </Select>
+                    {/* <Form.Item key="name3" name="name3" label="Užsakymo platforma">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={order.platformas} onChange={(e) => onDataChange(e.target.value, "platforma")} />
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item key="name4" name="name4" label="Daugiau informacijos">
                         <Input required style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     </Form.Item>
@@ -178,9 +203,9 @@ function AddOrderComponent(props) {
                     <Form.Item key="name8" name="name8" label="Gamybos laikas">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
                     </Form.Item>
-                    <Form.Item key="name9" name="name9" label="Įrenginys">
+                    {/* <Form.Item key="name9" name="name9" label="Įrenginys">
                         <Input required style={{ width: '100%' }} placeholder="Pridėkite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} />
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item key="name10" name="name10" label="Adresas">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     </Form.Item>
