@@ -100,7 +100,7 @@ export const getOrdersUncompleted = () => async(dispatch,getState)=>{
             type: 'UNCOMPLETED_ORDERS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/uncompleted`);
+        const response = await promiAPI.get(`/api/Orders/uncompleted`, {headers: {Authorization: `Bearer ${token}`}});
         dispatch({
             type: 'UNCOMPLETED_ORDERS_FETCH_SUCCESS',
             payload: response.data
@@ -108,6 +108,51 @@ export const getOrdersUncompleted = () => async(dispatch,getState)=>{
     }catch (error) {
         dispatch({
             type: 'UNCOMPLETED_ORDERS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const getClientsOrders = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'CLIENT_ORDERS_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/clientsOrders`, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'CLIENT_ORDERS_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'CLIENT_ORDERS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const getLastWeeksCompletedOrders = (callback) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'LAST_WEEKS_ORDERS_FETCH_REQUEST'
+        });
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/weeksOrders`, {headers: {Authorization: `Bearer ${token}`}});
+        dispatch({
+            type: 'LAST_WEEKS_ORDERS_FETCH_SUCCESS',
+            payload: response.data
+        })
+        callback()
+    }catch (error) {
+        dispatch({
+            type: 'LAST_WEEKS_ORDERS_FETCH_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

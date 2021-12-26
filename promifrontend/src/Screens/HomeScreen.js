@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -11,6 +11,10 @@ import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions'
 import { getProducts } from '../Actions/productsActions'
 import { getRecentWorks } from '../Actions/recentWorksActions'
 import moment from 'moment';
+// import { Chart } from 'chart.js'
+import { Bar, Line } from 'react-chartjs-2';
+import BarChart from '../Components/BarChart'
+
 
 
 
@@ -29,13 +33,43 @@ class HomeScreen extends React.Component {
             packingTime: 0,
             uncompletedExpressOrders: [],
             completedOrdersWarehouse: [],
-            done: false
+            done: false,
+            lastWeeksMadeProducts: [],
+            lastWeeksMonths: []
         }
     }
     // const dispatch = useDispatch();
     // const usersReducer = useSelector(state => state.usersReducer)
     // const { currentUser } = usersReducer
-    
+
+    getLastWeeksMadeProducts = () => {
+        const clone = JSON.parse(JSON.stringify(this.props.orderDetailsReducer.last_weeks_orders));
+        console.log('clone' + JSON.stringify(clone))
+        const array = []
+        for (var i = 0; i < 5; i++) {
+            if (clone[i] !== null && clone[i] !== undefined) {
+                let quantity = clone[i].quantity;
+                for (var a = i + 1; a < clone.length; a++) {
+                    if (clone[i].weekNumber === clone[a].weekNumber) {
+                        quantity = quantity + clone[a].quantity;
+                        var values = clone.findIndex(x => x.id === clone[a].id)
+                        clone.splice(values, 1);
+                    }
+                }
+                const obj = {
+                    "quantity": quantity,
+                    "weekNumber": clone[i].weekNumber
+                }
+                array.push(obj)
+            } 
+        }
+        console.log('orders:' + JSON.stringify(clone))
+        console.log('array of orders:' + JSON.stringify(array))
+        this.setState({
+            lastWeeksMadeProducts: array
+        })
+    }
+
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getWorks(() => {
@@ -46,7 +80,7 @@ class HomeScreen extends React.Component {
                 this.props.getOrders(() => {
 
                     const orderDataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
-                    console.log('orders:' + JSON.stringify(orderDataClone))
+                    // console.log('orders:' + JSON.stringify(orderDataClone))
                     this.setState({
                         orders: orderDataClone
                     });
@@ -70,6 +104,9 @@ class HomeScreen extends React.Component {
                 this.props.getCompletedWarehouseOrders();
                 this.props.getUncompletedWarehouseOrders();
                 this.props.getOrdersUncompleted();
+                this.props.getLastWeeksCompletedOrders(() => {
+                    this.getLastWeeksMadeProducts()
+                })
             })
         } else {
             this.props.history.push('/login');
@@ -89,16 +126,16 @@ class HomeScreen extends React.Component {
         const orderCode = orderarray.map((x) => x.productCode)
         const orderStatus = orderarray.map((x) => x.status)
         const productCode = array.map((x) => x.code)
-        console.log(orderCode)
-        console.log(productCode)
+        // console.log(orderCode)
+        // console.log(productCode)
 
         orderCode.forEach(element => {
             productCode.forEach(element1 => {
                 orderStatus.forEach(element2 => {
-                    console.log(element)
-                    console.log(element1)
+                    // console.log(element)
+                    // console.log(element1)
                     if (element === element1 && element2 === false) {
-                        console.log('true')
+                        // console.log('true')
                         var sum = array.map((x) => x.collectionTime).reduce((a, b) => {
                             return a + b;
                         });
@@ -629,7 +666,7 @@ class HomeScreen extends React.Component {
                 width: '30%',
                 render: (text, record, index) => (
                     <div>
-                        {text === null === text === undefined || text.trim() === ""?
+                        {text === null === text === undefined || text.trim() === "" ?
                             <p></p> : <Image src={text} height={70} />}
                     </div>
                 )
@@ -654,7 +691,7 @@ class HomeScreen extends React.Component {
                 width: '25%',
                 render: (text, record, index) => (
                     <div>
-                        {text === null === text === undefined || text.trim() === ""?
+                        {text === null === text === undefined || text.trim() === "" ?
                             <p></p> : <Image src={text} height={70} />}
                     </div>
                 )
@@ -663,7 +700,7 @@ class HomeScreen extends React.Component {
                 title: 'Deadline',
                 dataIndex: 'orderFinishDate',
                 width: '25%',
-                render: (text,record,index)=>(
+                render: (text, record, index) => (
                     <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
                 )
             }
@@ -687,7 +724,7 @@ class HomeScreen extends React.Component {
                 width: '25%',
                 render: (text, record, index) => (
                     <div>
-                        {text === null === text === undefined || text.trim() === ""?
+                        {text === null === text === undefined || text.trim() === "" ?
                             <p></p> : <Image src={text} height={70} />}
                     </div>
                 )
@@ -696,8 +733,37 @@ class HomeScreen extends React.Component {
                 title: 'Deadline',
                 dataIndex: 'orderFinishDate',
                 width: '25%',
-                render: (text,record,index)=>(
+                render: (text, record, index) => (
                     <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
+                )
+            },
+        ]
+
+        const clientOrders = [
+            {
+                title: 'Data',
+                dataIndex: 'date',
+                width: '25%'
+            },
+            {
+                title: 'NR',
+                dataIndex: 'orderNumber',
+                width: '25%'
+            },
+            {
+                title: 'Klientas',
+                dataIndex: 'customer',
+                width: '25%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text.name}  {text.companyName}</Typography.Text>
+                )
+            },
+            {
+                title: 'Būklė',
+                dataIndex: 'status',
+                width: '25%',
+                render: (text, record, index) => (
+                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                 )
             },
         ]
@@ -705,6 +771,7 @@ class HomeScreen extends React.Component {
             <>
                 <h1>Pagrindinis</h1>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
+                    
                     <Row>
                         <Col span={10} >
                             {/* <Row gutter={16}>
@@ -775,6 +842,32 @@ class HomeScreen extends React.Component {
                                         rowKey="id"
                                         columns={orderColumns}
                                         dataSource={this.state.orders}
+                                        pagination={{ pageSize: 10 }}
+                                        bordered
+                                        scroll={{ x: 'calc(200px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                    {/* Klientu darbu lentele */}
+                    <Col span={24} style={{ marginTop: '20px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h5>Klientų darbų lentelė</h5>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={clientOrders}
+                                        dataSource={this.props.orderDetailsReducer.clients_orders}
                                         pagination={{ pageSize: 10 }}
                                         bordered
                                         scroll={{ x: 'calc(200px + 50%)' }}
@@ -934,6 +1027,25 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
+
+                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h5>Pagamintų gaminių kiekis</h5>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                <BarChart data={this.state.lastWeeksMadeProducts} />
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                    
                 </div>
 
 
@@ -954,5 +1066,5 @@ const mapStateToProps = (state) => {
         orderDetailsReducer: state.orderDetailsReducer
     }
 }
-export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,getOrdersUncompleted, getCompletedWarehouseOrders, getMaterialsWarehouseData, getProducts, getRecentWorks })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getCompletedWarehouseOrders, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks })(withRouter(HomeScreen))
 
