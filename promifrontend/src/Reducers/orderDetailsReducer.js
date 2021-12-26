@@ -4,7 +4,8 @@ export const orderDetailsReducer = (state = {
     uncompleted_warehouse_orders: [],
     uncompleted_orders: [],
     clients_orders: [],
-    last_weeks_orders: []
+    last_weeks_orders: [],
+    last_month_orders: []
 }, action) => {
     switch (action.type) {
         //uncompletedOrders: [],
@@ -45,6 +46,12 @@ export const orderDetailsReducer = (state = {
         case 'LAST_WEEKS_ORDERS_FETCH_SUCCESS':
             return {...state, loading: false, last_weeks_orders: action.payload}
         case 'LAST_WEEKS_ORDERS_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
+        case 'LAST_MONTH_ORDERS_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'LAST_MONTH_ORDERS_FETCH_SUCCESS':
+            return {...state, loading: false, last_month_orders: action.payload}
+        case 'LAST_MONTH_ORDERS_FETCH_FAIL':
             return {...state, loading: false, error: action.payload}
         default:
             return state;

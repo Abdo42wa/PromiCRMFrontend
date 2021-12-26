@@ -161,6 +161,29 @@ export const getLastWeeksCompletedOrders = (callback) => async(dispatch,getState
     }
 }
 
+export const getLastMonthCompletedOrders = (callback) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'LAST_MONTH_ORDERS_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/monthOrders`,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'LAST_MONTH_ORDERS_FETCH_SUCCESS',
+            payload: response.data
+        })
+        callback()
+    }catch (error) {
+        dispatch({
+            type: 'LAST_MONTH_ORDERS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const addOrder = (postObject, callback) => async (dispatch, getState) => {
     try {
         dispatch({

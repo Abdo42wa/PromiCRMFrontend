@@ -4,7 +4,7 @@ import Chart from 'chart.js/auto'
 import { weekNumber } from 'weeknumber'
 import moment from 'moment'
 
-function BarChart(props) {
+function LastWeeksProducts(props) {
     const numberOfWeek = weekNumber(new Date(moment().format("YYYY/MM/DD")))
 
     return (
@@ -51,4 +51,4 @@ function BarChart(props) {
     )
 }
 
-export default BarChart
+export default LastWeeksProducts

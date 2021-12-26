@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,getLastMonthCompletedOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -13,7 +13,8 @@ import { getRecentWorks } from '../Actions/recentWorksActions'
 import moment from 'moment';
 // import { Chart } from 'chart.js'
 import { Bar, Line } from 'react-chartjs-2';
-import BarChart from '../Components/BarChart'
+import LastWeeksProducts from '../Components/LastWeeksProducts'
+import LastMonthProducts from '../Components/LastMonthProducts'
 
 
 
@@ -35,7 +36,7 @@ class HomeScreen extends React.Component {
             completedOrdersWarehouse: [],
             done: false,
             lastWeeksMadeProducts: [],
-            lastWeeksMonths: []
+            lastMonthMadeProducts: []
         }
     }
     // const dispatch = useDispatch();
@@ -63,10 +64,36 @@ class HomeScreen extends React.Component {
                 array.push(obj)
             } 
         }
-        console.log('orders:' + JSON.stringify(clone))
         console.log('array of orders:' + JSON.stringify(array))
         this.setState({
             lastWeeksMadeProducts: array
+        })
+    }
+    
+    getLastMonthMadeProducts = () => {
+        const clone = JSON.parse(JSON.stringify(this.props.orderDetailsReducer.last_month_orders))
+        console.log('Month ORDERS: '+JSON.stringify(clone))
+        const array = []
+        for (var i = 0; i < 5; i++) {
+            if (clone[i] !== null && clone[i] !== undefined) {
+                let quantity = clone[i].quantity;
+                for (var a = i + 1; a < clone.length; a++) {
+                    if (moment(clone[i].orderFinishDate).format('YYYY/MM/DD') === moment(clone[a].orderFinishDate).format('YYYY/MM/DD')) {
+                        quantity = quantity + clone[a].quantity;
+                        var values = clone.findIndex(x => x.id === clone[a].id)
+                        clone.splice(values, 1);
+                    }
+                }
+                const obj = {
+                    "quantity": quantity,
+                    "orderFinishDate": moment(clone[i].orderFinishDate).format('YYYY/MM/DD')
+                }
+                array.push(obj)
+            } 
+        }
+        console.log('array of MONTH orders:' + JSON.stringify(array))
+        this.setState({
+            lastMonthMadeProducts: array
         })
     }
 
@@ -106,6 +133,9 @@ class HomeScreen extends React.Component {
                 this.props.getOrdersUncompleted();
                 this.props.getLastWeeksCompletedOrders(() => {
                     this.getLastWeeksMadeProducts()
+                })
+                this.props.getLastMonthCompletedOrders(() => {
+                    this.getLastMonthMadeProducts();
                 })
             })
         } else {
@@ -1032,6 +1062,23 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h5>Paskutinių gaminių ataskaita per paskutines 30 dienų</h5>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                <LastMonthProducts data={this.state.lastMonthMadeProducts} />
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
                                     <h5>Pagamintų gaminių kiekis</h5>
                                 </div>
                             </Col>
@@ -1039,7 +1086,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                <BarChart data={this.state.lastWeeksMadeProducts} />
+                                <LastWeeksProducts data={this.state.lastWeeksMadeProducts} />
                                 </Card>
                             </Col>
                         </Row>
@@ -1066,5 +1113,5 @@ const mapStateToProps = (state) => {
         orderDetailsReducer: state.orderDetailsReducer
     }
 }
-export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getCompletedWarehouseOrders, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getCompletedWarehouseOrders, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks, getLastMonthCompletedOrders })(withRouter(HomeScreen))
 
