@@ -121,26 +121,40 @@ class OrderScrenn extends React.Component {
     getOrderImage(kodas) {
         //console.log(this.props.productsReducer.products.filter(word => word.code === "555GG"))
         const img = this.props.productsReducer.products.filter(word => word.code === kodas);
-        console.log(img.map((x) => x.imagePath))
+        //console.log(img.map((x) => x.imagePath))
         const arr = img.map((x) => x.imagePath)
-        console.log(arr[0])
+        //console.log(arr[0])
         return arr[0]
     }
 
-    getOrDerdevice() {
-        const product = this.props.productsReducer.products.filter(word => word.code === "555GG");
-        const laserTime = product.map((x) => x.laserTime[0])
-        const milingTime = product.map((x) => x.milingTime[0])
-        const collectionTime = product.map((x) => x.collectionTime[0])
-        const packingTime = product.map((x) => x.packingTime[0])
-        const paintingTime = product.map((x) => x.paintingTime[0])
-        const bondingTime = product.map((x) => x.bondingTime[0])
-        console.log(product.mpa((x) => x.code))
-        console.log(product)
+    getOrDerdevice(productCode) {
+        const product = this.props.productsReducer.products.find(word => word.code === productCode);
+        const laserTime = product.laserTime
+        const milingTime = product.milingTime
+        const collectionTime = product.collectionTime
+        const packingTime = product.packingTime
+        const paintingTime = product.paintingTime
+        const bondingTime = product.bondingTime
+
+        //console.log(product + 'sssssssssssssssssssssssssssssssssssss')
+        console.log(productCode)
 
         this.state.productDevices.push({ laserTime, milingTime, collectionTime, packingTime, paintingTime, bondingTime })
-        //return this.state.productDevices
-        console.log(this.state.productDevices)
+        //
+        // console.log(this.state.productDevices.map(element => element.laserTime))
+        // console.log(this.state.productDevices)
+        if (laserTime !== undefined) {
+            return (
+                [
+                    { id: 1, name: "laserTime", value: laserTime },
+                    { id: 2, name: "milingTime", value: milingTime },
+                    { id: 3, name: "collectionTime", value: collectionTime },
+                    { id: 4, name: "packingTime", value: packingTime },
+                    { id: 5, name: "paintingTime", value: paintingTime },
+                    { id: 6, name: "bondingTime", value: bondingTime }
+                ]
+            )
+        }
     }
 
     render() {
@@ -241,14 +255,22 @@ class OrderScrenn extends React.Component {
                 title: 'Įrenginys',
                 dataIndex: 'device',
                 width: '10%',
-                // render: (text, record, index) => (
-                //     <Typography.Text>{this.state.productDevices.forEach(element => {
-                //         (
-                //             <p>{element}</p>
-                //         )
-                //     })}</Typography.Text>
+                render: (text, record, index) => (
+                    <div>
+                        {/* {this.state.productDevices != null && this.state.productDevices.map((obj, index) => (
+                            <Typography.Text>{obj.bondingTime},</Typography.Text>
+                        ))} */}
+                        {/* {this.getOrDerdevice()} */}
+                        {this.getOrDerdevice(record.productCode) != null && this.getOrDerdevice(record.productCode).map(item => {
+                            return (
+                                // <div>{item.value} {item.name}  </div>
+                                item.value !== 0 && <Tag>{item.value} {item.name}</Tag>
+                            )
+                        })}
 
-                // )
+                    </div>
+
+                )
             },
             {
                 title: 'Gamybos laikas',

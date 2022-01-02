@@ -4,6 +4,7 @@ import { getCurrencies } from '../../Actions/currencyAction'
 import { getCustomers } from '../../Actions/customersActions'
 import { getCountries } from '../../Actions/countryAction'
 import { getUsers } from '../../Actions/userListActions'
+import { getProducts } from '../../Actions/productsActions'
 import { createWarehouseData } from '../../Actions/warehouseActions'
 import { getOrders } from '../../Actions/orderAction'
 import { getSalesChannels } from '../../Actions/salesChannelsActions'
@@ -47,6 +48,7 @@ function AddOrderComponent(props) {
     const countryReducer = useSelector((state) => state.countryReducer);
     const usersListReducer = useSelector((state) => state.usersListReducer)
     const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
+    const productsReducer = useSelector((state) => state.productsReducer)
     const orderReducer = useSelector((state) => state.orderReducer)
 
     const changeFile = (e) => {
@@ -89,6 +91,16 @@ function AddOrderComponent(props) {
         }
     }
 
+    const getOrderId = (productCode) => {
+        //var productCode = "555GG";
+        const product = productsReducer.products.find(element => element.code === productCode)
+        console.log(product.id)
+        console.log(productsReducer.products.find(element => element.code === productCode))
+        return product.id;
+
+
+    }
+
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(order));
         const formData = new FormData();
@@ -98,7 +110,7 @@ function AddOrderComponent(props) {
         formData.append("userId", clone.userId)
         formData.append("orderType", clone.orderType)
         formData.append("status", clone.status)
-        formData.append("orderNumber", clone.orderNumber)
+        formData.append("orderNumber", getOrderNumber())
         formData.append("date", clone.date)
         formData.append("platforma", clone.platforma)
         formData.append("moreInfo", clone.moreInfo)
@@ -114,6 +126,7 @@ function AddOrderComponent(props) {
         formData.append("price", clone.price)
         formData.append("currencyId", clone.currencyId)
         formData.append("vat", clone.vat)
+        formData.append("productID", getOrderId(clone.productCode))
         formData.append("orderFinishDate", clone.orderFinishDate)
         //formData.append("file", file)
 
@@ -139,6 +152,8 @@ function AddOrderComponent(props) {
         }));
         dispatch(getOrders())
         getOrderNumber();
+        getProducts();
+        //getOrderId();
     }, [dispatch]);
     return (
         <>
@@ -159,8 +174,9 @@ function AddOrderComponent(props) {
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ marginBottom: '5px' }}>Užsakymo tipas</p>
                     <Select
+
                         showSearch
-                        style={{ width: '320px' }}
+                        style={{ width: '100%' }}
                         placeholder="Įrašykite tipą"
                         optionFilterProp="children"
                         onChange={(e) => onDataChange(e, "orderType")}
@@ -173,13 +189,13 @@ function AddOrderComponent(props) {
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} defaultValue={getOrderNumber()} onChange={(e) => onDataChange(e, "orderNumber")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Data">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} onChange={(e) => onDataChange(e.target.value, "date")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} defaultValue={moment().format("YYYY/MM/DD")} onChange={(e) => onDataChange(e.target.value, "date")} />
                     </Form.Item>
 
                     <p style={{ marginBottom: '5px' }}>Platforma</p>
                     <Select
                         showSearch
-                        style={{ width: '320px' }}
+                        style={{ width: '100%' }}
                         placeholder="Priskirkite platforma"
                         optionFilterProp="children"
                         onChange={(e) => onDataChange(e, "platforma")}
@@ -197,9 +213,22 @@ function AddOrderComponent(props) {
                     <Form.Item key="name5" name="name5" label="Kiekis">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
                     </Form.Item>
-                    <Form.Item key="name7" name="name7" label="Prekės kodas">
+                    {/* <Form.Item key="name7" name="name7" label="Prekės kodas">
                         <Input required style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite prekės kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
-                    </Form.Item>
+                    </Form.Item> */}
+
+                    <p style={{ marginBottom: '5px' }}>Prekės kodas</p>
+                    <Select
+                        showSearch
+                        style={{ width: '100%' }}
+                        placeholder="Priskirkite prekės kodą"
+                        optionFilterProp="children"
+                        onChange={(e) => onDataChange(e, "productCode")}
+                    >
+                        {productsReducer.products.map((element, index) => {
+                            return (<Option key={element.id} value={element.code}>{element.code}</Option>)
+                        })}
+                    </Select>
                     <Form.Item key="name8" name="name8" label="Gamybos laikas">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
                     </Form.Item>
@@ -228,7 +257,7 @@ function AddOrderComponent(props) {
                     <p style={{ marginBottom: '5px' }}>Siuntos tipas</p>
                     <Select
                         showSearch
-                        style={{ width: '320px' }}
+                        style={{ width: '100%' }}
                         placeholder="Priskirkite tipą"
                         optionFilterProp="children"
                         onChange={(e) => onDataChange(e, "shipmentTypeId")}
@@ -239,7 +268,7 @@ function AddOrderComponent(props) {
                     <p style={{ marginBottom: '5px' }}>Klientas</p>
                     <Select
                         showSearch
-                        style={{ width: '320px' }}
+                        style={{ width: '100%' }}
                         placeholder="Priskirkite klientą"
                         optionFilterProp="children"
                         onChange={(e) => onDataChange(e, "customerId")}
@@ -252,7 +281,7 @@ function AddOrderComponent(props) {
                     <p style={{ marginBottom: '5px' }}>Valiuta</p>
                     <Select
                         showSearch
-                        style={{ width: '320px' }}
+                        style={{ width: '100%' }}
                         placeholder="Pasirinkite valiutą"
                         optionFilterProp="children"
                         onChange={(e) => onDataChange(e, "currencyId")}
@@ -265,7 +294,7 @@ function AddOrderComponent(props) {
                     <p style={{ marginBottom: '5px' }}>Šalis</p>
                     <Select
                         showSearch
-                        style={{ width: '320px' }}
+                        style={{ width: '100%' }}
                         placeholder="Priskirkite šalį"
                         optionFilterProp="children"
                         onChange={(e) => onDataChange(e, "countryId")}
@@ -278,7 +307,7 @@ function AddOrderComponent(props) {
                     <p style={{ marginBottom: '5px' }}>Priskirtas darbuotojas</p>
                     <Select
                         showSearch
-                        style={{ width: '320px' }}
+                        style={{ width: '100%' }}
                         placeholder="Priskirkite darbuotoją"
                         optionFilterProp="children"
                         onChange={(e) => onDataChange(e, "userId")}
