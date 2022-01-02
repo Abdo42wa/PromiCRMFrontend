@@ -198,7 +198,7 @@ function AddProductComponent(props) {
                         })}
                     </Select> */}
 
-                    <p style={{ marginBottom: '5px' }}>Užsakymas</p>
+                    {/* <p style={{ marginBottom: '5px' }}>Užsakymas</p>
                     <Select
                         showSearch
                         style={{ width: '320px' }}
@@ -211,7 +211,7 @@ function AddProductComponent(props) {
                         {orderReducer.orders.map((element, index) => {
                             return (<Option key={element.id} value={element.id}>{element.orderNumber}</Option>)
                         })}
-                    </Select>
+                    </Select> */}
 
                 </Form>
             </Modal>
