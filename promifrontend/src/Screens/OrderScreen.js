@@ -143,15 +143,15 @@ class OrderScrenn extends React.Component {
         //
         // console.log(this.state.productDevices.map(element => element.laserTime))
         // console.log(this.state.productDevices)
-        if (laserTime !== undefined) {
+        if (product !== undefined) {
             return (
                 [
-                    { id: 1, name: "laserTime", value: laserTime },
-                    { id: 2, name: "milingTime", value: milingTime },
-                    { id: 3, name: "collectionTime", value: collectionTime },
-                    { id: 4, name: "packingTime", value: packingTime },
-                    { id: 5, name: "paintingTime", value: paintingTime },
-                    { id: 6, name: "bondingTime", value: bondingTime }
+                    { id: 1, name: "Lazeriavimo laikas", value: laserTime },
+                    { id: 2, name: "Frezavimo laikas", value: milingTime },
+                    { id: 3, name: "Surinkimo laikas", value: collectionTime },
+                    { id: 4, name: "Pakavimo laikas", value: packingTime },
+                    { id: 5, name: "Dažymo laikas", value: paintingTime },
+                    { id: 6, name: "Suklijavimo laikas", value: bondingTime }
                 ]
             )
         }
@@ -254,17 +254,13 @@ class OrderScrenn extends React.Component {
             {
                 title: 'Įrenginys',
                 dataIndex: 'device',
-                width: '10%',
+                width: '90%',
                 render: (text, record, index) => (
                     <div>
-                        {/* {this.state.productDevices != null && this.state.productDevices.map((obj, index) => (
-                            <Typography.Text>{obj.bondingTime},</Typography.Text>
-                        ))} */}
-                        {/* {this.getOrDerdevice()} */}
+
                         {this.getOrDerdevice(record.productCode) != null && this.getOrDerdevice(record.productCode).map(item => {
                             return (
-                                // <div>{item.value} {item.name}  </div>
-                                item.value !== 0 && <Tag>{item.value} {item.name}</Tag>
+                                item.value !== 0 && <Tag style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
                             )
                         })}
 
