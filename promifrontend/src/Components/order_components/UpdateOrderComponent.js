@@ -25,6 +25,7 @@ const textStyle = {
 function UpdateOrderComponent(props) {
     const dispatch = useDispatch();
     const [order, setOrder] = useState({});
+    const [sandelis, setSandelis] = useState(false);
     const [file, setFile] = useState();
     const [fileChanged, setFileChanged] = useState(0)
     const customersReducer = useSelector((state) => state.customersReducer);
@@ -55,6 +56,8 @@ function UpdateOrderComponent(props) {
                 [inputName]: value
             }))
         }
+
+
     }
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(order));
@@ -152,6 +155,7 @@ function UpdateOrderComponent(props) {
     }
 
     useEffect(() => {
+        dispatch(getUsers());
         dispatch(getCurrencies(() => {
             dispatch(getCountries(() => {
                 dispatch(getCustomers(() => {
@@ -182,6 +186,11 @@ function UpdateOrderComponent(props) {
                         "imageName": props.record.imageName
                     }
                     setOrder(obj);
+                    if (props.record.orderType === "Sandelis") {
+                        setSandelis(true);
+                    } else {
+                        setSandelis(false);
+                    }
 
 
                 }))
@@ -218,6 +227,7 @@ function UpdateOrderComponent(props) {
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={order.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} /> */}
                     <p style={{ marginBottom: '5px' }}>Platforma</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite platforma"
@@ -242,11 +252,11 @@ function UpdateOrderComponent(props) {
                     {/* <p style={{ ...textStyle }}> Įrenginys</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} /> */}
                     <p style={{ ...textStyle }}>Adresas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
+                    <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     <p style={{ ...textStyle }}>Komentaras</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={order.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
                     <p style={{ ...textStyle }}>Kaina</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e.target.value, "price")} />
+                    <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e.target.value, "price")} />
                     <p style={{ ...textStyle }}>Vat</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                     <p style={{ ...textStyle }}>Užsakymo pabaigos data</p>
@@ -266,6 +276,7 @@ function UpdateOrderComponent(props) {
                         </div>}
                     <p style={{ marginBottom: '5px' }}>Siuntos statusas</p>
                     <Select
+
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite statusą"
@@ -280,6 +291,7 @@ function UpdateOrderComponent(props) {
 
                     <p style={{ marginBottom: '5px' }}>Siuntos tipas</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite tipo"
@@ -293,6 +305,7 @@ function UpdateOrderComponent(props) {
                     </Select>
                     <p style={{ marginBottom: '5px' }}>Klientas</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite klientą"
@@ -308,6 +321,7 @@ function UpdateOrderComponent(props) {
 
                     <p style={{ marginBottom: '5px' }}>Valiuta</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite valiutą"
@@ -323,6 +337,7 @@ function UpdateOrderComponent(props) {
 
                     <p style={{ marginBottom: '5px' }}>Šalis</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite šalį"

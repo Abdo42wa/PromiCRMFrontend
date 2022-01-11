@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,getLastMonthCompletedOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getLastMonthCompletedOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -62,17 +62,17 @@ class HomeScreen extends React.Component {
                     "weekNumber": clone[i].weekNumber
                 }
                 array.push(obj)
-            } 
+            }
         }
         console.log('array of orders:' + JSON.stringify(array))
         this.setState({
             lastWeeksMadeProducts: array
         })
     }
-    
+
     getLastMonthMadeProducts = () => {
         const clone = JSON.parse(JSON.stringify(this.props.orderDetailsReducer.last_month_orders))
-        console.log('Month ORDERS: '+JSON.stringify(clone))
+        console.log('Month ORDERS: ' + JSON.stringify(clone))
         const array = []
         for (var i = 0; i < 5; i++) {
             if (clone[i] !== null && clone[i] !== undefined) {
@@ -89,7 +89,7 @@ class HomeScreen extends React.Component {
                     "orderFinishDate": moment(clone[i].orderFinishDate).format('YYYY/MM/DD')
                 }
                 array.push(obj)
-            } 
+            }
         }
         console.log('array of MONTH orders:' + JSON.stringify(array))
         this.setState({
@@ -214,6 +214,7 @@ class HomeScreen extends React.Component {
         this.props.updateWork(postObj, reducerObj);
         console.log(postObj)
         console.log(reducerObj)
+        console.log(e.target.value)
 
         this.setState({
             done: !this.state.done
@@ -360,7 +361,7 @@ class HomeScreen extends React.Component {
                 dataIndex: 'shipment',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.type}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.type}</Typography.Text>
                 )
             },
             {
@@ -368,7 +369,7 @@ class HomeScreen extends React.Component {
                 dataIndex: 'customer',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
                 )
             },
             {
@@ -391,7 +392,7 @@ class HomeScreen extends React.Component {
                 dataIndex: 'country',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
                 )
             },
             {
@@ -409,7 +410,7 @@ class HomeScreen extends React.Component {
                 dataIndex: 'currency',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
                 )
             },
             {
@@ -801,7 +802,7 @@ class HomeScreen extends React.Component {
             <>
                 <h1>Pagrindinis</h1>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
-                    
+
                     <Row>
                         <Col span={10} >
                             {/* <Row gutter={16}>
@@ -1069,7 +1070,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                <LastMonthProducts data={this.state.lastMonthMadeProducts} />
+                                    <LastMonthProducts data={this.state.lastMonthMadeProducts} />
                                 </Card>
                             </Col>
                         </Row>
@@ -1086,13 +1087,13 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                <LastWeeksProducts data={this.state.lastWeeksMadeProducts} />
+                                    <LastWeeksProducts data={this.state.lastWeeksMadeProducts} />
                                 </Card>
                             </Col>
                         </Row>
                     </Col>
 
-                    
+
                 </div>
 
 

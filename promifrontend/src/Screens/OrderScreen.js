@@ -45,7 +45,7 @@ class OrderScrenn extends React.Component {
             })
         })
         this.unshowAddOrderModal();
-        window.location.reload();
+        // window.location.reload();
     }
 
     saveorderwarehouse = (postObj) => {
@@ -55,7 +55,7 @@ class OrderScrenn extends React.Component {
             });
         });
         console.log("saveorderwarehouse working");
-        window.location.reload();
+        //window.location.reload();
     }
 
 
@@ -137,7 +137,7 @@ class OrderScrenn extends React.Component {
         const bondingTime = product.bondingTime
 
         //console.log(product + 'sssssssssssssssssssssssssssssssssssss')
-        console.log(productCode)
+        //console.log(productCode)
 
         this.state.productDevices.push({ laserTime, milingTime, collectionTime, packingTime, paintingTime, bondingTime })
         //
@@ -178,7 +178,7 @@ class OrderScrenn extends React.Component {
                 dataIndex: 'user',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
                 )
             },
             {
@@ -240,7 +240,7 @@ class OrderScrenn extends React.Component {
                 dataIndex: 'shipment',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.type}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.type}</Typography.Text>
                 )
             },
             {
@@ -248,7 +248,7 @@ class OrderScrenn extends React.Component {
                 dataIndex: 'customer',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
                 )
             },
             {
@@ -258,11 +258,11 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div>
 
-                        {this.getOrDerdevice(record.productCode) != null && this.getOrDerdevice(record.productCode).map(item => {
+                        {/* {this.getOrDerdevice(record.productCode) != null && this.getOrDerdevice(record.productCode).map(item => {
                             return (
                                 item.value !== 0 && <Tag style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
                             )
-                        })}
+                        })} */}
 
                     </div>
 
@@ -283,7 +283,7 @@ class OrderScrenn extends React.Component {
                 dataIndex: 'country',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
                 )
             },
             {
@@ -301,7 +301,7 @@ class OrderScrenn extends React.Component {
                 dataIndex: 'currency',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
+                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
                 )
             },
             {

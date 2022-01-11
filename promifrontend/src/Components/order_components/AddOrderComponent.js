@@ -26,21 +26,22 @@ function AddOrderComponent(props) {
         "moreInfo": "",
         "quantity": 0,
         "productCode": "",
-        "shipmentTypeId": 0,
-        "customerId": 0,
+        "shipmentTypeId": null,
+        "customerId": null,
         "device": "",
         "productionTime": 0,
         "address": "",
-        "countryId": 0,
+        "countryId": null,
         "comment": "",
         "price": 0,
-        "currencyId": 0,
+        "currencyId": null,
         "vat": 0,
         "orderFinishDate": moment().format('YYYY/MM/DD'),
-        "orderId": 0,
+        "orderId": null,
         "lastTimeChanging": moment().format("YYYY/MM/DD")
     });
     const [file, setFile] = useState();
+    const [sandelis, setSandelis] = useState(false);
     const [fileName, setFileName] = useState();
 
     const customersReducer = useSelector((state) => state.customersReducer);
@@ -89,6 +90,20 @@ function AddOrderComponent(props) {
             }))
             console.log(value);
         }
+
+    }
+    const onOrderTypeChange = (value, inputName) => {
+        setOrder(prevState => ({
+            ...prevState,
+            [inputName]: value
+        }))
+
+
+        if (value !== "Sandelis" && inputName !== "orderType") {
+            setSandelis(false);
+        } else {
+            setSandelis(true);
+        }
     }
 
     const getOrderId = (productCode) => {
@@ -126,19 +141,47 @@ function AddOrderComponent(props) {
         formData.append("price", clone.price)
         formData.append("currencyId", clone.currencyId)
         formData.append("vat", clone.vat)
-        formData.append("productID", getOrderId(clone.productCode))
+        formData.append("productId", getOrderId(clone.productCode))
         formData.append("orderFinishDate", clone.orderFinishDate)
         //formData.append("file", file)
-
+        const postObj = {
+            "userId": clone.userId,
+            "orderType": clone.orderType,
+            "status": clone.status,
+            "orderNumber": getOrderNumber(),
+            "date": clone.date,
+            "platforma": clone.platforma,
+            "moreInfo": clone.moreInfo,
+            "quantity": clone.quantity,
+            "photo": clone.photo,
+            "productCode": clone.productCode,
+            "productId": getOrderId(clone.productCode),
+            "comment": clone.comment,
+            "shipmentTypeId": clone.shipmentTypeId,
+            "customerId": clone.customerId,
+            "device": clone.device,
+            "productionTime": clone.productionTime,
+            "address": clone.address,
+            "countryId": clone.countryId,
+            "price": clone.price,
+            "currencyId": clone.currencyId,
+            "vat": clone.vat,
+            "orderFinishDate": clone.orderFinishDate,
+        }
 
         console.log(clone)
-        if (order.orderType === "Sandelis") {
+        //if (order.orderType === "Sandelis") {
 
-            props.saveorderwarehouse(formData);
+        // just for testing 
 
-        } else {
-            props.save(formData);
-        }
+
+        //props.saveorderwarehouse(formData);
+        props.save(postObj);
+        console.log(JSON.stringify(clone))
+
+        // } else {
+        //     props.save(formData);
+        // }
 
     }
     useEffect(() => {
@@ -179,7 +222,7 @@ function AddOrderComponent(props) {
                         style={{ width: '100%' }}
                         placeholder="Įrašykite tipą"
                         optionFilterProp="children"
-                        onChange={(e) => onDataChange(e, "orderType")}
+                        onChange={(e) => onOrderTypeChange(e, "orderType")}
                     >
                         <Option key={1} value={'Standartinis'}>{'Standartinis'}</Option>
                         <Option key={2} value={'Ne-standartinis'}>{'Ne-standartinis'}</Option>
@@ -194,6 +237,7 @@ function AddOrderComponent(props) {
 
                     <p style={{ marginBottom: '5px' }}>Platforma</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '100%' }}
                         placeholder="Priskirkite platforma"
@@ -236,16 +280,16 @@ function AddOrderComponent(props) {
                         <Input required style={{ width: '100%' }} placeholder="Pridėkite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} />
                     </Form.Item> */}
                     <Form.Item key="name10" name="name10" label="Adresas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
+                        <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     </Form.Item>
                     <Form.Item key="name11" name="name11" label="Komentaras">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={order.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
                     </Form.Item>
                     <Form.Item key="name12" name="name12" label="Kaina">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e.target.value, "price")} />
+                        <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e.target.value, "price")} />
                     </Form.Item>
                     <Form.Item key="name13" name="name13" label="Vat">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
+                        <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                     </Form.Item>
                     <Form.Item key="name14" name="name14" label="Užsakymo pabaigos data">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
@@ -256,6 +300,7 @@ function AddOrderComponent(props) {
 
                     <p style={{ marginBottom: '5px' }}>Siuntos tipas</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '100%' }}
                         placeholder="Priskirkite tipą"
@@ -267,6 +312,7 @@ function AddOrderComponent(props) {
                     </Select>
                     <p style={{ marginBottom: '5px' }}>Klientas</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '100%' }}
                         placeholder="Priskirkite klientą"
@@ -280,6 +326,7 @@ function AddOrderComponent(props) {
 
                     <p style={{ marginBottom: '5px' }}>Valiuta</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '100%' }}
                         placeholder="Pasirinkite valiutą"
@@ -293,6 +340,7 @@ function AddOrderComponent(props) {
 
                     <p style={{ marginBottom: '5px' }}>Šalis</p>
                     <Select
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '100%' }}
                         placeholder="Priskirkite šalį"
