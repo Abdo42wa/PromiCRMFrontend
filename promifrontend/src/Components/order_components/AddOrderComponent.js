@@ -99,10 +99,10 @@ function AddOrderComponent(props) {
         }))
 
 
-        if (value !== "Sandelis" && inputName !== "orderType") {
-            setSandelis(false);
-        } else {
+        if (value === "Sandelis" && inputName === "orderType") {
             setSandelis(true);
+        } else {
+            setSandelis(false);
         }
     }
 

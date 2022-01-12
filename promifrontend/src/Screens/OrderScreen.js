@@ -1,21 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse } from '../Actions/orderAction'
-import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddOrderComponent from '../Components/order_components/AddOrderComponent';
 import UpdateOrderComponent from '../Components/order_components/UpdateOrderComponent';
 import { getProducts } from '../Actions/productsActions'
+import { getUsers } from '../Actions/userListActions'
 import moment from 'moment';
 
-
+const { Option } = Select;
 class OrderScrenn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             orders: [],
             imgPath: [],
+            userId: '',
             productDevices: [],
             addOrderVisibility: false,
             updateOrder: {
@@ -100,7 +102,7 @@ class OrderScrenn extends React.Component {
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getProducts(() => {
-
+                this.props.getUsers()
 
                 this.props.getOrders(() => {
                     const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders))
@@ -146,17 +148,504 @@ class OrderScrenn extends React.Component {
         if (product !== undefined) {
             return (
                 [
-                    { id: 1, name: "Lazeriavimo laikas", value: laserTime },
-                    { id: 2, name: "Frezavimo laikas", value: milingTime },
-                    { id: 3, name: "Surinkimo laikas", value: collectionTime },
-                    { id: 4, name: "Pakavimo laikas", value: packingTime },
-                    { id: 5, name: "Dažymo laikas", value: paintingTime },
-                    { id: 6, name: "Suklijavimo laikas", value: bondingTime }
+                    { id: 1, name: "Lazeriavimo laikas", value: laserTime, key: "laserUserId" },
+                    { id: 2, name: "Frezavimo laikas", value: milingTime, key: "milingUserId" },
+                    { id: 3, name: "Surinkimo laikas", value: collectionTime, key: "collectionUserId" },
+                    { id: 4, name: "Pakavimo laikas", value: packingTime, key: "packingUserId" },
+                    { id: 5, name: "Dažymo laikas", value: paintingTime, key: "paintingUserId" },
+                    { id: 6, name: "Suklijavimo laikas", value: bondingTime, key: "bondingUserId" }
                 ]
             )
         }
     }
 
+    getName(id, name, record) {
+        console.log(name);
+
+        if (name === 'collectionUserId') {
+            const postObj = {
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.userId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": moment().format('YYYY/MM/DD'),
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": record.laserComplete,
+                "milingComplete": record.milingComplete,
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": record.packingComplete,
+            }
+            const reducerObj = {
+                "id": record.id,
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.userId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": moment().format('YYYY/MM/DD'),
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": record.laserComplete,
+                "milingComplete": record.milingComplete,
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": record.packingComplete,
+            }
+            console.log(postObj)
+            console.log(reducerObj)
+            this.props.updateOrder(postObj, reducerObj, () => {
+
+                //const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
+            });
+        }
+        if (name === 'laserUserId') {
+            const postObj = {
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": this.state.userId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": moment().format('YYYY/MM/DD'),
+                "milingComplete": record.milingComplete,
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": record.packingComplete,
+            }
+            const reducerObj = {
+                "id": record.id,
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": this.state.userId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": moment().format('YYYY/MM/DD'),
+                "milingComplete": record.milingComplete,
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": record.packingComplete,
+            }
+            // console.log(name)
+            this.props.updateOrder(postObj, reducerObj, () => {
+
+                //const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
+            });
+        }
+        if (name === 'milingUserId') {
+            const postObj = {
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": this.state.userId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": record.laserComplete,
+                "milingComplete": moment().format('YYYY/MM/DD'),
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": record.packingComplete,
+            }
+            const reducerObj = {
+                "id": record.id,
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": this.state.userId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": record.laserComplete,
+                "milingComplete": moment().format('YYYY/MM/DD'),
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": record.packingComplete,
+            }
+            // console.log(name)
+            this.props.updateOrder(postObj, reducerObj, () => {
+
+                //const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
+            });
+        }
+        if (name === 'packingUserId') {
+            const postObj = {
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": this.state.userId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": record.laserComplete,
+                "milingComplete": record.milingComplete,
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": moment().format('YYYY/MM/DD'),
+            }
+            const reducerObj = {
+                "id": record.id,
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": this.state.userId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": record.laserComplete,
+                "milingComplete": record.milingComplete,
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": moment().format('YYYY/MM/DD'),
+            }
+            // console.log(name)
+            this.props.updateOrder(postObj, reducerObj, () => {
+
+                //const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
+            });
+        }
+        if (name === 'paintingUserId') {
+            const postObj = {
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": this.state.userId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": record.laserComplete,
+                "milingComplete": record.milingComplete,
+                "paintingComplete": moment().format('YYYY/MM/DD'),
+                "packingComplete": record.packingComplete,
+            }
+            const reducerObj = {
+                "id": record.id,
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": record.bondingUserId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": this.state.userId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": record.bondingComplete,
+                "laserComplete": record.laserComplete,
+                "milingComplete": record.milingComplete,
+                "paintingComplete": moment().format('YYYY/MM/DD'),
+                "packingComplete": record.packingComplete,
+            }
+            console.log(postObj)
+            console.log(reducerObj)
+            this.props.updateOrder(postObj, reducerObj, () => {
+
+                //const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
+            });
+        }
+
+        if (name === 'bondingUserId') {
+            const postObj = {
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": this.state.userId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": moment().format('YYYY/MM/DD'),
+                "laserComplete": record.laserComplete,
+                "milingComplete": record.milingComplete,
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": record.packingComplete,
+            }
+            const reducerObj = {
+                "id": record.id,
+                "userId": record.userId,
+                "orderType": record.orderType,
+                "status": record.status,
+                "orderNumber": record.orderNumber,
+                "date": record.date,
+                "platforma": record.platforma,
+                "moreInfo": record.moreInfo,
+                "quantity": record.quantity,
+                "photo": record.photo,
+                "productCode": record.productCode,
+                "comment": record.comment,
+                "shipmentTypeId": record.shipmentTypeId,
+                "customerId": record.customerId,
+                "device": record.device,
+                "productionTime": record.productionTime,
+                "address": record.address,
+                "countryId": record.countryId,
+                "price": record.price,
+                "currencyId": record.currencyId,
+                "vat": record.vat,
+                "orderFinishDate": record.orderFinishDate,
+                "collectionUserId": record.collectionUserId,
+                "bondingUserId": this.state.userId,
+                "laserUserId": record.laserUserId,
+                "milingUserId": record.milingUserId,
+                "paintingUserId": record.paintingUserId,
+                "packingUserId": record.packingUserId,
+                "collectionComplete": record.collectionComplete,
+                "bondingComplete": moment().format('YYYY/MM/DD'),
+                "laserComplete": record.laserComplete,
+                "milingComplete": record.milingComplete,
+                "paintingComplete": record.paintingComplete,
+                "packingComplete": record.packingComplete,
+            }
+            // console.log(name)
+            this.props.updateOrder(postObj, reducerObj, () => {
+
+                //const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
+            });
+        }
+
+
+        // console.log(postObj);
+        // console.log(reducerObj);
+        //console.log(record.milingUserId);
+    }
+
+    onOrderTypeChange = (value) => {
+        this.setState(({
+            userId: value
+        }))
+        console.log(value)
+    }
     render() {
         const columns = [
             {
@@ -256,15 +745,50 @@ class OrderScrenn extends React.Component {
                 dataIndex: 'device',
                 width: '90%',
                 render: (text, record, index) => (
-                    <div>
+                    <div style={{ display: 'grid' }}>
 
-                        {/* {this.getOrDerdevice(record.productCode) != null && this.getOrDerdevice(record.productCode).map(item => {
+                        {this.getOrDerdevice(record.productCode) != null && this.getOrDerdevice(record.productCode).map(item => {
                             return (
-                                item.value !== 0 && <Tag style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
-                            )
-                        })} */}
+                                <>
+                                    {
+                                        item.value !== 0 && <Tag onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
 
-                    </div>
+                                    }
+                                    <Select
+                                        optionFilterProp="children"
+                                        onChange={(e) => this.onOrderTypeChange(e)}
+
+                                    >
+                                        {this.props.usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name}  {element.surname}</Option>)
+                                        })}
+                                    </Select>
+                                </>
+
+
+                            )
+                        })}
+                        {/* <ul>
+                            {this.getOrDerdevice(record.productCode) != null && this.getOrDerdevice(record.productCode).map(item => {
+                                return (
+                                    <>
+                                        {
+                                            item.value !== 0 && <li onClick={(e) => this.getName(item.name)} key={item.name} value={item.name} >{item.value} {item.name}</li>
+                                        }
+                                        <Select
+                                            optionFilterProp="children"
+                                            onChange={(e) => this.onOrderTypeChange(e)}
+
+                                        >
+                                            {this.props.usersListReducer.users.map((element, index) => {
+                                                return (<Option key={element.id} value={element.id}>{element.name}  {element.surname}</Option>)
+                                            })}
+                                        </Select>
+                                    </>
+                                )
+                            })}
+                        </ul> */}
+                    </div >
 
                 )
             },
@@ -373,11 +897,12 @@ const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
         productsReducer: state.productsReducer,
-        orderReducer: state.orderReducer
+        orderReducer: state.orderReducer,
+        usersListReducer: state.usersListReducer
     }
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, getProducts })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, getProducts, getUsers })(withRouter(OrderScrenn))
 
 
