@@ -38,10 +38,17 @@ function AddOrderComponent(props) {
         "vat": 0,
         "orderFinishDate": moment().format('YYYY/MM/DD'),
         "orderId": null,
-        "lastTimeChanging": moment().format("YYYY/MM/DD")
+        "lastTimeChanging": moment().format("YYYY/MM/DD"),
+        "collectionTime": null,
+        "bondingTime": null,
+        "laserTime": null,
+        "paintingTime": null,
+        "milingTime": null,
+        "packingTime": null
     });
     const [file, setFile] = useState();
     const [sandelis, setSandelis] = useState(false);
+    const [nonStander, setNonStander] = useState(true);
     const [fileName, setFileName] = useState();
 
     const customersReducer = useSelector((state) => state.customersReducer);
@@ -101,7 +108,11 @@ function AddOrderComponent(props) {
 
         if (value === "Sandelis" && inputName === "orderType") {
             setSandelis(true);
+        } else if (value === "Ne-standartinis" && inputName === "orderType") {
+            setNonStander(false)
+            setSandelis(false);
         } else {
+            setNonStander(true)
             setSandelis(false);
         }
     }
@@ -109,9 +120,11 @@ function AddOrderComponent(props) {
     const getOrderId = (productCode) => {
         //var productCode = "555GG";
         const product = productsReducer.products.find(element => element.code === productCode)
-        console.log(product.id)
-        console.log(productsReducer.products.find(element => element.code === productCode))
-        return product.id;
+        // console.log(product.id)
+        // console.log(productsReducer.products.find(element => element.code === productCode))
+        if (product !== undefined) {
+            return product.id;
+        }
 
 
     }
@@ -155,7 +168,7 @@ function AddOrderComponent(props) {
             "quantity": clone.quantity,
             "photo": clone.photo,
             "productCode": clone.productCode,
-            "productId": getOrderId(clone.productCode),
+            "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
             "comment": clone.comment,
             "shipmentTypeId": clone.shipmentTypeId,
             "customerId": clone.customerId,
@@ -167,6 +180,12 @@ function AddOrderComponent(props) {
             "currencyId": clone.currencyId,
             "vat": clone.vat,
             "orderFinishDate": clone.orderFinishDate,
+            "collectionTime": clone.collectionTime,
+            "bondingTime": clone.bondingTime,
+            "laserTime": clone.laserTime,
+            "paintingTime": clone.paintingTime,
+            "milingTime": clone.milingTime,
+            "packingTime": clone.packingTime
         }
 
         console.log(clone)
@@ -264,6 +283,7 @@ function AddOrderComponent(props) {
                     <p style={{ marginBottom: '5px' }}>Prekės kodas</p>
                     <Select
                         showSearch
+                        disabled={!nonStander}
                         style={{ width: '100%' }}
                         placeholder="Priskirkite prekės kodą"
                         optionFilterProp="children"
@@ -273,6 +293,24 @@ function AddOrderComponent(props) {
                             return (<Option key={element.id} value={element.code}>{element.code}</Option>)
                         })}
                     </Select>
+                    <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
+                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "laserTime")} />
+                    </Form.Item>
+                    <Form.Item key="name16" name="name16" label="Frezavimo laikas">
+                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "milingTime")} />
+                    </Form.Item>
+                    <Form.Item key="name17" name="name17" label="Surinkimo laikas">
+                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laika" value={order.price} onChange={(e) => onDataChange(e.target.value, "collectionTime")} />
+                    </Form.Item>
+                    <Form.Item key="name18" name="name18" label=" Pakavimo laikas">
+                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "packingTime")} />
+                    </Form.Item>
+                    <Form.Item key="name19" name="name19" label="Dažymo laikas">
+                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "paintingTime")} />
+                    </Form.Item>
+                    <Form.Item key="name20" name="name20" label="Suklijavimo laikas">
+                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "bondingTime")} />
+                    </Form.Item>
                     <Form.Item key="name8" name="name8" label="Gamybos laikas">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
                     </Form.Item>

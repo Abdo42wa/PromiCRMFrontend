@@ -130,32 +130,35 @@ class OrderScrenn extends React.Component {
     }
 
     getOrDerdevice(productCode) {
+
         const product = this.props.productsReducer.products.find(word => word.code === productCode);
-        const laserTime = product.laserTime
-        const milingTime = product.milingTime
-        const collectionTime = product.collectionTime
-        const packingTime = product.packingTime
-        const paintingTime = product.paintingTime
-        const bondingTime = product.bondingTime
-
-        //console.log(product + 'sssssssssssssssssssssssssssssssssssss')
-        //console.log(productCode)
-
-        this.state.productDevices.push({ laserTime, milingTime, collectionTime, packingTime, paintingTime, bondingTime })
-        //
-        // console.log(this.state.productDevices.map(element => element.laserTime))
-        // console.log(this.state.productDevices)
         if (product !== undefined) {
-            return (
-                [
-                    { id: 1, name: "Lazeriavimo laikas", value: laserTime, key: "laserUserId" },
-                    { id: 2, name: "Frezavimo laikas", value: milingTime, key: "milingUserId" },
-                    { id: 3, name: "Surinkimo laikas", value: collectionTime, key: "collectionUserId" },
-                    { id: 4, name: "Pakavimo laikas", value: packingTime, key: "packingUserId" },
-                    { id: 5, name: "Dažymo laikas", value: paintingTime, key: "paintingUserId" },
-                    { id: 6, name: "Suklijavimo laikas", value: bondingTime, key: "bondingUserId" }
-                ]
-            )
+            const laserTime = product.laserTime
+            const milingTime = product.milingTime
+            const collectionTime = product.collectionTime
+            const packingTime = product.packingTime
+            const paintingTime = product.paintingTime
+            const bondingTime = product.bondingTime
+
+            //console.log(product + 'sssssssssssssssssssssssssssssssssssss')
+            //console.log(productCode)
+
+            this.state.productDevices.push({ laserTime, milingTime, collectionTime, packingTime, paintingTime, bondingTime })
+            //
+            // console.log(this.state.productDevices.map(element => element.laserTime))
+            // console.log(this.state.productDevices)
+            if (product !== undefined) {
+                return (
+                    [
+                        { id: 1, name: "Lazeriavimo laikas", value: laserTime, key: "laserUserId" },
+                        { id: 2, name: "Frezavimo laikas", value: milingTime, key: "milingUserId" },
+                        { id: 3, name: "Surinkimo laikas", value: collectionTime, key: "collectionUserId" },
+                        { id: 4, name: "Pakavimo laikas", value: packingTime, key: "packingUserId" },
+                        { id: 5, name: "Dažymo laikas", value: paintingTime, key: "paintingUserId" },
+                        { id: 6, name: "Suklijavimo laikas", value: bondingTime, key: "bondingUserId" }
+                    ]
+                )
+            }
         }
     }
 
@@ -864,7 +867,7 @@ class OrderScrenn extends React.Component {
                                         rowKey="id"
                                         columns={columns}
                                         dataSource={this.state.orders}
-                                        pagination={{ pageSize: 10 }}
+                                        pagination={{ pageSize: 1 }}
                                         bordered
                                         scroll={{ x: 'calc(700px + 50%)' }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti užsakymą</Button></Space>)}
