@@ -16,8 +16,8 @@ import { bonusReducer } from './Reducers/bonusReducer';
 import { currencyReducer } from './Reducers/currencyReducer'
 import { servicesReducer } from './Reducers/servicesReducer'
 import { weeklyWorkScheduleReducer } from './Reducers/WeeklyWorkScheduleReducer'
-import {userTypesReducer} from './Reducers/userTypesReducer'
-import {salesChannelsReducer} from './Reducers/salesChannelsReducer'
+import { userTypesReducer } from './Reducers/userTypesReducer'
+import { salesChannelsReducer } from './Reducers/salesChannelsReducer'
 import { materialsWarehouseReducer } from './Reducers/materialsWarehouseReducer';
 import { recentWorksReducer } from './Reducers/recentWorksReducer';
 import { orderDetailsReducer } from './Reducers/orderDetailsReducer';

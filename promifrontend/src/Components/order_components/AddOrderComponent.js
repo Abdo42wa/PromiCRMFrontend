@@ -5,7 +5,7 @@ import { getCustomers } from '../../Actions/customersActions'
 import { getCountries } from '../../Actions/countryAction'
 import { getUsers } from '../../Actions/userListActions'
 import { getProducts } from '../../Actions/productsActions'
-import { createWarehouseData } from '../../Actions/warehouseActions'
+import { getWarehouseProduct } from '../../Actions/warehouseActions'
 import { getOrders } from '../../Actions/orderAction'
 import { getSalesChannels } from '../../Actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
@@ -58,6 +58,7 @@ function AddOrderComponent(props) {
     const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
     const productsReducer = useSelector((state) => state.productsReducer)
     const orderReducer = useSelector((state) => state.orderReducer)
+    const warehouseReducer = useSelector((state) => state.warehouseReducer.warehouseData)
 
     const changeFile = (e) => {
         console.log(e.target.files[0])
@@ -96,6 +97,10 @@ function AddOrderComponent(props) {
                 [inputName]: value
             }))
             console.log(value);
+        }
+
+        if (inputName === "productCode") {
+            dispatch(getWarehouseProduct(value))
         }
 
     }
@@ -293,6 +298,7 @@ function AddOrderComponent(props) {
                             return (<Option key={element.id} value={element.code}>{element.code}</Option>)
                         })}
                     </Select>
+                    {order.productCode !== '' && <p style={{ color: 'red' }}> sandėlyje turim {warehouseReducer.quantityProductWarehouse}</p>}
                     <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
                         <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "laserTime")} />
                     </Form.Item>

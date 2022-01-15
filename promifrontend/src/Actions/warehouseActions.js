@@ -24,6 +24,29 @@ export const getWarehouseData = (callback) => async (dispatch, getState) => {
     }
 }
 
+export const getWarehouseProduct = (productCodde) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'WAREHOUSES_FETCH_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/WarehouseCountings/product/${productCodde}`, { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'WAREHOUSES_FETCH_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'WAREHOUSES_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 
 export const createWarehouseData = (postObj, callback) => async (dispatch, getState) => {
     try {
@@ -81,7 +104,7 @@ export const updateWarehouseWithImg = (postObj, id) => async (dispatch, getState
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/WarehouseCountings/image/${id}`, postObj, { headers: { Authorization: `Bearer ${token}`,'Content-Type': 'multipart/form-data' } });
+        const response = await promiAPI.put(`/api/WarehouseCountings/image/${id}`, postObj, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } });
         dispatch({
             type: 'WAREHOUSES_UPDATE_IMAGE_SUCCESS',
             payload: response.data

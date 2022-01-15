@@ -188,7 +188,7 @@ class OrderScrenn extends React.Component {
                 "currencyId": record.currencyId,
                 "vat": record.vat,
                 "orderFinishDate": record.orderFinishDate,
-                "collectionUserId": record.userId,
+                "collectionUserId": this.state.userId,
                 "bondingUserId": record.bondingUserId,
                 "laserUserId": record.laserUserId,
                 "milingUserId": record.milingUserId,
@@ -224,7 +224,7 @@ class OrderScrenn extends React.Component {
                 "currencyId": record.currencyId,
                 "vat": record.vat,
                 "orderFinishDate": record.orderFinishDate,
-                "collectionUserId": record.userId,
+                "collectionUserId": this.state.userId,
                 "bondingUserId": record.bondingUserId,
                 "laserUserId": record.laserUserId,
                 "milingUserId": record.milingUserId,
@@ -557,7 +557,6 @@ class OrderScrenn extends React.Component {
                 //const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
             });
         }
-
         if (name === 'bondingUserId') {
             const postObj = {
                 "userId": record.userId,
@@ -754,16 +753,18 @@ class OrderScrenn extends React.Component {
                             return (
                                 <>
                                     {
-                                        item.value !== 0 && <Tag onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
+                                        //item.value !== 0 && <Tag className={` ${record[item.key] !== null && "atlikta"}`} onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
+                                        record[item.key] !== null ? <Tag className="atlikta" onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag> :
+                                            <Tag onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
 
                                     }
                                     <Select
                                         optionFilterProp="children"
                                         onChange={(e) => this.onOrderTypeChange(e)}
-
+                                        defaultValue={record[item.key]}
                                     >
                                         {this.props.usersListReducer.users.map((element, index) => {
-                                            return (<Option key={element.id} value={element.id}>{element.name}  {element.surname}</Option>)
+                                            return (<Option key={element.id} value={element.id}>{element.name}  {element.surname} </Option>)
                                         })}
                                     </Select>
                                 </>
