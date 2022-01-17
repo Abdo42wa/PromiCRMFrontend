@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse } from '../Actions/orderAction'
+import { checkWarehouseProduct, createWarehouseData } from '../Actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
@@ -404,7 +405,7 @@ class OrderScrenn extends React.Component {
             const postObj = {
                 "userId": record.userId,
                 "orderType": record.orderType,
-                "status": record.status,
+                "status": true,
                 "orderNumber": record.orderNumber,
                 "date": record.date,
                 "platforma": record.platforma,
@@ -440,7 +441,7 @@ class OrderScrenn extends React.Component {
                 "id": record.id,
                 "userId": record.userId,
                 "orderType": record.orderType,
-                "status": record.status,
+                "status": true,
                 "orderNumber": record.orderNumber,
                 "date": record.date,
                 "platforma": record.platforma,
@@ -473,10 +474,21 @@ class OrderScrenn extends React.Component {
                 "packingComplete": moment().format('YYYY/MM/DD'),
             }
             // console.log(name)
-            this.props.updateOrder(postObj, reducerObj, () => {
+            this.props.updateOrder(postObj, reducerObj);
+            this.props.checkWarehouseProduct(reducerObj.id)
+            console.log(this.props.warehouseReducer.length)
+            if (record.packingUserId === null) {
+                const postObj1 = {
+                    "orderId": record.id,
+                    "quantityProductWarehouse": record.quantity,
+                    "lastTimeChanging": moment().format('YYYY/MM/DD'),
+                    "productCode": record.productCode,
+                }
+                this.props.createWarehouseData(postObj1)
 
-                //const dataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
-            });
+                console.log(postObj1)
+            }
+
         }
         if (name === 'paintingUserId') {
             const postObj = {
@@ -753,20 +765,25 @@ class OrderScrenn extends React.Component {
                             return (
                                 <>
                                     {
-                                        //item.value !== 0 && <Tag className={` ${record[item.key] !== null && "atlikta"}`} onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
-                                        record[item.key] !== null ? <Tag className="atlikta" onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag> :
-                                            <Tag onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
+                                        item.value !== 0 && (
+                                            <>
+                                                <Tag className={` ${record[item.key] !== null && ""}`} onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
+                                                <Select
+                                                    optionFilterProp="children"
+                                                    onChange={(e) => this.onOrderTypeChange(e)}
+                                                    defaultValue={record[item.key]}
+                                                >
+                                                    {this.props.usersListReducer.users.map((element, index) => {
+                                                        return (<Option key={element.id} value={element.id}>{element.name}  {element.surname} </Option>)
+                                                    })}
+                                                </Select>
+                                            </>
+                                        )
+                                        // record[item.key] !== null ? <Tag className="atlikta" onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag> :
+                                        //     <Tag onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
 
                                     }
-                                    <Select
-                                        optionFilterProp="children"
-                                        onChange={(e) => this.onOrderTypeChange(e)}
-                                        defaultValue={record[item.key]}
-                                    >
-                                        {this.props.usersListReducer.users.map((element, index) => {
-                                            return (<Option key={element.id} value={element.id}>{element.name}  {element.surname} </Option>)
-                                        })}
-                                    </Select>
+
                                 </>
 
 
@@ -868,7 +885,7 @@ class OrderScrenn extends React.Component {
                                         rowKey="id"
                                         columns={columns}
                                         dataSource={this.state.orders}
-                                        pagination={{ pageSize: 1 }}
+                                        pagination={{ pageSize: 5 }}
                                         bordered
                                         scroll={{ x: 'calc(700px + 50%)' }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti užsakymą</Button></Space>)}
@@ -902,11 +919,12 @@ const mapStateToProps = (state) => {
         usersReducer: state.usersReducer,
         productsReducer: state.productsReducer,
         orderReducer: state.orderReducer,
-        usersListReducer: state.usersListReducer
+        usersListReducer: state.usersListReducer,
+        warehouseReducer: state.warehouseReducer.warehouseData
     }
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, getProducts, getUsers })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct })(withRouter(OrderScrenn))
 
 
