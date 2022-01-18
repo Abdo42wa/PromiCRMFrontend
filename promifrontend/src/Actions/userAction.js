@@ -1,5 +1,6 @@
 import promiAPI from './promiAPI';
 import jwtDecode from 'jwt-decode';
+import Cookies from 'js-cookie';
 export const login = (email, password) => async (dispatch) => {
     try {
         dispatch({
@@ -18,8 +19,10 @@ export const login = (email, password) => async (dispatch) => {
             type: 'USER_LOGIN_SUCCESS',
             payload: data
         })
-
-        localStorage.setItem('currentUser', data.token)
+        var expiration = new Date(new Date().getTime() + 1 * 60 * 1000);
+        Cookies.set('currentUser', data.token, {
+            expires: expiration
+        });
     } catch (error) {
         dispatch({
             type: 'USER_LOGIN_FAIL',
@@ -32,7 +35,7 @@ export const login = (email, password) => async (dispatch) => {
 }
 
 export const logout = () => (dispatch) => {
-    localStorage.removeItem('currentUser')
+    Cookies.remove('currentUser')
     dispatch({ type: 'USER_LOGOUT' })
 
 }

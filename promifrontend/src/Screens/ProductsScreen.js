@@ -200,7 +200,7 @@ class ProductsScrenn extends React.Component {
                 this.props.getMaterialsWarehouseData();
             })
         } else {
-            this.props.history.push('/');
+            this.props.history.push('/login');
         }
     }
     render() {

@@ -64,6 +64,8 @@ class SalesChannelsScreen extends React.Component {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getSalesChannels(() => {
             });
+        }else{
+            this.props.history.push('/login')
         }
     }
     render() {

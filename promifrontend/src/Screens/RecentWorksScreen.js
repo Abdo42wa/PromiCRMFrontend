@@ -55,7 +55,12 @@ class RecentWorksScreen extends React.Component {
         this.unshowUpdateWork()
     }
     componentDidMount() {
-        this.props.getRecentWorks();
+        if(this.props.usersReducer.currentUser !== null){
+            this.props.getRecentWorks();    
+        }else{
+            this.props.history.push('/login')
+        }
+        
     }
 
     render() {
@@ -159,7 +164,8 @@ class RecentWorksScreen extends React.Component {
 //get redux states
 const mapStateToProps = (state) => {
     return {
-        recentWorksReducer: state.recentWorksReducer,
+        usersReducer: state.usersReducer,
+        recentWorksReducer: state.recentWorksReducer
     }
 }
 

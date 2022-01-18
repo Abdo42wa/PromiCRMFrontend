@@ -84,7 +84,7 @@ class ShipmentScreen extends React.Component {
                 }, () => console.log('Shipments set to:' + JSON.stringify(this.state.shipments)));
             });
         } else {
-            this.props.history.push('/')
+            this.props.history.push('/login')
         }
     }
 

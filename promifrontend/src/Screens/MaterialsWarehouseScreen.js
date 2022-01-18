@@ -91,6 +91,8 @@ class MaterialsWarehouseScreen extends React.Component {
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getMaterialsWarehouseData();
+        }else{
+            this.props.history.push('/login')
         }
     }
     render() {

@@ -72,8 +72,9 @@ class WarehouseCountingsScreen extends React.Component {
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getWarehouseData(() => {
-
             });
+        }else{
+            this.props.history.push('/login')
         }
     }
     render() {

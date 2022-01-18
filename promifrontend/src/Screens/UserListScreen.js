@@ -29,7 +29,7 @@ class UserListScreen extends React.Component {
                 }, () => console.log('Users:' + JSON.stringify(this.state.users)));
             });
         } else {
-            this.props.history.push('/');
+            this.props.history.push('/login');
         }
     }
     render() {

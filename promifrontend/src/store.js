@@ -21,6 +21,7 @@ import { salesChannelsReducer } from './Reducers/salesChannelsReducer'
 import { materialsWarehouseReducer } from './Reducers/materialsWarehouseReducer';
 import { recentWorksReducer } from './Reducers/recentWorksReducer';
 import { orderDetailsReducer } from './Reducers/orderDetailsReducer';
+import Cookies from 'js-cookie';
 
 const allReducers = combineReducers({
     usersReducer,
@@ -45,7 +46,7 @@ const allReducers = combineReducers({
 });
 
 
-const userInfoFromStorage = localStorage.getItem('currentUser') ? localStorage.getItem('currentUser') : null;
+const userInfoFromStorage = Cookies.get('currentUser') ? Cookies.get('currentUser') : null;
 const initialState = {
     usersReducer: { currentUser: userInfoFromStorage },
 }

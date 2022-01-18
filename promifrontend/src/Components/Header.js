@@ -4,18 +4,22 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../Actions/userAction'
 import promiLogo from '../Images/promi-logo_baltas2.png'
+import {useHistory} from 'react-router-dom'
 import Cookies from 'universal-cookie'
 
 
 //const cookies = new Cookies();
 
 const Header = () => {
+    const history = useHistory();
     const dispatch = useDispatch();
     const usersReducer = useSelector(state => state.usersReducer)
     const { currentUser } = usersReducer
 
     const logoutHandler = () => {
-
+        if(usersReducer.currentUser === null){
+            history.push('/login')
+        }
         //console.log(JSON.stringify(cookies.get('jwt').value))
         dispatch(logout())
     }

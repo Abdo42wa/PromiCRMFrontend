@@ -88,7 +88,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                 });
             })
         } else {
-            this.props.history.push('/');
+            this.props.history.push('/login');
         }
 
     }

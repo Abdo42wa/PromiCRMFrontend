@@ -81,6 +81,8 @@ class CustomersScreen extends React.Component {
                 });
                 this.unshowUpdateCustomer();
             });
+        }else{
+            this.props.history.push('/login')
         }
     }
     render() {
