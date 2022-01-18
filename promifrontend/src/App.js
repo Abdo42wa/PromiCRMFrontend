@@ -34,6 +34,7 @@ function App() {
           <Route path='/materials' component={MaterialsScreen} />
           <Route path='/shipments' component={ShipmentScreen} />
           <Route path='/customers' component={CustomersScreen} />
+          <Route path='/countries' component={CountryScreen}/>
           <Route path='/warehouse-countings' component={WarehouseCountingsScreen} />
           <Route path='/orders' component={OrderScreen} exact/>
           <Route path='/bonuses' component={BonusScreen} />
@@ -42,7 +43,7 @@ function App() {
           <Route path='/weeklyWorkScheduleScreen' component={WeeklyWorkScheduleScreen} />
           <Route path='/sales-channels' component={SalesChannelsScreen}/>
           <Route path='/materials-warehouse' component={MaterialsWarehouseScreen}/>
-          <Route path='/recent-works' component={RecentWorksScreen}/>
+          {/* <Route path='/recent-works' component={RecentWorksScreen}/> */}
           <Route path='/' component={HomeScreen} exact />
 
         </div>

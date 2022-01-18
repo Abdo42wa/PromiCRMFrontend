@@ -16,7 +16,6 @@ class WeeklyWorkScheduleScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            Works: [],
             addWorkVisibility: false,
             updateWork: {
                 visibility: false,
@@ -37,15 +36,9 @@ class WeeklyWorkScheduleScreen extends React.Component {
         })
     }
     saveAddWork = (postObj) => {
-        this.props.addWork(postObj, () => {
-
-            const dataClone = JSON.parse(JSON.stringify(this.props.weeklyWorkScheduleReducer.workSchedules));
-            this.setState({
-                Works: dataClone,
-                addWorkVisibility: false
-            })
-        })
-        window.location.reload();
+        this.props.addWork(postObj)
+        this.unshowAddWorkModal();
+        // window.location.reload();
     }
 
     showWorkModal = (record) => {
@@ -67,13 +60,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
         });
     }
     saveWork = (postObj, reducerObj) => {
-        this.props.updateWork(postObj, reducerObj, () => {
-
-            const dataClone = JSON.parse(JSON.stringify(this.props.weeklyWorkScheduleReducer.workSchedules));
-            this.setState({
-                Works: dataClone
-            });
-        });
+        this.props.updateWork(postObj, reducerObj)
         this.unshowWorkModal();
     }
 
@@ -81,12 +68,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getWorks(() => {
-                const dataClone = JSON.parse(JSON.stringify(this.props.weeklyWorkScheduleReducer.workSchedules))
-                this.setState({
-                    Works: dataClone
-                });
-            })
+            this.props.getWorks()
         } else {
             this.props.history.push('/login');
         }
@@ -117,13 +99,13 @@ class WeeklyWorkScheduleScreen extends React.Component {
                 )
             },
             {
-                title: 'Darbas apibūdinimas',
-                dataIndex: 'darbasApibūdinimas',
+                title: 'Darbas',
+                dataIndex: 'description',
                 width: '10%'
             },
             {
                 title: 'Atlikta',
-                dataIndex: 'atlikta',
+                dataIndex: 'done',
                 width: '10%',
                 render: (text, record, index) => (
                     <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
@@ -150,7 +132,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={columns}
-                                        dataSource={this.state.Works}
+                                        dataSource={this.props.weeklyWorkScheduleReducer.workSchedules}
                                         pagination={{ pageSize: 15 }}
                                         bWorked
                                         scroll={{ x: 'calc(700px + 50%)' }}

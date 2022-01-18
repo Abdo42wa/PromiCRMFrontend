@@ -5,7 +5,7 @@ import { Image } from 'antd'
 import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getLastMonthCompletedOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
+import { getWeekWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
 import { tableCardStyle, tableCardBodyStyle } from '../styles/customStyles.js';
 import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
 import { getProducts } from '../Actions/productsActions'
@@ -23,7 +23,6 @@ class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            Works: [],
             orders: [],
             products: [],
             collectionTime: 0,
@@ -99,44 +98,38 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getWorks(() => {
-                const dataClone = JSON.parse(JSON.stringify(this.props.weeklyWorkScheduleReducer.workSchedules));
+            this.props.getWeekWorks()
+            this.props.getOrders(() => {
+
+                const orderDataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
+                // console.log('orders:' + JSON.stringify(orderDataClone))
                 this.setState({
-                    Works: dataClone
+                    orders: orderDataClone
                 });
-                this.props.getOrders(() => {
 
-                    const orderDataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
-                    // console.log('orders:' + JSON.stringify(orderDataClone))
-                    this.setState({
-                        orders: orderDataClone
-                    });
-                    console.log(this.state.Works)
+            })
 
-                })
+            this.props.getProducts(() => {
+                this.props.getMaterialsWarehouseData();
+                const productsDataClone = JSON.parse(JSON.stringify(this.props.productsReducer.products));
+                this.setState({
+                    products: productsDataClone
+                });
+                console.log(this.getTime());
 
-                this.props.getProducts(() => {
-                    this.props.getMaterialsWarehouseData();
-                    const productsDataClone = JSON.parse(JSON.stringify(this.props.productsReducer.products));
-                    this.setState({
-                        products: productsDataClone
-                    });
-                    console.log(this.getTime());
+            })
 
-                })
-
-                this.props.getRecentWorks();
-                // this.props.getUncompletedOrders();
-                this.props.getUncompletedExpressOrders();
-                this.props.getCompletedWarehouseOrders();
-                this.props.getUncompletedWarehouseOrders();
-                this.props.getOrdersUncompleted();
-                this.props.getLastWeeksCompletedOrders(() => {
-                    this.getLastWeeksMadeProducts()
-                })
-                this.props.getLastMonthCompletedOrders(() => {
-                    this.getLastMonthMadeProducts();
-                })
+            this.props.getRecentWorks();
+            // this.props.getUncompletedOrders();
+            this.props.getUncompletedExpressOrders();
+            this.props.getCompletedWarehouseOrders();
+            this.props.getUncompletedWarehouseOrders();
+            this.props.getOrdersUncompleted();
+            this.props.getLastWeeksCompletedOrders(() => {
+                this.getLastWeeksMadeProducts()
+            })
+            this.props.getLastMonthCompletedOrders(() => {
+                this.getLastMonthMadeProducts();
             })
         } else {
             this.props.history.push('/login');
@@ -199,31 +192,33 @@ class HomeScreen extends React.Component {
 
 
     }
-    onChange(e, id, userID, discription) {
+    onChange(value,record) {
         const postObj = {
-            "userId": userID,
-            "darbasApibūdinimas": discription,
-            "atlikta": e.target.value,
+            "userId": record.userId,
+            "description": record.description,
+            "done": value,
         }
         const reducerObj = {
-            "id": id,
-            "userId": userID,
-            "darbasApibūdinimas": discription,
-            "atlikta": e.target.value
+            "id":record.id,
+            "userId":record.userId,
+            "user":record.user,
+            "description": record.description,
+            "done": value,
+            "date":record.date
         }
         this.props.updateWork(postObj, reducerObj);
         console.log(postObj)
         console.log(reducerObj)
-        console.log(e.target.value)
+        // console.log(e.target.value)
 
-        this.setState({
-            done: !this.state.done
-        })
+        // this.setState({
+        //     done: !this.state.done
+        // })
     }
     render() {
         const columns = [
             {
-                title: 'Vartotojo vardas',
+                title: 'Vardas',
                 dataIndex: 'user',
                 width: '10%',
                 render: (text, record, index) => (
@@ -231,17 +226,17 @@ class HomeScreen extends React.Component {
                 )
             },
             {
-                title: 'Darbas apibūdinimas',
-                dataIndex: 'darbasApibūdinimas',
+                title: 'Darbas',
+                dataIndex: 'description',
                 width: '10%'
             },
             {
                 title: 'Atlikta',
-                dataIndex: 'atlikta',
+                dataIndex: 'done',
                 width: '10%',
                 render: (text, record, index) => (
                     // <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
-                    <Checkbox onChange={(e) => this.onChange(e, record.id, record.user.id, record.darbasApibūdinimas)} value={this.state.done} defaultChecked={text} />
+                    <Checkbox onChange={(e) => this.onChange(e.target.checked, record)} value={text} defaultChecked={text} />
                 )
             },
         ]
@@ -804,32 +799,8 @@ class HomeScreen extends React.Component {
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
 
                     <Row>
-                        <Col span={10} >
-                            {/* <Row gutter={16}>
-                                <Col span={16}> */}
-                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                <h5>Savaitės darbo grafikas</h5>
-                            </div>
-                            {/* </Col>
-                            </Row> */}
-                            {/* <Row gutter={16}> */}
-                            {/* <Col span={24}> */}
-                            <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                <Table
-                                    rowKey="id"
-                                    columns={columns}
-                                    dataSource={this.state.Works}
-                                    pagination={{ pageSize: 15 }}
-                                    bWorked
-                                    scroll={{ x: 'calc(200px + 50%)' }}
 
-                                />
-
-                            </Card>
-                            {/* </Col> */}
-                            {/* </Row> */}
-                        </Col>
-                        <Col span={12} offset={1} >
+                        <Col lg={12} md={24} >
                             {/* <Row gutter={16}>
                                 <Col span={16}> */}
                             <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -844,6 +815,32 @@ class HomeScreen extends React.Component {
                                     rowKey="id"
                                     columns={workColumns}
                                     dataSource={this.state.Works}
+                                    pagination={{ pageSize: 15 }}
+                                    bWorked
+                                    scroll={{ x: 'calc(200px + 50%)' }}
+
+                                />
+
+                            </Card>
+                            {/* </Col> */}
+                            {/* </Row> */}
+                        </Col>
+                        <div style={{ padding: '10px' }}></div>
+                        <Col lg={10} md={24} >
+                            {/* <Row gutter={16}>
+                                <Col span={16}> */}
+                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                <h5>Savaitės ūkio darbai</h5>
+                            </div>
+                            {/* </Col>
+                            </Row> */}
+                            {/* <Row gutter={16}> */}
+                            {/* <Col span={24}> */}
+                            <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                <Table
+                                    rowKey="id"
+                                    columns={columns}
+                                    dataSource={this.props.weeklyWorkScheduleReducer.workSchedules}
                                     pagination={{ pageSize: 15 }}
                                     bWorked
                                     scroll={{ x: 'calc(200px + 50%)' }}
@@ -1114,5 +1111,5 @@ const mapStateToProps = (state) => {
         orderDetailsReducer: state.orderDetailsReducer
     }
 }
-export default connect(mapStateToProps, { getWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getCompletedWarehouseOrders, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks, getLastMonthCompletedOrders })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getCompletedWarehouseOrders, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks, getLastMonthCompletedOrders })(withRouter(HomeScreen))
 

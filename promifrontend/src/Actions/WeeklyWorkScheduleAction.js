@@ -1,6 +1,6 @@
 import promiAPI from "./promiAPI";
 
-export const getWorks = (callback) => async (dispatch, getState) => {
+export const getWorks = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'WORKSCHEDULE_FETCH_REQUEST'
@@ -12,7 +12,6 @@ export const getWorks = (callback) => async (dispatch, getState) => {
             type: 'WORKSCHEDULE_FETCH_SUCCESS',
             payload: response.data
         });
-        callback()
     } catch (error) {
         dispatch({
             type: 'WORKSCHEDULE_FETCH_FAIL',
@@ -24,7 +23,29 @@ export const getWorks = (callback) => async (dispatch, getState) => {
     }
 }
 
-export const addWork = (postObject, callback) => async (dispatch, getState) => {
+export const getWeekWorks = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'WEEK_WORK_SCHEDULES_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/WeeklyWorkSchedules/works`,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'WEEK_WORK_SCHEDULES_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch(error){
+        dispatch({
+            type: 'WEEK_WORK_SCHEDULES_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const addWork = (postObject) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'WORKSCHEDULE_CREATE_REQUEST'
@@ -36,7 +57,6 @@ export const addWork = (postObject, callback) => async (dispatch, getState) => {
             type: 'WORKSCHEDULE_CREATE_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'WORKSCHEDULE_CREATE_FAIL',
@@ -48,19 +68,18 @@ export const addWork = (postObject, callback) => async (dispatch, getState) => {
     }
 }
 
-export const updateWork = (postObj, reducerObj, callback) => async (dispatch, getState) => {
+export const updateWork = (postObj, reducerObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'WORKSCHEDULE_UPDATE_REQUEST'
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/WeeklyWorkSchedules/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        await promiAPI.put(`/api/WeeklyWorkSchedules/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'WORKSCHEDULE_UPDATE_SUCCESS',
             payload: reducerObj
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'WORKSCHEDULE_UPDATE_FAIL',

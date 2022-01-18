@@ -10,8 +10,8 @@ function AddWeeklyWorkScheduleComponent(props) {
     const dispatch = useDispatch();
     const [works, setWorks] = useState({
         "userId": "",
-        "darbasApibūdinimas": "",
-        "atlikta": false,
+        "description": "",
+        "done": false,
 
     });
     const usersListReducer = useSelector((state) => state.usersListReducer);
@@ -44,8 +44,8 @@ function AddWeeklyWorkScheduleComponent(props) {
         console.log(JSON.parse(JSON.stringify(works)))
         const postObj = {
             "userId": dataWork.userId,
-            "darbasApibūdinimas": dataWork.darbasApibūdinimas,
-            "atlikta": dataWork.atlikta
+            "description": dataWork.description,
+            "done": dataWork.done
         }
         props.save(postObj);
         console.log(postObj)
@@ -74,8 +74,8 @@ function AddWeeklyWorkScheduleComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
 
-                    <Form.Item key="name" name="name" label="Darbo apibūdinimas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite darbo apibūdinimas" value={works.darbasApibūdinimas} onChange={(e) => onDataChange(e.target.value, "darbasApibūdinimas")} />
+                    <Form.Item key="name" name="name" label="Darbas">
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite darbo apibūdinimas" value={works.description} onChange={(e) => onDataChange(e.target.value, "description")} />
                     </Form.Item>
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>

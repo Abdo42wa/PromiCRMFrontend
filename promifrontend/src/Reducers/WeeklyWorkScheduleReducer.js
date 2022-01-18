@@ -6,6 +6,12 @@ export const weeklyWorkScheduleReducer = (state = { workSchedules: [] }, action)
             return { ...state, loading: false, workSchedules: action.payload }
         case 'WORKSCHEDULE_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
+        case 'WEEK_WORK_SCHEDULES_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'WEEK_WORK_SCHEDULES_FETCH_SUCCESS':
+            return {...state, loading: false, workSchedules:action.payload}
+        case 'WEEK_WORK_SCHEDULES_FETCH_FAIL':
+            return {...state, loading: false, error:action.payload}
         case 'WORKSCHEDULE_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'WORKSCHEDULE_CREATE_SUCCESS':
@@ -16,15 +22,10 @@ export const weeklyWorkScheduleReducer = (state = { workSchedules: [] }, action)
         case 'WORKSCHEDULE_UPDATE_REQUEST':
             return { ...state, loading: true }
         case 'WORKSCHEDULE_UPDATE_SUCCESS':
-            const workSchedulesClone = JSON.parse(JSON.stringify(state.workSchedules));
-            workSchedulesClone.map((element, index) => {
-                if (element.id === action.payload.id) {
-                    element.userId = action.payload.userId;
-                    element.darbasApibūdinimas = action.payload.darbasApibūdinimas;
-                    element.atlikta = action.payload.atlikta;
-                }
-            });
-            return { ...state, loading: false, workSchedules: workSchedulesClone }
+            const workSchedulesClone = [...state.workSchedules]
+            const updated = workSchedulesClone.map(x => x.id === action.payload.id?action.payload:x)
+            console.log(JSON.stringify(updated))
+            return { ...state, loading: false, workSchedules: updated }
         case 'WORKSCHEDULE_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
         default:

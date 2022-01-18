@@ -24,20 +24,6 @@ class CountryScreen extends React.Component {
         }
     }
 
-
-    componentDidMount() {
-        if (this.props.usersReducer.currentUser !== null) {
-            this.props.getCountries(() => {
-                const countriesClone = JSON.parse(JSON.stringify(this.props.countryReducer.countries));
-                this.setState({
-                    countries: countriesClone
-                });
-            });
-        } else {
-            this.props.history.push('/login')
-        }
-    }
-
     showAddCountry = () => {
         this.setState({
             addCountryVisibility: true
@@ -90,6 +76,19 @@ class CountryScreen extends React.Component {
                 updateCountryVisibility: false
             });
         });
+    }
+    componentDidMount() {
+        if (this.props.usersReducer.currentUser !== null) {
+            this.props.getCountries(() => {
+                const countriesClone = JSON.parse(JSON.stringify(this.props.countryReducer.countries));
+                this.setState({
+                    countries: countriesClone
+                });
+            });
+        } else {
+            this.props.history.push('/login')
+        }
+        
     }
 
     render() {

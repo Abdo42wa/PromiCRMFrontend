@@ -45,29 +45,20 @@ function UpdateWeeklyWorkScheduleComponent(props) {
         // }
     }
     const saveChanges = () => {
-        const dataWork = JSON.parse(JSON.stringify(works));
+        const workClone = JSON.parse(JSON.stringify(works));
         const postObj = {
-            "userId": dataWork.userId,
-            "darbasApibūdinimas": dataWork.darbasApibūdinimas,
-            "atlikta": dataWork.atlikta,
+            "userId": workClone.userId,
+            "description": workClone.description,
+            "done": workClone.done,
         }
-        const reducerObj = {
-            "id": dataWork.id,
-            "userId": dataWork.userId,
-            "darbasApibūdinimas": dataWork.darbasApibūdinimas,
-            "atlikta": dataWork.atlikta
-        }
+        const reducerObj = workClone;
+        console.log(JSON.stringify(postObj))
+        console.log(JSON.stringify(reducerObj))
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
         dispatch(getUsers(() => {
-            const obj = {
-                "id": props.record.id,
-                "userId": props.record.userId,
-                "darbasApibūdinimas": props.record.darbasApibūdinimas,
-                "atlikta": props.record.atlikta
-            }
-            setWorks(obj);
+            setWorks(props.record);
         }))
         // eslint-disable-next-line
     }, [dispatch]);
@@ -88,8 +79,8 @@ function UpdateWeeklyWorkScheduleComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-                    <p style={{ ...textStyle }}>Darbo apibūdinimas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite darbo apibūdinimas" value={works.darbasApibūdinimas} onChange={(e) => onDataChange(e.target.value, "darbasApibūdinimas")} />
+                    <p style={{ ...textStyle }}>Darbas</p>
+                    <Input required style={{ width: '100%' }} placeholder="Parašykite darbą" value={works.description} onChange={(e) => onDataChange(e.target.value, "description")} />
 
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>
@@ -104,18 +95,18 @@ function UpdateWeeklyWorkScheduleComponent(props) {
                     >
                         {usersListReducer.users.map((element, index) => {
 
-                            return (<Option key={element.id} value={element.id}>{element.name}</Option>)
+                            return (<Option id={element.id} key={element.id} value={element.id}>{element.name}</Option>)
                         })}
                     </Select>
 
-                    <p style={{ marginBottom: '5px' }}>Status</p>
+                    <p style={{ marginBottom: '5px' }}>Atlikta</p>
                     <Select
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite viena"
                         optionFilterProp="children"
-                        defaultValue={works.atlikta}
-                        value={works.atlikta}
+                        defaultValue={works.done}
+                        value={works.done}
                         onChange={(e) => onDataChange(e, "atlikta")}
                     >
                         <Option key={1} value={true}>{'Atlikta'}</Option>

@@ -19,7 +19,7 @@ export const login = (email, password) => async (dispatch) => {
             type: 'USER_LOGIN_SUCCESS',
             payload: data
         })
-        var expiration = new Date(new Date().getTime() + 1 * 60 * 1000);
+        var expiration = new Date(new Date().getTime() + 15 * 60 * 1000);
         Cookies.set('currentUser', data.token, {
             expires: expiration
         });

@@ -115,11 +115,11 @@ const Header = () => {
                                             </NavDropdown.Item>
                                         </LinkContainer>
 
-                                        <LinkContainer to='/recent-works'>
+                                        {/* <LinkContainer to='/recent-works'>
                                             <NavDropdown.Item>
                                                 <i class="fas fa-tools"></i> Atlikti darbai
                                             </NavDropdown.Item>
-                                        </LinkContainer>
+                                        </LinkContainer> */}
                                     </NavDropdown>
 
 
