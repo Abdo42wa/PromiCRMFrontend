@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getCompletedWarehouseOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getLastMonthCompletedOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getLastMonthCompletedOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWeekWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -10,6 +10,7 @@ import { tableCardStyle, tableCardBodyStyle } from '../styles/customStyles.js';
 import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
 import { getProducts } from '../Actions/productsActions'
 import { getRecentWorks } from '../Actions/recentWorksActions'
+import { getWarehouseProducts } from '../Actions/warehouseActions'
 import moment from 'moment';
 // import { Chart } from 'chart.js'
 import { Bar, Line } from 'react-chartjs-2';
@@ -120,10 +121,13 @@ class HomeScreen extends React.Component {
             })
 
             this.props.getRecentWorks();
-            // this.props.getUncompletedOrders();
+
             this.props.getUncompletedExpressOrders();
-            this.props.getCompletedWarehouseOrders();
+            // get from warehouse
+            this.props.getWarehouseProducts();
+            // get uncompleted orders for warehouse
             this.props.getUncompletedWarehouseOrders();
+            // get uncompleted orders
             this.props.getOrdersUncompleted();
             this.props.getLastWeeksCompletedOrders(() => {
                 this.getLastWeeksMadeProducts()
@@ -192,19 +196,19 @@ class HomeScreen extends React.Component {
 
 
     }
-    onChange(value,record) {
+    onChange(value, record) {
         const postObj = {
             "userId": record.userId,
             "description": record.description,
             "done": value,
         }
         const reducerObj = {
-            "id":record.id,
-            "userId":record.userId,
-            "user":record.user,
+            "id": record.id,
+            "userId": record.userId,
+            "user": record.user,
             "description": record.description,
             "done": value,
-            "date":record.date
+            "date": record.date
         }
         this.props.updateWork(postObj, reducerObj);
         console.log(postObj)
@@ -220,7 +224,7 @@ class HomeScreen extends React.Component {
             {
                 title: 'Vardas',
                 dataIndex: 'user',
-                width: '10%',
+                width: '25%',
                 render: (text, record, index) => (
                     <Typography.Text>{text.name}</Typography.Text>
                 )
@@ -228,17 +232,25 @@ class HomeScreen extends React.Component {
             {
                 title: 'Darbas',
                 dataIndex: 'description',
-                width: '10%'
+                width: '25%'
             },
             {
                 title: 'Atlikta',
                 dataIndex: 'done',
-                width: '10%',
+                width: '25%',
                 render: (text, record, index) => (
                     // <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                     <Checkbox onChange={(e) => this.onChange(e.target.checked, record)} value={text} defaultChecked={text} />
                 )
             },
+            {
+                title: 'Data',
+                dataIndex: 'date',
+                width: '25%',
+                render: (text, record, index) => (
+                    <Typography.Text>{moment(text).format('YYYY/MM/DD')}</Typography.Text>
+                )
+            }
         ]
         const workColumns = [
             {
@@ -683,7 +695,7 @@ class HomeScreen extends React.Component {
             },
             {
                 title: 'Kiekis',
-                dataIndex: 'quantity',
+                dataIndex: 'quantityProductWarehouse',
                 width: '30%'
             },
             {
@@ -692,7 +704,7 @@ class HomeScreen extends React.Component {
                 width: '30%',
                 render: (text, record, index) => (
                     <div>
-                        {text === null === text === undefined || text.trim() === "" ?
+                        {text === null === text === undefined ?
                             <p></p> : <Image src={text} height={70} />}
                     </div>
                 )
@@ -1020,7 +1032,7 @@ class HomeScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={completedWarehouseOrders}
-                                        dataSource={this.props.orderDetailsReducer.completed_warehouse_orders}
+                                        dataSource={this.props.warehouseReducer.warehouse_products}
                                         pagination={false}
                                         bordered
                                         scroll={{ x: 'calc(300px + 50%)' }}
@@ -1108,8 +1120,9 @@ const mapStateToProps = (state) => {
         productsReducer: state.productsReducer,
         materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
         recentWorksReducer: state.recentWorksReducer,
-        orderDetailsReducer: state.orderDetailsReducer
+        orderDetailsReducer: state.orderDetailsReducer,
+        warehouseReducer: state.warehouseReducer
     }
 }
-export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getCompletedWarehouseOrders, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks, getLastMonthCompletedOrders })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks, getLastMonthCompletedOrders })(withRouter(HomeScreen))
 
