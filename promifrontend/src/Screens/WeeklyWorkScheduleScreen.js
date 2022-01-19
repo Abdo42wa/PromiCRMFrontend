@@ -126,6 +126,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
+                        <div style={{padding: '15px'}}></div>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
@@ -134,7 +135,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.props.weeklyWorkScheduleReducer.workSchedules}
                                         pagination={{ pageSize: 15 }}
-                                        bWorked
+                                        // bWorked
                                         scroll={{ x: 'calc(700px + 50%)' }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddWorkModal}>Pridėti grafiką</Button></Space>)}
                                     />

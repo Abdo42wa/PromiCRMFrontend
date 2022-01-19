@@ -367,6 +367,7 @@ class ProductsScrenn extends React.Component {
                                 </div>
                             </Col>
                         </Row>
+                        <div style={{padding: '15px'}}></div>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>

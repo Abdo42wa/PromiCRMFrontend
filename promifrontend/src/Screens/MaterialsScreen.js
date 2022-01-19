@@ -137,7 +137,7 @@ class MaterialsScreen extends React.Component {
             <>
 
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
-                    <Col span={24} offset={2}>
+                    <Col span={24} offset={1}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -146,19 +146,21 @@ class MaterialsScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
+                        <div style={{padding: '15px'}}></div>
                         {/* returns second column with table */}
                         {/* <FixedCostTable data={obj.types} countryVats={this.props.countryVats} category_title={obj.category_title} category_id={obj.category_id} /> */}
                         <Row gutter={16}>
-                            <Col span={18}>
+                            <Col span={23}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
                                     <Table
                                         rowKey="id"
                                         columns={columns}
                                         dataSource={this.state.materials}
                                         pagination={{ pageSize: 15 }}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddMaterial}>Pridėti medžiagą</Button></Space>)}
                                     />
-                                    {/* <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.addMaterial}>Pridėti materialą</Button></Space> */}
                                 </Card>
                             </Col>
                         </Row>

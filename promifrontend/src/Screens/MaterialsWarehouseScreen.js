@@ -169,6 +169,7 @@ class MaterialsWarehouseScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
+                        <div style={{padding: '15px'}}></div>
                         {/* returns second column with table */}
                         {/* <FixedCostTable data={obj.types} countryVats={this.props.countryVats} category_title={obj.category_title} category_id={obj.category_id} /> */}
                         <Row gutter={16}>
@@ -179,8 +180,8 @@ class MaterialsWarehouseScreen extends React.Component {
                                         columns={columns}
                                         dataSource={this.props.materialsWarehouseReducer.materialsWarehouseData}
                                         pagination={{ pageSize: 15 }}
-                                        // bordered
-                                        // scroll={{ x: 'calc(700px + 50%)' }}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
                                         footer={() => (
                                             <div style={{ display: 'flex' }}>
                                                 <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddMaterialComponent}>Pridėti medžiagą</Button></Space>
