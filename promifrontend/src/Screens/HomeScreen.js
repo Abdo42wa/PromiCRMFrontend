@@ -32,8 +32,6 @@ class HomeScreen extends React.Component {
             paintingTime: 0,
             milingTime: 0,
             packingTime: 0,
-            uncompletedExpressOrders: [],
-            completedOrdersWarehouse: [],
             done: false,
             lastWeeksMadeProducts: [],
             lastMonthMadeProducts: []
@@ -625,7 +623,7 @@ class HomeScreen extends React.Component {
         ]
         const uncompletedExpressOrderColumns = [
             {
-                title: 'Užsakymo pabaigos data',
+                title: 'Deadline',
                 dataIndex: 'orderFinishDate',
                 width: '10%',
                 render: (text, record, index) => (
@@ -643,49 +641,26 @@ class HomeScreen extends React.Component {
                 width: '10%'
             },
             {
-                title: 'Prekės kodas',
+                title: 'Kodas',
                 dataIndex: 'productCode',
                 width: '10%'
             },
             {
-                title: 'Nuotrauka',
+                title: 'Foto',
                 dataIndex: 'imagePath',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Image
-                        width={100}
-                        src={text}
-                    />
+                    <div>
+                        {text === null === text === undefined ?
+                            <p></p> : <Image src={text} height={70} />}
+                    </div>
                 )
             },
             {
                 title: 'Platforma',
                 dataIndex: 'platforma',
                 width: '10%'
-            },
-            {
-                title: 'Status',
-                dataIndex: 'status',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
-                )
-            },
-            {
-                title: 'Atsakingas asmuo',
-                dataIndex: 'user',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
-                )
-            },
-            {
-                title: 'Užsakymo tipas',
-                dataIndex: 'orderType',
-                width: '10%'
             }
-
-
         ]
 
 
