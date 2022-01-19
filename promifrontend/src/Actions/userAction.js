@@ -40,7 +40,7 @@ export const logout = () => (dispatch) => {
 
 }
 
-export const getUserTypes = (callback) => async (dispatch, getState) => {
+export const getUserTypes = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'USER_TYPES_FETCH_REQUEST'
@@ -64,28 +64,15 @@ export const getUserTypes = (callback) => async (dispatch, getState) => {
 export const register = (postObj) => async (dispatch, getState) => {
 
     try {
-
         dispatch({
             type: 'USER_REGISTER_REQUEST'
         })
-
         const token = getState().usersReducer.currentUser;
-
-        const { data } = await promiAPI.post('/api/Accounts/register', postObj, { headers: { Authorization: `Bearer ${token}` } })
-
-
+        const response = await promiAPI.post('/api/Accounts/register', postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'USER_REGISTER_SUCCESS',
-            payload: data,
+            payload: response.data,
         })
-
-        // dispatch({
-        //     type: 'USER_LOGIN_SUCCESS',
-        //     payload: data,
-        // })
-
-        // localStorage.setItem('userInfo', JSON.stringify(data))
-
     } catch (error) {
         dispatch({
             type: 'USER_REGISTER_FAIL',

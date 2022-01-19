@@ -2,9 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table, Space, Card, Typography, Col, Row } from 'antd'
 import Button from "react-bootstrap/Button";
+import { PlusOutlined } from '@ant-design/icons';
 import { getUsers } from '../Actions/userListActions'
+import { register } from '../Actions/userAction';
 import { withRouter } from 'react-router-dom'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
+import AddUserComponent from '../Components/users_components/AddUserComponent';
 
 
 
@@ -12,21 +15,29 @@ class UserListScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: []
+            users: [],
+            addVisibility: false
         }
     }
 
-    registerUser = () => {
-        this.props.history.push('/register');
+    showAddComponent = () => {
+        this.setState({
+            addVisibility: true
+        })
+    }
+    unshowAddComponent = () => {
+        this.setState({
+            addVisibility: false
+        })
+    }
+    saveAddUser = (postObj) => {
+        this.props.register(postObj)
+        this.unshowAddComponent()
     }
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getUsers(() => {
-                const usersClone = JSON.parse(JSON.stringify(this.props.usersListReducer.users));
-                this.setState({
-                    users: usersClone
-                }, () => console.log('Users:' + JSON.stringify(this.state.users)));
             });
         } else {
             this.props.history.push('/login');
@@ -35,14 +46,24 @@ class UserListScreen extends React.Component {
     render() {
         const columns = [
             {
-                title: 'El. pašas',
+                title: 'El. paštas',
                 dataIndex: 'email',
-                width: '50%'
+                width: '25%'
+            },
+            {
+                title: 'Vardas',
+                dataIndex: 'name',
+                width: '25%'
+            },
+            {
+                title: 'Pavardė',
+                dataIndex: 'surname',
+                width: '25%'
             },
             {
                 title: 'Telefono numeris',
                 dataIndex: 'phoneNumber',
-                width: '50%'
+                width: '25%'
             }
         ]
         return (
@@ -57,7 +78,7 @@ class UserListScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
-                        <div style={{padding: '15px'}}></div>
+                        <div style={{ padding: '15px' }}></div>
                         {/* returns second column with table */}
                         {/* <FixedCostTable data={obj.types} countryVats={this.props.countryVats} category_title={obj.category_title} category_id={obj.category_id} /> */}
                         <Row gutter={16}>
@@ -70,14 +91,17 @@ class UserListScreen extends React.Component {
                                         pagination={{ pageSize: 15 }}
                                         bordered
                                         scroll={{ x: 'calc(300px + 50%)' }}
-                                    // footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.onOpenAddCompany()}><PlusOutlined />Pridėti kompaniją</Button></Space>)}
+                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddComponent}><PlusOutlined />Pridėti naudotoją</Button></Space>)}
                                     />
-                                    <Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.registerUser}>Pridėti naudotoją</Button></Space>
                                 </Card>
                             </Col>
                         </Row>
                     </Col>
                 </div>
+                {this.state.addVisibility === true ?
+                    <AddUserComponent onClose={this.unshowAddComponent}
+                        saveChanges={this.saveAddUser} visible={this.state.addVisibility} />
+                    : null}
             </>
         )
     }
@@ -91,4 +115,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { getUsers })(withRouter(UserListScreen));
+export default connect(mapStateToProps, { getUsers, register })(withRouter(UserListScreen));

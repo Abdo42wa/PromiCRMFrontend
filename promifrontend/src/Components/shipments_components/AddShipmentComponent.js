@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, Form, Space, Input } from 'antd';
+import { Modal, Button, Form, Space, Input,InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 function AddShipmentComponent(props) {
@@ -20,45 +20,16 @@ function AddShipmentComponent(props) {
 
     const saveChanges = () => {
         const shipmentClone = JSON.parse(JSON.stringify(shipment))
-        const postObj = {
-            type: shipmentClone.type,
-            period: shipmentClone.period,
-            shippingCost: shipmentClone.shippingCost,
-            shippingNumber: shipmentClone.shippingNumber,
-            shipmentInfo: shipmentClone.shipmentInfo
-        }
+        const postObj = shipmentClone;
         props.save(postObj);
     }
 
     const onDataChange = (value, inputName) => {
         // const shipmentClone
-        if (inputName === 'type') {
-            // everyting that was in previous state, and just change 'type'
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }));
-        } else if (inputName === 'period') {
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }));
-        } else if (inputName === 'shippingCost') {
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }));
-        } else if (inputName === 'shippingNumber') {
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }));
-        } else if (inputName === 'shipmentInfo') {
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }))
-        }
+        setShipment(prevState =>({
+            ...prevState,
+            [inputName]:value
+        }))
 
     }
     return (
@@ -82,13 +53,13 @@ function AddShipmentComponent(props) {
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite tipą" value={shipment.type} onChange={(e) => onDataChange(e.target.value, "type")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Periodas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite periodą" value={shipment.period} onChange={(e) => onDataChange(e.target.value, "period")} />
+                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite periodą" value={shipment.period} onChange={(e) => onDataChange(e.target.value, "period")} />
                     </Form.Item>
                     <Form.Item key="name3" name="name3" label="Pristatymo kaina">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={shipment.shippingCost} onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
+                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={shipment.shippingCost} onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
                     </Form.Item>
                     <Form.Item key="name4" name="name4" label="Pristatymo numeris">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite numerį" value={shipment.shippingNumber} onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
+                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite numerį" value={shipment.shippingNumber} onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
                     </Form.Item>
                     <Form.Item key="name5" name="name5" label="Pristatymo informacija">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite informaciją" value={shipment.shipmentInfo} onChange={(e) => onDataChange(e.target.value, "shipmentInfo")} />

@@ -49,11 +49,6 @@ const Header = () => {
                                         <Nav.Link href="/">Pagrindinis</Nav.Link>
                                     </LinkContainer>
                                     <NavDropdown title='Admin' id='adminmenu'>
-                                        <LinkContainer to='/register'>
-                                            <NavDropdown.Item>
-                                                <i className="fas fa-user-plus"></i> Pridėti naudotojus
-                                            </NavDropdown.Item>
-                                        </LinkContainer>
                                         <LinkContainer to='/userlist'>
                                             <NavDropdown.Item>
                                                 <i className="fas fa-users"></i> Naudotojai

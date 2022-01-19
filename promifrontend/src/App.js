@@ -4,7 +4,6 @@ import { Container } from 'react-bootstrap'
 import HomeScreen from './Screens/HomeScreen';
 import Header from './Components/Header';
 import LoginScreen from './Screens/LoginScreen';
-import RegisterScreen from './Screens/RegisterScreen';
 import UserListScreen from './Screens/UserListScreen';
 import MaterialsScreen from './Screens/MaterialsScreen';
 import ShipmentScreen from './Screens/ShipmentScreen';
@@ -29,7 +28,6 @@ function App() {
         <div className="App">
 
           <Route path='/login' component={LoginScreen} />
-          <Route path='/register' component={RegisterScreen} />
           <Route path='/userlist' component={UserListScreen} />
           <Route path='/materials' component={MaterialsScreen} />
           <Route path='/shipments' component={ShipmentScreen} />
