@@ -9,7 +9,6 @@ import { getWeekWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
 import { tableCardStyle, tableCardBodyStyle } from '../styles/customStyles.js';
 import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
 import { getProducts } from '../Actions/productsActions'
-import { getRecentWorks } from '../Actions/recentWorksActions'
 import { getWarehouseProducts } from '../Actions/warehouseActions'
 import moment from 'moment';
 // import { Chart } from 'chart.js'
@@ -120,7 +119,6 @@ class HomeScreen extends React.Component {
 
             })
 
-            this.props.getRecentWorks();
 
             this.props.getUncompletedExpressOrders();
             // get from warehouse
@@ -1036,7 +1034,7 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
-                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    {/* <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -1059,7 +1057,7 @@ class HomeScreen extends React.Component {
                                 </Card>
                             </Col>
                         </Row>
-                    </Col>
+                    </Col> */}
 
                     <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
@@ -1112,10 +1110,9 @@ const mapStateToProps = (state) => {
         orderReducer: state.orderReducer,
         productsReducer: state.productsReducer,
         materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
-        recentWorksReducer: state.recentWorksReducer,
         orderDetailsReducer: state.orderDetailsReducer,
         warehouseReducer: state.warehouseReducer
     }
 }
-export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks, getLastMonthCompletedOrders,getUrgetOrders })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getLastMonthCompletedOrders,getUrgetOrders })(withRouter(HomeScreen))
 

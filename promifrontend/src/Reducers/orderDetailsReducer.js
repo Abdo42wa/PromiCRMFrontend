@@ -6,7 +6,8 @@ export const orderDetailsReducer = (state = {
     clients_orders: [],
     last_weeks_orders: [],
     last_month_orders: [],
-    urgent_orders: []
+    urgent_orders: [],
+    newest_orders: []
 }, action) => {
     switch (action.type) {
         //uncompletedOrders: [],
