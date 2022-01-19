@@ -24,6 +24,28 @@ export const getOrders = (callback) => async (dispatch, getState) => {
     }
 }
 
+export const getUrgetOrders = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDERS_URGENT_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/urgent`,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'ORDERS_URGENT_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch(error){
+        dispatch({
+            type: 'ORDERS_URGENT_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const getUncompletedWarehouseOrders = () => async (dispatch, getState) => {
     try {
         dispatch({
@@ -71,28 +93,6 @@ export const getUncompletedExpressOrders = (callback) => async (dispatch, getSta
     }
 }
 
-export const getCompletedWarehouseOrders = () => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: 'COMPLETED_WAREHOUSE_ORDERS_FETCH_REQUEST'
-        })
-        const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/warehouseCompleted`, { headers: { Authorization: `Bearer ${token}` } });
-        dispatch({
-            type: 'COMPLETED_WAREHOUSE_ORDERS_FETCH_SUCCESS',
-            payload: response.data
-        });
-
-    } catch (error) {
-        dispatch({
-            type: 'COMPLETED_WAREHOUSE_ORDERS_FETCH_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
 
 export const getOrdersUncompleted = () => async (dispatch, getState) => {
     try {

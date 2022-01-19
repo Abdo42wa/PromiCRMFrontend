@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getLastMonthCompletedOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getLastMonthCompletedOrders,getUrgetOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWeekWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -100,6 +100,8 @@ class HomeScreen extends React.Component {
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getWeekWorks()
+
+            this.props.getUrgetOrders()
             this.props.getOrders(() => {
 
                 const orderDataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
@@ -349,12 +351,12 @@ class HomeScreen extends React.Component {
             },
             {
                 title: 'Nuotrauka',
-                dataIndex: 'imagePath',
+                dataIndex: 'product',
                 width: '10%',
                 render: (text, record, index) => (
                     <Image
                         width={100}
-                        src={text}
+                        src={text.imagePath}
                     />
                 )
             },
@@ -871,7 +873,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Užsakymai</h5>
+                                    <h5>Gaminių tvarkaraškis(Užsakymai)</h5>
                                 </div>
                             </Col>
                         </Row>
@@ -881,7 +883,7 @@ class HomeScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={orderColumns}
-                                        dataSource={this.state.orders}
+                                        dataSource={this.props.orderDetailsReducer.urgent_orders}
                                         pagination={{ pageSize: 10 }}
                                         bordered
                                         scroll={{ x: 'calc(200px + 50%)' }}
@@ -1124,5 +1126,5 @@ const mapStateToProps = (state) => {
         warehouseReducer: state.warehouseReducer
     }
 }
-export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks, getLastMonthCompletedOrders })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getRecentWorks, getLastMonthCompletedOrders,getUrgetOrders })(withRouter(HomeScreen))
 

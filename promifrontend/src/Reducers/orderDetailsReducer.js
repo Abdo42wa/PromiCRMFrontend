@@ -5,7 +5,8 @@ export const orderDetailsReducer = (state = {
     uncompleted_orders: [],
     clients_orders: [],
     last_weeks_orders: [],
-    last_month_orders: []
+    last_month_orders: [],
+    urgent_orders: []
 }, action) => {
     switch (action.type) {
         //uncompletedOrders: [],
@@ -42,17 +43,23 @@ export const orderDetailsReducer = (state = {
         case 'CLIENT_ORDERS_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
         case 'LAST_WEEKS_ORDERS_FETCH_REQUEST':
-            return {...state, loading: true}
+            return { ...state, loading: true }
         case 'LAST_WEEKS_ORDERS_FETCH_SUCCESS':
-            return {...state, loading: false, last_weeks_orders: action.payload}
+            return { ...state, loading: false, last_weeks_orders: action.payload }
         case 'LAST_WEEKS_ORDERS_FETCH_FAIL':
-            return {...state, loading: false, error: action.payload}
+            return { ...state, loading: false, error: action.payload }
         case 'LAST_MONTH_ORDERS_FETCH_REQUEST':
-            return {...state, loading: true}
+            return { ...state, loading: true }
         case 'LAST_MONTH_ORDERS_FETCH_SUCCESS':
-            return {...state, loading: false, last_month_orders: action.payload}
+            return { ...state, loading: false, last_month_orders: action.payload }
         case 'LAST_MONTH_ORDERS_FETCH_FAIL':
-            return {...state, loading: false, error: action.payload}
+            return { ...state, loading: false, error: action.payload }
+        case 'ORDERS_URGENT_FETCH_REQUEST':
+            return { ...state, loading: true }
+        case 'ORDERS_URGENT_FETCH_SUCCESS':
+            return { ...state, loading: false, urgent_orders: action.payload }
+        case 'ORDERS_URGENT_FETCH_FAIL':
+            return { ...state, loading: false, error: action.payload }
         default:
             return state;
     }
