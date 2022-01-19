@@ -718,17 +718,17 @@ class HomeScreen extends React.Component {
             {
                 title: 'Kodas',
                 dataIndex: 'productCode',
-                width: '25%'
+                width: '20%'
             },
             {
                 title: 'Kiekis',
                 dataIndex: 'quantity',
-                width: '25%'
+                width: '20%'
             },
             {
                 title: 'Nuotrauka',
                 dataIndex: 'imagePath',
-                width: '25%',
+                width: '20%',
                 render: (text, record, index) => (
                     <div>
                         {text === null === text === undefined || text.trim() === "" ?
@@ -737,9 +737,17 @@ class HomeScreen extends React.Component {
                 )
             },
             {
-                title: 'Deadline',
+                title: 'Deadline(didžiausia)',
                 dataIndex: 'orderFinishDate',
-                width: '25%',
+                width: '20%',
+                render: (text, record, index) => (
+                    <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
+                )
+            },
+            {
+                title: 'Deadline(mažiausia)',
+                dataIndex: 'minOrderFinishDate',
+                width: '20%',
                 render: (text, record, index) => (
                     <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
                 )
@@ -751,17 +759,17 @@ class HomeScreen extends React.Component {
             {
                 title: 'Kodas',
                 dataIndex: 'productCode',
-                width: '25%'
+                width: '20%'
             },
             {
                 title: 'Kiekis',
                 dataIndex: 'quantity',
-                width: '25%'
+                width: '20%'
             },
             {
                 title: 'Nuotrauka',
                 dataIndex: 'imagePath',
-                width: '25%',
+                width: '20%',
                 render: (text, record, index) => (
                     <div>
                         {text === null === text === undefined || text.trim() === "" ?
@@ -770,13 +778,21 @@ class HomeScreen extends React.Component {
                 )
             },
             {
-                title: 'Deadline',
+                title: 'Deadline(didžiausia)',
                 dataIndex: 'orderFinishDate',
-                width: '25%',
+                width: '20%',
                 render: (text, record, index) => (
                     <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
                 )
             },
+            {
+                title: 'Deadline(mažiausia)',
+                dataIndex: 'minOrderFinishDate',
+                width: '20%',
+                render: (text, record, index) => (
+                    <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
+                )
+            }
         ]
 
         const clientOrders = [
