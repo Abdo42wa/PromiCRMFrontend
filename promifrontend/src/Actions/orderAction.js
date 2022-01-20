@@ -143,7 +143,7 @@ export const getClientsOrders = () => async (dispatch, getState) => {
             type: 'CLIENT_ORDERS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/clientsOrders`, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.get(`/api/Orders/clients`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'CLIENT_ORDERS_FETCH_SUCCESS',
             payload: response.data

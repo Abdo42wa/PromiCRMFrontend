@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,getRecentOrders, getLastMonthCompletedOrders,getUrgetOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWeekWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -101,26 +101,8 @@ class HomeScreen extends React.Component {
             //Gaminiu tvarkarascio darbai.
             this.props.getUrgetOrders()
             //Klientu darbu lentele. Not-standart works.
-
-            this.props.getOrders(() => {
-
-                const orderDataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
-                // console.log('orders:' + JSON.stringify(orderDataClone))
-                this.setState({
-                    orders: orderDataClone
-                });
-
-            })
-
-            this.props.getProducts(() => {
-                this.props.getMaterialsWarehouseData();
-                const productsDataClone = JSON.parse(JSON.stringify(this.props.productsReducer.products));
-                this.setState({
-                    products: productsDataClone
-                });
-                console.log(this.getTime());
-
-            })
+            this.props.getClientsOrders();
+            
 
             //Express neatlikti uzsakymai
             this.props.getUncompletedExpressOrders();
@@ -132,8 +114,8 @@ class HomeScreen extends React.Component {
             this.props.getWarehouseProducts();
             //Get most recents orders/works. Newest 10 works. Naujausi atlikti darbai
             this.props.getRecentOrders();
-            
-            
+
+
             // Pagamintu gaminiu ataskaita per 30 dienu. Uz kiekviena diena
             this.props.getLastMonthCompletedOrders(() => {
                 this.getLastMonthMadeProducts();
@@ -624,7 +606,7 @@ class HomeScreen extends React.Component {
                 title: "Vardas",
                 width: '15%',
                 render: (text, record, index) => (
-                    <Typography.Text>{record.user.name}  {record.packingComplete !== null?<p>Supakavo</p>:<p></p>}</Typography.Text>
+                    <Typography.Text>{record.user.name}  {record.packingComplete !== null ? <p>Supakavo</p> : <p></p>}</Typography.Text>
                 )
             },
         ]
@@ -1122,5 +1104,5 @@ const mapStateToProps = (state) => {
         warehouseReducer: state.warehouseReducer
     }
 }
-export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getLastMonthCompletedOrders,getUrgetOrders,getRecentOrders })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders })(withRouter(HomeScreen))
 
