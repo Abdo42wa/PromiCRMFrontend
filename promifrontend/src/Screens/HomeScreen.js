@@ -363,7 +363,7 @@ class HomeScreen extends React.Component {
             }
         ]
 
-    
+
 
         const recentWorksColumns = [
             {
@@ -376,10 +376,10 @@ class HomeScreen extends React.Component {
             },
             {
                 title: 'Nr',
-                dataIndex: 'product',
+                dataIndex: 'orderNumber',
                 width: '15%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.order.orderNumber}</Typography.Text>
+                    <Typography.Text>{text.orderNumber}</Typography.Text>
                 )
             },
             {
@@ -394,12 +394,15 @@ class HomeScreen extends React.Component {
                 title: 'Foto',
                 dataIndex: 'product',
                 width: '15%',
-                render: (text, record, index) => (
-                    <div>
-                        {text.imagePath === null || text.imagePath === undefined ?
-                            <p></p> : <Image src={text.imagePath} />}
-                    </div>
-                )
+                render: (text, record, index) => {
+                    if(text === null || text === undefined)
+                        return (<p></p>)
+                    else
+                        if(text.imagePath === null)
+                            return (<p></p>)
+                        else
+                            return (<Image src={text.imagePath} alt='Foto'/>)
+                }
             },
             {
                 title: 'Kiekis',
@@ -472,12 +475,12 @@ class HomeScreen extends React.Component {
                 title: 'Nuotrauka',
                 dataIndex: 'imagePath',
                 width: '30%',
-                // render: (text, record, index) => (
-                //     <div>
-                //         {text === null || text === undefined ?
-                //             <p></p> : <Image src={text} />}
-                //     </div>
-                // )
+                render: (text, record, index) => (
+                    <div>
+                        {text === null || text === undefined ?
+                            <p></p> : <Image src={text} />}
+                    </div>
+                )
             },
         ]
 
