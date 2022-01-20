@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getLastMonthCompletedOrders,getUrgetOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,getRecentOrders, getLastMonthCompletedOrders,getUrgetOrders } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWeekWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -96,9 +96,12 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
+            //WeeklyWorkSchedule works. Only for this particular week. Savaites ukio darbai
             this.props.getWeekWorks()
-
+            //Gaminiu tvarkarascio darbai.
             this.props.getUrgetOrders()
+            //Klientu darbu lentele. Not-standart works.
+
             this.props.getOrders(() => {
 
                 const orderDataClone = JSON.parse(JSON.stringify(this.props.orderReducer.orders));
@@ -119,19 +122,25 @@ class HomeScreen extends React.Component {
 
             })
 
-
+            //Express neatlikti uzsakymai
             this.props.getUncompletedExpressOrders();
-            // get from warehouse
-            this.props.getWarehouseProducts();
-            // get uncompleted orders for warehouse
-            this.props.getUncompletedWarehouseOrders();
-            // get uncompleted orders
+            // get uncompleted orders. Daugiausia nepagamintu produktu
             this.props.getOrdersUncompleted();
-            this.props.getLastWeeksCompletedOrders(() => {
-                this.getLastWeeksMadeProducts()
-            })
+            // get uncompleted orders for warehouse. Gaminimo i sandeli lentele
+            this.props.getUncompletedWarehouseOrders();
+            // get from warehouse. Gaminiu kiekis sandelyje
+            this.props.getWarehouseProducts();
+            //Get most recents orders/works. Newest 10 works. Naujausi atlikti darbai
+            this.props.getRecentOrders();
+            
+            
+            // Pagamintu gaminiu ataskaita per 30 dienu. Uz kiekviena diena
             this.props.getLastMonthCompletedOrders(() => {
                 this.getLastMonthMadeProducts();
+            })
+            // Pagamintu gaminiu kiekis savaitemis
+            this.props.getLastWeeksCompletedOrders(() => {
+                this.getLastWeeksMadeProducts()
             })
         } else {
             this.props.history.push('/login');
@@ -589,10 +598,10 @@ class HomeScreen extends React.Component {
             },
             {
                 title: 'Kodas',
-                dataIndex: 'product',
+                dataIndex: 'productCode',
                 width: '15%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.code}</Typography.Text>
+                    <Typography.Text>{text}</Typography.Text>
                 )
             },
             {
@@ -615,7 +624,7 @@ class HomeScreen extends React.Component {
                 title: "Vardas",
                 width: '15%',
                 render: (text, record, index) => (
-                    <Typography.Text>{record.user.name}  {record.workTitle}</Typography.Text>
+                    <Typography.Text>{record.user.name}  {record.packingComplete !== null?<p>Supakavo</p>:<p></p>}</Typography.Text>
                 )
             },
         ]
@@ -1033,8 +1042,7 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
-
-                    {/* <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -1048,7 +1056,7 @@ class HomeScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={recentWorksColumns}
-                                        dataSource={this.props.recentWorksReducer.recent_works.slice(0, 10)}
+                                        dataSource={this.props.orderDetailsReducer.recent_orders}
                                         pagination={false}
                                         bordered
                                         scroll={{ x: 'calc(300px + 50%)' }}
@@ -1057,7 +1065,7 @@ class HomeScreen extends React.Component {
                                 </Card>
                             </Col>
                         </Row>
-                    </Col> */}
+                    </Col>
 
                     <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
@@ -1114,5 +1122,5 @@ const mapStateToProps = (state) => {
         warehouseReducer: state.warehouseReducer
     }
 }
-export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getLastMonthCompletedOrders,getUrgetOrders })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getLastMonthCompletedOrders,getUrgetOrders,getRecentOrders })(withRouter(HomeScreen))
 
