@@ -94,15 +94,28 @@ class HomeScreen extends React.Component {
         })
     }
 
+    // getUser = (userId) => {
+    //     const user = this.props.usersListReducer.users.find(u => String(u.id) === userId)
+    //     if (user !== null && user !== undefined) {
+    //         return (<p>${user.name} ${user.surname}</p>)
+    //     } else {
+    //         return <p></p>
+    //     }
+
+    // }
+
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
+            this.props.getUsers(() => {
+                console.log(JSON.stringify(this.props.usersListReducer.users))
+            })
             //WeeklyWorkSchedule works. Only for this particular week. Savaites ukio darbai
             this.props.getWeekWorks()
             //Gaminiu tvarkarascio darbai.
             this.props.getUrgetOrders()
             //Klientu darbu lentele. Not-standart works.
             this.props.getClientsOrders();
-            
+
 
             //Express neatlikti uzsakymai
             this.props.getUncompletedExpressOrders();
@@ -286,14 +299,40 @@ class HomeScreen extends React.Component {
             },
 
         ]
-        const orderColumns = [
+        const urgentOrders = [
             {
-                title: 'Atsakingas asmuo',
-                dataIndex: 'user',
+                title: 'Deadline',
+                dataIndex: 'orderFinishDate',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
+                    <p>{moment(text).format('YYYY/MM/DD')}</p>
                 )
+            },
+            {
+                title: 'NR',
+                dataIndex: 'orderNumber',
+                width: '10%'
+            },
+            {
+                title: 'Kodas',
+                dataIndex: 'productCode',
+                width: '10%'
+            },
+            // {
+            //     title: 'Foto',
+            //     dataIndex: 'product',
+            //     width: '10%',
+            //     render: (text, record, index) => (
+            //         <div>
+            //             {text.imagePath === null || text.imagePath === undefined ?
+            //                 <p></p> : <Image src={text.imagePath} />}
+            //         </div>
+            //     )
+            // },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '10%'
             },
             {
                 title: 'Užsakymo tipas',
@@ -301,127 +340,18 @@ class HomeScreen extends React.Component {
                 width: '10%'
             },
             {
-                title: 'Status',
-                dataIndex: 'status',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
-                )
-            },
-            {
-                title: 'Užsakymo numeris',
-                dataIndex: 'orderNumber',
-                width: '10%'
-            },
-            {
-                title: 'Data',
-                dataIndex: 'date',
-                width: '10%',
-                render: (text, record, index) => (
-                    <p>{moment(text).format('YYYY/MM/DD')}</p>
-                )
-            },
-            {
                 title: 'Platforma',
                 dataIndex: 'platforma',
                 width: '10%'
             },
-            {
-                title: 'Daugiau informacijos',
-                dataIndex: 'moreInfo',
-                width: '10%'
-            },
-            {
-                title: 'Kiekis',
-                dataIndex: 'quantity',
-                width: '10%'
-            },
-            {
-                title: 'Nuotrauka',
-                dataIndex: 'product',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Image
-                        width={100}
-                        src={text.imagePath}
-                    />
-                )
-            },
-            {
-                title: 'Prekės kodas',
-                dataIndex: 'productCode',
-                width: '10%'
-            },
-            {
-                title: 'Siuntos tipas',
-                dataIndex: 'shipment',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text === null ? '' : text.type}</Typography.Text>
-                )
-            },
-            {
-                title: 'Klientas',
-                dataIndex: 'customer',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
-                )
-            },
-            {
-                title: 'Įrenginys',
-                dataIndex: 'device',
-                width: '10%'
-            },
-            {
-                title: 'Gamybos laikas',
-                dataIndex: 'productionTime',
-                width: '10%'
-            },
-            {
-                title: 'Adresas',
-                dataIndex: 'address',
-                width: '10%'
-            },
-            {
-                title: 'Šalis',
-                dataIndex: 'country',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
-                )
-            },
-            {
-                title: 'Komentaras',
-                dataIndex: 'comment',
-                width: '10%'
-            },
-            {
-                title: 'Kaina',
-                dataIndex: 'price',
-                width: '10%'
-            },
-            {
-                title: 'Valiuta',
-                dataIndex: 'currency',
-                width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
-                )
-            },
-            {
-                title: 'VAT',
-                dataIndex: 'vat',
-                width: '10%'
-            },
-            {
-                title: 'Užsakymo pabaigos data',
-                dataIndex: 'orderFinishDate',
-                width: '10%',
-                render: (text, record, index) => (
-                    <p>{moment(text).format('YYYY/MM/DD')}</p>
-                )
-            },
+            // {
+            //     title: 'Surinkta',
+            //     dataIndex: 'CollectionUserId',
+            //     width: '10%',
+            //     render: (text, record, index) => {
+            //         this.getUser
+            //     }
+            // },
             {
                 title: 'Vėluojama dienų',
                 width: '10%',
@@ -433,133 +363,7 @@ class HomeScreen extends React.Component {
             }
         ]
 
-        const productColumns = [
-            {
-                title: 'Produkto id',
-                dataIndex: 'id',
-                width: '10%'
-            },
-            {
-                title: 'Nuotrauka',
-                dataIndex: 'imagePath',
-                width: '10%',
-                render: (text, record, index) => (
-                    <div>
-                        {text === null || text === undefined ?
-                            <p></p> : <Image src={text} />}
-                    </div>
-                )
-            },
-            {
-                title: 'Nuoroda',
-                dataIndex: 'link',
-                width: '10%'
-            },
-            {
-                title: 'Prekės kodas',
-                dataIndex: 'code',
-                width: '10%'
-            },
-            {
-                title: 'Kategorija',
-                dataIndex: 'category',
-                width: '10%'
-            },
-            {
-                title: 'Medžiagos',
-                dataIndex: 'productMaterials',
-                width: '10%',
-                render: (text, record, index) => (
-                    <div>
-                        {record.productMaterials.map((obj, index) => (
-                            <Typography.Text>{obj.materialWarehouse.title},</Typography.Text>
-                        ))}
-                    </div>
-
-                )
-            },
-
-            {
-                title: 'Produkto pavadinimas',
-                dataIndex: 'name',
-                width: '10%'
-            },
-            {
-                title: 'Ilgis Be Pakuotės',
-                dataIndex: 'lengthWithoutPackaging',
-                width: '10%'
-            },
-            {
-                title: 'Ilgis su Pakuotės',
-                dataIndex: 'lengthWithPackaging',
-                width: '10%'
-            },
-            {
-                title: 'Plotis Be Pakuotės',
-                dataIndex: 'widthWithoutPackaging',
-                width: '10%'
-            },
-            {
-                title: 'Plotis su Pakuotės',
-                dataIndex: 'widthWithPackaging',
-                width: '10%'
-            },
-            {
-                title: 'Aukštis Be pakuotės',
-                dataIndex: 'heightWithoutPackaging',
-                width: '10%'
-            },
-            {
-                title: 'Aukštis su pakuotės',
-                dataIndex: 'heightWithPackaging',
-                width: '10%'
-            },
-            {
-                title: 'svoris Bruto',
-                dataIndex: 'weightGross',
-                width: '10%'
-            },
-            {
-                title: 'svoris Netto',
-                dataIndex: 'weightNetto',
-                width: '10%'
-            },
-            {
-                title: 'surinkimo laikas',
-                dataIndex: 'collectionTime',
-                width: '10%'
-            },
-            {
-                title: 'Suklijavimo laikas',
-                dataIndex: 'bondingTime',
-                width: '10%'
-            },
-            {
-                title: 'Lazeriavimo  laikas',
-                dataIndex: 'laserTime',
-                width: '10%'
-            },
-            {
-                title: 'Dažymo laikas',
-                dataIndex: 'paintingTime',
-                width: '10%'
-            },
-            {
-                title: 'Frezavimo laikas',
-                dataIndex: 'milingTime',
-                width: '10%'
-            },
-            {
-                title: 'Pakavimo dėžutės kodas',
-                dataIndex: 'packagingBoxCode',
-                width: '10%'
-            },
-            {
-                title: 'Pakavimo laikas',
-                dataIndex: 'packingTime',
-                width: '10%'
-            }
-        ]
+    
 
         const recentWorksColumns = [
             {
@@ -634,17 +438,17 @@ class HomeScreen extends React.Component {
                 dataIndex: 'productCode',
                 width: '10%'
             },
-            {
-                title: 'Foto',
-                dataIndex: 'imagePath',
-                width: '10%',
-                render: (text, record, index) => (
-                    <div>
-                        {text === null === text === undefined ?
-                            <p></p> : <Image src={text} height={70} />}
-                    </div>
-                )
-            },
+            // {
+            //     title: 'Foto',
+            //     dataIndex: 'product',
+            //     width: '10%',
+            //     render: (text, record, index) => (
+            //         <div>
+            //             {text.imagePath === null || text.imagePath === undefined ?
+            //                 <p></p> : <Image src={text.imagePath} />}
+            //         </div>
+            //     )
+            // },
             {
                 title: 'Platforma',
                 dataIndex: 'platforma',
@@ -668,12 +472,12 @@ class HomeScreen extends React.Component {
                 title: 'Nuotrauka',
                 dataIndex: 'imagePath',
                 width: '30%',
-                render: (text, record, index) => (
-                    <div>
-                        {text === null === text === undefined ?
-                            <p></p> : <Image src={text} height={70} />}
-                    </div>
-                )
+                // render: (text, record, index) => (
+                //     <div>
+                //         {text === null || text === undefined ?
+                //             <p></p> : <Image src={text} />}
+                //     </div>
+                // )
             },
         ]
 
@@ -695,7 +499,7 @@ class HomeScreen extends React.Component {
                 width: '20%',
                 render: (text, record, index) => (
                     <div>
-                        {text === null === text === undefined || text.trim() === "" ?
+                        {text === null || text === undefined ?
                             <p></p> : <Image src={text} height={70} />}
                     </div>
                 )
@@ -731,12 +535,12 @@ class HomeScreen extends React.Component {
                 width: '20%'
             },
             {
-                title: 'Nuotrauka',
+                title: 'Foto',
                 dataIndex: 'imagePath',
                 width: '20%',
                 render: (text, record, index) => (
                     <div>
-                        {text === null === text === undefined || text.trim() === "" ?
+                        {text === null || text === undefined ?
                             <p></p> : <Image src={text} height={70} />}
                     </div>
                 )
@@ -862,7 +666,7 @@ class HomeScreen extends React.Component {
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
                                     <Table
                                         rowKey="id"
-                                        columns={orderColumns}
+                                        columns={urgentOrders}
                                         dataSource={this.props.orderDetailsReducer.urgent_orders}
                                         pagination={{ pageSize: 10 }}
                                         bordered
@@ -925,7 +729,7 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
-                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    {/* <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -948,7 +752,7 @@ class HomeScreen extends React.Component {
                                 </Card>
                             </Col>
                         </Row>
-                    </Col>
+                    </Col> */}
 
                     {/* daugiausia nepagamintu produkt */}
                     <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
