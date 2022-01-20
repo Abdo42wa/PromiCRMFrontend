@@ -151,12 +151,12 @@ class OrderScrenn extends React.Component {
             if (product !== undefined) {
                 return (
                     [
-                        { id: 1, name: "Lazeriavimo laikas", value: laserTime, key: "laserUserId" },
-                        { id: 2, name: "Frezavimo laikas", value: milingTime, key: "milingUserId" },
-                        { id: 3, name: "Surinkimo laikas", value: collectionTime, key: "collectionUserId" },
-                        { id: 4, name: "Pakavimo laikas", value: packingTime, key: "packingUserId" },
-                        { id: 5, name: "Dažymo laikas", value: paintingTime, key: "paintingUserId" },
-                        { id: 6, name: "Suklijavimo laikas", value: bondingTime, key: "bondingUserId" }
+                        { id: 1, name: "Lazeriavimo", value: laserTime, key: "laserUserId" },
+                        { id: 2, name: "Frezavimo", value: milingTime, key: "milingUserId" },
+                        { id: 3, name: "Surinkimo", value: collectionTime, key: "collectionUserId" },
+                        { id: 4, name: "Pakavimo", value: packingTime, key: "packingUserId" },
+                        { id: 5, name: "Dažymo", value: paintingTime, key: "paintingUserId" },
+                        { id: 6, name: "Suklijavimo", value: bondingTime, key: "bondingUserId" }
                     ]
                 )
             }
@@ -220,11 +220,13 @@ class OrderScrenn extends React.Component {
             const postObj = {
                 ...record,
                 "packingUserId": this.state.userId,
+                "status": true,
                 "packingComplete": moment().format('YYYY/MM/DD')
             }
             const reducerObj = {
                 ...record,
                 "packingUserId": this.state.userId,
+                "status": true,
                 "packingComplete": moment().format('YYYY/MM/DD')
             }
             // console.log(name)
@@ -285,6 +287,10 @@ class OrderScrenn extends React.Component {
         }))
         console.log(value)
     }
+    changeOrderStatus = (id) => {
+        const result = this.props.orderReducer.orders.filter(x => x.id === id);
+        return (result[0].status)
+    }
     render() {
         const columns = [
             {
@@ -319,7 +325,8 @@ class OrderScrenn extends React.Component {
                 dataIndex: 'status',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
+                    //<Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
+                    <Typography.Text>{this.changeOrderStatus(record.id) === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                 )
             },
             {
@@ -392,7 +399,8 @@ class OrderScrenn extends React.Component {
                                     {
                                         item.value !== 0 && (
                                             <>
-                                                <Tag className={` ${record[item.key] !== null && ""}`} onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name}</Tag>
+                                                <Tag className={` ${record[item.key] !== null && ""}`} onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px', width: '70%' }}>{item.value} {item.name}</Tag>
+                                                {/* <p className={` ${record[item.key] !== null && ""}`} onClick={(e) => this.getName(e.id, item.key, record)} defaultValue={item.name} style={{ padding: '3px', margin: '5px', borderRadius: '40px' }}>{item.value} {item.name} </p> */}
                                                 <Select
                                                     optionFilterProp="children"
                                                     onChange={(e) => this.onOrderTypeChange(e)}
