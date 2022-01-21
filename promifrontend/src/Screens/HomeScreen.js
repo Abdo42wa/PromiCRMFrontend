@@ -395,13 +395,18 @@ class HomeScreen extends React.Component {
                 dataIndex: 'product',
                 width: '15%',
                 render: (text, record, index) => {
-                    if(text === null || text === undefined)
-                        return (<p></p>)
-                    else
-                        if(text.imagePath === null)
+                    if (text === null || text === undefined){
+                        if (record.imagePath === undefined || record.imagePath === null){
+                            return (<p></p>)
+                        }else{
+                            return (<Image src={record.imagePath} alt='Foto' />)
+                        }
+                    }else {
+                        if (text.imagePath === null)
                             return (<p></p>)
                         else
-                            return (<Image src={text.imagePath} alt='Foto'/>)
+                            return (<Image src={text.imagePath} alt='Foto' />)
+                    }
                 }
             },
             {

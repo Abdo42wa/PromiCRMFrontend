@@ -112,7 +112,7 @@ class WarehouseCountingsScreen extends React.Component {
                 dataIndex: 'lastTimeChanging',
                 width: '20%',
                 render: (text, record, index) => (
-                    <p>{moment(text).format('YYYY/MM/DD')}</p>
+                    <p>{moment(text).format('YYYY/MM/DD,h:mm:ss a')}</p>
                 )
             }
         ]

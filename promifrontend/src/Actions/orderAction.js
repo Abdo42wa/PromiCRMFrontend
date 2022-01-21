@@ -205,7 +205,7 @@ export const getLastMonthCompletedOrders = (callback) => async (dispatch, getSta
     }
 }
 
-export const addOrder = (postObject, callback) => async (dispatch, getState) => {
+export const addOrder = (postObject) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDER_CREATE_REQUEST'
@@ -219,7 +219,7 @@ export const addOrder = (postObject, callback) => async (dispatch, getState) => 
             type: 'ORDER_CREATE_SUCCESS',
             payload: response.data
         });
-        callback();
+        // callback();
     } catch (error) {
         dispatch({
             type: 'ORDER_CREATE_FAIL',
@@ -231,7 +231,7 @@ export const addOrder = (postObject, callback) => async (dispatch, getState) => 
     }
 }
 
-export const addOrderWarehouse = (postObject, callback) => async (dispatch, getState) => {
+export const addOrderWarehouse = (postObject) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDER_CREATE_REQUEST'
@@ -243,7 +243,7 @@ export const addOrderWarehouse = (postObject, callback) => async (dispatch, getS
             type: 'ORDER_CREATE_SUCCESS',
             payload: response.data
         });
-        callback();
+        // callback();
     } catch (error) {
         dispatch({
             type: 'ORDER_CREATE_FAIL',
@@ -255,7 +255,7 @@ export const addOrderWarehouse = (postObject, callback) => async (dispatch, getS
     }
 }
 
-export const updateOrder = (postObj, reducerObj, callback) => async (dispatch, getState) => {
+export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDER_UPDATE_REQUEST'
@@ -267,7 +267,7 @@ export const updateOrder = (postObj, reducerObj, callback) => async (dispatch, g
             type: 'ORDER_UPDATE_SUCCESS',
             payload: reducerObj
         });
-        callback();
+        // callback();
     } catch (error) {
         dispatch({
             type: 'ORDER_UPDATE_FAIL',

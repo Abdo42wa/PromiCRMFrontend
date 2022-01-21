@@ -219,7 +219,7 @@ function AddOrderComponent(props) {
         }));
         dispatch(getOrders())
         getOrderNumber();
-        getProducts();
+        dispatch(getProducts());
         //getOrderId();
     }, [dispatch]);
     return (
