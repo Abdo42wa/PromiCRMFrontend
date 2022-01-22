@@ -92,6 +92,30 @@ export const checkWarehouseProduct = (id) => async (dispatch, getState) => {
     }
 }
 
+// for orders. when making order to warehouse. we want to add to warehouse if it doesnt exist. if exidt update
+export const createOrUpdateWarehouseData = (postObj) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'WAREHOUSES_CREATE_UPDATE_REQUEST'
+        });
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.post(`/api/WarehouseCountings/insert/update`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        dispatch({
+            type: 'WAREHOUSES_CREATE_UPDATE_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'WAREHOUSES_CREATE_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
 
 export const createWarehouseData = (postObj, callback) => async (dispatch, getState) => {
     try {

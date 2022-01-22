@@ -23,6 +23,9 @@ function AddOrderComponent(props) {
         "orderNumber": 0,
         "date": moment().format('YYYY/MM/DD'),
         "platforma": "",
+        "warehouseProductsNumber": 0,
+        "WarehouseProductsDate": moment().format('YYYY/MM/DD'),
+        "warehouseProductsTaken": false,
         "moreInfo": "",
         "quantity": 0,
         "productCode": "",
@@ -85,7 +88,6 @@ function AddOrderComponent(props) {
         if (inputName === 'orderNumber' ||
             inputName === 'customerId' || inputName === 'currencyId' ||
             inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
-            console.log(value);
             setOrder(prevState => ({
                 ...prevState,
                 [inputName]: Number(value)
@@ -96,7 +98,6 @@ function AddOrderComponent(props) {
                 ...prevState,
                 [inputName]: value
             }))
-            console.log(value);
         }
 
         if (inputName === "productCode") {
@@ -143,7 +144,7 @@ function AddOrderComponent(props) {
         formData.append("userId", clone.userId)
         formData.append("orderType", clone.orderType)
         formData.append("status", clone.status)
-        formData.append("orderNumber", getOrderNumber())
+        formData.append("orderNumber", clone.orderNumber)
         formData.append("date", clone.date)
         formData.append("platforma", clone.platforma)
         formData.append("moreInfo", clone.moreInfo)
@@ -166,13 +167,14 @@ function AddOrderComponent(props) {
             "userId": clone.userId,
             "orderType": clone.orderType,
             "status": clone.status,
-            "orderNumber": getOrderNumber(),
+            "orderNumber": clone.orderNumber,
             "date": clone.date,
             "platforma": clone.platforma,
             "moreInfo": clone.moreInfo,
             "quantity": clone.quantity,
             "photo": clone.photo,
             "productCode": clone.productCode,
+            "warehouseProductsNumber": clone.warehouseProductsNumber,
             "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
             "comment": clone.comment,
             "shipmentTypeId": clone.shipmentTypeId,
@@ -194,19 +196,25 @@ function AddOrderComponent(props) {
         }
 
         console.log(clone)
-        //if (order.orderType === "Sandelis") {
 
-        // just for testing 
-
-
-        //props.saveorderwarehouse(formData);
         props.save(postObj);
-        console.log(JSON.stringify(clone))
+        // console.log(JSON.stringify(clone))
 
-        // } else {
-        //     props.save(formData);
-        // }
-
+    }
+    const onTakeFromWarehouseCheck = (value, inputName) => {
+        let num = 0;
+        if (value === false)
+            num = 0;
+        else {
+            if (order.quantity <= warehouseReducer.quantityProductWarehouse)
+                num = order.quantity;
+            else
+                num = 0;
+        }
+        setOrder(prevState => ({
+            ...prevState,
+            [inputName]: Number(num)
+        }))
     }
     useEffect(() => {
 
@@ -218,7 +226,6 @@ function AddOrderComponent(props) {
         dispatch(getSalesChannels(() => {
         }));
         dispatch(getOrders())
-        getOrderNumber();
         dispatch(getProducts());
         //getOrderId();
     }, [dispatch]);
@@ -299,6 +306,12 @@ function AddOrderComponent(props) {
                         })}
                     </Select>
                     {order.productCode !== '' && <p style={{ color: 'red' }}> sandėlyje turim {warehouseReducer.quantityProductWarehouse}</p>}
+                    
+                    {order.productCode !== '' && order.orderType === "Standartinis"?
+                    <Form.Item key='warehouseProductsNumber' name='warehouseProductsNumber' label="Panaudosime sandėlio produktus?">
+                        <Input style={{ width: '35px', height: '35px' }} type={'checkbox'} value={order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")}/>                     
+                    </Form.Item>:null}
+                    
                     <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
                         <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "laserTime")} />
                     </Form.Item>
@@ -336,7 +349,7 @@ function AddOrderComponent(props) {
                         <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                     </Form.Item>
                     <Form.Item key="name14" name="name14" label="Užsakymo pabaigos data">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} defaultValue={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
                     </Form.Item>
                     {/* for IMAGE */}
                     {/* <p>Nuotrauka</p>

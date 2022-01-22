@@ -29,6 +29,14 @@ export const orderReducer = (state = { orders: [] }, action) => {
             return { ...state, loading: false, orders: updated_orders }
         case 'ORDER_UPDATE_IMAGE_FAIL':
             return { ...state, loading: false, error: action.payload }
+        case 'ORDER_WAREHOUSE_UPDATE_REQUEST':
+            return {...state, loading: true}
+        case 'ORDER_WAREHOUSE_UPDATE_SUCCESS':
+            const orders_data = [...state.orders]
+            const orders_updated = orders_data.map(x => x.id === action.payload.id?action.payload:x)
+            return {...state, loading: false, orders: orders_updated} 
+        case 'ORDER_WAREHOUSE_UPDATE_FAIL':
+            return {...state, loading:false, error: action.payload}
         default:
             return state;
     }

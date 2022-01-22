@@ -279,6 +279,28 @@ export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) =
     }
 }
 
+export const updateOrderTakeProductsFromWarehouse = (postObj,reducerObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDER_WAREHOUSE_UPDATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/Orders/warehouse/subtract/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'ORDER_WAREHOUSE_UPDATE_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'ORDER_WAREHOUSE_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 
 export const updateOrderWithImage = (postObj, id) => async (dispatch, getState) => {
     try {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse } from '../Actions/orderAction'
-import { checkWarehouseProduct, createWarehouseData } from '../Actions/warehouseActions'
-import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input } from 'antd'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse } from '../Actions/orderAction'
+import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../Actions/warehouseActions'
+import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input,Checkbox } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddOrderComponent from '../Components/order_components/AddOrderComponent';
@@ -43,7 +43,6 @@ class OrderScrenn extends React.Component {
     saveAddOrder = (postObj) => {
         this.props.addOrder(postObj)
         this.unshowAddOrderModal();
-        // window.location.reload();
     }
 
     showOrderModal = (record) => {
@@ -130,7 +129,7 @@ class OrderScrenn extends React.Component {
                     "productCode": reducerObj.productCode,
                 }
                 this.props.updateOrder(postObj,reducerObj)
-                this.props.createWarehouseData(warehouseCountingPostObj)
+                this.props.createOrUpdateWarehouseData(warehouseCountingPostObj)
                 // this.props.updateOrder(postObj)
             }
         }
@@ -147,6 +146,20 @@ class OrderScrenn extends React.Component {
         //     }
 
 
+    }
+
+    getProductsFromWarehouse = (value,inputName,record)=>{
+        const obj = {
+            ...record,
+            [inputName]:value,
+            "warehouseProductsDate":moment().format('YYYY/MM/DD,h:mm:ss a'),
+            "status":true
+        }
+        const { id, ...postObj } = obj;
+        const reducerObj = obj;
+        this.props.updateOrderTakeProductsFromWarehouse(postObj,reducerObj)
+
+        // update order and take from warehouse that products
     }
 
 
@@ -176,6 +189,24 @@ class OrderScrenn extends React.Component {
             //         <Button onClick={(e) => this.addProductsForOrder(record.id)}>Pridėti</Button>
             //     )
             // },
+            {
+                title: 'Pasiėmėte iš sandėlio?',
+                dataIndex: 'warehouseProductsTaken',
+                width: '10%',
+                render: (text,record,index)=>{
+                    if(record.status === false && record.warehouseProductsNumber!==0){
+                        return (<div style={{display: 'flex'}}>
+                            <Input type={'checkbox'} style={{width: '35px', height: '35px'}} disabled={text === true?true:false} value={text} onChange={(e) => this.getProductsFromWarehouse(e.target.checked,"warehouseProductsTaken",record)}/>
+                            <Typography.Text style={{paddingLeft: '15px',fontSize:'20px'}}> ({record.warehouseProductsNumber})</Typography.Text>
+                        </div>)
+                    }else if(record.status === true && record.warehouseProductsNumber!==0){
+                        return (<div style={{display: 'flex'}}>
+                            <Input type={'checkbox'} style={{width: '35px', height: '35px'}} disabled={text === true?true:false} value={text}/>
+                            <Typography.Text style={{paddingLeft: '15px',fontSize:'20px'}}> ({record.warehouseProductsNumber})</Typography.Text>
+                        </div>)
+                    }
+                }
+            },
             {
                 title: 'Atsakingas asmuo',
                 dataIndex: 'user',
@@ -433,6 +464,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
+                            disabled={text !== null?true:false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "packingUserId", e, "packingComplete")}
@@ -558,6 +590,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct,updateOrderTakeProductsFromWarehouse })(withRouter(OrderScrenn))
 
 
