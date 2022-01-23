@@ -31,18 +31,8 @@ function UpdateCountryComponent(props) {
     const saveChanges = () => {
 
         const countryClone = JSON.parse(JSON.stringify(country));
-        const postObj = {
-            "name": countryClone.name,
-            "shortName": countryClone.shortName,
-            "continent": countryClone.continent,
-
-        }
-        const reducerObj = {
-            "id": countryClone.id,
-            "name": countryClone.name,
-            "shortName": countryClone.shortName,
-            "continent": countryClone.continent,
-        }
+        const {id,...postObj} = countryClone;
+        const reducerObj = countryClone;
         props.save(postObj, reducerObj);
     }
     useEffect(() => {

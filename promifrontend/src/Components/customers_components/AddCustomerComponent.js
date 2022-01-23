@@ -25,13 +25,8 @@ function AddCustomerComponent(props) {
     }
     const saveChanges = () => {
         // clone customer state
-        const customerClone = JSON.parse(JSON.stringify(customer));
         const postObj = {
-            "name": customerClone.name,
-            "lastName": customerClone.lastName,
-            "email": customerClone.email,
-            "phoneNumber": customerClone.phoneNumber,
-            "companyName": customerClone.companyName
+            ...customer
         }
         props.save(postObj);
     }

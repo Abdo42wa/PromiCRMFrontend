@@ -26,37 +26,18 @@ function AddBonusComponent(props) {
         props.onClose();
     }
     const onDataChange = (value, inputName) => {
-
-        if (inputName === 'quantity' || inputName === 'accumulated'
-            || inputName === 'bonusas' || inputName === 'leftUntil') {
-            setBonus(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else {
-            setBonus(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }))
-            console.log(value);
-        }
+        setBonus(prevState => ({
+            ...prevState,
+            [inputName]: value
+        }))
     }
     const saveChanges = () => {
-        const dataWork = JSON.parse(JSON.stringify(bonus));
-        //const dataClone = orders;
-        console.log(JSON.parse(JSON.stringify(bonus)))
         const postObj = {
-            "userId": dataWork.userId,
-            "quantity": dataWork.quantity,
-            "accumulated": dataWork.accumulated,
-            "bonusas": dataWork.bonusas,
-            "leftUntil": dataWork.leftUntil,
+            ...bonus
         }
         props.save(postObj);
-        console.log(postObj)
     }
     useEffect(() => {
-
         dispatch(getUsers(() => {
 
         }));

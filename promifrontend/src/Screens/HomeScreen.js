@@ -42,7 +42,6 @@ class HomeScreen extends React.Component {
 
     getLastWeeksMadeProducts = () => {
         const clone = JSON.parse(JSON.stringify(this.props.orderDetailsReducer.last_weeks_orders));
-        console.log('clone' + JSON.stringify(clone))
         const array = []
         for (var i = 0; i < 5; i++) {
             if (clone[i] !== null && clone[i] !== undefined) {

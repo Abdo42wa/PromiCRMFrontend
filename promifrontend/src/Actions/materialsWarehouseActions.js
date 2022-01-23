@@ -12,7 +12,6 @@ export const getMaterialsWarehouseData = () =>  async(dispatch,getState)=>{
             type: 'WAREHOUSE_MATERIALS_FETCH_SUCCESS',
             payload: response.data
         });
-        console.log('action:'+JSON.stringify(response.data))
     }catch (error) {
         dispatch({
             type: 'WAREHOUSE_MATERIALS_FETCH_FAIL',

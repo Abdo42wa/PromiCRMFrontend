@@ -89,7 +89,7 @@ const Header = () => {
                                         </LinkContainer>
                                         <LinkContainer to='/weeklyWorkScheduleScreen'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-calendar-week"></i> Savaitės ukio darbai
+                                                <i class="fas fa-calendar-week"></i> Savaitės ūkio darbai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/sales-channels'>

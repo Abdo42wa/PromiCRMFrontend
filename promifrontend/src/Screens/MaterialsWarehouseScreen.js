@@ -96,7 +96,6 @@ class MaterialsWarehouseScreen extends React.Component {
         }
     }
     render() {
-        console.log(this.props.materialsWarehouseReducer.materialsWarehouseData)
         const columns = [
             {
                 title: 'Atnaujinti',

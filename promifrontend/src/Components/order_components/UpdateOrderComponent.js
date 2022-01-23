@@ -62,55 +62,8 @@ function UpdateOrderComponent(props) {
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(order));
         if (fileChanged === 0) {
-            const postObj = {
-                "userId": clone.userId,
-                "orderType": clone.orderType,
-                "status": clone.status,
-                "orderNumber": clone.orderNumber,
-                "date": clone.date,
-                "platforma": clone.platforma,
-                "moreInfo": clone.moreInfo,
-                "quantity": clone.quantity,
-                "photo": clone.photo,
-                "productCode": clone.productCode,
-                "comment": clone.comment,
-                "shipmentTypeId": clone.shipmentTypeId,
-                "customerId": clone.customerId,
-                "device": clone.device,
-                "productionTime": clone.productionTime,
-                "address": clone.address,
-                "countryId": clone.countryId,
-                "price": clone.price,
-                "currencyId": clone.currencyId,
-                "vat": clone.vat,
-                "orderFinishDate": clone.orderFinishDate,
-            }
-            const reducerObj = {
-                "id": clone.id,
-                "userId": clone.userId,
-                "orderType": clone.orderType,
-                "status": clone.status,
-                "orderNumber": clone.orderNumber,
-                "date": clone.date,
-                "platforma": clone.platforma,
-                "moreInfo": clone.moreInfo,
-                "quantity": clone.quantity,
-                "photo": clone.photo,
-                "productCode": clone.productCode,
-                "comment": clone.comment,
-                "shipmentTypeId": clone.shipmentTypeId,
-                "customerId": clone.customerId,
-                "device": clone.device,
-                "productionTime": clone.productionTime,
-                "address": clone.address,
-                "countryId": clone.countryId,
-                "price": clone.price,
-                "currencyId": clone.currencyId,
-                "vat": clone.vat,
-                "orderFinishDate": clone.orderFinishDate,
-            }
-            console.log(postObj)
-            console.log(reducerObj)
+            const { id, ...postObj } = clone;
+            const reducerObj = clone;
             props.save(postObj, reducerObj);
         } else {
             const formData = new FormData();
@@ -160,30 +113,9 @@ function UpdateOrderComponent(props) {
             dispatch(getCountries(() => {
                 dispatch(getCustomers(() => {
                     const obj = {
-                        "id": props.record.id,
-                        "userId": props.record.userId,
-                        "orderType": props.record.orderType,
-                        "status": props.record.status,
-                        "orderNumber": props.record.orderNumber,
+                        ...props.record,
                         "date": moment(props.record.date).format('YYYY/MM/DD'),
-                        "platforma": props.record.platforma,
-                        "moreInfo": props.record.moreInfo,
-                        "quantity": props.record.quantity,
-                        "photo": props.record.photo,
-                        "productCode": props.record.productCode,
-                        "comment": props.record.comment,
-                        "shipmentTypeId": props.record.shipmentTypeId,
-                        "customerId": props.record.customerId,
-                        "device": props.record.device,
-                        "productionTime": props.record.productionTime,
-                        "address": props.record.address,
-                        "countryId": props.record.countryId,
-                        "price": props.record.price,
-                        "currencyId": props.record.currencyId,
-                        "vat": props.record.vat,
-                        "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD'),
-                        "imagePath": props.record.imagePath,
-                        "imageName": props.record.imageName
+                        "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD')
                     }
                     setOrder(obj);
                     if (props.record.orderType === "Sandelis") {

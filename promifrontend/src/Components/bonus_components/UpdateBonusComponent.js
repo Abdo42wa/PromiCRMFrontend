@@ -32,49 +32,21 @@ function UpdateBonusComponent(props) {
     }
 
     const onDataChange = (value, inputName) => {
-
-
-        if (inputName === 'quantity' || inputName === 'accumulated'
-            || inputName === 'bonusas' || inputName === 'leftUntil') {
-            setBonus(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else {
-            setBonus(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }))
-        }
+        setBonus(prevState => ({
+            ...prevState,
+            [inputName]: value
+        }))
     }
     const saveChanges = () => {
-        const bonusClone = JSON.parse(JSON.stringify(bonus));
-        const postObj = {
-            "userId": bonusClone.userId,
-            "quantity": bonusClone.quantity,
-            "accumulated": bonusClone.accumulated,
-            "bonusas": bonusClone.bonusas,
-            "leftUntil": bonusClone.leftUntil
-        }
-        const reducerObj = {
-            "id": bonusClone.id,
-            "userId": bonusClone.userId,
-            "quantity": bonusClone.quantity,
-            "accumulated": bonusClone.accumulated,
-            "bonusas": bonusClone.bonusas,
-            "leftUntil": bonusClone.leftUntil
-        }
+        const obj = JSON.parse(JSON.stringify(bonus));
+        const { id, ...postObj } = obj;
+        const reducerObj = obj;
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
         dispatch(getUsers(() => {
             const obj = {
-                "id": props.record.id,
-                "userId": props.record.userId,
-                "quantity": props.record.quantity,
-                "accumulated": props.record.accumulated,
-                "bonusas": props.record.bonusas,
-                "leftUntil": props.record.leftUntil
+                ...props.record
             }
             setBonus(obj);
 

@@ -32,21 +32,8 @@ function UpdateCustomerComponent(props) {
     const saveChanges = () => {
         //clone customer state. i dont like to access it directly
         const customerClone = JSON.parse(JSON.stringify(customer));
-        const postObj = {
-            "name": customerClone.name,
-            "lastName": customerClone.lastName,
-            "email": customerClone.email,
-            "phoneNumber": customerClone.phoneNumber,
-            "companyName": customerClone.companyName
-        }
-        const reducerObj = {
-            "id": customerClone.id,
-            "name": customerClone.name,
-            "lastName": customerClone.lastName,
-            "email": customerClone.email,
-            "phoneNumber": customerClone.phoneNumber,
-            "companyName": customerClone.companyName
-        }
+        const {id,...postObj} = customerClone;
+        const reducerObj = customerClone;
         props.save(postObj, reducerObj);
     }
     //onComponent load set customer
@@ -72,15 +59,15 @@ function UpdateCustomerComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Vardas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite vardą" value={customer.name} onChange={(e) => onDataChange(e.target.value, "name")} />
+                    <Input key={'name'} required style={{ width: '100%' }} placeholder="Įrašykite vardą" value={customer.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     <p style={{ ...textStyle }}>Pavardė</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite pavardę" value={customer.lastName} onChange={(e) => onDataChange(e.target.value, "lastName")} />
+                    <Input key={'surname'} required style={{ width: '100%' }} placeholder="Įrašykite pavardę" value={customer.lastName} onChange={(e) => onDataChange(e.target.value, "lastName")} />
                     <p style={{ ...textStyle }}>El. paštas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite el. paštą" value={customer.email} onChange={(e) => onDataChange(e.target.value, "email")} />
+                    <Input key={'email'} required style={{ width: '100%' }} placeholder="Įrašykite el. paštą" value={customer.email} onChange={(e) => onDataChange(e.target.value, "email")} />
                     <p style={{ ...textStyle }}>Telefono numeris</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite telefono numerį" value={customer.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
+                    <Input key={'telephone'} required style={{ width: '100%' }} placeholder="Įrašykite telefono numerį" value={customer.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
                     <p style={{ ...textStyle }}>Firmos pavadinimas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite firmos pavadinimą" value={customer.companyName} onChange={(e) => onDataChange(e.target.value, "companyName")} />
+                    <Input key={'company'} required style={{ width: '100%' }} placeholder="Įrašykite firmos pavadinimą" value={customer.companyName} onChange={(e) => onDataChange(e.target.value, "companyName")} />
                 </Form>
             </Modal>
         </>

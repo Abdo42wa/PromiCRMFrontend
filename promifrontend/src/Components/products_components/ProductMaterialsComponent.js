@@ -73,11 +73,11 @@ class ProductMaterialsComponent extends React.Component {
                             <div key={element.id} style={{ display: 'flex' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <Typography.Text>Pavadinimas</Typography.Text>
-                                    <Input disabled value={element.materialWarehouse.title} />
+                                    <Input key={'title'} disabled value={element.materialWarehouse.title} />
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <Typography.Text>Kiekis</Typography.Text>
-                                    <InputNumber value={element.quantity} onChange={(e) => this.onDataChange(e, index)} />
+                                    <InputNumber key={'quantity'} value={element.quantity} onChange={(e) => this.onDataChange(e, index)} />
                                 </div>
                             </div>
                         ))}

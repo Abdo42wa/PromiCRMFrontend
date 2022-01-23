@@ -107,7 +107,6 @@ function UpdateProductComponent(props) {
             }
             const reducerObj = {
                 "id": clone.id,
-                "orderId": clone.orderId,
                 "imageName": clone.imageName,
                 "imagePath": clone.imagePath,
                 "link": clone.link,
@@ -147,7 +146,6 @@ function UpdateProductComponent(props) {
             formData.append("weightGross", clone.weightGross)
             formData.append("packagingBoxCode", clone.packagingBoxCode)
             formData.append("packingTime", clone.packingTime)
-            formData.append("orderId", clone.orderId)
             formData.append("heightWithPackaging", clone.heightWithPackaging)
             formData.append("widthWithPackaging", clone.widthWithPackaging)
             formData.append("lengthWithPackaging", clone.lengthWithPackaging)
@@ -200,31 +198,7 @@ function UpdateProductComponent(props) {
         dispatch(getOrders(() => {
             dispatch(getMaterialsWarehouseData())
             const obj = {
-                "id": props.record.id,
-                "photo": props.record.photo,
-                "link": props.record.link,
-                "code": props.record.code,
-                "category": props.record.category,
-                "name": props.record.name,
-                "lengthWithoutPackaging": props.record.lengthWithoutPackaging,
-                "widthWithoutPackaging": props.record.widthWithoutPackaging,
-                "heightWithoutPackaging": props.record.heightWithoutPackaging,
-                "weightGross": props.record.weightGross,
-                "packagingBoxCode": props.record.packagingBoxCode,
-                "packingTime": props.record.packingTime,
-                "serviceId": props.record.serviceId,
-                "orderId": props.record.orderId,
-                "heightWithPackaging": props.record.heightWithPackaging,
-                "widthWithPackaging": props.record.widthWithPackaging,
-                "lengthWithPackaging": props.record.lengthWithPackaging,
-                "weightNetto": props.record.weightNetto,
-                "collectionTime": props.record.collectionTime,
-                "bondingTime": props.record.bondingTime,
-                "paintingTime": props.record.paintingTime,
-                "laserTime": props.record.laserTime,
-                "milingTime": props.record.milingTime,
-                "imagePath": props.record.imagePath,
-                "imageName": props.record.imageName,
+               ...props.record
                 // "productMaterials": props.record.productMaterials.map((x) => x.materialWarehouseId)
             }
             // dispatch(getMaterialsByProduct(props.record.id, () =>{
@@ -334,21 +308,7 @@ function UpdateProductComponent(props) {
                             Pridėti medžiagą
                         </Button> : null} */}
 
-                    <p style={{ marginBottom: '5px' }}>Užsakymas</p>
-                    <Select
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite užsakymą"
-                        optionFilterProp="children"
-                        defaultValue={product.orderId}
-                        value={product.orderId}
-                        onChange={(e) => onDataChange(e, "orderId")}
-                    >
-                        {orderReducer.orders.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.orderNumber}</Option>)
-                        })}
 
-                    </Select>
                 </Form>
 
             </Modal>

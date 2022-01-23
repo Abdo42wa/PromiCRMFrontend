@@ -65,9 +65,7 @@ function AddCountryComponents(props) {
 
         const countryClone = JSON.parse(JSON.stringify(country));
         const postObj = {
-            "name": countryClone.name,
-            "shortName": countryClone.shortName,
-            "continent": countryClone.continent,
+            ...countryClone
 
         }
         props.save(postObj);

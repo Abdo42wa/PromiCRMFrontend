@@ -284,7 +284,7 @@ export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) =
         });
         // get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Orders/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        await promiAPI.put(`/api/Orders/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'ORDER_UPDATE_SUCCESS',
             payload: reducerObj
