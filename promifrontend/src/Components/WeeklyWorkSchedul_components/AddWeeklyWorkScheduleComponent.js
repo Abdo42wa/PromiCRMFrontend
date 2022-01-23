@@ -34,9 +34,7 @@ function AddWeeklyWorkScheduleComponent(props) {
         props.save(postObj);
     }
     useEffect(() => {
-        dispatch(getUsers(() => {
-
-        }));
+        dispatch(getUsers())
     }, [dispatch]);
     return (
         <>

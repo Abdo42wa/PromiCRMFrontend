@@ -41,9 +41,8 @@ function UpdateWeeklyWorkScheduleComponent(props) {
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
-        dispatch(getUsers(() => {
-            setWorks(props.record);
-        }))
+        dispatch(getUsers())
+        setWorks(props.record);
         // eslint-disable-next-line
     }, [dispatch]);
     return (
