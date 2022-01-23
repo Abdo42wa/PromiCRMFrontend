@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse } from '../Actions/orderAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../Actions/warehouseActions'
-import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input,Checkbox } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddOrderComponent from '../Components/order_components/AddOrderComponent';
@@ -105,9 +105,9 @@ class OrderScrenn extends React.Component {
                 }
                 const reducerObj = {
                     ...reducerObj1,
-                    "status":true
+                    "status": true
                 }
-                this.props.updateOrder(postObj,reducerObj)
+                this.props.updateOrder(postObj, reducerObj)
             }
         } else if (record.orderType === "Sandelis") {
             if (inputName !== "packingUserId") {
@@ -120,7 +120,7 @@ class OrderScrenn extends React.Component {
                 }
                 const reducerObj = {
                     ...reducerObj1,
-                    "status":true
+                    "status": true
                 }
                 const warehouseCountingPostObj = {
                     "orderId": reducerObj.id,
@@ -128,7 +128,7 @@ class OrderScrenn extends React.Component {
                     "lastTimeChanging": moment().format('YYYY/MM/DD,h:mm:ss a'),
                     "productCode": reducerObj.productCode,
                 }
-                this.props.updateOrder(postObj,reducerObj)
+                this.props.updateOrder(postObj, reducerObj)
                 this.props.createOrUpdateWarehouseData(warehouseCountingPostObj)
                 // this.props.updateOrder(postObj)
             }
@@ -148,16 +148,16 @@ class OrderScrenn extends React.Component {
 
     }
 
-    getProductsFromWarehouse = (value,inputName,record)=>{
+    getProductsFromWarehouse = (value, inputName, record) => {
         const obj = {
             ...record,
-            [inputName]:value,
-            "warehouseProductsDate":moment().format('YYYY/MM/DD,h:mm:ss a'),
-            "status":true
+            [inputName]: value,
+            "warehouseProductsDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
+            "status": true
         }
         const { id, ...postObj } = obj;
         const reducerObj = obj;
-        this.props.updateOrderTakeProductsFromWarehouse(postObj,reducerObj)
+        this.props.updateOrderTakeProductsFromWarehouse(postObj, reducerObj)
 
         // update order and take from warehouse that products
     }
@@ -193,16 +193,16 @@ class OrderScrenn extends React.Component {
                 title: 'Pasiėmėte iš sandėlio?',
                 dataIndex: 'warehouseProductsTaken',
                 width: '10%',
-                render: (text,record,index)=>{
-                    if(record.status === false && record.warehouseProductsNumber!==0){
-                        return (<div style={{display: 'flex'}}>
-                            <Input type={'checkbox'} style={{width: '35px', height: '35px'}} disabled={text === true?true:false} value={text} onChange={(e) => this.getProductsFromWarehouse(e.target.checked,"warehouseProductsTaken",record)}/>
-                            <Typography.Text style={{paddingLeft: '15px',fontSize:'20px'}}> ({record.warehouseProductsNumber})</Typography.Text>
+                render: (text, record, index) => {
+                    if (record.status === false && record.warehouseProductsNumber !== 0) {
+                        return (<div style={{ display: 'flex' }}>
+                            <Input type={'checkbox'} style={{ width: '35px', height: '35px' }} disabled={text === true ? true : false} value={text} onChange={(e) => this.getProductsFromWarehouse(e.target.checked, "warehouseProductsTaken", record)} />
+                            <Typography.Text style={{ paddingLeft: '15px', fontSize: '20px' }}> ({record.warehouseProductsNumber})</Typography.Text>
                         </div>)
-                    }else if(record.status === true && record.warehouseProductsNumber!==0){
-                        return (<div style={{display: 'flex'}}>
-                            <Input type={'checkbox'} style={{width: '35px', height: '35px'}} disabled={text === true?true:false} value={text}/>
-                            <Typography.Text style={{paddingLeft: '15px',fontSize:'20px'}}> ({record.warehouseProductsNumber})</Typography.Text>
+                    } else if (record.status === true && record.warehouseProductsNumber !== 0) {
+                        return (<div style={{ display: 'flex' }}>
+                            <Input type={'checkbox'} style={{ width: '35px', height: '35px' }} disabled={text === true ? true : false} value={text} />
+                            <Typography.Text style={{ paddingLeft: '15px', fontSize: '20px' }}> ({record.warehouseProductsNumber})</Typography.Text>
                         </div>)
                     }
                 }
@@ -234,13 +234,13 @@ class OrderScrenn extends React.Component {
                 dataIndex: 'product',
                 width: '10%',
                 render: (text, record, index) => {
-                    if (text === null || text === undefined){
-                        if (record.imagePath === undefined || record.imagePath === null){
+                    if (text === null || text === undefined) {
+                        if (record.imagePath === undefined || record.imagePath === null) {
                             return (<p></p>)
-                        }else{
+                        } else {
                             return (<Image src={record.imagePath} alt='Foto' />)
                         }
-                    }else {
+                    } else {
                         if (text.imagePath === null)
                             return (<p></p>)
                         else
@@ -316,6 +316,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
+                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
                             style={{ ...selectOptionStyle }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
@@ -346,6 +347,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
+                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "laserUserId", e, "laserComplete")}
@@ -376,6 +378,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
+                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "paintingUserId", e, "paintingComplete")}
@@ -406,6 +409,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
+                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "bondingUserId", e, "bondingComplete")}
@@ -435,6 +439,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
+                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "collectionUserId", e, "collectionComplete")}
@@ -464,7 +469,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={text !== null?true:false}
+                            disabled={text !== null ? true : record.warehouseProductsNumber !== 0 ? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "packingUserId", e, "packingComplete")}
@@ -590,6 +595,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct,updateOrderTakeProductsFromWarehouse })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse })(withRouter(OrderScrenn))
 
 

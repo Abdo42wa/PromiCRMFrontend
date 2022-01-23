@@ -24,6 +24,28 @@ export const getOrders = (callback) => async (dispatch, getState) => {
     }
 }
 
+export const getUncompletedOrdersTimes = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDERS_UNCOMPLETED_TIMES_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get('/api/Orders/planned/time',{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'ORDERS_UNCOMPLETED_TIMES_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch(error){
+        dispatch({
+            type: 'ORDERS_UNCOMPLETED_TIMES_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const getUrgetOrders = () => async(dispatch,getState)=>{
     try{
         dispatch({

@@ -137,69 +137,29 @@ function AddOrderComponent(props) {
 
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(order));
-        const formData = new FormData();
-
-
-
-        formData.append("userId", clone.userId)
-        formData.append("orderType", clone.orderType)
-        formData.append("status", clone.status)
-        formData.append("orderNumber", clone.orderNumber)
-        formData.append("date", clone.date)
-        formData.append("platforma", clone.platforma)
-        formData.append("moreInfo", clone.moreInfo)
-        formData.append("quantity", clone.quantity)
-        formData.append("productCode", clone.productCode)
-        formData.append("comment", clone.comment)
-        formData.append("shipmentTypeId", clone.shipmentTypeId)
-        formData.append("customerId", clone.customerId)
-        formData.append("device", clone.device)
-        formData.append("productionTime", clone.productionTime)
-        formData.append("address", clone.address)
-        formData.append("countryId", clone.countryId)
-        formData.append("price", clone.price)
-        formData.append("currencyId", clone.currencyId)
-        formData.append("vat", clone.vat)
-        formData.append("productId", getOrderId(clone.productCode))
-        formData.append("orderFinishDate", clone.orderFinishDate)
-        //formData.append("file", file)
-        const postObj = {
-            "userId": clone.userId,
-            "orderType": clone.orderType,
-            "status": clone.status,
-            "orderNumber": clone.orderNumber,
-            "date": clone.date,
-            "platforma": clone.platforma,
-            "moreInfo": clone.moreInfo,
-            "quantity": clone.quantity,
-            "photo": clone.photo,
-            "productCode": clone.productCode,
-            "warehouseProductsNumber": clone.warehouseProductsNumber,
-            "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
-            "comment": clone.comment,
-            "shipmentTypeId": clone.shipmentTypeId,
-            "customerId": clone.customerId,
-            "device": clone.device,
-            "productionTime": clone.productionTime,
-            "address": clone.address,
-            "countryId": clone.countryId,
-            "price": clone.price,
-            "currencyId": clone.currencyId,
-            "vat": clone.vat,
-            "orderFinishDate": clone.orderFinishDate,
-            "collectionTime": clone.collectionTime,
-            "bondingTime": clone.bondingTime,
-            "laserTime": clone.laserTime,
-            "paintingTime": clone.paintingTime,
-            "milingTime": clone.milingTime,
-            "packingTime": clone.packingTime
+        // if ne-standartinis then person writes all "times" by himself.
+        // but i need to save "times" for "Sandelis" and "Paprastas" orders too. i can get times from product
+        if (clone.orderType === "Ne-standartinis") {
+            const postObj = {
+                ...clone,
+                "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
+            }
+            props.save(postObj)
+        } else {
+            //get product that we selected. i need "times" from product
+            const product_data = productsReducer.products.find(o => o.code === clone.productCode)
+            const postObj = {
+                ...clone,
+                "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
+                "collectionTime": product_data.collectionTime,
+                "bondingTime": product_data.bondingTime,
+                "laserTime": product_data.laserTime,
+                "paintingTime": product_data.paintingTime,
+                "milingTime": product_data.milingTime,
+                "packingTime": product_data.packingTime
+            }
+            props.save(postObj)
         }
-
-        console.log(clone)
-
-        props.save(postObj);
-        // console.log(JSON.stringify(clone))
-
     }
     const onTakeFromWarehouseCheck = (value, inputName) => {
         let num = 0;
@@ -306,12 +266,12 @@ function AddOrderComponent(props) {
                         })}
                     </Select>
                     {order.productCode !== '' && <p style={{ color: 'red' }}> sandėlyje turim {warehouseReducer.quantityProductWarehouse}</p>}
-                    
-                    {order.productCode !== '' && order.orderType === "Standartinis"?
-                    <Form.Item key='warehouseProductsNumber' name='warehouseProductsNumber' label="Panaudosime sandėlio produktus?">
-                        <Input style={{ width: '35px', height: '35px' }} type={'checkbox'} value={order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")}/>                     
-                    </Form.Item>:null}
-                    
+
+                    {order.productCode !== '' && order.orderType === "Standartinis" ?
+                        <Form.Item key='warehouseProductsNumber' name='warehouseProductsNumber' label="Panaudosime sandėlio produktus?">
+                            <Input style={{ width: '35px', height: '35px' }} type={'checkbox'} value={order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")} />
+                        </Form.Item> : null}
+
                     <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
                         <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "laserTime")} />
                     </Form.Item>

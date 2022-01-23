@@ -2,7 +2,7 @@ import React from 'react'
 import { getUsers } from '../Actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders, getUncompletedOrdersTimes } from '../Actions/orderAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWeekWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
@@ -109,6 +109,8 @@ class HomeScreen extends React.Component {
             this.props.getUsers(() => {
                 console.log(JSON.stringify(this.props.usersListReducer.users))
             })
+            //Get work times. Suplanuotas darbo laikas
+            this.props.getUncompletedOrdersTimes()
             //WeeklyWorkSchedule works. Only for this particular week. Savaites ukio darbai
             this.props.getWeekWorks()
             //Gaminiu tvarkarascio darbai.
@@ -254,48 +256,201 @@ class HomeScreen extends React.Component {
                 )
             }
         ]
-        const workColumns = [
+        const workTimesColumns = [
             {
-                title: 'surinkimo laikas',
+                title: 'Surinkimo laikas',
+                dataIndex: 'collectionTime',
                 width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{this.state.collectionTime} min</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
             },
             {
                 title: 'Suklijavimo laikas',
+                dataIndex: 'bondingTime',
                 width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{this.state.bondingTime} min</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
             },
             {
                 title: 'Lazeriavimo laikas',
+                dataIndex: 'laserTime',
                 width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{this.state.laserTime} min</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
             },
             {
                 title: 'Dažymo laikas',
+                dataIndex: 'paintingTime',
                 width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{this.state.paintingTime} min</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
             },
             {
                 title: 'Frezavimo laikas',
+                dataIndex: 'milingTime',
                 width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{this.state.milingTime} min</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+
+
             },
             {
                 title: 'Pakavimo laikas',
+                dataIndex: 'packingTime',
                 width: '10%',
-                render: (text, record, index) => (
-                    <Typography.Text>{this.state.packingTime} min</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            //DONE TIMES
+            {
+                title: 'Surinkimo laikas (padarytas)',
+                dataIndex: 'doneCollectionTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Suklijavimo laikas (padarytas)',
+                dataIndex: 'doneBondingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Lazeriavimo laikas (padarytas)',
+                dataIndex: 'doneLaserTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Dažymo laikas (padarytas)',
+                dataIndex: 'donePaintingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Frezavimo laikas (padarytas)',
+                dataIndex: 'doneMilingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Pakavimo laikas (padarytas)',
+                dataIndex: 'donePackingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
             },
 
         ]
@@ -395,17 +550,17 @@ class HomeScreen extends React.Component {
                 dataIndex: 'product',
                 width: '15%',
                 render: (text, record, index) => {
-                    if (text === null || text === undefined){
-                        if (record.imagePath === undefined || record.imagePath === null){
+                    if (text === null || text === undefined) {
+                        if (record.imagePath === undefined || record.imagePath === null) {
                             return (<p></p>)
-                        }else{
-                            return (<Image src={record.imagePath} alt='Foto' />)
+                        } else {
+                            return (<Image src={record.imagePath} height={30} alt='Foto' />)
                         }
-                    }else {
+                    } else {
                         if (text.imagePath === null)
                             return (<p></p>)
                         else
-                            return (<Image src={text.imagePath} alt='Foto' />)
+                            return (<Image src={text.imagePath} height={30} alt='Foto' />)
                     }
                 }
             },
@@ -483,7 +638,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => (
                     <div>
                         {text === null || text === undefined ?
-                            <p></p> : <Image src={text} />}
+                            <p></p> : <Image src={text} height={30} />}
                     </div>
                 )
             },
@@ -508,7 +663,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => (
                     <div>
                         {text === null || text === undefined ?
-                            <p></p> : <Image src={text} height={70} />}
+                            <p></p> : <Image src={text} height={30} />}
                     </div>
                 )
             },
@@ -549,7 +704,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => (
                     <div>
                         {text === null || text === undefined ?
-                            <p></p> : <Image src={text} height={70} />}
+                            <p></p> : <Image src={text} height={30} />}
                     </div>
                 )
             },
@@ -603,63 +758,56 @@ class HomeScreen extends React.Component {
             <>
                 <h1>Pagrindinis</h1>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
-
-                    <Row>
-
-                        <Col lg={12} md={24} >
-                            {/* <Row gutter={16}>
+                    <Col lg={24} style={{ marginTop: '20px' }}>
+                        {/* <Row gutter={16}>
                                 <Col span={16}> */}
-                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                <h5>Suplanuotas darbo laikas</h5>
-                            </div>
-                            {/* </Col>
+                        <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                            <h5>Suplanuotas darbo laikas</h5>
+                        </div>
+                        {/* </Col>
                             </Row> */}
-                            {/* <Row gutter={16}> */}
-                            {/* <Col span={24}> */}
-                            <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                <Table
-                                    rowKey="id"
-                                    columns={workColumns}
-                                    dataSource={this.state.Works}
-                                    pagination={{ pageSize: 15 }}
-                                    bWorked
-                                    scroll={{ x: 'calc(200px + 50%)' }}
+                        {/* <Row gutter={16}> */}
+                        {/* <Col span={24}> */}
+                        <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                            <Table
+                                rowKey="id"
+                                columns={workTimesColumns}
+                                dataSource={this.props.orderDetailsReducer.uncompleted_orders_times}
+                                pagination={{ pageSize: 15 }}
+                                bWorked
+                                scroll={{ x: 'calc(200px + 50%)' }}
 
-                                />
+                            />
 
-                            </Card>
-                            {/* </Col> */}
-                            {/* </Row> */}
-                        </Col>
-                        <div style={{ padding: '10px' }}></div>
-                        <Col lg={10} md={24} >
-                            {/* <Row gutter={16}>
+                        </Card>
+                        {/* </Col> */}
+                        {/* </Row> */}
+                    </Col>
+                    <Col lg={24} style={{ marginTop: '20px' }}>
+                        {/* <Row gutter={16}>
                                 <Col span={16}> */}
-                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                <h5>Savaitės ūkio darbai</h5>
-                            </div>
-                            {/* </Col>
+                        <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                            <h5>Savaitės ūkio darbai</h5>
+                        </div>
+                        {/* </Col>
                             </Row> */}
-                            {/* <Row gutter={16}> */}
-                            {/* <Col span={24}> */}
-                            <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                <Table
-                                    rowKey="id"
-                                    columns={columns}
-                                    dataSource={this.props.weeklyWorkScheduleReducer.workSchedules}
-                                    pagination={{ pageSize: 15 }}
-                                    bWorked
-                                    scroll={{ x: 'calc(200px + 50%)' }}
+                        {/* <Row gutter={16}> */}
+                        {/* <Col span={24}> */}
+                        <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                            <Table
+                                rowKey="id"
+                                columns={columns}
+                                dataSource={this.props.weeklyWorkScheduleReducer.workSchedules}
+                                pagination={{ pageSize: 15 }}
+                                bWorked
+                                scroll={{ x: 'calc(200px + 50%)' }}
 
-                                />
+                            />
 
-                            </Card>
-                            {/* </Col> */}
-                            {/* </Row> */}
-                        </Col>
-
-                    </Row>
-
+                        </Card>
+                        {/* </Col> */}
+                        {/* </Row> */}
+                    </Col>
 
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
@@ -763,7 +911,7 @@ class HomeScreen extends React.Component {
                     </Col> */}
 
                     {/* daugiausia nepagamintu produkt */}
-                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -788,7 +936,7 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
-                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -812,7 +960,7 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
-                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -836,7 +984,7 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
-                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -861,7 +1009,7 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
-                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -878,7 +1026,7 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
-                    <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
+                    <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -916,5 +1064,5 @@ const mapStateToProps = (state) => {
         warehouseReducer: state.warehouseReducer
     }
 }
-export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders })(withRouter(HomeScreen))
+export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders, getUncompletedOrdersTimes })(withRouter(HomeScreen))
 
