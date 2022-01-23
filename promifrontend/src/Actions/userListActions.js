@@ -1,5 +1,5 @@
 import promiAPI from "./promiAPI";
-export const getUsers = (callback) => async (dispatch, getState) => {
+export const getUsers = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'FETCH_ALL_REQUEST'
@@ -11,7 +11,6 @@ export const getUsers = (callback) => async (dispatch, getState) => {
             type: 'FETCH_ALL_SUCCESS',
             payload: response.data,
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'FETCH_ALL_FAIL',

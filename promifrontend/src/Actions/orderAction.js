@@ -1,6 +1,6 @@
 import promiAPI from "./promiAPI";
 
-export const getOrders = (callback) => async (dispatch, getState) => {
+export const getOrders = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDER_FETCH_REQUEST'
@@ -12,7 +12,6 @@ export const getOrders = (callback) => async (dispatch, getState) => {
             type: 'ORDER_FETCH_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'ORDER_FETCH_FAIL',
@@ -241,7 +240,6 @@ export const addOrder = (postObject) => async (dispatch, getState) => {
             type: 'ORDER_CREATE_SUCCESS',
             payload: response.data
         });
-        // callback();
     } catch (error) {
         dispatch({
             type: 'ORDER_CREATE_FAIL',
@@ -265,7 +263,6 @@ export const addOrderWarehouse = (postObject) => async (dispatch, getState) => {
             type: 'ORDER_CREATE_SUCCESS',
             payload: response.data
         });
-        // callback();
     } catch (error) {
         dispatch({
             type: 'ORDER_CREATE_FAIL',
@@ -289,7 +286,6 @@ export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) =
             type: 'ORDER_UPDATE_SUCCESS',
             payload: reducerObj
         });
-        // callback();
     } catch (error) {
         dispatch({
             type: 'ORDER_UPDATE_FAIL',

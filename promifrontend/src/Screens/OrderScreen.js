@@ -92,8 +92,6 @@ class OrderScrenn extends React.Component {
         // reducer obj will have it. so deleting id from postobj
         const { id, ...postObj1 } = obj;
         const reducerObj1 = obj;
-        console.log('postobj:' + JSON.stringify(postObj1))
-        console.log('reducerObj:' + JSON.stringify(reducerObj1))
         if (record.orderType === "Standartinis" || record.orderType === "Ne-standartinis") {
             if (inputName !== "packingUserId") {
                 this.props.updateOrder(postObj1, reducerObj1)
@@ -165,10 +163,8 @@ class OrderScrenn extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getUsers(() => {
-                this.props.getOrders(() => {
-                })
-            })
+            this.props.getUsers()
+            this.props.getOrders()
         } else {
             this.props.history.push('/login');
         }

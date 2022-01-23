@@ -48,47 +48,46 @@ class ProductsScrenn extends React.Component {
                 addProductVisibility: false
             })
         })
-        console.log(postObj);
 
     }
 
 
     showProductModal = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            updateProduct: obj
-        })
+        this.setState(prevState => ({
+            updateProduct: {
+                ...prevState.updateProduct,
+                visibility: true,
+                record: record
+            }
+        }))
     }
     unshowProductModal = () => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            updateProduct: obj
-        });
+        this.setState(prevState => ({
+            updateProduct: {
+                ...prevState.updateProduct,
+                visibility: false,
+                record: null
+            }
+        }))
     }
     //FOR materials
     showProductMaterialsComponent = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            productMaterials: obj
-        })
+        this.setState(prevState => ({
+            productMaterials: {
+                ...prevState.productMaterials,
+                visibility: true,
+                record: record
+            }
+        }))
     }
     unshowProductMaterialsComponent = () => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            productMaterials: obj
-        })
+        this.setState(prevState => ({
+            productMaterials: {
+                ...prevState.productMaterials,
+                visibility: false,
+                record: null
+            }
+        }))
     }
     saveProductMaterials = (postObj) => {
         const productMaterials = JSON.parse(JSON.stringify(postObj));
@@ -130,22 +129,22 @@ class ProductsScrenn extends React.Component {
 
     //for AddProductMaterialsComponent
     showAddProductMaterials = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            addProductMaterials: obj
-        })
+        this.setState(prevState => ({
+            addProductMaterials: {
+                ...prevState.addProductMaterials,
+                visibility: true,
+                record: record
+            }
+        }))
     }
     unshowAddProductMaterials = (record) => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            addProductMaterials: obj
-        })
+        this.setState(prevState => ({
+            addProductMaterials: {
+                ...prevState.addProductMaterials,
+                visibility: false,
+                record: null
+            }
+        }))
     }
     saveAddProductMaterials = (postObj) => {
         const productMaterials = JSON.parse(JSON.stringify(postObj));
@@ -367,7 +366,7 @@ class ProductsScrenn extends React.Component {
                                 </div>
                             </Col>
                         </Row>
-                        <div style={{padding: '15px'}}></div>
+                        <div style={{ padding: '15px' }}></div>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
