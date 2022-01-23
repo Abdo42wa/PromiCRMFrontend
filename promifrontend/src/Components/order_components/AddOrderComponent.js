@@ -76,10 +76,14 @@ function AddOrderComponent(props) {
     }
 
     const getOrderNumber = () => {
-        const lastOrder = orderReducer.orders.slice(-1)
-        const orderNumber = lastOrder.map((x) => x.orderNumber)
-        console.log(orderNumber[0])
-        return orderNumber[0] + 1;
+        const orders_clone = JSON.parse(JSON.stringify(orderReducer.orders))
+        let num = Number(
+            Math.max.apply(
+              Math,
+              orders_clone?.map(o => o.orderNumber || 0),
+            ) || 0,
+          );
+        return num+1; 
     }
 
 
@@ -185,7 +189,6 @@ function AddOrderComponent(props) {
         dispatch(getUsers());
         dispatch(getSalesChannels(() => {
         }));
-        dispatch(getOrders())
         dispatch(getProducts());
         //getOrderId();
     }, [dispatch]);

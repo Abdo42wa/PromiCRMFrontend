@@ -327,16 +327,11 @@ class OrderScrenn extends React.Component {
                             })}
                         </Select>
                         {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
-                        {record.product === undefined || record.product === null ?
-                            <div>
-                                {record.milingTime === undefined || record.milingTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
-                            </div> :
-                            <div>
-                                {record.product.milingTime === undefined || record.product.milingTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.product.milingTime} min`} />}
-                            </div>
-                        }
+                        <div>
+                            {record.milingTime === undefined || record.milingTime === null ?
+                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                        </div>
+
                     </div>
                 )
             },
@@ -357,16 +352,10 @@ class OrderScrenn extends React.Component {
                                 return (<Option key={element.id} value={element.id}>{element.name} </Option>)
                             })}
                         </Select>
-                        {record.product === undefined || record.product === null ?
-                            <div>
-                                {record.laserTime === undefined || record.laserTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.laserTime} min`} />}
-                            </div> :
-                            <div>
-                                {record.product.laserTime === undefined || record.product.laserTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.product.laserTime} min`} />}
-                            </div>
-                        }
+                        <div>
+                            {record.milingTime === undefined || record.milingTime === null ?
+                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                        </div>
                     </div>
 
                 )
@@ -388,16 +377,10 @@ class OrderScrenn extends React.Component {
                                 return (<Option key={element.id} value={element.id}>{element.name} </Option>)
                             })}
                         </Select>
-                        {record.product === undefined || record.product === null ?
-                            <div>
-                                {record.paintingTime === undefined || record.paintingTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.paintingTime} min`} />}
-                            </div> :
-                            <div>
-                                {record.product.paintingTime === undefined || record.product.paintingTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.product.paintingTime} min`} />}
-                            </div>
-                        }
+                        <div>
+                            {record.milingTime === undefined || record.milingTime === null ?
+                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                        </div>
                     </div>
 
                 )
@@ -419,16 +402,10 @@ class OrderScrenn extends React.Component {
                                 return (<Option key={element.id} value={element.id}>{element.name} </Option>)
                             })}
                         </Select>
-                        {record.product === undefined || record.product === null ?
-                            <div>
-                                {record.bondingTime === undefined || record.bondingTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.bondingTime} min`} />}
-                            </div> :
-                            <div>
-                                {record.product.bondingTime === undefined || record.product.bondingTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.product.bondingTime} min`} />}
-                            </div>
-                        }
+                        <div>
+                            {record.milingTime === undefined || record.milingTime === null ?
+                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                        </div>
                     </div>
                 )
             },
@@ -449,16 +426,10 @@ class OrderScrenn extends React.Component {
                                 return (<Option key={element.id} value={element.id}>{element.name} </Option>)
                             })}
                         </Select>
-                        {record.product === undefined || record.product === null ?
-                            <div>
-                                {record.collectionTime === undefined || record.collectionTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.collectionTime} min`} />}
-                            </div> :
-                            <div>
-                                {record.product.collectionTime === undefined || record.product.collectionTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.product.collectionTime} min`} />}
-                            </div>
-                        }
+                        <div>
+                            {record.milingTime === undefined || record.milingTime === null ?
+                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                        </div>
                     </div>
                 )
             },
@@ -479,16 +450,10 @@ class OrderScrenn extends React.Component {
                                 return (<Option key={element.id} value={element.id}>{element.name} </Option>)
                             })}
                         </Select>
-                        {record.product === undefined || record.product === null ?
-                            <div>
-                                {record.packingTime === undefined || record.packingTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.packingTime} min`} />}
-                            </div> :
-                            <div>
-                                {record.product.packingTime === undefined || record.product.packingTime === null ?
-                                    <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.product.packingTime} min`} />}
-                            </div>
-                        }
+                        <div>
+                            {record.milingTime === undefined || record.milingTime === null ?
+                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                        </div>
                     </div>
                 )
             },
