@@ -38,9 +38,7 @@ function AddSalesChannelComponent(props) {
         props.save(postObj);
     }
     useEffect(() => {
-        dispatch(getUsers(() => {
-            // console.log(JSON.stringify(productsReducer.products))
-        }));
+        dispatch(getUsers())
     }, [dispatch])
 
     return (

@@ -40,11 +40,9 @@ function UpdateSalesChannelComponent(props) {
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
-        dispatch(getUsers(() => {
-            setSalesChannel(props.record)
-            // console.log(JSON.stringify(productsReducer.products))
-        }));
-    }, [dispatch, props.record])
+        dispatch(getUsers())
+        setSalesChannel(props.record)
+    }, [dispatch, props.record.id])
 
     return (
         <>
