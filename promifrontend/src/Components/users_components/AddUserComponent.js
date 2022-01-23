@@ -8,10 +8,10 @@ const {Option} = Select;
 function AddUserComponent(props) {
     const dispatch = useDispatch()
     const [user, setUser] = useState({
-        firstName: "",
-        lastName: "",
+        name: "",
+        surname: "",
         phoneNumber: "",
-        type: 2,
+        typeId: 2,
         email: "",
         password: "",
         confirmPassword: ""
@@ -41,14 +41,7 @@ function AddUserComponent(props) {
         if (user.password !== user.confirmPassword) {
             setMessage('Passwords do not match')
         } else {
-            const postObj = {
-                "name": user.firstName,
-                "surname": user.lastName,
-                "email": user.email,
-                "password": user.password,
-                "phoneNumber": user.phoneNumber,
-                "typeId": user.type,
-            }
+            const {confirmPassword,...postObj} = user;
             props.saveChanges(postObj)
         }
     }
@@ -71,10 +64,10 @@ function AddUserComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <Form.Item key="name" name="name" label="Vardas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite vardą" value={user.firstName} onChange={(e) => onDataChange(e.target.value, "firstName")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite vardą" value={user.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     </Form.Item>
                     <Form.Item key="surname" name="surname" label="Pavardė">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite pavardę" value={user.lastName} onChange={(e) => onDataChange(e.target.value, "lastName")} />
+                        <Input required style={{ width: '100%' }} placeholder="Įrašykite pavardę" value={user.surname} onChange={(e) => onDataChange(e.target.value, "surname")} />
                     </Form.Item>
                     <Form.Item key="phoneNumber" name="phoneNumber" label="Telefono numeris">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite numerį" value={user.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
@@ -85,8 +78,8 @@ function AddUserComponent(props) {
                         style={{ width: '100%' }}
                         placeholder="Priskirkite naudotojui tipą"
                         optionFilterProp="children"
-                        value={user.type}
-                        onChange={(e) => onDataChange(e,"type")}
+                        value={user.typeId}
+                        onChange={(e) => onDataChange(e,"typeId")}
                     >
                         {userTypesReducer.userTypes.map((element, index) => {
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrders } from '../../Actions/orderAction';
-import { Modal, Button, Form, Space, Select, Input,Image } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, Image, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment'
 
@@ -19,8 +19,8 @@ const textStyle = {
 function UpdateWarehouseDataComponent(props) {
     const dispatch = useDispatch();
     const [warehouseData, setWarehouseData] = useState({});
-    const [file, setFile] = useState();
-    const [fileChanged, setFileChanged] = useState(0)
+    // const [file, setFile] = useState();
+    // const [fileChanged, setFileChanged] = useState(0)
     const orderReducer = useSelector((state) => state.orderReducer);
 
     const onBack = () => {
@@ -31,59 +31,42 @@ function UpdateWarehouseDataComponent(props) {
     }
     const onDataChange = (value, inputName) => {
         // setWarehouseData to what was previously in state and change only that field value that needs to be changed
-        if (inputName === 'orderId') {
-            setWarehouseData(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else if (inputName === 'quantityProductWarehouse') {
-            setWarehouseData(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        }
+        setWarehouseData(prevState => ({
+            ...prevState,
+            [inputName]: Number(value)
+        }))
     }
     const saveChanges = () => {
-        const clone = JSON.parse(JSON.stringify(warehouseData));
-        if(fileChanged === 0){
-            const postObj = {
-                "orderId": clone.orderId,
-                "quantityProductWarehouse": clone.quantityProductWarehouse,
-                "lastTimeChanging": moment().format('YYYY/MM/DD'),
-                "imageName":clone.imageName,
-                "imagePath":clone.imagePath
-            }
-            const reducerObj = {
-                "id": clone.id,
-                "orderId": clone.orderId,
-                "quantityProductWarehouse": clone.quantityProductWarehouse,
-                "lastTimeChanging": moment().format('YYYY/MM/DD'),
-                "imageName":clone.imageName,
-                "imagePath":clone.imagePath
-            }
-            props.save(postObj, reducerObj);
-        }else{
-            const formData = new FormData();
-            formData.append("orderId",clone.orderId);
-            formData.append("quantityProductWarehouse",clone.quantityProductWarehouse);
-            formData.append("lastTimeChanging",moment().format('YYYY/MM/DD'));
-            formData.append("file",file);
-            formData.append("imageName",clone.imageName);
-            props.saveWithImg(formData,clone.id)
+        const { id, ...obj } = warehouseData;
+        const postObj = {
+            ...obj,
+            "lastTimeChanging": moment().format('YYYY/MM/DD'),
         }
-        
+        const reducerObj = {
+            ...postObj,
+            "id": warehouseData.id
+        }
+        props.save(postObj, reducerObj);
+        // const formData = new FormData();
+        // formData.append("orderId", clone.orderId);
+        // formData.append("quantityProductWarehouse", clone.quantityProductWarehouse);
+        // formData.append("lastTimeChanging", moment().format('YYYY/MM/DD'));
+        // formData.append("file", file);
+        // formData.append("imageName", clone.imageName);
+        // props.saveWithImg(formData, clone.id)
+
     }
-    const deleteImage = () => {
-        const clone = JSON.parse(JSON.stringify(warehouseData))
-        // materialClone.imageName = null;
-        clone.imagePath = null;
-        // dispatch(deleteMaterialImage(material.id, material.imageName))
-        setWarehouseData(clone)
-    }
-    const changeFile = (e) => {
-        setFileChanged(1);
-        setFile(e.target.files[0])
-    }
+    // const deleteImage = () => {
+    //     const clone = JSON.parse(JSON.stringify(warehouseData))
+    //     // materialClone.imageName = null;
+    //     clone.imagePath = null;
+    //     // dispatch(deleteMaterialImage(material.id, material.imageName))
+    //     setWarehouseData(clone)
+    // }
+    // const changeFile = (e) => {
+    //     setFileChanged(1);
+    //     setFile(e.target.files[0])
+    // }
     useEffect(() => {
         dispatch(getOrders(() => {
             setWarehouseData(props.record)
@@ -108,10 +91,10 @@ function UpdateWarehouseDataComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ marginBottom: '5px' }}>Produktų kiekis</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={warehouseData.quantityProductWarehouse} onChange={(e) => onDataChange(e.target.value, "quantityProductWarehouse")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={warehouseData.quantityProductWarehouse} onChange={(e) => onDataChange(e, "quantityProductWarehouse")} />
                 </Form>
                 {/* for IMAGE */}
-                {warehouseData.imagePath !== null && warehouseData.imagePath !== undefined ?
+                {/* {warehouseData.imagePath !== null && warehouseData.imagePath !== undefined ?
                         <div>
                             <p style={{ ...textStyle }}>Nuotrauka</p>
                             <Image key={warehouseData.imageName} src={warehouseData.imagePath} width={100} />
@@ -121,7 +104,7 @@ function UpdateWarehouseDataComponent(props) {
                         <div>
                             <p style={{ ...textStyle }}>Nuotraukos ikėlimas</p>
                             <input required type='file' onChange={changeFile} />
-                        </div>}
+                        </div>} */}
                 <p style={{ marginBottom: '5px' }}>Užsakymas</p>
                 <Select
                     showSearch

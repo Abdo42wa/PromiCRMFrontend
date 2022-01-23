@@ -30,30 +30,14 @@ function UpdateWeeklyWorkScheduleComponent(props) {
         props.onClose();
     }
     const onDataChange = (value, inputName) => {
-
-
-        // if (inputName === 'orderNumber') {
-        //     setWorks(prevState => ({
-        //         ...prevState,
-        //         [inputName]: Number(value)
-        //     }))
-        // } else {
         setWorks(prevState => ({
             ...prevState,
             [inputName]: value
         }))
-        // }
     }
     const saveChanges = () => {
-        const workClone = JSON.parse(JSON.stringify(works));
-        const postObj = {
-            "userId": workClone.userId,
-            "description": workClone.description,
-            "done": workClone.done,
-        }
-        const reducerObj = workClone;
-        console.log(JSON.stringify(postObj))
-        console.log(JSON.stringify(reducerObj))
+        const {id,...postObj} = works;
+        const reducerObj = works;
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
@@ -103,7 +87,7 @@ function UpdateWeeklyWorkScheduleComponent(props) {
                     <Select
                         showSearch
                         style={{ width: '320px' }}
-                        placeholder="Priskirkite viena"
+                        placeholder="Pasirinkite vieną iš variantų"
                         optionFilterProp="children"
                         defaultValue={works.done}
                         value={works.done}

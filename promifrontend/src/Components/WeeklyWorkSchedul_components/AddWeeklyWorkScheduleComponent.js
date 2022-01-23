@@ -15,8 +15,6 @@ function AddWeeklyWorkScheduleComponent(props) {
 
     });
     const usersListReducer = useSelector((state) => state.usersListReducer);
-
-
     const onBack = () => {
         props.onClose();
     }
@@ -24,34 +22,18 @@ function AddWeeklyWorkScheduleComponent(props) {
         props.onClose();
     }
     const onDataChange = (value, inputName) => {
-
-        if (inputName === '') {
-            setWorks(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else {
-            setWorks(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }))
-            console.log(value);
-        }
+        setWorks(prevState => ({
+            ...prevState,
+            [inputName]: value
+        }))
     }
     const saveChanges = () => {
-        const dataWork = JSON.parse(JSON.stringify(works));
-        //const dataClone = orders;
-        console.log(JSON.parse(JSON.stringify(works)))
         const postObj = {
-            "userId": dataWork.userId,
-            "description": dataWork.description,
-            "done": dataWork.done
+            ...works
         }
         props.save(postObj);
-        console.log(postObj)
     }
     useEffect(() => {
-
         dispatch(getUsers(() => {
 
         }));
@@ -80,6 +62,7 @@ function AddWeeklyWorkScheduleComponent(props) {
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>
                     <Select
+                        required
                         showSearch
                         style={{ width: '320px' }}
                         placeholder="Priskirkite naudotojai"
@@ -87,7 +70,6 @@ function AddWeeklyWorkScheduleComponent(props) {
                         onChange={(e) => onDataChange(e, "userId")}
                     >
                         {usersListReducer.users.map((element, index) => {
-
                             return (<Option key={element.id} value={element.id}>{element.name}</Option>)
                         })}
                     </Select>
