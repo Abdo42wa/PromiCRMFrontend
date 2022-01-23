@@ -33,56 +33,39 @@ class ShipmentScreen extends React.Component {
     }
 
     saveAddShipment = (postObj) => {
-        this.props.createShipment(postObj, () => {
-            const shipmentsClone = this.props.shipmentsReducer.shipments;
-            this.setState({
-                shipments: shipmentsClone,
-                addShipmentVisibility: false
-            });
-        });
+        this.props.createShipment(postObj)
+        this.unshowShipmentVisibility()
     }
 
     //FOR UpdateShipmentComponent
     showUpdateShipment = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            updateShipmentVisibility: obj
-        });
+        this.setState(prevState => ({
+            updateShipmentVisibility: {
+                ...prevState,
+                visibility: true,
+                record: record
+            }
+        }))
     }
 
     unshowUpdateShipment = (record) => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            updateShipmentVisibility: obj
-        });
+        this.setState(prevState => ({
+            updateShipmentVisibility: {
+                ...prevState,
+                visibility: false,
+                record: null
+            }
+        }))
     }
 
     saveUpdateShipment = (postObj, reducerObj) => {
-        // console.log('Save update:' + JSON.stringify(postObj))
-        this.props.updateShipment(postObj, reducerObj, () => {
-            //get clone of shipments reducer state which just updated
-            const shipmentsClone = JSON.parse(JSON.stringify(this.props.shipmentsReducer.shipments));
-            this.setState({
-                shipments: shipmentsClone
-            });
-            this.unshowUpdateShipment();
-        });
+        this.props.updateShipment(postObj, reducerObj)
+        this.unshowUpdateShipment();
     }
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getShipments(() => {
-                const shipmentsClone = JSON.parse(JSON.stringify(this.props.shipmentsReducer.shipments));
-                this.setState({
-                    shipments: shipmentsClone
-                }, () => console.log('Shipments set to:' + JSON.stringify(this.state.shipments)));
-            });
+            this.props.getShipments()
         } else {
             this.props.history.push('/login')
         }
@@ -136,7 +119,7 @@ class ShipmentScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
-                        <div style={{padding: '15px'}}></div>
+                        <div style={{ padding: '15px' }}></div>
                         {/* returns second column with table */}
                         {/* <FixedCostTable data={obj.types} countryVats={this.props.countryVats} category_title={obj.category_title} category_id={obj.category_id} /> */}
                         <Row gutter={16}>

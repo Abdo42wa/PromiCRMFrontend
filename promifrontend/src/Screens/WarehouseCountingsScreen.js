@@ -31,36 +31,32 @@ class WarehouseCountingsScreen extends React.Component {
         });
     }
     saveAddWarehouseData = (postObj) => {
-        this.props.createWarehouseData(postObj, () => {
-            this.setState({
-                addWarehouseVisibility: false
-            });
-        });
+        this.props.createWarehouseData(postObj)
+        this.unshowAddWarehouseData()
     }
 
     // For UpdateWarehouseDataComponent
     showUpdateWarehouseData = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            updateWarehouse: obj
-        });
+        this.setState(prevState => ({
+            updateWarehouse: {
+                ...prevState.updateWarehouse,
+                visibility: true,
+                record: record
+            }
+        }))
     }
     unshowUpdateWarehouseData = () => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            updateWarehouse: obj
-        });
+        this.setState(prevState =>({
+            updateWarehouse: {
+                ...prevState.updateWarehouse,
+                visibility: false,
+                record: null
+            }
+        }))
     }
     saveUpdateWarehouseData = (postObj, reducerObj) => {
-        this.props.updateWarehouseData(postObj, reducerObj, () => {
-            this.unshowUpdateWarehouseData();
-        });
+        this.props.updateWarehouseData(postObj, reducerObj)
+        this.unshowUpdateWarehouseData();
     }
 
     saveUpdateWarehouseWithImg = (postObj, id) => {
@@ -71,9 +67,8 @@ class WarehouseCountingsScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getWarehouseData(() => {
-            });
-        }else{
+            this.props.getWarehouseData()
+        } else {
             this.props.history.push('/login')
         }
     }
@@ -129,7 +124,7 @@ class WarehouseCountingsScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
-                        <div style={{padding: '15px'}}></div>
+                        <div style={{ padding: '15px' }}></div>
                         {/* returns second column with table */}
                         {/* <FixedCostTable data={obj.types} countryVats={this.props.countryVats} category_title={obj.category_title} category_id={obj.category_id} /> */}
                         <Row gutter={16}>

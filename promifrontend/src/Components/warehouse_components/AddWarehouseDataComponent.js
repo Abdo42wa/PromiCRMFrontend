@@ -14,15 +14,7 @@ function AddWarehouseDataComponent(props) {
         "lastTimeChanging": moment().format("YYYY/MM/DD"),
         "orderId": 0
     });
-    const [file, setFile] = useState();
-    const [fileName,setFileName] = useState();
     const orderReducer = useSelector((state) => state.orderReducer)
-
-    const changeFile = (e) => {
-        console.log(e.target.files[0])
-        setFile(e.target.files[0]);
-        // setFileName(e.target.files[0].name);
-    }
     const onBack = () => {
         props.onClose();
     }
@@ -37,13 +29,10 @@ function AddWarehouseDataComponent(props) {
         }));
     }
     const saveChanges = () => {
-        const clone = JSON.parse(JSON.stringify(warehouseData));
-        const formData = new FormData();
-        formData.append("orderId",clone.orderId);
-        formData.append("quantityProductWarehouse",clone.quantityProductWarehouse);
-        formData.append("lastTimeChanging",clone.lastTimeChanging);
-        formData.append("file",file);
-        props.save(formData);
+        const postObj = {
+            ...warehouseData
+        }
+        props.save(postObj);
     }
     useEffect(() => {
         dispatch(getOrders(() => {
@@ -66,13 +55,6 @@ function AddWarehouseDataComponent(props) {
                     </div>
                 }
             >
-                <Form layout="vertical" id="myForm" name="myForm">
-                    <Form.Item key="name1" name="name1" label="Kiekis sandėlyje">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={warehouseData.quantityProductWarehouse} onChange={(e) => onDataChange(e.target.value, "quantityProductWarehouse")} />
-                    </Form.Item>
-                    <p>Nuotrauka</p>
-                    <input type="file" onChange={changeFile} />
-                </Form>
                 <p style={{ marginBottom: '5px' }}>Užsakymas</p>
                 <Select
                     showSearch

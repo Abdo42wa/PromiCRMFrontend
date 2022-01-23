@@ -1,6 +1,6 @@
 import promiAPI from "./promiAPI";
 
-export const getWarehouseData = (callback) => async (dispatch, getState) => {
+export const getWarehouseData = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'WAREHOUSES_FETCH_REQUEST'
@@ -12,7 +12,6 @@ export const getWarehouseData = (callback) => async (dispatch, getState) => {
             type: 'WAREHOUSES_FETCH_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'WAREHOUSES_FETCH_FAIL',
@@ -117,7 +116,7 @@ export const createOrUpdateWarehouseData = (postObj) => async (dispatch, getStat
 
 
 
-export const createWarehouseData = (postObj, callback) => async (dispatch, getState) => {
+export const createWarehouseData = (postObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'WAREHOUSES_CREATE_REQUEST'
@@ -128,7 +127,6 @@ export const createWarehouseData = (postObj, callback) => async (dispatch, getSt
             type: 'WAREHOUSES_CREATE_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'WAREHOUSES_CREATE_FAIL',
@@ -141,7 +139,7 @@ export const createWarehouseData = (postObj, callback) => async (dispatch, getSt
 }
 
 
-export const updateWarehouseData = (postObj, reducerObj, callback) => async (dispatch, getState) => {
+export const updateWarehouseData = (postObj, reducerObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'WAREHOUSES_UPDATE_REQUEST'
@@ -153,7 +151,6 @@ export const updateWarehouseData = (postObj, reducerObj, callback) => async (dis
             type: 'WAREHOUSES_UPDATE_SUCCESS',
             payload: reducerObj
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'WAREHOUSES_UPDATE_FAIL',

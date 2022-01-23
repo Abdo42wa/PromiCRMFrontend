@@ -15,18 +15,9 @@ export const shipmentsReducer = (state= {shipments: []}, action)=>{
         case 'SHIPMENT_UPDATE_REQUEST':
             return {...state, loading: true}
         case 'SHIPMENT_UPDATE_SUCCESS':
-            const shipmentsClone = JSON.parse(JSON.stringify(state.shipments));
-            // find item with same id. changes its all values to action.payload values
-            shipmentsClone.map((element,index)=>{
-                if(element.id === action.payload.id){
-                    element.type = action.payload.type;
-                    element.period = action.payload.period;
-                    element.shippingCost = action.payload.shippingCost;
-                    element.shippingNumber = action.payload.shippingNumber;
-                    element.shipmentInfo = action.payload.shipmentInfo;
-                }
-            });
-            return {...state, loading: false, shipments: shipmentsClone}
+            const shipments_clone = [...state.shipments];
+            const updated_shipments = shipments_clone.map(x => x.id === action.payload.id?action.payload:x)
+            return {...state, loading: false, shipments: updated_shipments}
         case 'SHIPMENT_UPDATE_FAIL':
             return {...state, loading: false, error: action.payload}
         default:

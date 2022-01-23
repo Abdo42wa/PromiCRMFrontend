@@ -42,30 +42,27 @@ class WeeklyWorkScheduleScreen extends React.Component {
     }
 
     showWorkModal = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            updateWork: obj
-        })
+        this.setState(prevState => ({
+            updateWork: {// object that we want to update
+                ...prevState.updateWork,// keep all other key-value pairs
+                visibility: true,// update the value of specific key
+                record: record
+            }
+        }));
     }
     unshowWorkModal = () => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            updateWork: obj
-        });
+        this.setState(prevState => ({
+            updateWork: {
+                ...prevState.updateWork,
+                visibility: false,
+                record: null
+            }
+        }));
     }
     saveWork = (postObj, reducerObj) => {
         this.props.updateWork(postObj, reducerObj)
         this.unshowWorkModal();
     }
-
-
-
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getWorks()
@@ -74,13 +71,6 @@ class WeeklyWorkScheduleScreen extends React.Component {
         }
 
     }
-
-    // getUserName = (id) => {
-    //     const username = this.state.Works.map((x) => x.user)
-    //     const result = username.filter(word => word.id === id);
-    //     const name = result.map((x) => x.name)
-    //     return name;
-    // }
     render() {
         const columns = [
             {
@@ -126,7 +116,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
-                        <div style={{padding: '15px'}}></div>
+                        <div style={{ padding: '15px' }}></div>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>

@@ -24,7 +24,6 @@ export const weeklyWorkScheduleReducer = (state = { workSchedules: [] }, action)
         case 'WORKSCHEDULE_UPDATE_SUCCESS':
             const workSchedulesClone = [...state.workSchedules]
             const updated = workSchedulesClone.map(x => x.id === action.payload.id?action.payload:x)
-            console.log(JSON.stringify(updated))
             return { ...state, loading: false, workSchedules: updated }
         case 'WORKSCHEDULE_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
