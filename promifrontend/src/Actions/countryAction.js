@@ -1,5 +1,5 @@
 import promiAPI from './promiAPI';
-export const getCountries = (callback) => async (dispatch, getState) => {
+export const getCountries = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'COUNTRY_FETCH_REQUEST'
@@ -11,7 +11,6 @@ export const getCountries = (callback) => async (dispatch, getState) => {
             type: 'COUNTRY_FETCH_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'COUNTRY_FETCH_FAIL',
@@ -22,7 +21,7 @@ export const getCountries = (callback) => async (dispatch, getState) => {
         })
     }
 }
-export const addCountry = (postObject, callback) => async (dispatch, getState) => {
+export const addCountry = (postObject) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'COUNTRY_CREATE_REQUEST'
@@ -34,7 +33,6 @@ export const addCountry = (postObject, callback) => async (dispatch, getState) =
             type: 'COUNTRY_CREATE_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'COUNTRY_CREATE_FAIL',
@@ -47,7 +45,7 @@ export const addCountry = (postObject, callback) => async (dispatch, getState) =
 }
 
 
-export const updateCountry = (postObj, reducerObj, callback) => async (dispatch, getState) => {
+export const updateCountry = (postObj, reducerObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'COUNTRY_UPDATE_REQUEST'
@@ -59,7 +57,6 @@ export const updateCountry = (postObj, reducerObj, callback) => async (dispatch,
             type: 'COUNTRY_UPDATE_SUCCESS',
             payload: reducerObj
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'COUNTRY_UPDATE_SUCCESS',

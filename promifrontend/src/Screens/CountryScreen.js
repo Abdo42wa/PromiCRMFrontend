@@ -13,7 +13,6 @@ class CountryScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            countries: [],
             addCountryVisibility: false,
             updateCountryVisibility: {
                 record: null,
@@ -23,7 +22,6 @@ class CountryScreen extends React.Component {
 
         }
     }
-
     showAddCountry = () => {
         this.setState({
             addCountryVisibility: true
@@ -35,56 +33,40 @@ class CountryScreen extends React.Component {
             addCountryVisibility: false
         });
     }
-
     saveCountry = (postObject) => {
-        this.props.addCountry(postObject, () => {
-            const countriesClone = this.props.countryReducer.countries;
-            this.setState({
-                countries: countriesClone,
-                addCountryVisibility: false
-            });
-        });
+        this.props.addCountry(postObject)
+        this.unshowAddCountry()
     }
 
 
     showUpdateCountry = (record) => {
-        const obj = {
-            record: record,
-            visibility: true
-        }
-        this.setState({
-            updateCountryVisibility: obj
-        }, () => console.log('Record is set:' + JSON.stringify(this.state.updateCountryVisibility.record)));
+        this.setState(prevState => ({
+            updateCountryVisibility: {
+                ...prevState.updateCountryVisibility,
+                record: record,
+                visibility: true
+            }
+        }))
     }
 
 
 
     unshowUpdateCountry = () => {
-        const obj = {
-            record: null,
-            visibility: false
-        }
-        this.setState({
-            updateCountryVisibility: obj
-        });
+        this.setState(prevState => ({
+            updateCountryVisibility: {
+                ...prevState.updateCountryVisibility,
+                record: null,
+                visibility: false
+            }
+        }))
     }
     saveUpdateCountry = (postObj, reducerObj) => {
-        this.props.updateCountry(postObj, reducerObj, () => {
-            const countriesClone = this.props.countryReducer.countries;
-            this.setState({
-                countries: countriesClone,
-                updateCountryVisibility: false
-            });
-        });
+        this.props.updateCountry(postObj, reducerObj)
+        this.unshowUpdateCountry();
     }
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getCountries(() => {
-                const countriesClone = JSON.parse(JSON.stringify(this.props.countryReducer.countries));
-                this.setState({
-                    countries: countriesClone
-                });
-            });
+            this.props.getCountries()
         } else {
             this.props.history.push('/login')
         }
@@ -136,7 +118,7 @@ class CountryScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={columns}
-                                        dataSource={this.state.countries}
+                                        dataSource={this.props.countryReducer.countries}
                                         pagination={{ pageSize: 15 }}
                                         bordered
                                         scroll={{ x: 'calc(300px + 50%)' }}

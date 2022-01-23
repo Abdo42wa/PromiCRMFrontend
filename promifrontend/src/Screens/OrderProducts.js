@@ -32,9 +32,7 @@ class OrderProducts extends React.Component{
     }
     saveAddProduct = (postObj) => {
         this.props.addProduct(postObj, () => {
-            this.setState({
-                addProductVisibility: false
-            })
+            this.unshowAddProductModal()
         })
     }
 

@@ -36,9 +36,7 @@ class MaterialsWarehouseScreen extends React.Component {
     }
     saveAddMaterialWarehouse = (postObj) => {
         this.props.createMaterialWarehouseData(postObj);
-        this.setState({
-            addMaterialVisibility: false
-        })
+        this.unshowAddMaterialComponent()
     }
     //For UpdateMaterialWarehouseDataComponent
     showUpdateMaterialComponent = (record) => {

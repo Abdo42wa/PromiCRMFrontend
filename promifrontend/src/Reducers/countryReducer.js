@@ -16,16 +16,9 @@ export const countryReducer = (state = { countries: [] }, action) => {
         case 'COUNTRY_UPDATE_REQUEST':
             return { ...state, loading: true }
         case 'COUNTRY_UPDATE_SUCCESS':
-            const countriesClone = JSON.parse(JSON.stringify(state.countries));
-            countriesClone.map((element, index) => {
-                if (element.id === action.payload.id) {
-                    element.name = action.payload.name;
-                    element.shortName = action.payload.shortName;
-                    element.continent = action.payload.continent;
-                    element.countyId = action.payload.countyId;
-                }
-            })
-            return { ...state, loading: false, countries: countriesClone }
+            const countries_clone = [...state.countries]
+            const updated_countries = countries_clone.map(x => x.id === action.payload.id?action.payload:x)
+            return { ...state, loading: false, countries: updated_countries }
         case 'COUNTRY_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
         default:

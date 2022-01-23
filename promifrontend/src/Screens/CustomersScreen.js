@@ -11,7 +11,6 @@ class CustomersScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            customers: [],
             addCustomerVisibility: false,
             updateCustomer: {
                 visibility: false,
@@ -31,56 +30,37 @@ class CustomersScreen extends React.Component {
         });
     }
     saveAddCustomer = (postObj) => {
-        this.props.createCustomer(postObj, () => {
-            //clone update customersReducer
-            const customersClone = JSON.parse(JSON.stringify(this.props.customersReducer.customers));
-            this.setState({
-                customers: customersClone,
-                addCustomerVisibility: false
-            });
-        });
+        this.props.createCustomer(postObj)
+        this.unshowAddCustomer()
     }
 
     // FOR UpdateCustomerComponent
     showUpdateCustomer = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            updateCustomer: obj
-        });
+        this.setState(prevState => ({
+            updateCustomer:{
+                ...prevState.updateCustomer,
+                visibility: true,
+                record: record
+            }
+        }))
     }
     unshowUpdateCustomer = () => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            updateCustomer: obj
-        });
+        this.setState(prevState => ({
+            updateCustomer: {
+                ...prevState.updateCustomer,
+                visibility: false,
+                record: null
+            }
+        }))
     }
     saveUpdateCustomer = (postObj, reducerObj) => {
-        this.props.updateCustomer(postObj, reducerObj, () => {
-            //get updated customers from redux state. clone it
-            const customersClone = JSON.parse(JSON.stringify(this.props.customersReducer.customers));
-            this.setState({
-                customers: customersClone
-            });
-            this.unshowUpdateCustomer();
-        });
+        this.props.updateCustomer(postObj, reducerObj)
+        this.unshowUpdateCustomer();
     }
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getCustomers(() => {
-                // clone customers redux state.
-                const customersClone = JSON.parse(JSON.stringify(this.props.customersReducer.customers));
-                this.setState({
-                    customers: customersClone
-                });
-                this.unshowUpdateCustomer();
-            });
+            this.props.getCustomers()
         }else{
             this.props.history.push('/login')
         }

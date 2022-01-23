@@ -1,6 +1,6 @@
 import promiAPI from "./promiAPI";
 
-export const getCustomers = (callback) => async (dispatch, getState) => {
+export const getCustomers = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'CUSTOMERS_FETCH_REQUEST'
@@ -12,7 +12,6 @@ export const getCustomers = (callback) => async (dispatch, getState) => {
             type: 'CUSTOMERS_FETCH_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'CUSTOMERS_FETCH_FAIL',
@@ -24,7 +23,7 @@ export const getCustomers = (callback) => async (dispatch, getState) => {
     }
 }
 
-export const createCustomer = (postObj, callback) => async (dispatch, getState) => {
+export const createCustomer = (postObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'CUSTOMERS_CREATE_REQUEST'
@@ -36,7 +35,6 @@ export const createCustomer = (postObj, callback) => async (dispatch, getState) 
             type: 'CUSTOMERS_CREATE_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'CUSTOMERS_CREATE_FAIL',
@@ -49,7 +47,7 @@ export const createCustomer = (postObj, callback) => async (dispatch, getState) 
 }
 
 
-export const updateCustomer = (postObj, reducerObj, callback) => async (dispatch, getState) => {
+export const updateCustomer = (postObj, reducerObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'CUSTOMER_UPDATE_REQUEST'
@@ -61,7 +59,6 @@ export const updateCustomer = (postObj, reducerObj, callback) => async (dispatch
             type: 'CUSTOMER_UPDATE_SUCCESS',
             payload: reducerObj
         });
-        callback();
     } catch (error) {
         console.log('Error:' + JSON.stringify(error))
         dispatch({
