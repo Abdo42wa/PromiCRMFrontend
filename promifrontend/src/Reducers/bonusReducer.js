@@ -17,17 +17,9 @@ export const bonusReducer = (state = { bonuses: [] }, action) => {
         case 'BONUSES_UPDATE_REQUEST':
             return { ...state, loading: true }
         case 'BONUSES_UPDATE_SUCCESS':
-            const bonusesClone = JSON.parse(JSON.stringify(state.bonuses));
-            bonusesClone.map((element, index) => {
-                if (element.id === action.payload.id) {
-                    element.userId = action.payload.userId;
-                    element.quantity = action.payload.quantity;
-                    element.accumulated = action.payload.accumulated;
-                    element.bonusas = action.payload.bonusas;
-                    element.leftUntil = action.payload.leftUntil;
-                }
-            })
-            return { ...state, loading: false, bonuses: bonusesClone }
+            const bonuses_clone = [...state.bonuses]
+            const updated_bonuses = bonuses_clone.map(x => x.id === action.payload.id?action.payload:x)
+            return { ...state, loading: false, bonuses: updated_bonuses }
         case 'BONUSES_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
         default:

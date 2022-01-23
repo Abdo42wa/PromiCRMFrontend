@@ -44,15 +44,13 @@ function UpdateBonusComponent(props) {
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
-        dispatch(getUsers(() => {
-            const obj = {
-                ...props.record
-            }
-            setBonus(obj);
-
-        }))
+        dispatch(getUsers())
+        const obj = {
+            ...props.record
+        }
+        setBonus(obj);
         // eslint-disable-next-line
-    }, [dispatch]);
+    }, [dispatch,props.record.id]);
     return (
         <>
             <Modal
@@ -71,18 +69,11 @@ function UpdateBonusComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Kiekis</p>
-
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Kiekis" value={bonus.quantity} onChange={(e) => onDataChange(e, "quantity")} />
                     <p style={{ ...textStyle }}>Sukaupta</p>
-
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Sukaupta" value={bonus.accumulated} onChange={(e) => onDataChange(e, "accumulated")} />
                     <p style={{ ...textStyle }}>Bonusas</p>
-
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Bonusas" value={bonus.bonusas} onChange={(e) => onDataChange(e, "bonusas")} />
-                    <p style={{ ...textStyle }}>Liko iki</p>
-
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Liko iki" value={bonus.leftUntil} onChange={(e) => onDataChange(e, "leftUntil")} />
-
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>
                     <Select
                         showSearch

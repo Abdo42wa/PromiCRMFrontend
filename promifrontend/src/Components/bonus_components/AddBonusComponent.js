@@ -12,8 +12,7 @@ function AddBonusComponent(props) {
         "userId": "",
         "quantity": 0,
         "accumulated": 0,
-        "bonusas": 0,
-        "leftUntil": 0
+        "bonusas": 0
 
     });
     const usersListReducer = useSelector((state) => state.usersListReducer);
@@ -68,9 +67,6 @@ function AddBonusComponent(props) {
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Bonusas">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Bonusas" value={bonus.bonusas} onChange={(e) => onDataChange(e, "bonusas")} />
-                    </Form.Item>
-                    <Form.Item key="name3" name="name3" label="Liko iki">
-                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Liko iki" value={bonus.leftUntil} onChange={(e) => onDataChange(e, "leftUntil")} />
                     </Form.Item>
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>
