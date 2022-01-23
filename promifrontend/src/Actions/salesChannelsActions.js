@@ -1,6 +1,6 @@
 import promiAPI from "./promiAPI";
 
-export const getSalesChannels = (callback) => async(dispatch,getState)=>{
+export const getSalesChannels = () => async(dispatch,getState)=>{
     try{
         dispatch({
             type: 'SALES_CHANNELS_FETCH_REQUEST'
@@ -12,7 +12,6 @@ export const getSalesChannels = (callback) => async(dispatch,getState)=>{
             type: 'SALES_CHANNELS_FETCH_SUCCESS',
             payload: response.data
         })  
-        callback();
     }catch (error) {
         dispatch({
             type: 'SALES_CHANNELS_FETCH_FAIL',

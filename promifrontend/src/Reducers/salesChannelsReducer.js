@@ -17,20 +17,9 @@ export const salesChannelsReducer = (state = {salesChannels: []},action)=>{
         case 'SALES_CHANNELS_UPDATE_REQUEST':
             return {...state, loading: true }
         case 'SALES_CHANNELS_UPDATE_SUCCESS':
-            const salesChannelsClone = JSON.parse(JSON.stringify(state.salesChannels));
-            salesChannelsClone.map((element,index)=>{
-                if(element.id === action.payload.id){
-                    element.title = action.payload.title;
-                    element.contactPerson = action.payload.contactPerson;
-                    element.email = action.payload.email;
-                    element.phoneNumber = action.payload.phoneNumber;
-                    element.deliveryAddress = action.payload.deliveryAddress;
-                    element.discount = action.payload.discount;
-                    element.brokerageFee = action.payload.brokerageFee;
-                    element.userId = action.payload.userId;
-                }
-            });
-            return {...state, loading: false, salesChannels: salesChannelsClone}
+            const channels_clone = [...state.salesChannels]
+            const updated_channels = channels_clone.map(x => x.id === action.payload.id?action.payload:x)
+            return {...state, loading: false, salesChannels: updated_channels}
         case 'SALES_CHANNELS_UPDATE_FAIL':
             return {...state, loading: false, error: action.payload}
         default:

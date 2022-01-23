@@ -11,7 +11,6 @@ class SalesChannelsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            // salesChannels: [],
             addSalesChannelVisibility: false,
             updateSalesChannel: {
                 record: null,
@@ -32,28 +31,26 @@ class SalesChannelsScreen extends React.Component {
     }
     saveAddSalesChannel = (postObj) => {
         this.props.createSalesChannel(postObj);
-        this.setState({
-            addSalesChannelVisibility: false
-        });
+        this.unshowAddSalesChannel()
     }
     // for updateSalesChannel component
     showUpdateSalesChannel = (record) => {
-        const obj = {
-            record: record,
-            visibility: true
-        }
-        this.setState({
-            updateSalesChannel: obj
-        })
+        this.setState(prevState => ({
+            updateSalesChannel: {
+                ...prevState.updateSalesChannel,
+                record: record,
+                visibility: true
+            }
+        }))
     }
     unshowUpdateSalesChannel = () => {
-        const obj = {
-            record: null,
-            visibility: false
-        }
-        this.setState({
-            updateSalesChannel: obj
-        })
+        this.setState(prevState=>({
+            updateSalesChannel: {
+                ...prevState.updateSalesChannel,
+                record: null,
+                visibility: false
+            }
+        }))
     }
     saveUpdateSalesChannel = (postObj, reducerObj) => {
         this.props.updateSalesChannel(postObj,reducerObj);
@@ -62,8 +59,7 @@ class SalesChannelsScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getSalesChannels(() => {
-            });
+            this.props.getSalesChannels()
         }else{
             this.props.history.push('/login')
         }

@@ -41,7 +41,7 @@ class ShipmentScreen extends React.Component {
     showUpdateShipment = (record) => {
         this.setState(prevState => ({
             updateShipmentVisibility: {
-                ...prevState,
+                ...prevState.updateShipmentVisibility,
                 visibility: true,
                 record: record
             }
@@ -51,7 +51,7 @@ class ShipmentScreen extends React.Component {
     unshowUpdateShipment = (record) => {
         this.setState(prevState => ({
             updateShipmentVisibility: {
-                ...prevState,
+                ...prevState.updateShipmentVisibility,
                 visibility: false,
                 record: null
             }

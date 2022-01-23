@@ -33,22 +33,22 @@ class RecentWorksScreen extends React.Component {
         this.unshowAddWork();
     }
     showUpdateWork = (record) => {
-        const obj = {
-            record: record,
-            visibility: true
-        }
-        this.setState({
-            updateRecentWorkComponent: obj
-        })
+        this.setState(prevState=>({
+            updateRecentWorkComponent: {
+                ...prevState.updateRecentWorkComponent,
+                record: record,
+                visibility: true
+            }
+        }))
     }
     unshowUpdateWork = () => {
-        const obj = {
-            record: null,
-            visibility: false
-        }
-        this.setState({
-            updateRecentWorkComponent: obj
-        })
+        this.setState(prevState => ({
+            updateRecentWorkComponent:{
+                ...prevState.updateRecentWorkComponent,
+                record: null,
+                visibility: false
+            }
+        }))
     }
     saveUpdateWork = (postObj, reducerObj) => {
         this.props.updateRecentWork(postObj, reducerObj)
@@ -60,7 +60,6 @@ class RecentWorksScreen extends React.Component {
         }else{
             this.props.history.push('/login')
         }
-        
     }
 
     render() {
