@@ -45,14 +45,9 @@ function AddRecentWorkComponent(props) {
     }
     const saveChanges = () => {
         const postObj = {
-            userId: recentWork.userId,
-            quantity: recentWork.quantity,
-            workTitle: recentWork.workTitle,
-            productId: recentWork.productId,
-            time: recentWork.time,
+            ...recentWork
         }
         props.save(postObj);
-        // console.log(JSON.stringify(postObj))
     }
     useEffect(() => {
         dispatch(getUsers(() => {

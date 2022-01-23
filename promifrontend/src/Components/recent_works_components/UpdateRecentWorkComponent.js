@@ -33,14 +33,8 @@ function UpdateRecentWorkComponent(props){
         dispatch(getProductsByOrder(value))
     }
     const saveChanges = () => {
-        const postObj = {
-            userId: recentWork.userId,
-            quantity: recentWork.quantity,
-            workTitle: recentWork.workTitle,
-            productId: recentWork.productId,
-            time: recentWork.time,
-        }
-        const reducerObj = recentWork
+        const {id,...postObj} = recentWork;
+        const reducerObj = recentWork;
         props.save(postObj,reducerObj);
         // console.log(JSON.stringify(postObj))
     }

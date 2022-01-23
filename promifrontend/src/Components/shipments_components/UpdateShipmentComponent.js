@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, Space, Input } from 'antd';
+import { Modal, Button, Form, Space, Input,InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 
 
@@ -26,53 +26,15 @@ function UpdateShipmentComponent(props) {
     }
 
     const onDataChange = (value, inputName) => {
-        if (inputName === "type") {
-            //setShipment all that was in previous just change "type" value
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }));
-        } else if (inputName === "period") {
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else if (inputName === "shipmentCost") {
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else if (inputName === "shippingNumber") {
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else if (inputName === "shipmentInfo") {
-            setShipment(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }))
-        }
+        setShipment(prevState => ({
+            ...prevState,
+            [inputName]: value
+        }));
     }
 
     const saveChanges = () => {
-        const shipmentClone = JSON.parse(JSON.stringify(shipment));
-        const postObj = {
-            "type": shipmentClone.type,
-            "period": shipmentClone.period,
-            "shipmentCost": shipmentClone.shipmentCost,
-            "shippingNumber": shipmentClone.shippingNumber,
-            "shipmentInfo": shipmentClone.shipmentInfo
-        }
-        const reducerObj = {
-            "id": shipmentClone.id,
-            "type": shipmentClone.type,
-            "period": shipmentClone.period,
-            "shipmentCost": shipmentClone.shipmentCost,
-            "shippingNumber": shipmentClone.shippingNumber,
-            "shipmentInfo": shipmentClone.shipmentInfo
-        }
-
+        const {id,...postObj} = shipment;
+        const reducerObj = shipment;
         props.save(postObj, reducerObj);
     }
 
@@ -98,13 +60,13 @@ function UpdateShipmentComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Pristatymo Tipas</p>
-                    < Input required style={{ width: '100%' }} placeholder="Įrašykite tipą" value={shipment.type} onChange={(e) => onDataChange(e.target.value, "type")} />
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite tipą" value={shipment.type} onChange={(e) => onDataChange(e.target.value, "type")} />
                     <p style={{ ...textStyle }}>Pristatymo Periodas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite periodą" value={shipment.period} onChange={(e) => onDataChange(e.target.value, "period")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite periodą" value={shipment.period} onChange={(e) => onDataChange(e, "period")} />
                     <p style={{ ...textStyle }}>Pristatymo kaina</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={shipment.shippingCost} onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={shipment.shippingCost} onChange={(e) => onDataChange(e, "shippingCost")} />
                     <p style={{ ...textStyle }}>Pristatymo numeris</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite numerį" value={shipment.shippingNumber} onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite numerį" value={shipment.shippingNumber} onChange={(e) => onDataChange(e, "shippingNumber")} />
                     <p style={{ ...textStyle }}>Pristatymo informacija</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite informaciją" value={shipment.shipmentInfo} onChange={(e) => onDataChange(e.target.value, "shipmentInfo")} />
 

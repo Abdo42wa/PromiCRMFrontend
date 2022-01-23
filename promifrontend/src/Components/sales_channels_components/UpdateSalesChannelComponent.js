@@ -35,28 +35,8 @@ function UpdateSalesChannelComponent(props) {
     }
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(salesChannel));
-        const postObj = {
-            title: clone.title,
-            contactPerson: clone.contactPerson,
-            email: clone.email,
-            phoneNumber: clone.phoneNumber,
-            deliveryAddress: clone.deliveryAddress,
-            discount: clone.discount,
-            brokerageFee: clone.brokerageFee,
-            userId: clone.userId
-        }
-        const reducerObj = {
-            id: clone.id,
-            title: clone.title,
-            contactPerson: clone.contactPerson,
-            email: clone.email,
-            phoneNumber: clone.phoneNumber,
-            deliveryAddress: clone.deliveryAddress,
-            discount: clone.discount,
-            brokerageFee: clone.brokerageFee,
-            userId: clone.userId
-        }
-
+        const {id,...postObj} = clone;
+        const reducerObj = clone;
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
