@@ -42,22 +42,22 @@ class MaterialsWarehouseScreen extends React.Component {
     }
     //For UpdateMaterialWarehouseDataComponent
     showUpdateMaterialComponent = (record) => {
-        const obj = {
-            record: record,
-            visibility: true
-        }
-        this.setState({
-            updateMaterialWarehouse: obj
-        })
+        this.setState(prevState => ({
+            updateMaterialWarehouse:{
+                ...prevState.updateMaterialWarehouse,
+                record: record,
+                visibility: true
+            }
+        }))
     }
     unshowUpdateMaterialComponent = () => {
-        const obj = {
-            record: null,
-            visibility: false
-        }
-        this.setState({
-            updateMaterialWarehouse: obj
-        })
+        this.setState(prevState => ({
+            updateMaterialWarehouse: {
+                ...prevState.updateMaterialWarehouse,
+                record: null,
+                visibility: false
+            }
+        }))
     }
     saveUpdateMaterialWarehouse = (postObj, reducerObj) => {
         this.props.updateMaterialWarehouseData(postObj, reducerObj);
@@ -83,9 +83,7 @@ class MaterialsWarehouseScreen extends React.Component {
     }
     saveSuplementMaterial = (postObj, reducerObj) => {
         this.props.updateMaterialWarehouseData(postObj, reducerObj);
-        this.setState({
-            suplementMaterialVisibility: false
-        })
+        this.unshowSuplementMaterialComponent()
     }
 
     componentDidMount() {

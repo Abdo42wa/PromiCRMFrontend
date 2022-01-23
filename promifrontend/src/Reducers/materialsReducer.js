@@ -23,14 +23,9 @@ export const materialsReducer = (state = { materials: [] }, action) => {
         case 'MATERIAL_UPDATE_REQUEST':
             return {...state, loading: true}
         case 'MATERIAL_UPDATE_SUCCESS':
-            const materialsClone = JSON.parse(JSON.stringify(state.materials));
-            materialsClone.map((element, index)=>{
-                if(element.id === action.payload.id){
-                    element.productId = action.payload.productId;
-                    element.materialWarehouseId = action.payload.materialWarehouseId;
-                }
-            })
-            return {...state, loading: false, materials: materialsClone}
+            const materials_clone = [...state.materials]
+            const updated_materials = materials_clone.map(x => x.id === action.payload.id?action.payload:x)
+            return {...state, loading: false, materials: updated_materials}
         case 'MATERIAL_UPDATE_FAIL':
             return {...state, loading: false, error: action.payload}
         case 'MATERIAL_UPDATE_MANY_REQUEST':

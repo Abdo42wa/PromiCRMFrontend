@@ -1,5 +1,5 @@
 import promiAPI from './promiAPI';
-export const getMaterials = (callback) => async (dispatch, getState) => {
+export const getMaterials = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'MATERIALS_FETCH_REQUEST'
@@ -11,7 +11,6 @@ export const getMaterials = (callback) => async (dispatch, getState) => {
             type: 'MATERIALS_FETCH_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'MATERIALS_FETCH_FAIL',
@@ -47,7 +46,7 @@ export const getMaterialsByProduct = (id,callback) => async(dispatch,getState)=>
     }
 }
 
-export const createMaterial = (postObject, callback) => async (dispatch, getState) => {
+export const createMaterial = (postObject) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'MATERIALS_CREATE_REQUEST'
@@ -59,7 +58,6 @@ export const createMaterial = (postObject, callback) => async (dispatch, getStat
             type: 'MATERIALS_CREATE_SUCCESS',
             payload: response.data
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'MATERIALS_CREATE_FAIL',
@@ -72,7 +70,7 @@ export const createMaterial = (postObject, callback) => async (dispatch, getStat
 }
 
 
-export const updateItem = (id, postObj, reducerObj, callback) => async (dispatch, getState) => {
+export const updateItem = (id, postObj, reducerObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'MATERIAL_UPDATE_REQUEST'
@@ -84,7 +82,6 @@ export const updateItem = (id, postObj, reducerObj, callback) => async (dispatch
             type: 'MATERIAL_UPDATE_SUCCESS',
             payload: reducerObj
         });
-        callback();
     } catch (error) {
         dispatch({
             type: 'MATERIAL_UPDATE_SUCCESS',
@@ -98,7 +95,7 @@ export const updateItem = (id, postObj, reducerObj, callback) => async (dispatch
 
 
 
-export const updateManyMaterials = (postObj,callback) => async (dispatch, getState) => {
+export const updateManyMaterials = (postObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'MATERIAL_UPDATE_MANY_REQUEST'
@@ -110,7 +107,6 @@ export const updateManyMaterials = (postObj,callback) => async (dispatch, getSta
             type: 'MATERIAL_UPDATE_MANY_SUCCESS',
             payload: postObj
         });
-        callback()
     } catch (error) {
         dispatch({
             type: 'MATERIAL_UPDATE_MANY_FAIL',

@@ -40,22 +40,22 @@ class OrderProducts extends React.Component{
 
 
     showProductModal = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            updateProduct: obj
-        })
+        this.setState(prevState => ({
+            updateProduct: {
+                ...prevState.updateProduct,
+                visibility: true,
+                record: record
+            }
+        }))
     }
     unshowProductModal = () => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            updateProduct: obj
-        });
+        this.setState(prevState => ({
+            updateProduct: {
+                ...prevState.updateProduct,
+                visibility: false,
+                record: null
+            }
+        }))
     }
     saveProduct = (postObj, reducerObj) => {
         this.props.updateProduct(postObj, reducerObj, () => {

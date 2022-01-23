@@ -12,9 +12,6 @@ class MaterialsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            originalMaterials: [],
-            materials: [],
-            visibleHeader: [],
             addMaterialVisibility: false,
             updateMaterialVisibility: {
                 record: null,
@@ -34,65 +31,41 @@ class MaterialsScreen extends React.Component {
         });
     }
     saveAddMaterial = (postObject) => {
-        this.props.createMaterial(postObject, () => {
-            const materialsClone = this.props.materialsReducer.materials;
-            this.setState({
-                materials: materialsClone,
-                addMaterialVisibility: false
-            });
-        });
-        window.location.reload();
+        this.props.createMaterial(postObject)
+        this.unshowAddMaterial()
     }
 
     //FOR UpdateMaterialComponent
     showUpdateMaterial = (record) => {
-        const obj = {
-            record: record,
-            visibility: true
-        }
-        this.setState({
-            updateMaterialVisibility: obj
-        }, () => console.log('Record is set:' + JSON.stringify(this.state.updateMaterialVisibility.record)));
+        this.setState(prevState => ({
+            updateMaterialVisibility: {
+                ...prevState.updateMaterialVisibility,
+                record: record,
+                visibility: true
+            }
+        }))
     }
 
     unshowUpdateMaterial = () => {
-        const obj = {
-            record: null,
-            visibility: false
-        }
-        this.setState({
-            updateMaterialVisibility: obj
-        });
+        this.setState(prevState => ({
+            updateMaterialVisibility: {
+                ...prevState.updateMaterialVisibility,
+                record: null,
+                visibility: false
+            }
+        }))
     }
     saveUpdateMaterial = (postObj, id, reducerObj) => {
-        console.log(JSON.stringify(postObj))
-        this.props.updateItem(id, postObj, reducerObj, () => {
-            const materialsClone = this.props.materialsReducer.materials;
-            this.setState({
-                materials: materialsClone,
-                updateMaterialVisibility: false
-            });
-        });
+        this.props.updateItem(id, postObj, reducerObj)
+        this.unshowUpdateMaterial()
     }
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getMaterials(() => {
-                const materialsClone = JSON.parse(JSON.stringify(this.props.materialsReducer.materials));
-                this.setState({
-                    materials: materialsClone
-                });
-            });
+            this.props.getMaterials()
         } else {
             this.props.history.push('/login')
         }
-    }
-
-    getProducttName = (id) => {
-        const username = this.state.materials.map((x) => x.product)
-        const result = username.filter(word => word.id === id);
-        const name = result.map((x) => x.name)
-        return name;
     }
     render() {
         const columns = [
@@ -155,7 +128,7 @@ class MaterialsScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={columns}
-                                        dataSource={this.state.materials}
+                                        dataSource={this.props.materialsReducer.materials}
                                         pagination={{ pageSize: 15 }}
                                         bordered
                                         scroll={{ x: 'calc(300px + 50%)' }}

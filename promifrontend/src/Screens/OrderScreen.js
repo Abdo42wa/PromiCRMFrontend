@@ -46,22 +46,22 @@ class OrderScrenn extends React.Component {
     }
 
     showOrderModal = (record) => {
-        const obj = {
-            visibility: true,
-            record: record
-        }
-        this.setState({
-            updateOrder: obj
-        })
+        this.setState(prevState => ({
+            updateOrder: {
+                ...prevState.updateOrder,
+                visibility: true,
+                record: record
+            }
+        }))
     }
     unshowOrderModal = () => {
-        const obj = {
-            visibility: false,
-            record: null
-        }
-        this.setState({
-            updateOrder: obj
-        });
+        this.setState(prevState => ({
+            updateOrder: {
+                ...prevState.updateOrder,
+                visibility: false,
+                record: null
+            }
+        }))
     }
     saveOrder = (postObj, reducerObj) => {
         this.props.updateOrder(postObj, reducerObj)
