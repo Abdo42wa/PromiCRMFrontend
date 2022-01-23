@@ -50,12 +50,8 @@ function AddRecentWorkComponent(props) {
         props.save(postObj);
     }
     useEffect(() => {
-        dispatch(getUsers(() => {
-            // console.log(JSON.stringify(productsReducer.products))
-            dispatch(getOrders(() => {
-            }))
-        }));
-
+        dispatch(getUsers())
+        dispatch(getOrders())
     }, [dispatch])
 
     return (

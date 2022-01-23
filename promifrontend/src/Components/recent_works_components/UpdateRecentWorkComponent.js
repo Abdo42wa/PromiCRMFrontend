@@ -1,17 +1,17 @@
-import React,{useState,useEffect} from 'react'
-import {useDispatch,useSelector} from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment'
-import {getUsers} from '../../Actions/userListActions'
+import { getUsers } from '../../Actions/userListActions'
 import { getOrders } from '../../Actions/orderAction'
 import { getProductsByOrder } from '../../Actions/productsActions'
 
-const {Option} = Select;
-function UpdateRecentWorkComponent(props){
+const { Option } = Select;
+function UpdateRecentWorkComponent(props) {
     const dispatch = useDispatch();
     const [recentWork, setRecentWork] = useState(props.record);
-    const [orderId,setOrderId] = useState(props.record.product.orderId)
+    const [orderId, setOrderId] = useState(props.record.product.orderId)
     const usersListReducer = useSelector((state) => state.usersListReducer);
     const productsReducer = useSelector((state) => state.productsReducer)
     const orderReducer = useSelector((state) => state.orderReducer)
@@ -33,20 +33,17 @@ function UpdateRecentWorkComponent(props){
         dispatch(getProductsByOrder(value))
     }
     const saveChanges = () => {
-        const {id,...postObj} = recentWork;
+        const { id, ...postObj } = recentWork;
         const reducerObj = recentWork;
-        props.save(postObj,reducerObj);
+        props.save(postObj, reducerObj);
         // console.log(JSON.stringify(postObj))
     }
     useEffect(() => {
-        dispatch(getUsers(() => {
-            // console.log(JSON.stringify(productsReducer.products))
-            dispatch(getOrders(() => {
-            }))
-            dispatch(getProductsByOrder(props.record.product.orderId))
-        }));
+        dispatch(getUsers())
+        dispatch(getOrders())
+        dispatch(getProductsByOrder(props.record.product.orderId))
 
-    }, [dispatch])
+    }, [dispatch, props.record.id])
 
     return (
         <>

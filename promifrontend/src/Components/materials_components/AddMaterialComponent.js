@@ -31,20 +31,16 @@ function AddMaterialComponent(props) {
         }));
     }
     const saveChanges = () => {
-        const materialClone = JSON.parse(JSON.stringify(material));
         const postObj = {
-            "materialWarehouseId": materialClone.materialWarehouseId,
-            "productId": materialClone.productId,
-            "quantity": materialClone.quantity
+            ...material
         }
-        console.log('Post obj:' + JSON.stringify(postObj))
         props.save(postObj);
     }
     useEffect(() => {
-        dispatch(getProducts(() => {
-            // console.log(JSON.stringify(productsReducer.products))
-            dispatch(getMaterialsWarehouseData());
-        }));
+        dispatch(getProducts(()=>{
+
+        }))
+        dispatch(getMaterialsWarehouseData());
     }, [dispatch])
 
     return (
