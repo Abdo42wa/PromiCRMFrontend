@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../Actions/userAction'
 import promiLogo from '../Images/promi-logo_baltas2.png'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 
 
@@ -17,7 +17,7 @@ const Header = () => {
     const { currentUser } = usersReducer
 
     const logoutHandler = () => {
-        if(usersReducer.currentUser === null){
+        if (usersReducer.currentUser === null) {
             history.push('/login')
         }
         //console.log(JSON.stringify(cookies.get('jwt').value))
@@ -54,21 +54,13 @@ const Header = () => {
                                                 <i className="fas fa-users"></i> Naudotojai
                                             </NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/materials'>
-                                            <NavDropdown.Item>
-                                                <i className="fas fa-toolbox"></i> Produktams priskirtos medžiagos
-                                            </NavDropdown.Item>
-                                        </LinkContainer>
+                                        {/* produktams priskirtos medziagos */}
                                         <LinkContainer to='/materials-warehouse'>
                                             <NavDropdown.Item>
                                                 <i className="fas fa-pallet"></i> Medžiagų sandėlys
                                             </NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/shipments'>
-                                            <NavDropdown.Item>
-                                                <i className="fas fa-shipping-fast"></i> Pristatymai
-                                            </NavDropdown.Item>
-                                        </LinkContainer>
+                                        {/* pristatymai */}
                                         <LinkContainer to='/customers'>
                                             <NavDropdown.Item>
                                                 <i className="fas fa-user-friends"></i> Klientai
@@ -79,11 +71,7 @@ const Header = () => {
                                                 <i className="fas fa-boxes"></i> Sandėlys
                                             </NavDropdown.Item>
                                         </LinkContainer>
-                                        <LinkContainer to='/countries'>
-                                            <NavDropdown.Item>
-                                                <i className="fas fa-globe"></i> Šalys
-                                            </NavDropdown.Item>
-                                        </LinkContainer>
+                                        {/* countries */}
                                         <LinkContainer to='/bonuses'>
                                             <NavDropdown.Item>
                                                 <i className="fas fa-money-check"></i> Bonusai
@@ -101,7 +89,7 @@ const Header = () => {
                                         </LinkContainer>
                                         <LinkContainer to='/weeklyWorkScheduleScreen'>
                                             <NavDropdown.Item>
-                                                <i class="fas fa-calendar-week"></i> Savaitės darbo grafikas
+                                                <i class="fas fa-calendar-week"></i> Savaitės ukio darbai
                                             </NavDropdown.Item>
                                         </LinkContainer>
                                         <LinkContainer to='/sales-channels'>
@@ -115,6 +103,24 @@ const Header = () => {
                                                 <i class="fas fa-tools"></i> Atlikti darbai
                                             </NavDropdown.Item>
                                         </LinkContainer> */}
+                                    </NavDropdown>
+
+                                    <NavDropdown title='Papildomi' id='extraMenu'>
+                                        <LinkContainer to='/materials'>
+                                            <NavDropdown.Item>
+                                                <i className="fas fa-toolbox"></i> Produktams priskirtos medžiagos
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/shipments'>
+                                            <NavDropdown.Item>
+                                                <i className="fas fa-shipping-fast"></i> Pristatymai
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
+                                        <LinkContainer to='/countries'>
+                                            <NavDropdown.Item>
+                                                <i className="fas fa-globe"></i> Šalys
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
                                     </NavDropdown>
 
 

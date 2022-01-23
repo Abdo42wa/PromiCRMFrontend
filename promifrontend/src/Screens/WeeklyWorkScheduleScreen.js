@@ -120,8 +120,8 @@ class WeeklyWorkScheduleScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <Typography.Title>Savaitės darbo grafikas</Typography.Title>
-                                    <Typography.Text>Pridėkite ir atnaujinkite darbo grafikus.</Typography.Text>
+                                    <Typography.Title>Savaitės ūkio darbai</Typography.Title>
+                                    <Typography.Text>Pridėkite ir atnaujinkite darbus.</Typography.Text>
 
                                 </div>
                             </Col>

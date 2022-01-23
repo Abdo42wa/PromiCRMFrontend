@@ -61,7 +61,6 @@ class HomeScreen extends React.Component {
                 array.push(obj)
             }
         }
-        console.log('array of orders:' + JSON.stringify(array))
         this.setState({
             lastWeeksMadeProducts: array
         })
@@ -69,7 +68,6 @@ class HomeScreen extends React.Component {
 
     getLastMonthMadeProducts = () => {
         const clone = JSON.parse(JSON.stringify(this.props.orderDetailsReducer.last_month_orders))
-        console.log('Month ORDERS: ' + JSON.stringify(clone))
         const array = []
         for (var i = 0; i < 5; i++) {
             if (clone[i] !== null && clone[i] !== undefined) {
@@ -88,7 +86,6 @@ class HomeScreen extends React.Component {
                 array.push(obj)
             }
         }
-        console.log('array of MONTH orders:' + JSON.stringify(array))
         this.setState({
             lastMonthMadeProducts: array
         })
@@ -106,9 +103,6 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            this.props.getUsers(() => {
-                console.log(JSON.stringify(this.props.usersListReducer.users))
-            })
             //Get work times. Suplanuotas darbo laikas
             this.props.getUncompletedOrdersTimes()
             //WeeklyWorkSchedule works. Only for this particular week. Savaites ukio darbai
