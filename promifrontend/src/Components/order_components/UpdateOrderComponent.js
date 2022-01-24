@@ -61,38 +61,41 @@ function UpdateOrderComponent(props) {
     }
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(order));
-        if (fileChanged === 0) {
-            const { id, ...postObj } = clone;
-            const reducerObj = clone;
-            props.save(postObj, reducerObj);
-        } else {
-            const formData = new FormData();
-            formData.append("userId", clone.userId)
-            formData.append("orderType", clone.orderType)
-            formData.append("status", clone.status)
-            formData.append("orderNumber", clone.orderNumber)
-            formData.append("date", clone.date)
-            formData.append("platforma", clone.platforma)
-            formData.append("moreInfo", clone.moreInfo)
-            formData.append("quantity", clone.quantity)
-            formData.append("productCode", clone.productCode)
-            formData.append("comment", clone.comment)
-            formData.append("shipmentTypeId", clone.shipmentTypeId)
-            formData.append("customerId", clone.customerId)
-            formData.append("device", clone.device)
-            formData.append("productionTime", clone.productionTime)
-            formData.append("address", clone.address)
-            formData.append("countryId", clone.countryId)
-            formData.append("price", clone.price)
-            formData.append("currencyId", clone.currencyId)
-            formData.append("vat", clone.vat)
-            formData.append("orderFinishDate", clone.orderFinishDate)
-            formData.append("file", file)
-            formData.append("imageName", clone.imageName)
-            props.saveWithImg(formData, clone.id)
-            console.log(clone.imageName)
-            console.log(file)
-        }
+        const { id, ...postObj } = clone;
+        const reducerObj = clone;
+        props.save(postObj, reducerObj);
+        // if (fileChanged === 0) {
+        //     const { id, ...postObj } = clone;
+        //     const reducerObj = clone;
+        //     props.save(postObj, reducerObj);
+        // } else {
+        //     const formData = new FormData();
+        //     formData.append("userId", clone.userId)
+        //     formData.append("orderType", clone.orderType)
+        //     formData.append("status", clone.status)
+        //     formData.append("orderNumber", clone.orderNumber)
+        //     formData.append("date", clone.date)
+        //     formData.append("platforma", clone.platforma)
+        //     formData.append("moreInfo", clone.moreInfo)
+        //     formData.append("quantity", clone.quantity)
+        //     formData.append("productCode", clone.productCode)
+        //     formData.append("comment", clone.comment)
+        //     formData.append("shipmentTypeId", clone.shipmentTypeId)
+        //     formData.append("customerId", clone.customerId)
+        //     formData.append("device", clone.device)
+        //     formData.append("productionTime", clone.productionTime)
+        //     formData.append("address", clone.address)
+        //     formData.append("countryId", clone.countryId)
+        //     formData.append("price", clone.price)
+        //     formData.append("currencyId", clone.currencyId)
+        //     formData.append("vat", clone.vat)
+        //     formData.append("orderFinishDate", clone.orderFinishDate)
+        //     formData.append("file", file)
+        //     formData.append("imageName", clone.imageName)
+        //     props.saveWithImg(formData, clone.id)
+        //     console.log(clone.imageName)
+        //     console.log(file)
+        // }
     }
 
     const deleteImage = () => {
@@ -109,25 +112,20 @@ function UpdateOrderComponent(props) {
 
     useEffect(() => {
         dispatch(getUsers());
-        dispatch(getCurrencies(() => {
-            dispatch(getCountries(() => {
-                dispatch(getCustomers(() => {
-                    const obj = {
-                        ...props.record,
-                        "date": moment(props.record.date).format('YYYY/MM/DD'),
-                        "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD')
-                    }
-                    setOrder(obj);
-                    if (props.record.orderType === "Sandelis") {
-                        setSandelis(true);
-                    } else {
-                        setSandelis(false);
-                    }
-
-
-                }))
-            }))
-        }));
+        dispatch(getCurrencies())
+        dispatch(getCountries())
+        dispatch(getCustomers())
+        const obj = {
+            ...props.record,
+            "date": moment(props.record.date).format('YYYY/MM/DD'),
+            "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD')
+        }
+        setOrder(obj);
+        if (props.record.orderType === "Sandelis") {
+            setSandelis(true);
+        } else {
+            setSandelis(false);
+        }
 
         // eslint-disable-next-line
     }, [dispatch]);
@@ -195,7 +193,7 @@ function UpdateOrderComponent(props) {
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
 
                     {/* for IMAGE */}
-                    {order.imagePath !== null && order.imagePath !== undefined ?
+                    {/* {order.imagePath !== null && order.imagePath !== undefined ?
                         <div>
                             <p style={{ ...textStyle }}>Nuotrauka</p>
                             <Image key={order.imageName} src={order.imagePath} width={100} />
@@ -205,7 +203,7 @@ function UpdateOrderComponent(props) {
                         <div>
                             <p style={{ ...textStyle }}>Nuotraukos ikėlimas</p>
                             <input required type='file' onChange={changeFile} />
-                        </div>}
+                        </div>} */}
                     <p style={{ marginBottom: '5px' }}>Siuntos statusas</p>
                     <Select
 

@@ -51,7 +51,7 @@ function AddOrderComponent(props) {
     });
     const [file, setFile] = useState();
     const [sandelis, setSandelis] = useState(false);
-    const [nonStander, setNonStander] = useState(true);
+    const [notStandart, setNotStandart] = useState(true);
     const [fileName, setFileName] = useState();
 
     const customersReducer = useSelector((state) => state.customersReducer);
@@ -116,13 +116,16 @@ function AddOrderComponent(props) {
         }))
 
 
-        if (value === "Sandelis" && inputName === "orderType") {
+        if (inputName === "orderType" && value === "Sandelis") {
+            // disable not standart
             setSandelis(true);
-        } else if (value === "Ne-standartinis" && inputName === "orderType") {
-            setNonStander(false)
-            setSandelis(false);
+            setNotStandart(true)
+            // setNotStandart(true)
+        } else if (inputName === "orderType" && value === "Ne-standartinis" ) {
+            setNotStandart(false)
+            setSandelis(true);
         } else {
-            setNonStander(true)
+            setNotStandart(true)
             setSandelis(false);
         }
     }
@@ -154,6 +157,7 @@ function AddOrderComponent(props) {
             const product_data = productsReducer.products.find(o => o.code === clone.productCode)
             const postObj = {
                 ...clone,
+                "orderNumber":clone.orderNumber !== 0?clone.orderNumber:getOrderNumber(),
                 "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
                 "collectionTime": product_data.collectionTime,
                 "bondingTime": product_data.bondingTime,
@@ -182,13 +186,11 @@ function AddOrderComponent(props) {
     }
     useEffect(() => {
 
-        dispatch(getCustomers(() => {
-        }));
+        dispatch(getCustomers())
         dispatch(getCurrencies());
         dispatch(getCountries());
         dispatch(getUsers());
-        dispatch(getSalesChannels(() => {
-        }));
+        dispatch(getSalesChannels())
         dispatch(getProducts());
         //getOrderId();
     }, [dispatch]);
@@ -258,7 +260,7 @@ function AddOrderComponent(props) {
                     <p style={{ marginBottom: '5px' }}>Prekės kodas</p>
                     <Select
                         showSearch
-                        disabled={!nonStander}
+                        disabled={!notStandart}
                         style={{ width: '100%' }}
                         placeholder="Priskirkite prekės kodą"
                         optionFilterProp="children"
@@ -276,22 +278,22 @@ function AddOrderComponent(props) {
                         </Form.Item> : null}
 
                     <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
-                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "laserTime")} />
+                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "laserTime")} />
                     </Form.Item>
                     <Form.Item key="name16" name="name16" label="Frezavimo laikas">
-                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "milingTime")} />
+                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "milingTime")} />
                     </Form.Item>
                     <Form.Item key="name17" name="name17" label="Surinkimo laikas">
-                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laika" value={order.price} onChange={(e) => onDataChange(e.target.value, "collectionTime")} />
+                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laika" value={order.price} onChange={(e) => onDataChange(e.target.value, "collectionTime")} />
                     </Form.Item>
                     <Form.Item key="name18" name="name18" label=" Pakavimo laikas">
-                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "packingTime")} />
+                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "packingTime")} />
                     </Form.Item>
                     <Form.Item key="name19" name="name19" label="Dažymo laikas">
-                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "paintingTime")} />
+                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "paintingTime")} />
                     </Form.Item>
                     <Form.Item key="name20" name="name20" label="Suklijavimo laikas">
-                        <Input disabled={nonStander} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "bondingTime")} />
+                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laikas" value={order.price} onChange={(e) => onDataChange(e.target.value, "bondingTime")} />
                     </Form.Item>
                     <Form.Item key="name8" name="name8" label="Gamybos laikas">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
