@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 //import { userLoginReducer, userRegisterReducer, userDataReducer } from './Reducers/userReducer';
 import { usersReducer } from './reducers/userReducer';
 import { usersListReducer } from './reducers/userListReducer';
-import { materialsReducer } from './reducers/materialsReducer';
+import { productMaterialsReducer } from './reducers/productMaterialsReducer';
 import { productsReducer } from './reducers/productsReducer';
 import { shipmentsReducer } from './reducers/shipmentsReducer';
 import { customersReducer } from './reducers/customersReducer';
@@ -26,7 +26,7 @@ import Cookies from 'js-cookie';
 const allReducers = combineReducers({
     usersReducer,
     usersListReducer,
-    materialsReducer,
+    productMaterialsReducer,
     productsReducer,
     shipmentsReducer,
     customersReducer,

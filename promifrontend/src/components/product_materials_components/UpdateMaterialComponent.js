@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Button, Form, Space, Select, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getProducts } from '../../appStore/actions/productsActions';
-import {getMaterialsWarehouseData} from '../../appStore/actions/materialsWarehouseActions'
+import { getMaterialsWarehouseData } from '../../appStore/actions/materialsWarehouseActions'
 import { withRouter } from 'react-router-dom'
 
 
@@ -37,34 +37,27 @@ class UpdateMaterialComponent extends React.Component {
         this.props.onClose();
     }
     onDataChange = (value, inputName) => {
-        const materialClone = JSON.parse(JSON.stringify(this.state.material));
-        if (inputName === "name") {
-            materialClone.name = value;
-        } else if (inputName === "materialUsed") {
-            materialClone.materialUsed = value;
-        } else if (inputName === "productId") {
-            materialClone.productId = Number(value);
-        }
-        this.setState({
-            material: materialClone
-        }, console.log('Material changed:' + JSON.stringify(this.state.material)));
+        this.setState(prevState => ({
+            material: {
+                ...prevState.material,
+                [inputName]: value
+            }
+
+        }))
     }
     saveChanges = () => {
-        const materialClone = JSON.parse(JSON.stringify(this.state.material));
+        // const {id,...postObj} = this.state.material;
         const postObj = {
-            "name": materialClone.name,
-            "materialUsed": materialClone.materialUsed,
-            "productId": Number(materialClone.productId)
+            "productId": this.state.material.productId,
+            "materialWarehouseId": this.state.material.materialWarehouseId,
+            "quantity": this.state.material.quantity
         }
-
-        const reducerObj = {
-            "id": materialClone.id,
-            "name": materialClone.name,
-            "materialUsed": materialClone.materialUsed,
-            "productId": Number(materialClone.productId)
-        }
+        const reducerObj = this.state.material;
         // console.log('Post obj:'+JSON.stringify(postObj))
-        this.props.save(postObj, materialClone.id, reducerObj);
+        // this.props.save(postObj, reducerObj);
+        console.log('itessssm post:' + JSON.stringify(postObj))
+        console.log('item:' + JSON.stringify(reducerObj))
+
     }
 
     componentDidMount() {
@@ -98,7 +91,7 @@ class UpdateMaterialComponent extends React.Component {
                 >
                     <Form layout="vertical" id="myForm" name="myForm">
                         <p style={{ ...textStyle }}>Kiekis</p>
-                        <InputNumber required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite kiekį" value={material.quantity} onChange={(e) => this.onDataChange(e.target.value, "quantity")} />
+                        <InputNumber required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite kiekį" value={material.quantity} onChange={(e) => this.onDataChange(e, "quantity")} />
                         <p style={{ ...textStyle }}>Produktas</p>
                         <Select
                             showSearch
@@ -113,7 +106,7 @@ class UpdateMaterialComponent extends React.Component {
                                 return (<Option key={element.id} value={element.id}>{element.name}</Option>)
                             })}
                         </Select>
-                        <p style={{...textStyle}}>Medžiaga</p>
+                        <p style={{ ...textStyle }}>Medžiaga</p>
                         <Select
                             showSearch
                             style={{ width: '320px', fontSize: '18px' }}
@@ -142,4 +135,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { getProducts,getMaterialsWarehouseData })(withRouter(UpdateMaterialComponent))
+export default connect(mapStateToProps, { getProducts, getMaterialsWarehouseData })(withRouter(UpdateMaterialComponent))

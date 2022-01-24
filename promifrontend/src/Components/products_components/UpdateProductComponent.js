@@ -4,8 +4,8 @@ import { Modal, Button, Form, Space, Select, Input, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getOrders } from '../../appStore/actions/ordersAction'
 import { getMaterialsWarehouseData } from '../../appStore/actions/materialsWarehouseActions'
-import { getMaterialsByProduct, createMaterial, getMaterials } from '../../appStore/actions/materialsActions'
-import AddMaterialComponent from '../materials_components/AddMaterialComponent';
+import { getMaterialsByProduct, createMaterial, getMaterials } from '../../appStore/actions/productMaterials'
+import AddMaterialComponent from '../product_materials_components/AddMaterialComponent';
 const { Option } = Select;
 const textStyle = {
     fontSize: '18px',

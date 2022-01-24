@@ -1,4 +1,4 @@
-export const materialsReducer = (state = { materials: [] }, action) => {
+export const productMaterialsReducer = (state = { materials: [] }, action) => {
     switch (action.type) {
         case 'MATERIALS_FETCH_REQUEST':
             return { ...state, loading: true }

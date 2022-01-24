@@ -5,7 +5,7 @@ import HomeScreen from './screens/HomeScreen';
 import Header from './components/Header';
 import LoginScreen from './screens/LoginScreen';
 import UserListScreen from './screens/UserListScreen';
-import MaterialsScreen from './screens/MaterialsScreen';
+import MaterialsScreen from './screens/ProductMaterialsScreen';
 import ShipmentScreen from './screens/ShipmentScreen';
 import CustomersScreen from './screens/CustomersScreen';
 import WarehouseCountingsScreen from './screens/WarehouseCountingsScreen'

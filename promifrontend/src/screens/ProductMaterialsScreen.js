@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
-import { getMaterials, createMaterial, updateItem } from '../appStore/actions/materialsActions'
+import { getMaterials, createMaterial, updateItem } from '../appStore/actions/productMaterials'
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import AddMaterialComponent from '../components/materials_components/AddMaterialComponent';
-import UpdateMaterialComponent from '../components/materials_components/UpdateMaterialComponent';
+import AddMaterialComponent from '../components/product_materials_components/AddMaterialComponent';
+import UpdateMaterialComponent from '../components/product_materials_components/UpdateMaterialComponent';
 
 
 class MaterialsScreen extends React.Component {
@@ -18,7 +18,7 @@ class MaterialsScreen extends React.Component {
                 visibility: false
             }
         }
-    }
+    } 
     //FOR AddMaterialComponent
     showAddMaterial = () => {
         this.setState({
@@ -56,7 +56,7 @@ class MaterialsScreen extends React.Component {
         }))
     }
     saveUpdateMaterial = (postObj, id, reducerObj) => {
-        this.props.updateItem(id, postObj, reducerObj)
+        this.props.updateItem(postObj, reducerObj)
         this.unshowUpdateMaterial()
     }
 
@@ -128,7 +128,7 @@ class MaterialsScreen extends React.Component {
                                     <Table
                                         rowKey="id"
                                         columns={columns}
-                                        dataSource={this.props.materialsReducer.materials}
+                                        dataSource={this.props.productMaterialsReducer.materials}
                                         pagination={{ pageSize: 15 }}
                                         bordered
                                         scroll={{ x: 'calc(300px + 50%)' }}
@@ -154,7 +154,7 @@ class MaterialsScreen extends React.Component {
 const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
-        materialsReducer: state.materialsReducer
+        productMaterialsReducer: state.productMaterialsReducer
     }
 }
 

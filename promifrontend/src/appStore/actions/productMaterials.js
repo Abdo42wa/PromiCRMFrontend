@@ -6,7 +6,7 @@ export const getMaterials = () => async (dispatch, getState) => {
         });
         //getting token from usersReducer state
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Materials`, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.get(`/api/ProductMaterials`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIALS_FETCH_SUCCESS',
             payload: response.data
@@ -29,7 +29,7 @@ export const getMaterialsByProduct = (id,callback) => async(dispatch,getState)=>
         });
         //getting token from usersReducer state
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Materials/product/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.get(`/api/ProductMaterials/product/${id}`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIALS_PRODUCT_FETCH_SUCCESS',
             payload: response.data
@@ -53,7 +53,7 @@ export const createMaterial = (postObject) => async (dispatch, getState) => {
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/Materials`, postObject, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.post(`/api/ProductMaterials`, postObject, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIALS_CREATE_SUCCESS',
             payload: response.data
@@ -70,14 +70,14 @@ export const createMaterial = (postObject) => async (dispatch, getState) => {
 }
 
 
-export const updateItem = (id, postObj, reducerObj) => async (dispatch, getState) => {
+export const updateItem = (postObj, reducerObj) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'MATERIAL_UPDATE_REQUEST'
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Materials/${id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.put(`/api/ProductMaterials/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIAL_UPDATE_SUCCESS',
             payload: reducerObj
@@ -102,7 +102,7 @@ export const updateManyMaterials = (postObj) => async (dispatch, getState) => {
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Materials/update`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        await promiAPI.put(`/api/ProductMaterials/update`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MATERIAL_UPDATE_MANY_SUCCESS',
             payload: postObj

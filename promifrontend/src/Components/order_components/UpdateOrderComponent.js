@@ -61,9 +61,38 @@ function UpdateOrderComponent(props) {
     }
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(order));
-        const { id, ...postObj } = clone;
-        const reducerObj = clone;
+        // const { id, ...postObj } = clone;
+        // const reducerObj = clone;
+        const postObj = {
+            "userId": clone.userId,
+            "orderType": clone.orderType,
+            "status": clone.status,
+            "orderNumber": clone.orderNumber,
+            "date": clone.date,
+            "platforma": clone.platforma,
+            "moreInfo": clone.moreInfo,
+            "quantity": clone.quantity,
+            "photo": clone.photo,
+            "productCode": clone.productCode,
+            "comment": clone.comment,
+            "shipmentTypeId": clone.shipmentTypeId,
+            "customerId": clone.customerId,
+            "device": clone.device,
+            "productionTime": clone.productionTime,
+            "address": clone.address,
+            "countryId": clone.countryId,
+            "price": clone.price,
+            "currencyId": clone.currencyId,
+            "vat": clone.vat,
+            "orderFinishDate": clone.orderFinishDate,
+        }
+        const reducerObj = {
+            ...clone
+        }
         props.save(postObj, reducerObj);
+        console.log('postobj:'+JSON.stringify(postObj))
+        console.log('reducerObj:'+JSON.stringify(reducerObj))
+
         // if (fileChanged === 0) {
         //     const { id, ...postObj } = clone;
         //     const reducerObj = clone;

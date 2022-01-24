@@ -71,61 +71,61 @@ class ProductsScrenn extends React.Component {
         }))
     }
     //FOR materials
-    showProductMaterialsComponent = (record) => {
-        this.setState(prevState => ({
-            productMaterials: {
-                ...prevState.productMaterials,
-                visibility: true,
-                record: record
-            }
-        }))
-    }
-    unshowProductMaterialsComponent = () => {
-        this.setState(prevState => ({
-            productMaterials: {
-                ...prevState.productMaterials,
-                visibility: false,
-                record: null
-            }
-        }))
-    }
-    saveProductMaterials = (postObj) => {
-        const productMaterials = JSON.parse(JSON.stringify(postObj));
-        const warehouseMaterialsClone = JSON.parse(JSON.stringify(this.props.materialsWarehouseReducer.materialsWarehouseData))
-        const array = []
-        const productMaterialsArray = []
-        productMaterials.forEach(element => {
-            warehouseMaterialsClone.forEach(element2 => {
-                if (element2.id === element.materialWarehouseId && element.subtractQuantity !== undefined && element.subtractQuantity !== null) {
-                    const obj = {
-                        id: element2.id,
-                        title: element2.title,
-                        quantity: (element2.quantity - element.subtractQuantity),
-                        measuringUnit: element2.measuringUnit,
-                        info: element2.info,
-                        deliveryTime: element2.deliveryTime,
-                        useDays: element2.useDays,
-                        lastAdittion: element2.lastAdittion,
-                        imageName: element2.imageName,
-                        imagePath: element2.imagePath
+    // showProductMaterialsComponent = (record) => {
+    //     this.setState(prevState => ({
+    //         productMaterials: {
+    //             ...prevState.productMaterials,
+    //             visibility: true,
+    //             record: record
+    //         }
+    //     }))
+    // }
+    // unshowProductMaterialsComponent = () => {
+    //     this.setState(prevState => ({
+    //         productMaterials: {
+    //             ...prevState.productMaterials,
+    //             visibility: false,
+    //             record: null
+    //         }
+    //     }))
+    // }
+    // saveProductMaterials = (postObj) => {
+    //     const productMaterials = JSON.parse(JSON.stringify(postObj));
+    //     const warehouseMaterialsClone = JSON.parse(JSON.stringify(this.props.materialsWarehouseReducer.materialsWarehouseData))
+    //     const array = []
+    //     const productMaterialsArray = []
+    //     productMaterials.forEach(element => {
+    //         warehouseMaterialsClone.forEach(element2 => {
+    //             if (element2.id === element.materialWarehouseId && element.subtractQuantity !== undefined && element.subtractQuantity !== null) {
+    //                 const obj = {
+    //                     id: element2.id,
+    //                     title: element2.title,
+    //                     quantity: (element2.quantity - element.subtractQuantity),
+    //                     measuringUnit: element2.measuringUnit,
+    //                     info: element2.info,
+    //                     deliveryTime: element2.deliveryTime,
+    //                     useDays: element2.useDays,
+    //                     lastAdittion: element2.lastAdittion,
+    //                     imageName: element2.imageName,
+    //                     imagePath: element2.imagePath
 
-                    }
-                    array.push(obj)
-                }
-            })
-        })
-        productMaterials.forEach(element => {
-            if (element.subtractQuantity !== undefined && element.subtractQuantity !== null) {
-                productMaterialsArray.push({ id: element.id, productId: element.productId, materialWarehouseId: element.materialWarehouseId, quantity: element.quantity })
-            }
-        })
-        //turi tapti 3475 is 3490 nes prie quantity pridejau 15. veikiiia!!!
-        this.props.updateManyMaterials(productMaterialsArray, () => {
-            this.props.updateManyWarehouseMaterials(array, () => {
-                this.unshowProductMaterialsComponent();
-            })
-        })
-    }
+    //                 }
+    //                 array.push(obj)
+    //             }
+    //         })
+    //     })
+    //     productMaterials.forEach(element => {
+    //         if (element.subtractQuantity !== undefined && element.subtractQuantity !== null) {
+    //             productMaterialsArray.push({ id: element.id, productId: element.productId, materialWarehouseId: element.materialWarehouseId, quantity: element.quantity })
+    //         }
+    //     })
+    //     //turi tapti 3475 is 3490 nes prie quantity pridejau 15. veikiiia!!!
+    //     this.props.updateManyMaterials(productMaterialsArray, () => {
+    //         this.props.updateManyWarehouseMaterials(array, () => {
+    //             this.unshowProductMaterialsComponent();
+    //         })
+    //     })
+    // }
 
     //for AddProductMaterialsComponent
     showAddProductMaterials = (record) => {
@@ -211,13 +211,13 @@ class ProductsScrenn extends React.Component {
                     <Button onClick={(e) => this.showProductModal(record)}>Atnaujinti</Button>
                 )
             },
-            {
-                title: 'Medžiagų atnaujinimas',
-                width: '5%',
-                render: (text, record, index) => (
-                    <Button onClick={(e) => this.showProductMaterialsComponent(record)}>Atnaujinimas</Button>
-                )
-            },
+            // {
+            //     title: 'Medžiagų atnaujinimas',
+            //     width: '5%',
+            //     render: (text, record, index) => (
+            //         <Button onClick={(e) => this.showProductMaterialsComponent(record)}>Atnaujinimas</Button>
+            //     )
+            // },
             {
                 title: 'Medžiagų pridėjimas',
                 width: '5%',
@@ -393,10 +393,10 @@ class ProductsScrenn extends React.Component {
                     <UpdateProductComponent visible={this.state.updateProduct.visibility} record={this.state.updateProduct.record}
                         save={this.saveProduct} saveWithImg={this.saveProductWithImg} onClose={this.unshowProductModal} /> :
                     null}
-                {this.state.productMaterials.visibility !== false ?
+                {/* {this.state.productMaterials.visibility !== false ?
                     <ProductMaterialsComponent visible={this.state.productMaterials.visibility} onClose={this.unshowProductMaterialsComponent}
                         save={this.saveProductMaterials} record={this.state.productMaterials.record} /> : null
-                }
+                } */}
 
                 {this.state.addProductMaterials.visibility !== false ?
                     <AddProductMaterialsComponent visible={this.state.addProductMaterials.visibility}
