@@ -20,7 +20,7 @@ function AddOrderComponent(props) {
         "userId": "",
         "orderType": "",
         "status": false,
-        "orderNumber": 0,
+        "orderNumber": null,
         "date": moment().format('YYYY/MM/DD'),
         "platforma": "",
         "warehouseProductsNumber": 0,
@@ -149,7 +149,7 @@ function AddOrderComponent(props) {
         if (clone.orderType === "Ne-standartinis") {
             const postObj = {
                 ...clone,
-                "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
+                "orderNumber":clone.orderNumber === null?getOrderNumber():clone.orderNumber
             }
             props.save(postObj)
         } else {
@@ -157,7 +157,7 @@ function AddOrderComponent(props) {
             const product_data = productsReducer.products.find(o => o.code === clone.productCode)
             const postObj = {
                 ...clone,
-                "orderNumber":clone.orderNumber !== 0?clone.orderNumber:getOrderNumber(),
+                "orderNumber":clone.orderNumber === null?getOrderNumber():clone.orderNumber,
                 "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
                 "collectionTime": product_data.collectionTime,
                 "bondingTime": product_data.bondingTime,
@@ -185,7 +185,6 @@ function AddOrderComponent(props) {
         }))
     }
     useEffect(() => {
-
         dispatch(getCustomers())
         dispatch(getCurrencies());
         dispatch(getCountries());
@@ -334,7 +333,7 @@ function AddOrderComponent(props) {
                     </Select>
                     <p style={{ marginBottom: '5px' }}>Klientas</p>
                     <Select
-                        disabled={sandelis}
+                        disabled={notStandart}
                         showSearch
                         style={{ width: '100%' }}
                         placeholder="Priskirkite klientą"

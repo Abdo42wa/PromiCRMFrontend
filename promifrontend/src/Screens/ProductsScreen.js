@@ -147,32 +147,8 @@ class ProductsScrenn extends React.Component {
         }))
     }
     saveAddProductMaterials = (postObj) => {
-        const productMaterials = JSON.parse(JSON.stringify(postObj));
-        const warehouseMaterialsClone = JSON.parse(JSON.stringify(this.props.materialsWarehouseReducer.materialsWarehouseData))
-        const array = []
-        productMaterials.forEach(element => {
-            warehouseMaterialsClone.forEach(element2 => {
-                if (element2.id === element.materialWarehouseId) {
-                    const obj = {
-                        id: element2.id,
-                        title: element2.title,
-                        quantity: (element2.quantity - element.quantity),
-                        measuringUnit: element2.measuringUnit,
-                        info: element2.info,
-                        deliveryTime: element2.deliveryTime,
-                        useDays: element2.useDays,
-                        lastAdittion: element2.lastAdittion,
-                        imageName: element2.imageName,
-                        imagePath: element2.imagePath
-                    }
-                    array.push(obj)
-                }
-            })
-        })
         this.props.insertManyMaterials(postObj, () => {
-            this.props.updateManyWarehouseMaterials(array, () => {
-                this.unshowAddProductMaterials();
-            })
+            this.unshowAddProductMaterials();
         })
     }
 

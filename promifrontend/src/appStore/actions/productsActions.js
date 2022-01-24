@@ -149,7 +149,7 @@ export const insertManyMaterials = (postObj,callback) => async (dispatch, getSta
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/Materials/insert`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.post(`/api/ProductMaterials/insert`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'PRODUCT_MATERIAL_INSERT_MANY_SUCCESS',
             payload: response.data

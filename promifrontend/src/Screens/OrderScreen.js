@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse } from '../appStore/actions/ordersAction'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse,insertManyMaterials,createNonStandartOrder } from '../appStore/actions/ordersAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../appStore/actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
@@ -10,6 +10,7 @@ import UpdateOrderComponent from '../components/order_components/UpdateOrderComp
 import { getProducts } from '../appStore/actions/productsActions'
 import { getUsers } from '../appStore/actions/userListActions'
 import moment from 'moment';
+import AddOrderMaterialsComponent from '../components/order_components/addMaterials/AddOrderMaterialsComponent';
 
 const { Option } = Select;
 const inputStyle = {
@@ -26,8 +27,36 @@ class OrderScrenn extends React.Component {
             updateOrder: {
                 visibility: false,
                 record: null
+            },
+            addOrderMaterials: {
+                visibility: false,
+                record: null
             }
         }
+    }
+    //for AddMaterialsComponent
+    showAddMaterialsModal = (record) => {
+        this.setState(prevState => ({
+            addOrderMaterials: {
+                ...prevState.addOrderMaterials,
+                visibility: true,
+                record: record
+            }
+        }))
+    }
+    unshowAddMaterialsModal = () =>{
+        this.setState(prevState => ({
+            addOrderMaterials: {
+                ...prevState.addOrderMaterials,
+                visibility: false,
+                record: null
+            }
+        }))
+    }
+    saveAddOrderMaterials = (postObj) => {
+        this.props.insertManyMaterials(postObj, () => {
+            this.unshowAddMaterialsModal()
+        })
     }
 
     showAddOrderModal = () => {
@@ -41,8 +70,13 @@ class OrderScrenn extends React.Component {
         })
     }
     saveAddOrder = (postObj) => {
-        this.props.addOrder(postObj)
-        this.unshowAddOrderModal();
+        if(postObj.orderType !== "Ne-standartinis"){
+            this.props.addOrder(postObj)
+            this.unshowAddOrderModal();
+        }else{
+            this.props.createNonStandartOrder(postObj)
+            this.unshowAddOrderModal();
+        }
     }
 
     showOrderModal = (record) => {
@@ -165,6 +199,7 @@ class OrderScrenn extends React.Component {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getUsers()
             this.props.getOrders()
+
         } else {
             this.props.history.push('/login');
         }
@@ -175,7 +210,12 @@ class OrderScrenn extends React.Component {
                 title: 'Atnaujinti',
                 width: '10%',
                 render: (text, record, index) => (
-                    <Button onClick={(e) => this.showOrderModal(record)}>Atnaujinti</Button>
+                    <div style={{ display: 'flex' }}>
+                        <Button onClick={(e) => this.showOrderModal(record)}>Atnaujinti</Button>
+                        {record.orderType === "Ne-standartinis"?
+                        <Button onClick={(e) =>this.showAddMaterialsModal(record)}>Pridėti medžiagas</Button>:null}
+                    </div>
+
                 )
             },
             // {
@@ -516,7 +556,7 @@ class OrderScrenn extends React.Component {
                                         rowKey="id"
                                         columns={columns}
                                         dataSource={this.props.orderReducer.orders}
-                                        pagination={{ pageSize: 5 }}
+                                        pagination={{ pageSize: 15 }}
                                         bordered
                                         scroll={{ x: 'calc(700px + 50%)' }}
                                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti užsakymą</Button></Space>)}
@@ -539,6 +579,11 @@ class OrderScrenn extends React.Component {
                         saveWithImg={this.updateOrderWithImg} /> :
                     null}
 
+                {this.state.addOrderMaterials.visibility !== false?
+                <AddOrderMaterialsComponent visible={this.state.addOrderMaterials.visibility}
+                onClose={this.unshowAddMaterialsModal} record={this.state.addOrderMaterials.record}
+                save={this.saveAddOrderMaterials} />:null}
+
             </>
         )
     }
@@ -551,11 +596,11 @@ const mapStateToProps = (state) => {
         productsReducer: state.productsReducer,
         orderReducer: state.orderReducer,
         usersListReducer: state.usersListReducer,
-        warehouseReducer: state.warehouseReducer.warehouseData
+        warehouseReducer: state.warehouseReducer.warehouseData,
     }
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse,insertManyMaterials,createNonStandartOrder })(withRouter(OrderScrenn))
 
 

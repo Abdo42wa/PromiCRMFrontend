@@ -18,7 +18,7 @@ class MaterialsScreen extends React.Component {
                 visibility: false
             }
         }
-    } 
+    }
     //FOR AddMaterialComponent
     showAddMaterial = () => {
         this.setState({
@@ -77,26 +77,37 @@ class MaterialsScreen extends React.Component {
                 )
             },
             {
-                title: 'Produkto pavadinimas',
+                title: 'Order id',
+                dataIndex: 'orderId',
+                width: '20%',
+            },
+            {
+                title: 'Pavadinimas',
                 dataIndex: 'product',
                 width: '20%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if (text === null)
+                        return (<Typography.Text>{record.order.orderNumber}</Typography.Text>)
+                    else
+                        return (<Typography.Text>{text.name}</Typography.Text>)
+                }
             },
             {
                 title: 'Produkto kodas',
                 dataIndex: 'product',
                 width: '25%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text.code}</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if (text === null)
+                        return (<Typography.Text>{record.order.productCode}</Typography.Text>)
+                    else
+                        return (<Typography.Text>{text.code}</Typography.Text>)
+                }
             },
             {
                 title: 'Medžiaga',
                 dataIndex: 'materialWarehouse',
                 width: '25%',
-                render: (text,record,index)=>(
+                render: (text, record, index) => (
                     <Typography.Text>{text.title}</Typography.Text>
                 )
             },
@@ -119,7 +130,7 @@ class MaterialsScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
-                        <div style={{padding: '15px'}}></div>
+                        <div style={{ padding: '15px' }}></div>
                         {/* returns second column with table */}
                         {/* <FixedCostTable data={obj.types} countryVats={this.props.countryVats} category_title={obj.category_title} category_id={obj.category_id} /> */}
                         <Row gutter={16}>

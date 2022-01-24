@@ -728,7 +728,7 @@ class HomeScreen extends React.Component {
             {
                 title: 'NR',
                 dataIndex: 'orderNumber',
-                width: '25%'
+                width: '25%',
             },
             {
                 title: 'Klientas',

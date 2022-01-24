@@ -1,12 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { updateManyMaterials } from '../../../appStore/actions/productsActions'
+import { getMaterialsWarehouseData } from '../../../appStore/actions/materialsWarehouseActions'
 import { withRouter } from 'react-router-dom'
 import { Button, Form, Modal, Space, Input, InputNumber, Typography } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import AddNewMaterial from './AddNewMaterial'
 
-class AddProductMaterialsComponent extends React.Component {
+class AddOrderMaterialsComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -54,13 +55,16 @@ class AddProductMaterialsComponent extends React.Component {
             if (element.id === null || element.id === undefined) {
                 const obj = {
                     "materialWarehouseId": element.materialWarehouseId,
-                    "productId": element.productId,
+                    "orderId": element.orderId,
                     "quantity": element.quantity,
                 }
                 array.push(obj)
             }
         })
         this.props.save(array)
+    }
+    componentDidMount(){
+        this.props.getMaterialsWarehouseData()
     }
     render() {
         return (
@@ -98,7 +102,7 @@ class AddProductMaterialsComponent extends React.Component {
                 </Modal>
                 {this.state.addMaterialVisibility !== false ?
                     <AddNewMaterial visible={this.state.addMaterialVisibility} onClose={this.unshowAddMaterialsComponent}
-                        save={this.saveAddMaterialComponent} productId={this.props.record.id} />
+                        save={this.saveAddMaterialComponent} orderId={this.props.record.id} />
                     : null}
             </>
         )
@@ -112,5 +116,5 @@ const mapStateToProps = (state) => {
     }
 }
 //connect to redux states, define actions
-export default connect(mapStateToProps, { updateManyMaterials })(withRouter(AddProductMaterialsComponent))
+export default connect(mapStateToProps, { updateManyMaterials,getMaterialsWarehouseData })(withRouter(AddOrderMaterialsComponent))
 

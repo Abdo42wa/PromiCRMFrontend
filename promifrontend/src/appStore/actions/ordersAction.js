@@ -23,6 +23,30 @@ export const getOrders = () => async (dispatch, getState) => {
     }
 }
 
+export const insertManyMaterials = (postObj,callback) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDER_MATERIAL_INSERT_MANY_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.post(`/api/ProductMaterials/insert/orders`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'ORDER_MATERIAL_INSERT_MANY_SUCCESS',
+            payload: response.data
+        });
+        callback()
+    } catch (error) {
+        dispatch({
+            type: 'ORDER_MATERIAL_INSERT_MANY_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const getUncompletedOrdersTimes = () => async(dispatch,getState)=>{
     try{
         dispatch({
@@ -243,6 +267,31 @@ export const addOrder = (postObject) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: 'ORDER_CREATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const createNonStandartOrder = (postObject) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDER_NON_STANDART_CREATE_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        // ,'Content-Type': 'multipart/form-data'
+        // 'Content-Type': 'application/json'
+        const response = await promiAPI.post(`/api/Orders/nonstandart`, postObject, { headers: { Authorization: `Bearer ${token}` } });
+        dispatch({
+            type: 'ORDER_NON_STANDART_CREATE_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'ORDER_NON_STANDART_CREATE_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
