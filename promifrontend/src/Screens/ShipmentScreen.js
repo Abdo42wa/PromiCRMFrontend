@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
-import { getShipments, createShipment, updateShipment } from '../Actions/shipmentsActions'
+import { getShipments, createShipment, updateShipment } from '../appStore/actions/shipmentsActions'
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import AddShipmentComponent from '../Components/shipments_components/AddShipmentComponent';
-import UpdateShipmentComponent from '../Components/shipments_components/UpdateShipmentComponent';
+import AddShipmentComponent from '../components/shipments_components/AddShipmentComponent';
+import UpdateShipmentComponent from '../components/shipments_components/UpdateShipmentComponent';
 
 class ShipmentScreen extends React.Component {
     constructor(props) {

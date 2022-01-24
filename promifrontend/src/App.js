@@ -1,23 +1,23 @@
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
-import HomeScreen from './Screens/HomeScreen';
-import Header from './Components/Header';
-import LoginScreen from './Screens/LoginScreen';
-import UserListScreen from './Screens/UserListScreen';
-import MaterialsScreen from './Screens/MaterialsScreen';
-import ShipmentScreen from './Screens/ShipmentScreen';
-import CustomersScreen from './Screens/CustomersScreen';
-import WarehouseCountingsScreen from './Screens/WarehouseCountingsScreen'
-import CountryScreen from './Screens/CountryScreen';
-import OrderScreen from './Screens/OrderScreen';
-import BonusScreen from './Screens/BonusScreen';
-import ProductsScreen from './Screens/ProductsScreen';
-import WeeklyWorkScheduleScreen from './Screens/WeeklyWorkScheduleScreen';
-import SalesChannelsScreen from './Screens/SalesChannelsScreen';
-import MaterialsWarehouseScreen from './Screens/MaterialsWarehouseScreen';
-import OrderProducts from './Screens/OrderProducts';
-import RecentWorksScreen from './Screens/RecentWorksScreen';
+import HomeScreen from './screens/HomeScreen';
+import Header from './components/Header';
+import LoginScreen from './screens/LoginScreen';
+import UserListScreen from './screens/UserListScreen';
+import MaterialsScreen from './screens/MaterialsScreen';
+import ShipmentScreen from './screens/ShipmentScreen';
+import CustomersScreen from './screens/CustomersScreen';
+import WarehouseCountingsScreen from './screens/WarehouseCountingsScreen'
+import CountryScreen from './screens/CountryScreen';
+import OrderScreen from './screens/OrderScreen';
+import BonusScreen from './screens/BonusScreen';
+import ProductsScreen from './screens/ProductsScreen';
+import WeeklyWorkScheduleScreen from './screens/WeeklyWorkScheduleScreen';
+import SalesChannelsScreen from './screens/SalesChannelsScreen';
+import MaterialsWarehouseScreen from './screens/MaterialsWarehouseScreen';
+import OrderProducts from './screens/OrderProducts';
+import RecentWorksScreen from './screens/RecentWorksScreen';
 
 
 function App() {

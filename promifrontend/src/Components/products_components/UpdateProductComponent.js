@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Button, Form, Space, Select, Input, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { getOrders } from '../../Actions/orderAction'
-import { getMaterialsWarehouseData } from '../../Actions/materialsWarehouseActions'
-import { getMaterialsByProduct, createMaterial, getMaterials } from '../../Actions/materialsActions'
+import { getOrders } from '../../appStore/actions/ordersAction'
+import { getMaterialsWarehouseData } from '../../appStore/actions/materialsWarehouseActions'
+import { getMaterialsByProduct, createMaterial, getMaterials } from '../../appStore/actions/materialsActions'
 import AddMaterialComponent from '../materials_components/AddMaterialComponent';
 const { Option } = Select;
 const textStyle = {

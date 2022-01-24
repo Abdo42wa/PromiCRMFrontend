@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getCustomers, createCustomer, updateCustomer } from '../Actions/customersActions'
+import { getCustomers, createCustomer, updateCustomer } from '../appStore/actions/customersActions'
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import AddCustomerComponent from '../Components/customers_components/AddCustomerComponent';
-import UpdateCustomerComponent from '../Components/customers_components/UpdateCustomerComponent';
+import AddCustomerComponent from '../components/customers_components/AddCustomerComponent';
+import UpdateCustomerComponent from '../components/customers_components/UpdateCustomerComponent';
 
 class CustomersScreen extends React.Component {
     constructor(props) {

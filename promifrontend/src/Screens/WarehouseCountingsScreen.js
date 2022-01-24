@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getWarehouseData, createWarehouseData, updateWarehouseData, updateWarehouseWithImg } from '../Actions/warehouseActions'
+import { getWarehouseData, createWarehouseData, updateWarehouseData, updateWarehouseWithImg } from '../appStore/actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import AddWarehouseDataComponent from '../Components/warehouse_components/AddWarehouseDataComponent'
+import AddWarehouseDataComponent from '../components/warehouse_components/AddWarehouseDataComponent'
 import moment from 'moment';
-import UpdateWarehouseDataComponent from '../Components/warehouse_components/UpdateWarehouseDataComponent';
+import UpdateWarehouseDataComponent from '../components/warehouse_components/UpdateWarehouseDataComponent';
 
 class WarehouseCountingsScreen extends React.Component {
     constructor(props) {

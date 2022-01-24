@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import { getRecentWorks, createRecentWork, updateRecentWork, deleteRecentWork } from '../Actions/recentWorksActions'
-import AddRecentWorkComponent from '../Components/recent_works_components/AddRecentWorkComponent.js';
+import { getRecentWorks, createRecentWork, updateRecentWork, deleteRecentWork } from '../appStore/actions/recentWorksActions'
+import AddRecentWorkComponent from '../components/recent_works_components/AddRecentWorkComponent.js';
 import moment from 'moment'
-import UpdateRecentWorkComponent from '../Components/recent_works_components/UpdateRecentWorkComponent.js';
+import UpdateRecentWorkComponent from '../components/recent_works_components/UpdateRecentWorkComponent.js';
 class RecentWorksScreen extends React.Component {
     constructor(props) {
         super(props)

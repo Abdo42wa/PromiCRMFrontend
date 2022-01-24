@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form, Space, Select, Input,InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { getUsers } from '../../Actions/userListActions'
+import { getUsers } from '../../appStore/actions/userListActions'
 
 const { Option } = Select;
 

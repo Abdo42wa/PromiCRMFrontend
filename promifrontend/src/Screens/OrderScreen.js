@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse } from '../Actions/orderAction'
-import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../Actions/warehouseActions'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse } from '../appStore/actions/ordersAction'
+import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../appStore/actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
-import AddOrderComponent from '../Components/order_components/AddOrderComponent';
-import UpdateOrderComponent from '../Components/order_components/UpdateOrderComponent';
-import { getProducts } from '../Actions/productsActions'
-import { getUsers } from '../Actions/userListActions'
+import AddOrderComponent from '../components/order_components/AddOrderComponent';
+import UpdateOrderComponent from '../components/order_components/UpdateOrderComponent';
+import { getProducts } from '../appStore/actions/productsActions'
+import { getUsers } from '../appStore/actions/userListActions'
 import moment from 'moment';
 
 const { Option } = Select;

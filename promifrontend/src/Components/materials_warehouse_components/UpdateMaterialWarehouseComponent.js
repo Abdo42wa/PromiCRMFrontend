@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form, Space, Input, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { deleteMaterialImage } from '../../Actions/materialsWarehouseActions'
+import { deleteMaterialImage } from '../../appStore/actions/materialsWarehouseActions'
 
 const textStyle = {
     fontSize: '18px',

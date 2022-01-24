@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData, updateMaterialWarehouseWithImage } from '../Actions/materialsWarehouseActions';
+import { getMaterialsWarehouseData, createMaterialWarehouseData, updateMaterialWarehouseData, updateMaterialWarehouseWithImage } from '../appStore/actions/materialsWarehouseActions';
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import moment from 'moment'
-import AddMaterialWarehouseComponent from '../Components/materials_warehouse_components/AddMaterialWarehouseComponent';
-import UpdateMaterialWarehouseComponent from '../Components/materials_warehouse_components/UpdateMaterialWarehouseComponent';
-import SuplementMaterialWarehouseComponent from '../Components/materials_warehouse_components/SuplementMaterialWarehouseComponent';
+import AddMaterialWarehouseComponent from '../components/materials_warehouse_components/AddMaterialWarehouseComponent';
+import UpdateMaterialWarehouseComponent from '../components/materials_warehouse_components/UpdateMaterialWarehouseComponent';
+import SuplementMaterialWarehouseComponent from '../components/materials_warehouse_components/SuplementMaterialWarehouseComponent';
 
 class MaterialsWarehouseScreen extends React.Component {
     constructor(props) {

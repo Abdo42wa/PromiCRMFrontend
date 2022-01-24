@@ -1,11 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router-dom'
-import { getProductsByOrder, addProduct, updateProduct, updateProductWithImage} from '../Actions/productsActions'
+import { getProductsByOrder, addProduct, updateProduct, updateProductWithImage} from '../appStore/actions/productsActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import AddProductComponent from '../Components/products_components/AddProductComponent';
-import UpdateProductComponent from '../Components/products_components/UpdateProductComponent';
+import AddProductComponent from '../components/products_components/AddProductComponent';
+import UpdateProductComponent from '../components/products_components/UpdateProductComponent';
 
 
 class OrderProducts extends React.Component{

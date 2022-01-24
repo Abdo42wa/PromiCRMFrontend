@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment'
-import { getUsers } from '../../Actions/userListActions'
-import { getOrders } from '../../Actions/orderAction'
-import { getProductsByOrder } from '../../Actions/productsActions'
+import { getUsers } from '../../appStore/actions/userListActions'
+import { getOrders } from '../../appStore/actions/ordersAction'
+import { getProductsByOrder } from '../../appStore/actions/productsActions'
 
 const { Option } = Select;
 function UpdateRecentWorkComponent(props) {

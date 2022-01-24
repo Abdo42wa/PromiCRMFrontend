@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { Modal, Button, Form, Space, Select, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { getProducts } from '../../Actions/productsActions';
-import {getMaterialsWarehouseData} from '../../Actions/materialsWarehouseActions'
+import { getProducts } from '../../appStore/actions/productsActions';
+import {getMaterialsWarehouseData} from '../../appStore/actions/materialsWarehouseActions'
 import { withRouter } from 'react-router-dom'
 
 

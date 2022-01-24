@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Table, Space, Card, Typography, Col, Row } from 'antd'
 import Button from "react-bootstrap/Button";
 import { PlusOutlined } from '@ant-design/icons';
-import { getUsers } from '../Actions/userListActions'
-import { register } from '../Actions/userAction';
+import { getUsers } from '../appStore/actions/userListActions'
+import { register } from '../appStore/actions/userAction';
 import { withRouter } from 'react-router-dom'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import AddUserComponent from '../Components/users_components/AddUserComponent';
+import AddUserComponent from '../components/users_components/AddUserComponent';
 
 
 

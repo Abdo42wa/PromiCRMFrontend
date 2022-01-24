@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCurrencies } from '../../Actions/currencyAction'
-import { getCustomers } from '../../Actions/customersActions'
-import { getCountries } from '../../Actions/countryAction'
-import { getUsers } from '../../Actions/userListActions'
-import { getSalesChannels } from '../../Actions/salesChannelsActions'
+import { getCurrencies } from '../../appStore/actions/currenciesAction'
+import { getCustomers } from '../../appStore/actions/customersActions'
+import { getCountries } from '../../appStore/actions/countriesAction'
+import { getUsers } from '../../appStore/actions/userListActions'
+import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';

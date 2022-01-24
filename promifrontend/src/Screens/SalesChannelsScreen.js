@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import { getSalesChannels, createSalesChannel, updateSalesChannel } from '../Actions/salesChannelsActions'
-import AddSalesChannelComponent from '../Components/sales_channels_components/AddSalesChannelComponent.js';
-import UpdateSalesChannelComponent from '../Components/sales_channels_components/UpdateSalesChannelComponent.js';
+import { getSalesChannels, createSalesChannel, updateSalesChannel } from '../appStore/actions/salesChannelsActions'
+import AddSalesChannelComponent from '../components/sales_channels_components/AddSalesChannelComponent.js';
+import UpdateSalesChannelComponent from '../components/sales_channels_components/UpdateSalesChannelComponent.js';
 
 class SalesChannelsScreen extends React.Component {
     constructor(props) {

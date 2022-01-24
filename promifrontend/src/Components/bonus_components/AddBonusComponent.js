@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUsers } from '../../Actions/userListActions'
+import { getUsers } from '../../appStore/actions/userListActions'
 import { Modal, Button, Form, Space, Select, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 

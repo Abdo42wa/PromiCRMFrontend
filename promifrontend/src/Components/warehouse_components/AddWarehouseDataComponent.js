@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrders } from '../../Actions/orderAction';
+import { getOrders } from '../../appStore/actions/ordersAction';
 import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment'

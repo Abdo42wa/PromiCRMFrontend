@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Form, Button, Modal,Space,Input,InputNumber,Select } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserTypes } from '../../Actions/userAction'
+import { getUserTypes } from '../../appStore/actions/userAction'
 
 const {Option} = Select;
 function AddUserComponent(props) {

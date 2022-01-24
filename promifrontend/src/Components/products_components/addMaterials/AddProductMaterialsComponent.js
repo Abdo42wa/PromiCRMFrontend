@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateManyMaterials } from '../../../Actions/productsActions'
+import { updateManyMaterials } from '../../../appStore/actions/productsActions'
 import { withRouter } from 'react-router-dom'
 import { Button, Form, Modal, Space, Input, InputNumber, Typography } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
@@ -60,7 +60,6 @@ class AddProductMaterialsComponent extends React.Component {
                 array.push(obj)
             }
         })
-        console.log('material to add'+JSON.stringify(array))
         this.props.save(array)
     }
     com

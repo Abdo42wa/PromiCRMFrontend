@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { getUsers } from '../../Actions/userListActions'
-import { getProductsByOrder } from '../../Actions/productsActions'
-import { getOrders } from '../../Actions/orderAction'
+import { getUsers } from '../../appStore/actions/userListActions'
+import { getProductsByOrder } from '../../appStore/actions/productsActions'
+import { getOrders } from '../../appStore/actions/ordersAction'
 import moment from 'moment'
 
 const { Option } = Select;

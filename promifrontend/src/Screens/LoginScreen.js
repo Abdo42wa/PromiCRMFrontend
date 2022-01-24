@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Form, Button, Col, Row, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { login } from '../Actions/userAction'
+import { login } from '../appStore/actions/userAction'
 import { Spin, Space } from 'antd';
 
 const LoginScreen = ({ history }) => {

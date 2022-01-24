@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Button, Form, Space, Input, Select, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrders } from '../../Actions/orderAction'
-import { getMaterialsWarehouseData } from '../../Actions/materialsWarehouseActions'
+import { getOrders } from '../../appStore/actions/ordersAction'
+import { getMaterialsWarehouseData } from '../../appStore/actions/materialsWarehouseActions'
 const { Option } = Select;
 
 function AddProductComponent(props) {

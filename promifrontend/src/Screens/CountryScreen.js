@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
-import { getCountries, addCountry, updateCountry } from '../Actions/countryAction'
+import { getCountries, addCountry, updateCountry } from '../appStore/actions/countriesAction'
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import AddCountryComponents from '../Components/countries_components/AddCountryComponents';
-import UpdateCountryComponents from '../Components/countries_components/UpdateCountryComponents';
+import AddCountryComponents from '../components/countries_components/AddCountryComponents';
+import UpdateCountryComponents from '../components/countries_components/UpdateCountryComponents';
 
 
 

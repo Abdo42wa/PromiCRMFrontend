@@ -1,20 +1,20 @@
 import React from 'react'
-import { getUsers } from '../Actions/userListActions'
+import { getUsers } from '../appStore/actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders, getUncompletedOrdersTimes } from '../Actions/orderAction'
+import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders, getUncompletedOrdersTimes } from '../appStore/actions/ordersAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getWeekWorks, updateWork } from '../Actions/WeeklyWorkScheduleAction'
+import { getWeekWorks, updateWork } from '../appStore/actions/weeklyworkschedulesAction'
 import { tableCardStyle, tableCardBodyStyle } from '../styles/customStyles.js';
-import { getMaterialsWarehouseData } from '../Actions/materialsWarehouseActions';
-import { getProducts } from '../Actions/productsActions'
-import { getWarehouseProducts } from '../Actions/warehouseActions'
+import { getMaterialsWarehouseData } from '../appStore/actions/materialsWarehouseActions';
+import { getProducts } from '../appStore/actions/productsActions'
+import { getWarehouseProducts } from '../appStore/actions/warehouseActions'
 import moment from 'moment';
 // import { Chart } from 'chart.js'
 import { Bar, Line } from 'react-chartjs-2';
-import LastWeeksProducts from '../Components/LastWeeksProducts'
-import LastMonthProducts from '../Components/LastMonthProducts'
+import LastWeeksProducts from '../components/LastWeeksProducts'
+import LastMonthProducts from '../components/LastMonthProducts'
 
 
 

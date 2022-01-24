@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getBonuses, createBonus, updateBonus } from '../Actions/bonusActions'
+import { getBonuses, createBonus, updateBonus } from '../appStore/actions/bonusActions'
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router';
-import AddBonusComponent from '../Components/bonus_components/AddBonusComponent'
-import UpdateBonusComponent from '../Components/bonus_components/UpdateBonusComponent'
+import AddBonusComponent from '../components/bonus_components/AddBonusComponent'
+import UpdateBonusComponent from '../components/bonus_components/UpdateBonusComponent'
 
 class BonusScreen extends React.Component {
     constructor(props) {

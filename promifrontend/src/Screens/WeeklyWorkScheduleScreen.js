@@ -1,13 +1,13 @@
 import React from 'react';
 import '../App.css'
 import { connect } from 'react-redux';
-import { getWorks, addWork, updateWork } from '../Actions/WeeklyWorkScheduleAction'
-import { getUsers } from '../Actions/userListActions'
+import { getWorks, addWork, updateWork } from '../appStore/actions/weeklyworkschedulesAction'
+import { getUsers } from '../appStore/actions/userListActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
-import AddWeeklyWorkScheduleComponent from '../Components/WeeklyWorkSchedul_components/AddWeeklyWorkScheduleComponent'
-import UpdateWeeklyWorkScheduleComponent from '../Components/WeeklyWorkSchedul_components/UpdateWeeklyWorkScheduleComponent'
+import AddWeeklyWorkScheduleComponent from '../components/weekly_work_schedule_components/AddWeeklyWorkScheduleComponent'
+import UpdateWeeklyWorkScheduleComponent from '../components/weekly_work_schedule_components/UpdateWeeklyWorkScheduleComponent'
 
 
 

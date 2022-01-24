@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getProducts, addProduct, updateProduct, updateProductWithImage, updateManyMaterials, insertManyMaterials } from '../Actions/productsActions'
+import { getProducts, addProduct, updateProduct, updateProductWithImage, updateManyMaterials, insertManyMaterials } from '../appStore/actions/productsActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
-import { getMaterialsWarehouseData, updateManyWarehouseMaterials } from '../Actions/materialsWarehouseActions';
+import { getMaterialsWarehouseData, updateManyWarehouseMaterials } from '../appStore/actions/materialsWarehouseActions';
 // import {updateManyMaterials} from '../Actions/materialsActions'
-import AddProductComponent from '../Components/products_components/AddProductComponent';
-import UpdateProductComponent from '../Components/products_components/UpdateProductComponent';
-import ProductMaterialsComponent from '../Components/products_components/ProductMaterialsComponent';
-import AddProductMaterialsComponent from '../Components/products_components/addMaterials/AddProductMaterialsComponent';
+import AddProductComponent from '../components/products_components/AddProductComponent';
+import UpdateProductComponent from '../components/products_components/UpdateProductComponent';
+import ProductMaterialsComponent from '../components/products_components/ProductMaterialsComponent';
+import AddProductMaterialsComponent from '../components/products_components/addMaterials/AddProductMaterialsComponent';
 
 class ProductsScrenn extends React.Component {
     constructor(props) {

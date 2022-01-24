@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { getMaterialsWarehouseData, updateMaterialWarehouseData } from '../../Actions/materialsWarehouseActions'
+import { getMaterialsWarehouseData, updateMaterialWarehouseData } from '../../appStore/actions/materialsWarehouseActions'
 import { Modal, Button, Form, Space, Input, InputNumber, Select } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';

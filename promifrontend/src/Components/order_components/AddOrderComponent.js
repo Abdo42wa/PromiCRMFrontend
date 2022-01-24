@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCurrencies } from '../../Actions/currencyAction'
-import { getCustomers } from '../../Actions/customersActions'
-import { getCountries } from '../../Actions/countryAction'
-import { getUsers } from '../../Actions/userListActions'
-import { getProducts } from '../../Actions/productsActions'
-import { getWarehouseProduct } from '../../Actions/warehouseActions'
-import { getOrders } from '../../Actions/orderAction'
-import { getSalesChannels } from '../../Actions/salesChannelsActions'
+import { getCurrencies } from '../../appStore/actions/currenciesAction'
+import { getCustomers } from '../../appStore/actions/customersActions'
+import { getCountries } from '../../appStore/actions/countriesAction'
+import { getUsers } from '../../appStore/actions/userListActions'
+import { getProducts } from '../../appStore/actions/productsActions'
+import { getWarehouseProduct } from '../../appStore/actions/warehouseActions'
+import { getOrders } from '../../appStore/actions/ordersAction'
+import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';

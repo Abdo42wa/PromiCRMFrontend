@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
-import { getMaterials, createMaterial, updateItem } from '../Actions/materialsActions'
+import { getMaterials, createMaterial, updateItem } from '../appStore/actions/materialsActions'
 import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
-import AddMaterialComponent from '../Components/materials_components/AddMaterialComponent';
-import UpdateMaterialComponent from '../Components/materials_components/UpdateMaterialComponent';
+import AddMaterialComponent from '../components/materials_components/AddMaterialComponent';
+import UpdateMaterialComponent from '../components/materials_components/UpdateMaterialComponent';
 
 
 class MaterialsScreen extends React.Component {
