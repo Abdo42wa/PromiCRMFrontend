@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { updateManyMaterials } from '../../../appStore/actions/productsActions'
 import { getMaterialsWarehouseData } from '../../../appStore/actions/materialsWarehouseActions'
-import { getMaterialsByOrder,addOrderMaterial,updateOrderMaterial } from '../../../appStore/actions/productMaterials'
+import { getMaterialsByOrder, addOrderMaterial, updateOrderMaterial, deleteOrderMaterial } from '../../../appStore/actions/productMaterials'
 import { withRouter } from 'react-router-dom'
-import { Button, Form, Modal, Space, Input, InputNumber, Typography } from 'antd'
+import { Button, Form, Modal, Space, Input, InputNumber, Typography, Popconfirm } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import AddNewOrderMaterial from './AddNewOrderMaterial'
 
@@ -39,10 +39,10 @@ class AddOrderMaterialsComponent extends React.Component {
     onCancel = () => {
         this.props.onClose();
     }
-    onDataChange = (value,inputName, record) => {
+    onDataChange = (value, inputName, record) => {
         const obj = {
             ...record,
-            [inputName]:value
+            [inputName]: value
         }
         this.props.updateOrderMaterial(obj)
     }
@@ -50,7 +50,10 @@ class AddOrderMaterialsComponent extends React.Component {
         const array = [...this.props.productMaterialsReducer.modified_order_materials]
         this.props.save(array)
     }
-    componentDidMount(){
+    deleteOrder = (id) => {
+        this.props.deleteOrderMaterial(id)
+    }
+    componentDidMount() {
         this.props.getMaterialsWarehouseData()
         this.props.getMaterialsByOrder(this.props.record.id)
     }
@@ -73,22 +76,30 @@ class AddOrderMaterialsComponent extends React.Component {
                 >
                     <Form layout="vertical" id="myForm" name="myForm">
                         {this.props.productMaterialsReducer.order_materials.map((element, index) => (
-                            <div key={element.id} style={{ display: 'flex' }}>
+                            <div key={element.id} style={{ display: 'flex', justifyContent: 'keft', alignItems: 'center' }}>
+                                {element.id !== null && element.id !== undefined?
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <Typography.Text>Ištrinti</Typography.Text>
+                                    <Popconfirm title="Tikrai ištrinti?" onConfirm={() => this.deleteOrder(element.id)}>
+                                        <Button type="primary" danger>Ištrinti</Button>
+                                    </Popconfirm>
+                                </div>:null}
+
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <Typography.Text>Pavadinimas</Typography.Text>
                                     <Input disabled value={element.materialWarehouse.title} />
                                 </div>
-                                {element.id !== null && element.id !== undefined?
+                                {element.id !== null && element.id !== undefined ?
                                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <Typography.Text>Kiekis</Typography.Text>
-                                    <InputNumber value={element.quantity} onChange={(e) => this.onDataChange(e,"quantity",element)} />
-                                </div>:
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <Typography.Text>Kiekis</Typography.Text>
-                                    <InputNumber disabled value={element.quantity}  />
-                                </div>
+                                        <Typography.Text>Kiekis</Typography.Text>
+                                        <InputNumber value={element.quantity} onChange={(e) => this.onDataChange(e, "quantity", element)} />
+                                    </div> :
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Typography.Text>Kiekis</Typography.Text>
+                                        <InputNumber disabled value={element.quantity} />
+                                    </div>
                                 }
-                                
+
                             </div>
                         ))}
                         <Button onClick={this.showAddMaterialsComponent}>Pridėti</Button>
@@ -111,5 +122,5 @@ const mapStateToProps = (state) => {
     }
 }
 //connect to redux states, define actions
-export default connect(mapStateToProps, { updateManyMaterials,getMaterialsWarehouseData,getMaterialsByOrder,addOrderMaterial,updateOrderMaterial })(withRouter(AddOrderMaterialsComponent))
+export default connect(mapStateToProps, { updateManyMaterials, getMaterialsWarehouseData, getMaterialsByOrder, addOrderMaterial, updateOrderMaterial,deleteOrderMaterial })(withRouter(AddOrderMaterialsComponent))
 
