@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateManyMaterials } from '../../appStore/actions/productsActions'
+import { updateManyProductMaterials,updateManyMaterials } from '../../appStore/actions/productsActions'
 import { withRouter } from 'react-router-dom'
 import { Button, Form, Modal, Space, Input, InputNumber, Typography } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'

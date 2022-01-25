@@ -67,6 +67,7 @@ export const getMaterialsByOrder = (id) => async(dispatch,getState)=>{
         })
     }
 }
+
 //to add new material to order_materials array
 export const addOrderMaterial = (obj) => async(dispatch,getState)=>{
     try{
@@ -84,6 +85,7 @@ export const addOrderMaterial = (obj) => async(dispatch,getState)=>{
         })
     }
 }
+
 export const updateOrderMaterial = (obj) => async(dispatch,getState)=>{
     try{
         dispatch({
@@ -100,6 +102,7 @@ export const updateOrderMaterial = (obj) => async(dispatch,getState)=>{
         })
     }
 }
+
 //to delete order material
 export const deleteOrderMaterial = (id) => async(dispatch,getState)=>{
     try{
@@ -122,6 +125,32 @@ export const deleteOrderMaterial = (id) => async(dispatch,getState)=>{
         })
     }
 }
+
+
+export const updateManyMaterials = (postObj) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDER_MATERIAL_UPDATE_MANY_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/ProductMaterials/update`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'ORDER_MATERIAL_UPDATE_MANY_SUCCESS'
+        });
+    } catch (error) {
+        dispatch({
+            type: 'ORDER_MATERIAL_UPDATE_MANY_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+//ACTIONS FOR ProductMaterials screen
 export const createMaterial = (postObject) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -171,44 +200,3 @@ export const updateItem = (postObj, reducerObj) => async (dispatch, getState) =>
 
 
 
-export const updateManyMaterials = (postObj) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: 'ORDER_MATERIAL_UPDATE_MANY_REQUEST'
-        });
-        //get token from usersReducer
-        const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/ProductMaterials/update`, postObj, { headers: { Authorization: `Bearer ${token}` } })
-        dispatch({
-            type: 'ORDER_MATERIAL_UPDATE_MANY_SUCCESS'
-        });
-    } catch (error) {
-        dispatch({
-            type: 'ORDER_MATERIAL_UPDATE_MANY_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
-
-
-// export const updateItems = (postObject, callback) => async(dispatch,getState) =>{
-//     try{
-//         dispatch({
-//             type: 'MATERIALS_UPDATE_REQUEST'
-//         });
-//         //get token from usersReducer
-//         const token = getState().usersReducer.currentUser;
-//         const response = await axios.put(`/api/`)
-//     }catch (error) {
-//         dispatch({
-//             type: 'MATERIALS_UPDATE_FAIL',
-//             payload:
-//                 error.response && error.response.data.message
-//                     ? error.response.data.message
-//                     : error.message,
-//         })
-//     }
-// }

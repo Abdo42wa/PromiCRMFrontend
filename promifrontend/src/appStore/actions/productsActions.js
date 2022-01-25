@@ -118,22 +118,25 @@ export const updateProductWithImage = (postObj,id,callback) => async(dispatch,ge
     }
 }
 
-export const updateManyMaterials = (postObj,callback) => async (dispatch, getState) => {
-    try {
+//PRODUCT MATERIALS -----------------------------------ACTIONS
+//fetch is only for purpose of deleting data from modified_product_materials. on load
+export const getProductMaterials = (productMaterials) => async(dispatch,getState)=>{
+    dispatch({
+        type: 'MATERIALS_PRODUCT_FETCH_SUCCESS',
+        payload: productMaterials
+    })
+}
+
+
+export const addProductMaterial = (obj) => async(dispatch,getState)=>{
+    try{
         dispatch({
-            type: 'PRODUCT_MATERIAL_UPDATE_MANY_REQUEST'
-        });
-        //get token from usersReducer
-        const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Materials/update`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+            type: 'MATERIALS_PRODUCT_ADD_SUCCESS',
+            payload: obj
+        })
+    }catch (error) {
         dispatch({
-            type: 'PRODUCT_MATERIAL_UPDATE_MANY_SUCCESS',
-            payload: postObj
-        });
-        callback()
-    } catch (error) {
-        dispatch({
-            type: 'PRODUCT_MATERIAL_UPDATE_MANY_FAIL',
+            type: 'MATERIALS_PRODUCT_ADD_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
@@ -142,22 +145,62 @@ export const updateManyMaterials = (postObj,callback) => async (dispatch, getSta
     }
 }
 
-export const insertManyMaterials = (postObj,callback) => async (dispatch, getState) => {
+export const updateProductMaterial = (obj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MATERIALS_PRODUCT_UPDATE_SUCCESS',
+            payload: obj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'MATERIALS_PRODUCT_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+//delete product material
+export const deleteProductMaterial = (id) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MATERIALS_PRODUCT_DELETE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.delete(`/api/ProductMaterials/${id}`,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'MATERIALS_PRODUCT_DELETE_SUCCESS',
+            payload: id
+        })
+    }catch (error) {
+        dispatch({
+            type: 'MATERIALS_PRODUCT_DELETE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const updateManyMaterials = (postObj,callback) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: 'PRODUCT_MATERIAL_INSERT_MANY_REQUEST'
+            type: 'PRODUCT_MATERIAL_UPDATE_MANY_REQUEST'
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/ProductMaterials/insert`, postObj, { headers: { Authorization: `Bearer ${token}` } })
+        const response = await promiAPI.put(`/api/ProductMaterials/update/products`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
-            type: 'PRODUCT_MATERIAL_INSERT_MANY_SUCCESS',
+            type: 'PRODUCT_MATERIAL_UPDATE_MANY_SUCCESS',
             payload: response.data
         });
         callback()
     } catch (error) {
         dispatch({
-            type: 'PRODUCT_MATERIAL_INSERT_MANY_FAIL',
+            type: 'PRODUCT_MATERIAL_UPDATE_MANY_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

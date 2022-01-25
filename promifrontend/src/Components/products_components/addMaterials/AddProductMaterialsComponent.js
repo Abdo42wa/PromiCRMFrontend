@@ -1,8 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { updateManyMaterials } from '../../../appStore/actions/productsActions'
+import {  addProductMaterial, updateProductMaterial, deleteProductMaterial, getProductMaterials} from '../../../appStore/actions/productsActions'
+import { getMaterialsWarehouseData } from '../../../appStore/actions/materialsWarehouseActions'
 import { withRouter } from 'react-router-dom'
-import { Button, Form, Modal, Space, Input, InputNumber, Typography } from 'antd'
+import { Button, Form, Modal, Space, Input, InputNumber, Typography,Popconfirm } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import AddNewMaterial from './AddNewMaterial'
 
@@ -10,7 +11,6 @@ class AddProductMaterialsComponent extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            productMaterials: this.props.record.productMaterials,
             addMaterialVisibility: false
         }
     }
@@ -26,11 +26,8 @@ class AddProductMaterialsComponent extends React.Component {
         })
     }
     saveAddMaterialComponent = (postObj) => {
-        // add new obj to productMaterials array. keep whats already there
-        this.setState(prevState => ({
-            productMaterials: [...prevState.productMaterials, postObj],
-            addMaterialVisibility: false
-        }))
+        this.props.addProductMaterial(postObj)
+        this.unshowAddMaterialsComponent()
     }
 
     onBack = () => {
@@ -39,28 +36,22 @@ class AddProductMaterialsComponent extends React.Component {
     onCancel = () => {
         this.props.onClose();
     }
-    onDataChange = (value, index) => {
-        // //spread operator
-        // let productMaterials = [...this.state.productMaterials]
-        // //leave whats already in particular obj, change only what need
-        // productMaterials[index] = {...productMaterials[index], quantity: value}
-        // this.setState({productMaterials})
+    onDataChange = (value, inputName, record) => {
+        const obj = {
+            ...record,
+            [inputName]: value
+        }
+        this.props.updateProductMaterial(obj)
     }
     saveChanges = () => {
-        // this.props.save(this.state.productMaterials)
-        const clone = JSON.parse(JSON.stringify(this.state.productMaterials));
-        const array = []
-        clone.forEach(element => {
-            if (element.id === null || element.id === undefined) {
-                const obj = {
-                    "materialWarehouseId": element.materialWarehouseId,
-                    "productId": element.productId,
-                    "quantity": element.quantity,
-                }
-                array.push(obj)
-            }
-        })
+        const array = [...this.props.productsReducer.modified_product_materials]
         this.props.save(array)
+    }
+    deleteProduct = (id) => {
+        this.props.deleteProductMaterial(id)
+    }
+    componentDidMount(){
+        this.props.getProductMaterials(this.props.record.productMaterials)
     }
     render() {
         return (
@@ -80,20 +71,35 @@ class AddProductMaterialsComponent extends React.Component {
                     }
                 >
                     <Form layout="vertical" id="myForm" name="myForm">
-                        {this.state.productMaterials.map((element, index) => (
-                            <div key={element.id} style={{ display: 'flex' }}>
+                        {this.props.productsReducer.product_materials.map((element, index) => (
+                            <div key={element.id} style={{ display: 'flex', justifyContent: 'keft', alignItems: 'center' }}>
+                                {element.id !== null && element.id !== undefined ?
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Typography.Text>Ištrinti</Typography.Text>
+                                        <Popconfirm title="Tikrai ištrinti?" onConfirm={() => this.deleteProduct(element.id)}>
+                                            <Button type="primary" danger>Ištrinti</Button>
+                                        </Popconfirm>
+                                    </div> : null}
+
                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <Typography.Text>Pavadinimas</Typography.Text>
                                     <Input disabled value={element.materialWarehouse.title} />
                                 </div>
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <Typography.Text>Kiekis</Typography.Text>
-                                    <InputNumber disabled value={element.quantity} onChange={(e) => this.onDataChange(e, index)} />
-                                </div>
+                                {element.id !== null && element.id !== undefined ?
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Typography.Text>Kiekis</Typography.Text>
+                                        <InputNumber value={element.quantity} onChange={(e) => this.onDataChange(e, "quantity", element)} />
+                                    </div> :
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <Typography.Text>Kiekis</Typography.Text>
+                                        <InputNumber disabled value={element.quantity} />
+                                    </div>
+                                }
+                                
+
                             </div>
                         ))}
                         <Button onClick={this.showAddMaterialsComponent}>Pridėti</Button>
-
                     </Form>
                 </Modal>
                 {this.state.addMaterialVisibility !== false ?
@@ -108,9 +114,9 @@ class AddProductMaterialsComponent extends React.Component {
 const mapStateToProps = (state) => {
     return {
         materialsWarehouseReducer: state.materialsWarehouseReducer,
-        materialsReducer: state.materialsReducer
+        productsReducer: state.productsReducer
     }
 }
 //connect to redux states, define actions
-export default connect(mapStateToProps, { updateManyMaterials })(withRouter(AddProductMaterialsComponent))
+export default connect(mapStateToProps, { getProductMaterials,getMaterialsWarehouseData, addProductMaterial, updateProductMaterial, deleteProductMaterial })(withRouter(AddProductMaterialsComponent))
 

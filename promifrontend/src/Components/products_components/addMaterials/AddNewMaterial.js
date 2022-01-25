@@ -27,15 +27,13 @@ function AddNewMaterial(props) {
         }));
     }
     const saveChanges = () => {
-        const materialClone = JSON.parse(JSON.stringify(material));
-        const clone = JSON.parse(JSON.stringify(materialsWarehouseReducer.materialsWarehouseData))
-        const obj = clone.find(x => x.id === materialClone.materialWarehouseId)
+        const obj = materialsWarehouseReducer.materialsWarehouseData.find(x => x.id === material.materialWarehouseId)
         const postObj = {
-            "materialWarehouseId": materialClone.materialWarehouseId,
-            "productId": materialClone.productId,
-            "quantity": materialClone.quantity,
-            "materialWarehouse":{
-                "title":obj.title
+            "materialWarehouseId": material.materialWarehouseId,
+            "productId": material.productId,
+            "quantity": material.quantity,
+            "materialWarehouse": {
+                "title": obj.title
             }
         }
         props.save(postObj);
@@ -76,7 +74,7 @@ function AddNewMaterial(props) {
                     <Form.Item key="name" name="name" label="Kiekis">
                         <InputNumber required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite kiekį" value={material.quantity} onChange={(e) => onDataChange(e, "quantity")} />
                     </Form.Item>
-                    
+
 
                 </Form>
             </Modal>

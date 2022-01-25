@@ -1,16 +1,10 @@
 export const productMaterialsReducer = (state = { materials: [], order_materials: [], modified_order_materials: [] }, action) => {
     switch (action.type) {
-        case 'MATERIALS_FETCH_REQUEST':
-            return { ...state, loading: true }
-        case 'MATERIALS_FETCH_SUCCESS':
-            return { ...state, loading: false, materials: action.payload }
-        case 'MATERIALS_FETCH_FAIL':
-            return { ...state, loading: false, error: action.payload }
         // TO GET ORDER MATERIALS
         case 'MATERIALS_ORDER_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'MATERIALS_ORDER_FETCH_SUCCESS':
-            return { ...state, loading: false, order_materials: action.payload }
+            return { ...state, loading: false, order_materials: action.payload, modified_order_materials: [] }
         case 'MATERIALS_ORDER_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
         //TO ADD MATERIAL TO order_materials array. later i can save it
@@ -51,12 +45,13 @@ export const productMaterialsReducer = (state = { materials: [], order_materials
             }
         case 'MATERIALS_ORDER_DELETE_FAIL':
             return { ...state, loading: false, error: action.payload }
-        //FETCHING MATERIALS FOR PRODUCT
-        case 'MATERIALS_PRODUCT_FETCH_REQUEST':
+        //ORDERS ---END
+        //PRODUCT MATERIALS SCREEN ---- START
+        case 'MATERIALS_FETCH_REQUEST':
             return { ...state, loading: true }
-        case 'MATERIALS_PRODUCT_FETCH_SUCCESS':
+        case 'MATERIALS_FETCH_SUCCESS':
             return { ...state, loading: false, materials: action.payload }
-        case 'MATERIALS_PRODUCT_FETCH_FAIL':
+        case 'MATERIALS_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
         case 'MATERIALS_CREATE_REQUEST':
             return { ...state, loading: true }
@@ -77,9 +72,16 @@ export const productMaterialsReducer = (state = { materials: [], order_materials
         case 'ORDER_MATERIAL_UPDATE_MANY_REQUEST':
             return { ...state, loading: true }
         case 'ORDER_MATERIAL_UPDATE_MANY_SUCCESS':
-            return { ...state, loading: false, modified_order_materials: [] }
+            return { ...state, loading: false, modified_order_materials: [], modified_product_materials: [] }
         case 'ORDER_MATERIAL_UPDATE_MANY_FAIL':
             return { ...state, loading: false, error: action.payload }
+        //FETCHING MATERIALS FOR PRODUCT
+        // case 'MATERIALS_PRODUCT_FETCH_REQUEST':
+        //     return { ...state, loading: true }
+        // case 'MATERIALS_PRODUCT_FETCH_SUCCESS':
+        //     return { ...state, loading: false, materials: action.payload }
+        // case 'MATERIALS_PRODUCT_FETCH_FAIL':
+        //     return { ...state, loading: false, error: action.payload }
         default:
             return state;
     }
