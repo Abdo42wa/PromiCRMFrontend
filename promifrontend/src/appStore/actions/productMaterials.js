@@ -46,6 +46,83 @@ export const getMaterialsByProduct = (id,callback) => async(dispatch,getState)=>
     }
 }
 
+export const getMaterialsByOrder = (id) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MATERIALS_ORDER_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/ProductMaterials/order/${id}`,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'MATERIALS_ORDER_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'MATERIALS_ORDER_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//to add new material to order_materials array
+export const addOrderMaterial = (obj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MATERIALS_ORDER_ADD_SUCCESS',
+            payload: obj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'MATERIALS_ORDER_ADD_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+export const updateOrderMaterial = (obj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MATERIALS_ORDER_UPDATE_SUCCESS',
+            payload: obj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'MATERIALS_ORDER_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//to delete order material
+export const deleteOrderMaterial = (id) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MATERIALS_ORDER_DELETE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.delete(`/api/ProductMaterials/${id}`,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'MATERIALS_ORDER_DELETE_SUCCESS',
+            payload: id
+        })
+    }catch (error) {
+        dispatch({
+            type: 'MATERIALS_ORDER_DELETE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const createMaterial = (postObject) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -98,18 +175,17 @@ export const updateItem = (postObj, reducerObj) => async (dispatch, getState) =>
 export const updateManyMaterials = (postObj) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: 'MATERIAL_UPDATE_MANY_REQUEST'
+            type: 'ORDER_MATERIAL_UPDATE_MANY_REQUEST'
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
         await promiAPI.put(`/api/ProductMaterials/update`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
-            type: 'MATERIAL_UPDATE_MANY_SUCCESS',
-            payload: postObj
+            type: 'ORDER_MATERIAL_UPDATE_MANY_SUCCESS'
         });
     } catch (error) {
         dispatch({
-            type: 'MATERIAL_UPDATE_MANY_FAIL',
+            type: 'ORDER_MATERIAL_UPDATE_MANY_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

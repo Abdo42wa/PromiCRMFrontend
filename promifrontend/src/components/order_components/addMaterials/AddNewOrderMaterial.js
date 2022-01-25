@@ -5,7 +5,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-function AddNewMaterial(props) {
+function AddNewOrderMaterial(props) {
 
     const [material, setMaterial] = useState({
         "orderId": props.orderId,
@@ -27,17 +27,16 @@ function AddNewMaterial(props) {
         }));
     }
     const saveChanges = () => {
-        const materialClone = JSON.parse(JSON.stringify(material));
-        const clone = JSON.parse(JSON.stringify(materialsWarehouseReducer.materialsWarehouseData))
-        const obj = clone.find(x => x.id === materialClone.materialWarehouseId)
+        // const clone = JSON.parse(JSON.stringify(materialsWarehouseReducer.materialsWarehouseData))
+        const obj = materialsWarehouseReducer.materialsWarehouseData.find(x => x.id === material.materialWarehouseId)
         const postObj = {
-            "materialWarehouseId": materialClone.materialWarehouseId,
-            "orderId": materialClone.orderId,
-            "quantity": materialClone.quantity,
+            "materialWarehouseId": material.materialWarehouseId,
+            "orderId": material.orderId,
+            "quantity": material.quantity,
             "materialWarehouse":{
-                "title":obj.orderNumber
+                "title":obj.title
             }
-        }
+        }        
         props.save(postObj);
     }
 
@@ -84,4 +83,4 @@ function AddNewMaterial(props) {
     )
 }
 
-export default AddNewMaterial;
+export default AddNewOrderMaterial;

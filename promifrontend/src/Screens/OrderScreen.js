@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse,insertManyMaterials,createNonStandartOrder } from '../appStore/actions/ordersAction'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse,createNonStandartOrder } from '../appStore/actions/ordersAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../appStore/actions/warehouseActions'
+import { updateManyMaterials } from '../appStore/actions/productMaterials';
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
@@ -54,9 +55,8 @@ class OrderScrenn extends React.Component {
         }))
     }
     saveAddOrderMaterials = (postObj) => {
-        this.props.insertManyMaterials(postObj, () => {
-            this.unshowAddMaterialsModal()
-        })
+        this.props.updateManyMaterials(postObj);
+        this.unshowAddMaterialsModal()
     }
 
     showAddOrderModal = () => {
@@ -597,10 +597,11 @@ const mapStateToProps = (state) => {
         orderReducer: state.orderReducer,
         usersListReducer: state.usersListReducer,
         warehouseReducer: state.warehouseReducer.warehouseData,
+        productMaterialsReducer: state.productMaterialsReducer
     }
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse,insertManyMaterials,createNonStandartOrder })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse,updateManyMaterials,createNonStandartOrder })(withRouter(OrderScrenn))
 
 

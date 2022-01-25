@@ -57,6 +57,11 @@ export const orderReducer = (state = { orders: [] }, action) => {
                     element.productMaterials = returnedOrderMaterials;
                 }
             })
+            // const orders_clone_data = [...state.orders]
+            // //map through orders each element. return what's already in element
+            // const updated_orders_data = orders_clone_data.map(v => ({
+            //     ...v, productMaterials: v.id === action.payload[0].orderId?({...action.payload}):v.productMaterials
+            // })) 
 
             return { ...state, loading: false, orders: order_clone_data }
         case 'ORDER_MATERIAL_INSERT_MANY_FAIL':
