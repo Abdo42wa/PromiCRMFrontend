@@ -49,18 +49,18 @@ export const getWarehouseProducts = () => async(dispatch,getState)=>{
 export const getWarehouseProduct = (productCodde) => async (dispatch, getState) => {
     try {
         dispatch({
-            type: 'WAREHOUSES_FETCH_REQUEST'
+            type: 'WAREHOUSE_PRODUCT_FETCH_REQUEST'
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
         const response = await promiAPI.get(`/api/WarehouseCountings/product/${productCodde}`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
-            type: 'WAREHOUSES_FETCH_SUCCESS',
+            type: 'WAREHOUSE_PRODUCT_FETCH_SUCCESS',
             payload: response.data
         });
     } catch (error) {
         dispatch({
-            type: 'WAREHOUSES_FETCH_FAIL',
+            type: 'WAREHOUSE_PRODUCT_FETCH_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

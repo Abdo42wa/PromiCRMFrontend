@@ -61,7 +61,7 @@ function AddOrderComponent(props) {
     const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
     const productsReducer = useSelector((state) => state.productsReducer)
     const orderReducer = useSelector((state) => state.orderReducer)
-    const warehouseReducer = useSelector((state) => state.warehouseReducer.warehouseData)
+    const warehouseReducer = useSelector((state) => state.warehouseReducer)
 
     const changeFile = (e) => {
         console.log(e.target.files[0])
@@ -103,7 +103,6 @@ function AddOrderComponent(props) {
                 [inputName]: value
             }))
         }
-
         if (inputName === "productCode") {
             dispatch(getWarehouseProduct(value))
         }
@@ -123,7 +122,7 @@ function AddOrderComponent(props) {
             // setNotStandart(true)
         } else if (inputName === "orderType" && value === "Ne-standartinis" ) {
             setNotStandart(false)
-            setSandelis(true);
+            setSandelis(false);
         } else {
             setNotStandart(true)
             setSandelis(false);
@@ -174,7 +173,7 @@ function AddOrderComponent(props) {
         if (value === false)
             num = 0;
         else {
-            if (order.quantity <= warehouseReducer.quantityProductWarehouse)
+            if (order.quantity <= warehouseReducer.warehouse_product.quantityProductWarehouse)
                 num = order.quantity;
             else
                 num = 0;
@@ -269,7 +268,7 @@ function AddOrderComponent(props) {
                             return (<Option key={element.id} value={element.code}>{element.code}</Option>)
                         })}
                     </Select>
-                    {order.productCode !== '' && <p style={{ color: 'red' }}> sandėlyje turim {warehouseReducer.quantityProductWarehouse}</p>}
+                    {order.productCode !== '' && <p style={{ color: 'red' }}> sandėlyje turim {warehouseReducer.warehouse_product.quantityProductWarehouse}</p>}
 
                     {order.productCode !== '' && order.orderType === "Standartinis" ?
                         <Form.Item key='warehouseProductsNumber' name='warehouseProductsNumber' label="Panaudosime sandėlio produktus?">
@@ -333,7 +332,7 @@ function AddOrderComponent(props) {
                     </Select>
                     <p style={{ marginBottom: '5px' }}>Klientas</p>
                     <Select
-                        disabled={notStandart}
+                        disabled={sandelis}
                         showSearch
                         style={{ width: '100%' }}
                         placeholder="Priskirkite klientą"

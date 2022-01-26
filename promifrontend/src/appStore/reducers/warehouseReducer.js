@@ -1,4 +1,4 @@
-export const warehouseReducer = (state = { warehouseData: [], warehouse_products: [] }, action) => {
+export const warehouseReducer = (state = { warehouseData: [], warehouse_products: [], warehouse_product: {} }, action) => {
     switch (action.type) {
         case 'WAREHOUSES_FETCH_REQUEST':
             return { ...state, loading: true }
@@ -12,6 +12,13 @@ export const warehouseReducer = (state = { warehouseData: [], warehouse_products
             return { ...state, loading: false, warehouse_products: action.payload }
         case 'WAREHOUSES_PRODUCTS_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
+            // FOR ADD ORDER SCREEN TO FETCH NUMBER OF PRODUCTS IN WAREHOUSE
+        case 'WAREHOUSE_PRODUCT_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'WAREHOUSE_PRODUCT_FETCH_SUCCESS':
+            return {...state, loading: false, warehouse_product: action.payload}
+        case 'WAREHOUSE_PRODUCT_FETCH_FAIL':
+            return {...state, loading: false, error:action.payload}
         case 'WAREHOUSES_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'WAREHOUSES_CREATE_SUCCESS':
