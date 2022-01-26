@@ -11,3 +11,8 @@
   border-radius: 50px !important;
   padding: 1px 8px !important;
 }
+
+.container{
+  padding-left: 10px!important;
+  padding-right: 10px!important;
+}

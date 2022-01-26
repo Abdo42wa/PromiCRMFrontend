@@ -335,6 +335,7 @@ export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) =
             type: 'ORDER_UPDATE_SUCCESS',
             payload: reducerObj
         });
+        console.log(JSON.stringify(reducerObj))
     } catch (error) {
         dispatch({
             type: 'ORDER_UPDATE_FAIL',

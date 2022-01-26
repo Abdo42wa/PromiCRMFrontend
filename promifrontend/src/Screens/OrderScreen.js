@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse,createNonStandartOrder,updateNonStandartOrder } from '../appStore/actions/ordersAction'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse, createNonStandartOrder, updateNonStandartOrder } from '../appStore/actions/ordersAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../appStore/actions/warehouseActions'
 import { updateManyMaterials } from '../appStore/actions/productMaterials';
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox } from 'antd'
@@ -12,6 +12,7 @@ import { getProducts } from '../appStore/actions/productsActions'
 import { getUsers } from '../appStore/actions/userListActions'
 import moment from 'moment';
 import AddOrderMaterialsComponent from '../components/order_components/addMaterials/AddOrderMaterialsComponent';
+import '../styles/orders.css'
 
 const { Option } = Select;
 const inputStyle = {
@@ -45,7 +46,7 @@ class OrderScrenn extends React.Component {
             }
         }))
     }
-    unshowAddMaterialsModal = () =>{
+    unshowAddMaterialsModal = () => {
         this.setState(prevState => ({
             addOrderMaterials: {
                 ...prevState.addOrderMaterials,
@@ -70,10 +71,10 @@ class OrderScrenn extends React.Component {
         })
     }
     saveAddOrder = (postObj) => {
-        if(postObj.orderType !== "Ne-standartinis"){
+        if (postObj.orderType !== "Ne-standartinis") {
             this.props.addOrder(postObj)
             this.unshowAddOrderModal();
-        }else{
+        } else {
             this.props.createNonStandartOrder(postObj)
             this.unshowAddOrderModal();
         }
@@ -164,20 +165,20 @@ class OrderScrenn extends React.Component {
                 this.props.createOrUpdateWarehouseData(warehouseCountingPostObj)
                 // this.props.updateOrder(postObj)
             }
-        }else if(record.orderType === "Ne-standartinis"){
-            if(inputName !== "packingUserId"){
-                this.props.updateOrder(postObj1,reducerObj1)
-            }else{
+        } else if (record.orderType === "Ne-standartinis") {
+            if (inputName !== "packingUserId") {
+                this.props.updateOrder(postObj1, reducerObj1)
+            } else {
                 //then non-standart needs to be updated, and materials taken from materialsWarehouse
                 const postObj = {
                     ...postObj1,
-                    "status":true
+                    "status": true
                 }
                 const reducerObj = {
                     ...reducerObj1,
-                    "status":true
+                    "status": true
                 }
-                this.props.updateNonStandartOrder(postObj,reducerObj)
+                this.props.updateNonStandartOrder(postObj, reducerObj)
             }
         }
     }
@@ -214,8 +215,8 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Button onClick={(e) => this.showOrderModal(record)}>Atnaujinti</Button>
-                        {record.orderType === "Ne-standartinis"?
-                        <Button onClick={(e) =>this.showAddMaterialsModal(record)}>Pridėti medžiagas</Button>:null}
+                        {record.orderType === "Ne-standartinis" ?
+                            <Button onClick={(e) => this.showAddMaterialsModal(record)}>Pridėti medžiagas</Button> : null}
                     </div>
 
                 )
@@ -348,6 +349,30 @@ class OrderScrenn extends React.Component {
                 width: '10%'
             },
             {
+                title: 'Lazeriavimas',
+                dataIndex: 'laserUserId',
+                width: '10%',
+                render: (text, record, index) => (
+                    <div style={{ display: 'flex' }}>
+                        <Select
+                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
+                            style={{ width: '80px' }}
+                            optionFilterProp="children"
+                            onChange={(e) => this.onDataChange(record, "laserUserId", e, "laserComplete")}
+                            defaultValue={text}
+                        >
+                            {this.props.usersListReducer.users.map((element, index) => {
+                                return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                            })}
+                        </Select>
+                        <div>
+                            <div className='order-times' ><p>{record.laserTime} min</p></div>
+                        </div>
+                    </div>
+
+                )
+            },
+            {
                 title: 'Frezavimas',
                 dataIndex: 'milingUserId',
                 width: '10%',
@@ -366,36 +391,10 @@ class OrderScrenn extends React.Component {
                         </Select>
                         {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
                         <div>
-                            {record.milingTime === undefined || record.milingTime === null ?
-                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                            <div className='order-times' ><p>{record.milingTime} min</p></div>
                         </div>
 
                     </div>
-                )
-            },
-            {
-                title: 'Lazeriavimas',
-                dataIndex: 'laserUserId',
-                width: '10%',
-                render: (text, record, index) => (
-                    <div style={{ display: 'flex' }}>
-                        <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
-                            style={{ width: '80px' }}
-                            optionFilterProp="children"
-                            onChange={(e) => this.onDataChange(record, "laserUserId", e, "laserComplete")}
-                            defaultValue={text}
-                        >
-                            {this.props.usersListReducer.users.map((element, index) => {
-                                return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                            })}
-                        </Select>
-                        <div>
-                            {record.milingTime === undefined || record.milingTime === null ?
-                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
-                        </div>
-                    </div>
-
                 )
             },
             {
@@ -416,8 +415,7 @@ class OrderScrenn extends React.Component {
                             })}
                         </Select>
                         <div>
-                            {record.milingTime === undefined || record.milingTime === null ?
-                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                            <div className='order-times' ><p>{record.paintingTime} min</p></div>
                         </div>
                     </div>
 
@@ -441,8 +439,7 @@ class OrderScrenn extends React.Component {
                             })}
                         </Select>
                         <div>
-                            {record.milingTime === undefined || record.milingTime === null ?
-                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                            <div className='order-times' ><p>{record.bondingTime} min</p></div>
                         </div>
                     </div>
                 )
@@ -465,8 +462,7 @@ class OrderScrenn extends React.Component {
                             })}
                         </Select>
                         <div>
-                            {record.milingTime === undefined || record.milingTime === null ?
-                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                            <div className='order-times' ><p>{record.collectionTime} min</p></div>
                         </div>
                     </div>
                 )
@@ -489,8 +485,7 @@ class OrderScrenn extends React.Component {
                             })}
                         </Select>
                         <div>
-                            {record.milingTime === undefined || record.milingTime === null ?
-                                <Input style={{ ...inputStyle }} disabled /> : <Input style={{ ...inputStyle }} disabled defaultValue={`${record.milingTime} min`} />}
+                            <div className='order-times' ><p>{record.packingTime} min</p></div>
                         </div>
                     </div>
                 )
@@ -541,7 +536,7 @@ class OrderScrenn extends React.Component {
             <>
 
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
-                    <Col span={24} offset={2}>
+                    <Col span={24} >
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
@@ -553,18 +548,15 @@ class OrderScrenn extends React.Component {
                         <div style={{ padding: '15px' }}></div>
                         <Row gutter={16}>
                             <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={columns}
-                                        dataSource={this.props.orderReducer.orders}
-                                        pagination={{ pageSize: 15 }}
-                                        bordered
-                                        scroll={{ x: 'calc(700px + 50%)' }}
-                                        footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti užsakymą</Button></Space>)}
-                                    />
-
-                                </Card>
+                                <Table
+                                    rowKey="id"
+                                    columns={columns}
+                                    dataSource={this.props.orderReducer.orders}
+                                    pagination={{ pageSize: 15 }}
+                                    bordered
+                                    scroll={{ x: 'calc(1200px + 50%)' }}
+                                    footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti užsakymą</Button></Space>)}
+                                />
                             </Col>
                         </Row>
                     </Col>
@@ -581,10 +573,10 @@ class OrderScrenn extends React.Component {
                         saveWithImg={this.updateOrderWithImg} /> :
                     null}
 
-                {this.state.addOrderMaterials.visibility !== false?
-                <AddOrderMaterialsComponent visible={this.state.addOrderMaterials.visibility}
-                onClose={this.unshowAddMaterialsModal} record={this.state.addOrderMaterials.record}
-                save={this.saveAddOrderMaterials} />:null}
+                {this.state.addOrderMaterials.visibility !== false ?
+                    <AddOrderMaterialsComponent visible={this.state.addOrderMaterials.visibility}
+                        onClose={this.unshowAddMaterialsModal} record={this.state.addOrderMaterials.record}
+                        save={this.saveAddOrderMaterials} /> : null}
 
             </>
         )
@@ -604,6 +596,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder,updateNonStandartOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse,updateManyMaterials,createNonStandartOrder })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateNonStandartOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse, updateManyMaterials, createNonStandartOrder })(withRouter(OrderScrenn))
 
 

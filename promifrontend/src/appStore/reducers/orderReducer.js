@@ -26,7 +26,7 @@ export const orderReducer = (state = { orders: [] }, action) => {
             return { ...state, loading: true }
         case 'ORDER_UPDATE_SUCCESS':
             const orders_clone = [...state.orders];
-            const updated = orders_clone.map(x => x.id === action.payload.id ? action.payload : x)
+            const updated = orders_clone.map(x => x.id === action.payload.id?action.payload:x)
             return { ...state, loading: false, orders: updated }
         case 'ORDER_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
