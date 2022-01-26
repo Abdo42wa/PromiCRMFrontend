@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse,createNonStandartOrder } from '../appStore/actions/ordersAction'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse,createNonStandartOrder,updateNonStandartOrder } from '../appStore/actions/ordersAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../appStore/actions/warehouseActions'
 import { updateManyMaterials } from '../appStore/actions/productMaterials';
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox } from 'antd'
@@ -126,7 +126,7 @@ class OrderScrenn extends React.Component {
         // reducer obj will have it. so deleting id from postobj
         const { id, ...postObj1 } = obj;
         const reducerObj1 = obj;
-        if (record.orderType === "Standartinis" || record.orderType === "Ne-standartinis") {
+        if (record.orderType === "Standartinis") {
             if (inputName !== "packingUserId") {
                 this.props.updateOrder(postObj1, reducerObj1)
             } else {
@@ -164,20 +164,22 @@ class OrderScrenn extends React.Component {
                 this.props.createOrUpdateWarehouseData(warehouseCountingPostObj)
                 // this.props.updateOrder(postObj)
             }
+        }else if(record.orderType === "Ne-standartinis"){
+            if(inputName !== "packingUserId"){
+                this.props.updateOrder(postObj1,reducerObj1)
+            }else{
+                //then non-standart needs to be updated, and materials taken from materialsWarehouse
+                const postObj = {
+                    ...postObj1,
+                    "status":true
+                }
+                const reducerObj = {
+                    ...reducerObj1,
+                    "status":true
+                }
+                this.props.updateNonStandartOrder(postObj,reducerObj)
+            }
         }
-        // else if(record.orderType === "Ne-standartinis"){
-        //     if(inputName !== "packingUserId"){
-        //         this.props.updateOrder(postObj1,reducerObj1)
-        //     }else{
-        //         // if packing was selected. then add Status to true(done)
-        //         const postObj = {
-        //             ...postObj1,
-        //             "status":true
-        //         }
-        //         this.props.updateOrder(postObj)
-        //     }
-
-
     }
 
     getProductsFromWarehouse = (value, inputName, record) => {
@@ -602,6 +604,6 @@ const mapStateToProps = (state) => {
 }
 
 // connect to redux states. define all actions
-export default connect(mapStateToProps, { getOrders, addOrder, updateOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse,updateManyMaterials,createNonStandartOrder })(withRouter(OrderScrenn))
+export default connect(mapStateToProps, { getOrders, addOrder, updateOrder,updateNonStandartOrder, updateOrderWithImage, createOrUpdateWarehouseData, addOrderWarehouse, getProducts, getUsers, checkWarehouseProduct, updateOrderTakeProductsFromWarehouse,updateManyMaterials,createNonStandartOrder })(withRouter(OrderScrenn))
 
 

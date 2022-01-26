@@ -249,7 +249,7 @@ export const getLastMonthCompletedOrders = (callback) => async (dispatch, getSta
         })
     }
 }
-
+// FOR "Standartinis orders". It will create order and take materials from materialsWarehouse
 export const addOrder = (postObject) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -338,6 +338,28 @@ export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) =
     } catch (error) {
         dispatch({
             type: 'ORDER_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const updateNonStandartOrder = (postObj,reducerObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'NON_STANDART_ORDER_UPDATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/Orders/nonstandart/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'NON_STANDART_ORDER_UPDATE_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'NON_STANDART_ORDER_UPDATE_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

@@ -46,6 +46,15 @@ export const orderReducer = (state = { orders: [] }, action) => {
             return { ...state, loading: false, orders: orders_updated }
         case 'ORDER_WAREHOUSE_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
+            // UPDATE NON-STANDART 
+        case 'NON_STANDART_ORDER_UPDATE_REQUEST':
+            return {...state, loading: true}
+        case 'NON_STANDART_ORDER_UPDATE_SUCCESS':
+            const orders_d_c = [...state.orders]
+            const updated_orders_d_c = orders_d_c.map(x => x.id === action.payload.id?action.payload:x)
+            return {...state, loading: false, orders: updated_orders_d_c}
+        case 'NON_STANDART_ORDER_UPDATE_FAIL':
+            return {...state, loading: false, error:action.payload}
         //FOR INSERTING MATERIALS
         case 'ORDER_MATERIAL_INSERT_MANY_REQUEST':
             return { ...state, loading: true }
