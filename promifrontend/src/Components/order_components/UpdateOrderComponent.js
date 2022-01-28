@@ -147,7 +147,7 @@ function UpdateOrderComponent(props) {
         dispatch(getCustomers())
         const obj = {
             ...props.record,
-            "date": moment(props.record.date).format('YYYY/MM/DD'),
+            "date":moment(props.record.date).format('YYYY/MM/DD,h:mm:ss a'),
             "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD')
         }
         setOrder(obj);
@@ -185,11 +185,10 @@ function UpdateOrderComponent(props) {
                     <Input disabled style={{ width: '100%' }} placeholder="Paprastas arba nestandartinis" value={order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
                     <p style={{ ...textStyle }}>Užsakymo numeris</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
-                    <p style={{ ...textStyle }}>Data</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} onChange={(e) => onDataChange(e.target.value, "date")} />
+                    {/* <p style={{ ...textStyle }}>Data</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} onChange={(e) => onDataChange(e.target.value, "date")} /> */}
 
-                    {/* <p style={{ ...textStyle }}>Platforma</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={order.platforma} onChange={(e) => onDataChange(e.target.value, "platforma")} /> */}
+                    
                     <p style={{ marginBottom: '5px' }}>Platforma</p>
                     <Select
                         disabled={sandelis}

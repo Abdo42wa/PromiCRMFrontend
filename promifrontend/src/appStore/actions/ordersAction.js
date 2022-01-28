@@ -300,7 +300,7 @@ export const getClientsOrders = () => async (dispatch, getState) => {
     }
 }
 
-export const getLastWeeksCompletedOrders = (callback) => async (dispatch, getState) => {
+export const getLastWeeksCompletedOrders = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'LAST_WEEKS_ORDERS_FETCH_REQUEST'
@@ -311,7 +311,6 @@ export const getLastWeeksCompletedOrders = (callback) => async (dispatch, getSta
             type: 'LAST_WEEKS_ORDERS_FETCH_SUCCESS',
             payload: response.data
         })
-        callback()
     } catch (error) {
         dispatch({
             type: 'LAST_WEEKS_ORDERS_FETCH_FAIL',
@@ -323,7 +322,7 @@ export const getLastWeeksCompletedOrders = (callback) => async (dispatch, getSta
     }
 }
 
-export const getLastMonthCompletedOrders = (callback) => async (dispatch, getState) => {
+export const getLastMonthCompletedOrders = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'LAST_MONTH_ORDERS_FETCH_REQUEST'
@@ -334,7 +333,6 @@ export const getLastMonthCompletedOrders = (callback) => async (dispatch, getSta
             type: 'LAST_MONTH_ORDERS_FETCH_SUCCESS',
             payload: response.data
         })
-        callback()
     } catch (error) {
         dispatch({
             type: 'LAST_MONTH_ORDERS_FETCH_FAIL',

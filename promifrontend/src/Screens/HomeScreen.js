@@ -37,63 +37,8 @@ class HomeScreen extends React.Component {
             paintingTime: 0,
             milingTime: 0,
             packingTime: 0,
-            done: false,
-            lastWeeksMadeProducts: [],
-            lastMonthMadeProducts: []
+            done: false
         }
-    }
-    // const dispatch = useDispatch();
-    // const usersReducer = useSelector(state => state.usersReducer)
-    // const { currentUser } = usersReducer
-
-    getLastWeeksMadeProducts = () => {
-        const clone = JSON.parse(JSON.stringify(this.props.orderDetailsReducer.last_weeks_orders));
-        const array = []
-        for (var i = 0; i < 5; i++) {
-            if (clone[i] !== null && clone[i] !== undefined) {
-                let quantity = clone[i].quantity;
-                for (var a = i + 1; a < clone.length; a++) {
-                    if (clone[i].weekNumber === clone[a].weekNumber) {
-                        quantity = quantity + clone[a].quantity;
-                        var values = clone.findIndex(x => x.id === clone[a].id)
-                        clone.splice(values, 1);
-                    }
-                }
-                const obj = {
-                    "quantity": quantity,
-                    "weekNumber": clone[i].weekNumber
-                }
-                array.push(obj)
-            }
-        }
-        this.setState({
-            lastWeeksMadeProducts: array
-        })
-    }
-
-    getLastMonthMadeProducts = () => {
-        const clone = JSON.parse(JSON.stringify(this.props.orderDetailsReducer.last_month_orders))
-        const array = []
-        for (var i = 0; i < 5; i++) {
-            if (clone[i] !== null && clone[i] !== undefined) {
-                let quantity = clone[i].quantity;
-                for (var a = i + 1; a < clone.length; a++) {
-                    if (moment(clone[i].orderFinishDate).format('YYYY/MM/DD') === moment(clone[a].orderFinishDate).format('YYYY/MM/DD')) {
-                        quantity = quantity + clone[a].quantity;
-                        var values = clone.findIndex(x => x.id === clone[a].id)
-                        clone.splice(values, 1);
-                    }
-                }
-                const obj = {
-                    "quantity": quantity,
-                    "orderFinishDate": moment(clone[i].orderFinishDate).format('YYYY/MM/DD')
-                }
-                array.push(obj)
-            }
-        }
-        this.setState({
-            lastMonthMadeProducts: array
-        })
     }
 
     // getUser = (userId) => {
@@ -166,13 +111,9 @@ class HomeScreen extends React.Component {
 
 
             // Pagamintu gaminiu ataskaita per 30 dienu. Uz kiekviena diena
-            this.props.getLastMonthCompletedOrders(() => {
-                this.getLastMonthMadeProducts();
-            })
+            this.props.getLastMonthCompletedOrders()
             // Pagamintu gaminiu kiekis savaitemis
-            this.props.getLastWeeksCompletedOrders(() => {
-                this.getLastWeeksMadeProducts()
-            })
+            this.props.getLastWeeksCompletedOrders()
         } else {
             this.props.history.push('/login');
         }
@@ -478,7 +419,7 @@ class HomeScreen extends React.Component {
         const recentWorksColumns = [
             {
                 title: "Laikas",
-                dataIndex: "time",
+                dataIndex: "CompletionDate",
                 width: '15%',
                 render: (text, record, index) => (
                     <Typography.Text>{moment(text).format("HH:mm")}  {moment(text).format("YYYY/MM/DD")}</Typography.Text>
@@ -620,22 +561,6 @@ class HomeScreen extends React.Component {
                         {text === null || text === undefined ?
                             <p></p> : <Image src={text} height={30} />}
                     </div>
-                )
-            },
-            {
-                title: 'Deadline(didžiausia)',
-                dataIndex: 'orderFinishDate',
-                width: '20%',
-                render: (text, record, index) => (
-                    <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
-                )
-            },
-            {
-                title: 'Deadline(mažiausia)',
-                dataIndex: 'minOrderFinishDate',
-                width: '20%',
-                render: (text, record, index) => (
-                    <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
                 )
             }
         ]
@@ -1007,7 +932,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <LastMonthProducts data={this.state.lastMonthMadeProducts} />
+                                    <LastMonthProducts data={this.props.orderDetailsReducer.last_month_orders} />
                                 </Card>
                             </Col>
                         </Row>
@@ -1017,14 +942,14 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Pagamintų gaminių kiekis</h3>
+                                    <h3>Pagamintų gaminių kiekis savaitemis</h3>
                                 </div>
                             </Col>
                         </Row>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <LastWeeksProducts data={this.state.lastWeeksMadeProducts} />
+                                    <LastWeeksProducts data={this.props.orderDetailsReducer.last_weeks_orders} />
                                 </Card>
                             </Col>
                         </Row>

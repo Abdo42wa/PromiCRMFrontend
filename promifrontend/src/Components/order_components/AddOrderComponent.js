@@ -21,7 +21,7 @@ function AddOrderComponent(props) {
         "orderType": "",
         "status": false,
         "orderNumber": null,
-        "date": moment().format('YYYY/MM/DD'),
+        "date": moment().format('YYYY/MM/DD,h:mm:ss a'),
         "platforma": "",
         "warehouseProductsNumber": 0,
         "WarehouseProductsDate": moment().format('YYYY/MM/DD'),
@@ -236,9 +236,9 @@ function AddOrderComponent(props) {
                     <Form.Item key="name1" name="name1" label="Užsakymo numeris">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} defaultValue={getOrderNumber()} onChange={(e) => onDataChange(e, "orderNumber")} />
                     </Form.Item>
-                    <Form.Item key="name2" name="name2" label="Data">
+                    {/* <Form.Item key="name2" name="name2" label="Data">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} defaultValue={moment().format("YYYY/MM/DD")} onChange={(e) => onDataChange(e.target.value, "date")} />
-                    </Form.Item>
+                    </Form.Item> */}
 
                     <p style={{ marginBottom: '5px' }}>Platforma</p>
                     <Select

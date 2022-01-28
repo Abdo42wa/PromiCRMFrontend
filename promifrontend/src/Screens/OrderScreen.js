@@ -134,11 +134,13 @@ class OrderScrenn extends React.Component {
                 // if packing was selected. then add Status to true(done)
                 const postObj = {
                     ...postObj1,
-                    "status": true
+                    "status": true,
+                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 const reducerObj = {
                     ...reducerObj1,
-                    "status": true
+                    "status": true,
+                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 this.props.updateOrder(postObj, reducerObj)
             }
@@ -149,11 +151,13 @@ class OrderScrenn extends React.Component {
                 // if packing was selected. then add Status to true(done)
                 const postObj = {
                     ...postObj1,
-                    "status": true
+                    "status": true,
+                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 const reducerObj = {
                     ...reducerObj1,
-                    "status": true
+                    "status": true,
+                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 const warehouseCountingPostObj = {
                     "orderId": reducerObj.id,
@@ -172,11 +176,13 @@ class OrderScrenn extends React.Component {
                 //then non-standart needs to be updated, and materials taken from materialsWarehouse
                 const postObj = {
                     ...postObj1,
-                    "status": true
+                    "status": true,
+                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 const reducerObj = {
                     ...reducerObj1,
-                    "status": true
+                    "status": true,
+                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 this.props.updateNonStandartOrder(postObj, reducerObj)
             }
@@ -188,7 +194,8 @@ class OrderScrenn extends React.Component {
             ...record,
             [inputName]: value,
             "warehouseProductsDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
-            "status": true
+            "status": true,
+            "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
         }
         const { id, ...postObj } = obj;
         const reducerObj = obj;
