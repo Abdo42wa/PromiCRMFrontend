@@ -12,7 +12,7 @@ function LastMonthProducts(props) {
             <Bar
                 // style={{height: '50px', width: '50px'}}
                 data={{
-                    labels: props.data.map(item => item.completionDate),
+                    labels: props.data.map(item => moment(item.completionDate).format('YYYY/MM/DD')),
                     datasets: [{
                         label: 'Padarytu produktų kiekis',
                         data: props.data.map(item => item.quantity),

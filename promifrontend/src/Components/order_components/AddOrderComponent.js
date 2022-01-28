@@ -78,13 +78,18 @@ function AddOrderComponent(props) {
 
     const getOrderNumber = () => {
         const orders_clone = JSON.parse(JSON.stringify(orderReducer.orders))
-        let num = Number(
-            Math.max.apply(
-                Math,
-                orders_clone?.map(o => o.orderNumber || 0),
-            ) || 0,
-        );
-        return num + 1;
+        //if there are orders then map through them and return max num  +1 
+        if(orders_clone.length > 0){
+            let num = Number(
+                Math.max.apply(
+                    Math,
+                    orders_clone?.map(o => o.orderNumber || 0),
+                ) || 0,
+            );
+            return num + 1;
+        }else{
+            return 1;
+        }
     }
 
 
