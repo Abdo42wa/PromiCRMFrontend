@@ -28,7 +28,7 @@ function AddOrderComponent(props) {
         "warehouseProductsTaken": false,
         "moreInfo": "",
         "quantity": 0,
-        "productCode": "",
+        "productCode": null,
         "shipmentTypeId": null,
         "customerId": null,
         "device": "",
@@ -113,7 +113,7 @@ function AddOrderComponent(props) {
     const onProductDataChange = (value,inputName)=>{
         setOrder(prevState => ({
             ...prevState,
-            [inputName]: Number(value)
+            [inputName]: value
 
         }))
         const obj = productsReducer.products.find(x => x.code === value)
@@ -140,7 +140,7 @@ function AddOrderComponent(props) {
         }
     }
 
-    const getOrderId = (productCode) => {
+    const getProductId = (productCode) => {
         //var productCode = "555GG";
         const product = productsReducer.products.find(element => element.code === productCode)
         // console.log(product.id)
@@ -168,7 +168,7 @@ function AddOrderComponent(props) {
             const postObj = {
                 ...clone,
                 "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
-                "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
+                "productId": clone.productCode !== null ? getProductId(product.productCode) : null,
                 "collectionTime": product.collectionTime,
                 "bondingTime": product.bondingTime,
                 "laserTime": product.laserTime,
