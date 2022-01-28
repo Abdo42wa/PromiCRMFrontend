@@ -47,6 +47,7 @@ export const insertManyMaterials = (postObj,callback) => async (dispatch, getSta
     }
 }
 
+
 export const getUncompletedOrdersTimes = () => async(dispatch,getState)=>{
     try{
         dispatch({
@@ -68,6 +69,101 @@ export const getUncompletedOrdersTimes = () => async(dispatch,getState)=>{
         })
     }
 }
+
+
+//MAIN DASHBOARD (FIRST)-------------------------------
+//Laukiantys gaminiai
+export const getMainPendingProducts = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MAIN_PENDING_PRODUCTS_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/main/pendingproducts`, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'MAIN_PENDING_PRODUCTS_FETCH_SUCCESS',
+            payload: response.data
+        })
+        
+    }catch(error){
+        dispatch({
+            type: 'MAIN_PENDING_PRODUCTS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//Butina siandien atlitki. These are orders whose deadline is today or they are late
+export const getNecessaryToMakeToday = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MAIN_NECESSARY_TODAY_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/main/necessary/make/today`, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'MAIN_NECESSARY_TODAY_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch(error){
+        dispatch({
+            type: 'MAIN_NECESSARY_TODAY_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//Siandien pagaminti(main dashboard). orders that are made today.
+export const getTodayMadeProducts = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MAIN_TODAY_MADE_PRODUCTS_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get('/api/Orders/today/made/products',{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'MAIN_TODAY_MADE_PRODUCTS_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch(error){
+        dispatch({
+            type: 'MAIN_TODAY_MADE_PRODUCTS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//Nauji uzsakyti gaminiai (main dashboard). today made orders (no  completed).
+export const getMainTodayNewOrders = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'MAIN_TODAY_NEW_PRODUCTS_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/main/new/orders`,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'MAIN_TODAY_NEW_PRODUCTS_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch(error){
+        dispatch({
+            type: 'MAIN_TODAY_NEW_PRODUCTS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//----------------------------------------
+
+
 
 export const getUrgetOrders = () => async(dispatch,getState)=>{
     try{

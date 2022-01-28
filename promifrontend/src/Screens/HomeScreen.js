@@ -2,7 +2,13 @@ import React from 'react'
 import { getUsers } from '../appStore/actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
-import { getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders, getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders, getUncompletedOrdersTimes } from '../appStore/actions/ordersAction'
+import {
+    getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,
+    getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,
+    getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders,
+    getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
+    getTodayMadeProducts, getMainTodayNewOrders
+} from '../appStore/actions/ordersAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWeekWorks, updateWork } from '../appStore/actions/weeklyworkschedulesAction'
@@ -99,9 +105,44 @@ class HomeScreen extends React.Component {
     //     }
 
     // }
+    datediff(first) {
+        var future = moment(first);
+        var today = new Date();
+        var start = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
+        return future.diff(start, 'days');
+    }
 
+    onChange(value, record) {
+        const postObj = {
+            "userId": record.userId,
+            "description": record.description,
+            "done": value,
+        }
+        const reducerObj = {
+            "id": record.id,
+            "userId": record.userId,
+            "user": record.user,
+            "description": record.description,
+            "done": value,
+            "date": record.date
+        }
+        this.props.updateWork(postObj, reducerObj);
+        console.log(postObj)
+        console.log(reducerObj)
+        // console.log(e.target.value)
+
+        // this.setState({
+        //     done: !this.state.done
+        // })
+    }
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
+            //Pagrindiniai rodikliai. 
+            this.props.getMainPendingProducts()
+            this.props.getNecessaryToMakeToday()
+            this.props.getTodayMadeProducts()
+            this.props.getMainTodayNewOrders()
+
             //Get work times. Suplanuotas darbo laikas
             this.props.getUncompletedOrdersTimes()
             //WeeklyWorkSchedule works. Only for this particular week. Savaites ukio darbai
@@ -136,85 +177,6 @@ class HomeScreen extends React.Component {
             this.props.history.push('/login');
         }
 
-    }
-    datediff(first) {
-        var future = moment(first);
-        var today = new Date();
-        var start = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
-        return future.diff(start, 'days');
-    }
-
-    getTime(type) {
-        const array = this.state.products //.map((x) => x.collectionTime)
-        const orderarray = this.state.orders
-        const orderCode = orderarray.map((x) => x.productCode)
-        const orderStatus = orderarray.map((x) => x.status)
-        const productCode = array.map((x) => x.code)
-        // console.log(orderCode)
-        // console.log(productCode)
-
-        orderCode.forEach(element => {
-            productCode.forEach(element1 => {
-                orderStatus.forEach(element2 => {
-                    // console.log(element)
-                    // console.log(element1)
-                    if (element === element1 && element2 === false) {
-                        // console.log('true')
-                        var sum = array.map((x) => x.collectionTime).reduce((a, b) => {
-                            return a + b;
-                        });
-                        var sum1 = array.map((x) => x.bondingTime).reduce((a, b) => {
-                            return a + b;
-                        });
-                        var sum2 = array.map((x) => x.laserTime).reduce((a, b) => {
-                            return a + b;
-                        });
-                        var sum3 = array.map((x) => x.paintingTime).reduce((a, b) => {
-                            return a + b;
-                        });
-                        var sum4 = array.map((x) => x.milingTime).reduce((a, b) => {
-                            return a + b;
-                        });
-                        var sum5 = array.map((x) => x.packingTime).reduce((a, b) => {
-                            return a + b;
-                        });
-                        this.setState({
-                            collectionTime: sum,
-                            bondingTime: sum1,
-                            laserTime: sum2,
-                            paintingTime: sum3,
-                            milingTime: sum4,
-                            packingTime: sum5
-                        })
-                    }
-                })
-            })
-        });
-
-
-    }
-    onChange(value, record) {
-        const postObj = {
-            "userId": record.userId,
-            "description": record.description,
-            "done": value,
-        }
-        const reducerObj = {
-            "id": record.id,
-            "userId": record.userId,
-            "user": record.user,
-            "description": record.description,
-            "done": value,
-            "date": record.date
-        }
-        this.props.updateWork(postObj, reducerObj);
-        console.log(postObj)
-        console.log(reducerObj)
-        // console.log(e.target.value)
-
-        // this.setState({
-        //     done: !this.state.done
-        // })
     }
     render() {
         const columns = [
@@ -257,7 +219,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -273,7 +235,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -289,7 +251,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -305,7 +267,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -321,7 +283,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -339,7 +301,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -356,7 +318,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -372,7 +334,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -388,7 +350,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -404,7 +366,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -420,7 +382,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -436,7 +398,7 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
                         return (
-                            <Typography.Text>{Math.round(((text/60) - Math.floor(text/60))*60)} m</Typography.Text>
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
                         )
                     } else {
                         return (
@@ -749,13 +711,45 @@ class HomeScreen extends React.Component {
         ]
         return (
             <>
-                <h1>Pagrindinis</h1>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
+
+                    <Col lg={24} style={{ marginTop: '20px' }}>
+
+                        <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                            <h3>Pagrindiniai rodikliai</h3>
+                        </div>
+                        <table class="table">
+                            <thead style={{background: 'black', color:'whitesmoke'}}>
+                                <tr>
+                                    <th scope="col-25"></th>
+                                    <th scope="col-25">Viso</th>
+                                    <th scope="col-25">Šiandien pagaminta</th>
+                                    <th scope="col-25">Nauji užsakyti gaminiai (2 d.)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Laukiantys gaminiai</th>
+                                    <td>{this.props.orderDetailsReducer.main_pending_products === null?"":this.props.orderDetailsReducer.main_pending_products === undefined?"":this.props.orderDetailsReducer.main_pending_products.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_today_made_products === null?"":this.props.orderDetailsReducer.main_today_made_products === undefined?"":this.props.orderDetailsReducer.main_today_made_products.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_new_today_orders === null?"":this.props.orderDetailsReducer.main_new_today_orders === undefined?"":this.props.orderDetailsReducer.main_new_today_orders.quantity}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Būtina šiandien atlikti</th>
+                                    <td>{this.props.orderDetailsReducer.main_necessary_today === null?"":this.props.orderDetailsReducer.main_necessary_today === undefined?"":this.props.orderDetailsReducer.main_necessary_today.quantity}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </Col>
+
                     <Col lg={24} style={{ marginTop: '20px' }}>
                         {/* <Row gutter={16}>
                                 <Col span={16}> */}
                         <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                            <h5>Suplanuotas darbo laikas</h5>
+                            <h3>Suplanuotas darbo laikas</h3>
                         </div>
                         {/* </Col>
                             </Row> */}
@@ -780,7 +774,7 @@ class HomeScreen extends React.Component {
                         {/* <Row gutter={16}>
                                 <Col span={16}> */}
                         <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                            <h5>Savaitės ūkio darbai</h5>
+                            <h3>Savaitės ūkio darbai</h3>
                         </div>
                         {/* </Col>
                             </Row> */}
@@ -806,7 +800,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Gaminių tvarkaraškis(Užsakymai)</h5>
+                                    <h3>Gaminių tvarkaraškis(Užsakymai)</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -832,7 +826,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Klientų darbų lentelė</h5>
+                                    <h3>Klientų darbų lentelė</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -857,7 +851,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Express neatlikti užsakymai</h5>
+                                    <h3>Express neatlikti užsakymai</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -882,7 +876,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Naujausi produktai</h5>
+                                    <h3>Naujausi produktai</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -908,7 +902,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Daugiausia nepagamintų produktų</h5>
+                                    <h3>Daugiausia nepagamintų produktų</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -933,7 +927,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Gaminimo į sandėlį lentelė</h5>
+                                    <h3>Gaminimo į sandėlį lentelė</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -957,7 +951,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Gaminių kiekis sandėlyje</h5>
+                                    <h3>Gaminių kiekis sandėlyje</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -981,7 +975,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Naujausi atlikti darbai</h5>
+                                    <h3>Naujausi atlikti darbai</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -1006,7 +1000,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Paskutinių gaminių ataskaita per paskutines 30 dienų</h5>
+                                    <h3>Paskutinių gaminių ataskaita per paskutines 30 dienų</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -1023,7 +1017,7 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h5>Pagamintų gaminių kiekis</h5>
+                                    <h3>Pagamintų gaminių kiekis</h3>
                                 </div>
                             </Col>
                         </Row>
@@ -1057,5 +1051,13 @@ const mapStateToProps = (state) => {
         warehouseReducer: state.warehouseReducer
     }
 }
-export default connect(mapStateToProps, { getWeekWorks, getUsers, updateWork, getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders, getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData, getLastWeeksCompletedOrders, getClientsOrders, getProducts, getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders, getUncompletedOrdersTimes })(withRouter(HomeScreen))
+export default connect(mapStateToProps, {
+    getWeekWorks, getUsers, updateWork,
+    getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,
+    getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData,
+    getLastWeeksCompletedOrders, getClientsOrders, getProducts,
+    getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders,
+    getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
+    getTodayMadeProducts, getMainTodayNewOrders
+})(withRouter(HomeScreen))
 

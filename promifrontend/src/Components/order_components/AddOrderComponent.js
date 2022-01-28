@@ -169,12 +169,12 @@ function AddOrderComponent(props) {
                 ...clone,
                 "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
                 "productId": clone.productCode !== null ? getOrderId(clone.productCode) : null,
-                "collectionTime": product_data.collectionTime,
-                "bondingTime": product_data.bondingTime,
-                "laserTime": product_data.laserTime,
-                "paintingTime": product_data.paintingTime,
-                "milingTime": product_data.milingTime,
-                "packingTime": product_data.packingTime
+                "collectionTime": product.collectionTime,
+                "bondingTime": product.bondingTime,
+                "laserTime": product.laserTime,
+                "paintingTime": product.paintingTime,
+                "milingTime": product.milingTime,
+                "packingTime": product.packingTime
             }
             props.save(postObj)
         }

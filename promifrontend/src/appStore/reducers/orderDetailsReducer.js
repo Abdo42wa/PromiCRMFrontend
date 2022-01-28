@@ -1,4 +1,10 @@
 export const orderDetailsReducer = (state = {
+    // main dashboard
+    main_pending_products: null,
+    main_necessary_today: null,
+    main_today_made_products: null,
+    main_new_today_orders: null,
+    // end main dashboard
     uncompleted_orders_times: [],
     completed_warehouse_orders: [],
     uncompleted_express_orders: [],
@@ -11,7 +17,32 @@ export const orderDetailsReducer = (state = {
     recent_orders: []
 }, action) => {
     switch (action.type) {
-        //uncompletedOrders: [],
+        //first main dashboard -------
+        case 'MAIN_PENDING_PRODUCTS_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'MAIN_PENDING_PRODUCTS_FETCH_SUCCESS':
+            return {...state, loading: false, main_pending_products: action.payload}
+        case 'MAIN_PENDING_PRODUCTS_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
+        case 'MAIN_NECESSARY_TODAY_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'MAIN_NECESSARY_TODAY_FETCH_SUCCESS':
+            return {...state, loading: false, main_necessary_today: action.payload}
+        case 'MAIN_NECESSARY_TODAY_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
+        case 'MAIN_TODAY_MADE_PRODUCTS_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'MAIN_TODAY_MADE_PRODUCTS_FETCH_SUCCESS':
+            return {...state, loading: false, main_today_made_products: action.payload}
+        case 'MAIN_TODAY_MADE_PRODUCTS_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
+        case 'MAIN_TODAY_NEW_PRODUCTS_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'MAIN_TODAY_NEW_PRODUCTS_FETCH_SUCCESS':
+            return {...state, loading: false, main_new_today_orders: action.payload}
+        case 'MAIN_TODAY_NEW_PRODUCTS_FETCH_FAIL':
+            return {...state, loading:false, error: action.payload}
+        // ----------- END first main dashboard
         case 'ORDERS_UNCOMPLETED_TIMES_FETCH_REQUEST':
             return {...state, loading: true}
         case 'ORDERS_UNCOMPLETED_TIMES_FETCH_SUCCESS':
