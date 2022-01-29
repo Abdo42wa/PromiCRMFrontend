@@ -518,13 +518,13 @@ class HomeScreen extends React.Component {
 
         const completedWarehouseOrders = [
             {
-                title: 'Kodas',
-                dataIndex: 'productCode',
+                title: 'Kiekis',
+                dataIndex: 'quantityProductWarehouse',
                 width: '30%'
             },
             {
-                title: 'Kiekis',
-                dataIndex: 'quantityProductWarehouse',
+                title: 'Kodas',
+                dataIndex: 'productCode',
                 width: '30%'
             },
             {
@@ -568,13 +568,13 @@ class HomeScreen extends React.Component {
 
         const uncompletedWarehouseOrders = [
             {
-                title: 'Kodas',
-                dataIndex: 'productCode',
+                title: 'Kiekis',
+                dataIndex: 'quantity',
                 width: '20%'
             },
             {
-                title: 'Kiekis',
-                dataIndex: 'quantity',
+                title: 'Kodas',
+                dataIndex: 'productCode',
                 width: '20%'
             },
             {
@@ -588,16 +588,16 @@ class HomeScreen extends React.Component {
                     </div>
                 )
             },
+            // {
+            //     title: 'Deadline(didžiausia)',
+            //     dataIndex: 'orderFinishDate',
+            //     width: '20%',
+            //     render: (text, record, index) => (
+            //         <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
+            //     )
+            // },
             {
-                title: 'Deadline(didžiausia)',
-                dataIndex: 'orderFinishDate',
-                width: '20%',
-                render: (text, record, index) => (
-                    <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
-                )
-            },
-            {
-                title: 'Deadline(mažiausia)',
+                title: 'Data(seniausia)',
                 dataIndex: 'minOrderFinishDate',
                 width: '20%',
                 render: (text, record, index) => (

@@ -82,14 +82,20 @@ class WarehouseCountingsScreen extends React.Component {
             //     )
             // },
             {
-                title: 'Užsakymo numeris',
-                dataIndex: 'orderId',
-                width: '10'
-            },
-            {
-                title: 'Produkto kiekis sandelyje',
+                title: 'Kiekis',
                 dataIndex: 'quantityProductWarehouse',
                 width: '20%'
+            },
+            {
+                title: 'Kodas',
+                dataIndex: 'order',
+                width: '20%',
+                render: (text,record,index)=>{
+                    if(text.productCode === null)
+                        return (<p></p>)
+                    else
+                        return (<Typography.Text>{text.productCode}</Typography.Text>)
+                }
             },
             {
                 title: 'Nuotrauka',
@@ -97,8 +103,8 @@ class WarehouseCountingsScreen extends React.Component {
                 width: '20%',
                 render: (text, record, index) => (
                     <div>
-                        {text === null || text === undefined ?
-                            <p></p> : <Image src={text.imagePath} />}
+                        {text.product.imagePath === null || text.product.imagePath === undefined ?
+                            <p></p> : <Image height={30} src={text.product.imagePath} />}
                     </div>
                 )
             },
