@@ -153,7 +153,7 @@ class ProductsScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div>
                         {text === null || text === undefined ?
-                            <p></p> : <Image src={text} />}
+                            <p></p> : <Image height={30} src={text} />}
                     </div>
                 )
             },

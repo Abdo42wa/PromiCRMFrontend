@@ -475,7 +475,7 @@ class HomeScreen extends React.Component {
         ]
         const uncompletedExpressOrderColumns = [
             {
-                title: 'Deadline',
+                title: 'Dealinas',
                 dataIndex: 'orderFinishDate',
                 width: '10%',
                 render: (text, record, index) => (
@@ -497,17 +497,17 @@ class HomeScreen extends React.Component {
                 dataIndex: 'productCode',
                 width: '10%'
             },
-            // {
-            //     title: 'Foto',
-            //     dataIndex: 'product',
-            //     width: '10%',
-            //     render: (text, record, index) => (
-            //         <div>
-            //             {text.imagePath === null || text.imagePath === undefined ?
-            //                 <p></p> : <Image src={text.imagePath} />}
-            //         </div>
-            //     )
-            // },
+            {
+                title: 'Foto',
+                dataIndex: 'imagePath',
+                width: '10%',
+                render: (text, record, index) => {
+                    if(text === null || text === undefined)
+                        return (<p></p>)
+                    else
+                        return <Image src={text} height={40} alt='Foto'/>
+                }
+            },
             {
                 title: 'Platforma',
                 dataIndex: 'platforma',
