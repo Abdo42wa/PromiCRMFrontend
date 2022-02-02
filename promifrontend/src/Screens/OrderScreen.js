@@ -241,8 +241,9 @@ class OrderScrenn extends React.Component {
                 width: '10%',
                 render: (text, record, index) => {
                     if (record.status === false && record.warehouseProductsNumber !== 0) {
+                        //onChange={(e) => this.getProductsFromWarehouse(e.target.checked, "warehouseProductsTaken", record)}
                         return (<div style={{ display: 'flex' }}>
-                            <Input type={'checkbox'} style={{ width: '35px', height: '35px' }} disabled={text === true ? true : false} value={text} onChange={(e) => this.getProductsFromWarehouse(e.target.checked, "warehouseProductsTaken", record)} />
+                            <Input type={'checkbox'} style={{ width: '35px', height: '35px' }} disabled={text === true ? true : false} value={text}  />
                             <Typography.Text style={{ paddingLeft: '15px', fontSize: '20px' }}> ({record.warehouseProductsNumber})</Typography.Text>
                         </div>)
                     } else if (record.status === true && record.warehouseProductsNumber !== 0) {

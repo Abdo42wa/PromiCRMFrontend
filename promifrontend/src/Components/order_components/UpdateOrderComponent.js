@@ -5,6 +5,8 @@ import { getCustomers } from '../../appStore/actions/customersActions'
 import { getCountries } from '../../appStore/actions/countriesAction'
 import { getUsers } from '../../appStore/actions/userListActions'
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
+import { getWarehouseProduct } from '../../appStore/actions/warehouseActions';
+import { updateOrderTakeProductsFromWarehouse } from '../../appStore/actions/ordersAction';
 import { Modal, Button, Form, Space, Select, Input, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -34,6 +36,8 @@ function UpdateOrderComponent(props) {
     const countryReducer = useSelector((state) => state.countryReducer);
     const usersListReducer = useSelector((state) => state.usersListReducer)
     const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
+    const warehouseReducer = useSelector((state) => state.warehouseReducer)
+    const ordersReducer = useSelector((state) => state.ordersReducer)
 
     const onBack = () => {
         props.onClose();
@@ -42,8 +46,6 @@ function UpdateOrderComponent(props) {
         props.onClose();
     }
     const onDataChange = (value, inputName) => {
-
-
         if (inputName === 'orderNumber' ||
             inputName === 'customerId' || inputName === 'currencyId' ||
             inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
@@ -57,8 +59,9 @@ function UpdateOrderComponent(props) {
                 [inputName]: value
             }))
         }
-
-
+        if (inputName === "productCode") {
+            dispatch(getWarehouseProduct(value))
+        }
     }
     const saveChanges = () => {
         // const clone = JSON.parse(JSON.stringify(order));
@@ -66,30 +69,7 @@ function UpdateOrderComponent(props) {
         const reducerObj = {
             ...order
         }
-        // const postObj = {
-        //     "userId": clone.userId,
-        //     "orderType": clone.orderType,
-        //     "status": clone.status,
-        //     "orderNumber": clone.orderNumber,
-        //     "date": clone.date,
-        //     "platforma": clone.platforma,
-        //     "moreInfo": clone.moreInfo,
-        //     "quantity": clone.quantity,
-        //     "photo": clone.photo,
-        //     "productCode": clone.productCode,
-        //     "comment": clone.comment,
-        //     "shipmentTypeId": clone.shipmentTypeId,
-        //     "customerId": clone.customerId,
-        //     "device": clone.device,
-        //     "productionTime": clone.productionTime,
-        //     "address": clone.address,
-        //     "countryId": clone.countryId,
-        //     "price": clone.price,
-        //     "currencyId": clone.currencyId,
-        //     "vat": clone.vat,
-        //     "orderFinishDate": clone.orderFinishDate,
-        // }
-       
+
         props.save(postObj, reducerObj);
         console.log('postobj:' + JSON.stringify(postObj))
         console.log('reducerObj:' + JSON.stringify(reducerObj))
@@ -140,14 +120,46 @@ function UpdateOrderComponent(props) {
         setFile(e.target.files[0])
     }
 
+    const onTakeFromWarehouseCheck = (value, inputName) => {
+        let num = 0;
+        if (value === false)
+            num = 0;
+        else {
+            if (order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse)
+                num = order.quantity;
+            else
+                num = 0;
+        }
+        // setOrder(prevState => ({
+        //     ...prevState,
+        //     [inputName]: Number(num)
+        // }))
+
+        const obj = {
+            ...order,
+            "warehouseProductsNumber": Number(num),
+            "warehouseProductsTaken": true,
+            "warehouseProductsDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
+            "status": true,
+            "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
+
+        }
+        const { id, ...postObj } = obj;
+        const reducerObj = obj;
+
+        dispatch(updateOrderTakeProductsFromWarehouse(postObj, reducerObj))
+        props.onClose();
+    }
+
     useEffect(() => {
         dispatch(getUsers());
         dispatch(getCurrencies())
         dispatch(getCountries())
         dispatch(getCustomers())
+        dispatch(getWarehouseProduct(props.record.productCode))
         const obj = {
             ...props.record,
-            "date":moment(props.record.date).format('YYYY/MM/DD,h:mm:ss a'),
+            "date": moment(props.record.date).format('YYYY/MM/DD,h:mm:ss a'),
             "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD')
         }
         setOrder(obj);
@@ -163,7 +175,7 @@ function UpdateOrderComponent(props) {
         }
 
         // eslint-disable-next-line
-    }, [dispatch]);
+    }, [dispatch, props.record.id]);
     return (
         <>
             <Modal
@@ -188,7 +200,7 @@ function UpdateOrderComponent(props) {
                     {/* <p style={{ ...textStyle }}>Data</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} onChange={(e) => onDataChange(e.target.value, "date")} /> */}
 
-                    
+
                     <p style={{ marginBottom: '5px' }}>Platforma</p>
                     <Select
                         disabled={sandelis}
@@ -204,13 +216,39 @@ function UpdateOrderComponent(props) {
                         })}
                     </Select>
                     <p style={{ ...textStyle }}>Daugiau informacijos</p>
-                    <Input required style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
+                    <Input style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     <p style={{ ...textStyle }}>Kiekis</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
                     {/* <p style={{ ...textStyle }}>Nuotrauka</p>
                     <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={order.photo} onChange={(e) => onDataChange(e.target.value, "photo")} /> */}
                     <p style={{ ...textStyle }}>Prekės kodas</p>
-                    <Input disabled={!notStandart} required style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
+                    <Input disabled={!notStandart} style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
+
+                    {order.orderType === "Standartinis" && order.productCode !== "" ?
+                        <div>
+                        <p style={{...textStyle}}>Panaudosime sandėlio produktus?</p>
+                            <Input disabled={
+                                order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse &&
+                                    order.warehouseProductsTaken === false ? false : true} style={{ width: '35px', height: '35px' }} type={'checkbox'} value={order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")} />
+                        </div>
+                        : null
+                    }
+                    {/* {order.orderType === "Standartinis" && order.productCode !== '' && warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined &&
+                    warehouseReducer.warehouse_product.quantityProductWarehouse !== 0 && order.status === false?
+                    <p>Sandėlyje yra: <i style={{fontSize: '20px', color: 'green', fontWeight: 'bold'}}>{warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
+                    :<p>Sandėlyje neturime</p>} */}
+                    {order.orderType === "Standartinis" && order.status == false &&
+                    warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined?
+                    <div>
+                    {warehouseReducer.warehouse_product.quantityProductWarehouse < order.quantity?
+                        <p>Sandėlyje <i style={{fontSize: '20px', color: 'orange', fontWeight: 'bold'}}>turime nepakankamai, {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
+                        :  <p>Sandėlyje yra:<i style={{fontSize: '20px', color: 'green', fontWeight: 'bold'}}> {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>}
+                    </div>
+                    :order.orderType === "Standartinis" && order.status == false &&
+                    warehouseReducer.warehouse_product.quantityProductWarehouse === undefined?
+                    <p>Sandėlyje yra: <i style={{fontSize: '20px', color: 'orange', fontWeight: 'bold'}}>nėra produktų</i></p>
+                    :null
+                    }
 
                     {/* all work times */}
                     {order.orderType === "Ne-standartinis" ? <div>
@@ -226,21 +264,21 @@ function UpdateOrderComponent(props) {
                         <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" value={order.collectionTime} onChange={(e) => onDataChange(e, "collectionTime")} />
                         <p style={{ ...textStyle }}>Pakavimo laikas</p>
                         <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" value={order.packingTime} onChange={(e) => onDataChange(e, "packingTime")} />
-                    </div>:
-                    <div>
-                    <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
-                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" value={order.laserTime} />
-                        <p style={{ ...textStyle }}>Frezavimo laikas</p>
-                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" value={order.milingTime} />
-                        <p style={{ ...textStyle }}>Dažymo laikas</p>
-                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" value={order.paintingTime} />
-                        <p style={{ ...textStyle }}>Suklijavimo laikas</p>
-                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" value={order.bondingTime} />
-                        <p style={{ ...textStyle }}>Surinkimo laikas</p>
-                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" value={order.collectionTime} />
-                        <p style={{ ...textStyle }}>Pakavimo laikas</p>
-                        <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" value={order.packingTime} />
-                    </div>}
+                    </div> :
+                        <div>
+                            <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
+                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" value={order.laserTime} />
+                            <p style={{ ...textStyle }}>Frezavimo laikas</p>
+                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" value={order.milingTime} />
+                            <p style={{ ...textStyle }}>Dažymo laikas</p>
+                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" value={order.paintingTime} />
+                            <p style={{ ...textStyle }}>Suklijavimo laikas</p>
+                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" value={order.bondingTime} />
+                            <p style={{ ...textStyle }}>Surinkimo laikas</p>
+                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" value={order.collectionTime} />
+                            <p style={{ ...textStyle }}>Pakavimo laikas</p>
+                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" value={order.packingTime} />
+                        </div>}
 
                     <p style={{ ...textStyle }}>Gamybos laikas</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
@@ -294,8 +332,8 @@ function UpdateOrderComponent(props) {
                         value={order.shipmentTypeId}
                         onChange={(e) => onDataChange(e, "shipmentTypeId")}
                     >
-                        <Option key={1} value={1}>{'Skubus'}</Option>
-                        <Option key={2} value={2}>{'Paprasta'}</Option>
+                        <Option key={1} value={1}>{'Express'}</Option>
+                        <Option key={2} value={2}>{'Paprastas'}</Option>
                     </Select>
                     <p style={{ marginBottom: '5px' }}>Klientas</p>
                     <Select

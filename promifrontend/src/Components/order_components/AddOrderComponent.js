@@ -24,12 +24,12 @@ function AddOrderComponent(props) {
         "date": moment().format('YYYY/MM/DD,h:mm:ss a'),
         "platforma": "",
         "warehouseProductsNumber": 0,
-        "WarehouseProductsDate": moment().format('YYYY/MM/DD'),
+        "warehouseProductsDate": moment().format('YYYY/MM/DD'),
         "warehouseProductsTaken": false,
         "moreInfo": "",
         "quantity": 0,
         "productCode": null,
-        "shipmentTypeId": null,
+        "shipmentTypeId": 2,
         "customerId": null,
         "device": "",
         "productionTime": 0,
@@ -37,7 +37,7 @@ function AddOrderComponent(props) {
         "countryId": null,
         "comment": "",
         "price": 0,
-        "currencyId": null,
+        "currencyId": 1,
         "vat": 0,
         "orderFinishDate": moment().format('YYYY/MM/DD'),
         "orderId": null,
@@ -223,8 +223,8 @@ function AddOrderComponent(props) {
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ marginBottom: '5px' }}>Užsakymo tipas</p>
                     <Select
-
                         showSearch
+                        required
                         style={{ width: '100%' }}
                         placeholder="Įrašykite tipą"
                         optionFilterProp="children"
@@ -258,7 +258,7 @@ function AddOrderComponent(props) {
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={order.platformas} onChange={(e) => onDataChange(e.target.value, "platforma")} />
                     </Form.Item> */}
                     <Form.Item key="name4" name="name4" label="Daugiau informacijos">
-                        <Input required style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
+                        <Input style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     </Form.Item>
                     <Form.Item key="name5" name="name5" label="Kiekis">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
@@ -280,75 +280,78 @@ function AddOrderComponent(props) {
                             return (<Option key={element.id} value={element.code}>{element.code}</Option>)
                         })}
                     </Select>
-                    {order.productCode !== '' && <p style={{ color: 'red' }}> sandėlyje turim {warehouseReducer.warehouse_product.quantityProductWarehouse}</p>}
+                    {order.orderType === "Standartinis" && order.productCode !== '' && warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined &&
+                    warehouseReducer.warehouse_product.quantityProductWarehouse !== null && warehouseReducer.warehouse_product.quantityProductWarehouse !== 0?
+                    <p>Sandėlyje yra: <i style={{fontSize: '20px', color: 'green', fontWeight: 'bold'}}>{warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
+                    :<p>Sandėlyje neturime</p>}
 
-                    {order.productCode !== '' && order.orderType === "Standartinis" ?
+                    {/* {order.productCode !== '' && order.orderType === "Standartinis" ?
                         <Form.Item key='warehouseProductsNumber' name='warehouseProductsNumber' label="Panaudosime sandėlio produktus?">
                             <Input style={{ width: '35px', height: '35px' }} type={'checkbox'} value={order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")} />
-                        </Form.Item> : null}
+                        </Form.Item> : null} */}
                     {order.orderType === "Ne-standartinis" ?
                         <div>
                             <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
-                                <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" value={order.laserTime} onChange={(e) => onDataChange(e, "laserTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" value={order.laserTime} onChange={(e) => onDataChange(e, "laserTime")} />
                             </Form.Item>
                             <Form.Item key="name16" name="name16" label="Frezavimo laikas">
-                                <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" value={order.milingTime} onChange={(e) => onDataChange(e, "milingTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" value={order.milingTime} onChange={(e) => onDataChange(e, "milingTime")} />
                             </Form.Item>
                             <Form.Item key="name19" name="name19" label="Dažymo laikas">
-                                <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" value={order.paintingTime} onChange={(e) => onDataChange(e, "paintingTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" value={order.paintingTime} onChange={(e) => onDataChange(e, "paintingTime")} />
                             </Form.Item>
                             <Form.Item key="name20" name="name20" label="Suklijavimo laikas">
-                                <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" value={order.bondingTime} onChange={(e) => onDataChange(e, "bondingTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" value={order.bondingTime} onChange={(e) => onDataChange(e, "bondingTime")} />
                             </Form.Item>
                             <Form.Item key="name17" name="name17" label="Surinkimo laikas">
-                                <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" value={order.collectionTime} onChange={(e) => onDataChange(e, "collectionTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" value={order.collectionTime} onChange={(e) => onDataChange(e, "collectionTime")} />
                             </Form.Item>
                             <Form.Item key="name18" name="name18" label=" Pakavimo laikas">
-                                <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" value={order.packingTime} onChange={(e) => onDataChange(e, "packingTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" value={order.packingTime} onChange={(e) => onDataChange(e, "packingTime")} />
                             </Form.Item>
                         </div> : null
                     }
                     {order.productCode !== '' && product !== null?
                         <div>
                             <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
-                                <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={product.laserTime} />
+                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={product.laserTime} />
                             </Form.Item>
                             <Form.Item key="name16" name="name16" label="Frezavimo laikas">
-                                <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={product.milingTime} />
+                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={product.milingTime} />
                             </Form.Item>
                             <Form.Item key="name19" name="name19" label="Dažymo laikas">
-                                <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={product.paintingTime} />
+                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={product.paintingTime} />
                             </Form.Item>
                             <Form.Item key="name20" name="name20" label="Suklijavimo laikas">
-                                <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={product.bondingTime} />
+                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={product.bondingTime} />
                             </Form.Item>
                             <Form.Item key="name17" name="name17" label="Surinkimo laikas">
-                                <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={product.collectionTime} />
+                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={product.collectionTime} />
                             </Form.Item>
                             <Form.Item key="name18" name="name18" label=" Pakavimo laikas">
-                                <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={product.packingTime} />
+                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={product.packingTime} />
                             </Form.Item>
                         </div> : null
 
                     }
                     <Form.Item key="name8" name="name8" label="Gamybos laikas">
-                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} />
+                        <InputNumber style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} />
                     </Form.Item>
 
                     {/* <Form.Item key="name9" name="name9" label="Įrenginys">
                         <Input required style={{ width: '100%' }} placeholder="Pridėkite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} />
                     </Form.Item> */}
                     <Form.Item key="name10" name="name10" label="Adresas">
-                        <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
+                        <Input disabled={sandelis} style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     </Form.Item>
                     <Form.Item key="name11" name="name11" label="Komentaras">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={order.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={order.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
                     </Form.Item>
                     <Form.Item key="name12" name="name12" label="Kaina">
-                        <InputNumber disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e, "price")} />
+                        <InputNumber disabled={sandelis} style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e, "price")} />
                     </Form.Item>
                     <Form.Item key="name13" name="name13" label="Vat">
-                        <InputNumber disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e, "vat")} />
+                        <InputNumber disabled={sandelis} style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e, "vat")} />
                     </Form.Item>
                     <Form.Item key="name14" name="name14" label="Užsakymo pabaigos data">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} defaultValue={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
@@ -364,6 +367,7 @@ function AddOrderComponent(props) {
                         style={{ width: '100%' }}
                         placeholder="Priskirkite tipą"
                         optionFilterProp="children"
+                        defaultValue={order.shipmentTypeId}
                         onChange={(e) => onDataChange(e, "shipmentTypeId")}
                     >
                         <Option key={1} value={1}>{'Express'}</Option>
@@ -390,6 +394,7 @@ function AddOrderComponent(props) {
                         style={{ width: '100%' }}
                         placeholder="Pasirinkite valiutą"
                         optionFilterProp="children"
+                        defaultValue={order.currencyId}
                         onChange={(e) => onDataChange(e, "currencyId")}
                     >
                         {currencyReducer.currency.map((element, index) => {
