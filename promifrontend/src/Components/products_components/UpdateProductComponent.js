@@ -195,20 +195,17 @@ function UpdateProductComponent(props) {
     }
 
     useEffect(() => {
-        dispatch(getOrders(() => {
-            dispatch(getMaterialsWarehouseData())
-            const obj = {
-               ...props.record
-                // "productMaterials": props.record.productMaterials.map((x) => x.materialWarehouseId)
-            }
-            // dispatch(getMaterialsByProduct(props.record.id, () =>{
-            //     setProductMaterials(props.record.productMaterials)
-            // }))
-            setProduct(obj);
-            // setProductMaterials(props.record.productMaterials)
-            // setProductMaterials(props.record.productMaterials);
-        }));
-    }, [dispatch, props.record.id, props.record]);
+        dispatch(getOrders())
+        dispatch(getMaterialsWarehouseData())
+        const obj = {
+            ...props.record
+            // "productMaterials": props.record.productMaterials.map((x) => x.materialWarehouseId)
+        }
+        // dispatch(getMaterialsByProduct(props.record.id, () =>{
+        //     setProductMaterials(props.record.productMaterials)
+        // }))
+        setProduct(obj);
+    }, [dispatch, props.record.id]);
     return (
         <>
             <Modal

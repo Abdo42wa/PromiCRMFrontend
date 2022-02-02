@@ -54,7 +54,8 @@ class ProductsScrenn extends React.Component {
                 visibility: true,
                 record: record
             }
-        }))
+        }), () => console.log(this.state.updateProduct))
+        // console.log(record)
     }
     unshowProductModal = () => {
         this.setState(prevState => ({
@@ -67,7 +68,7 @@ class ProductsScrenn extends React.Component {
     }
 
     //for AddProductMaterialsComponent
-    showAddProductMaterials = (record,index) => {
+    showAddProductMaterials = (record, index) => {
         this.setState(prevState => ({
             addProductMaterials: {
                 ...prevState.addProductMaterials,
@@ -138,7 +139,7 @@ class ProductsScrenn extends React.Component {
                 title: 'Medžiagų pridėjimas',
                 width: '5%',
                 render: (text, record, index) => (
-                    <Button onClick={(e) => this.showAddProductMaterials(record,index)}>Pridėjimas</Button>
+                    <Button onClick={(e) => this.showAddProductMaterials(record, index)}>Pridėjimas</Button>
                 )
             },
             {

@@ -79,6 +79,7 @@ function AddProductComponent(props) {
         formData.append("file", file)
         props.save(formData);
         console.log(dataProduct);
+        console.log(file)
     }
     useEffect(() => {
         dispatch(getOrders(() => {
