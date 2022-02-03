@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Form, Space, Select, Input,InputNumber } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getUsers } from '../../appStore/actions/userListActions'
 
@@ -31,7 +31,7 @@ function AddSalesChannelComponent(props) {
         setSalesChannel(prevState => ({
             ...prevState,
             [inputName]: value
-        }));    
+        }));
     }
     const saveChanges = () => {
         const postObj = salesChannel;
@@ -58,7 +58,12 @@ function AddSalesChannelComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-                    <Form.Item key="name" name="name" label="Pavadinimas">
+                    <Form.Item
+                        key="name"
+                        name="name"
+                        label="Pavadinimas"
+                        rules={[{ required: true, message: "Įveskite pavadinimą!" }]}
+                    >
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite pavadinimą" value={salesChannel.title} onChange={(e) => onDataChange(e.target.value, "title")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Kontaktinis asmuo">
@@ -79,19 +84,23 @@ function AddSalesChannelComponent(props) {
                     <Form.Item key="name7" name="name7" label="Tarpininkavimo mokestis">
                         <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite tarpininkavimo mokestį" value={salesChannel.brokerageFee} onChange={(e) => onDataChange(e, "brokerageFee")} />
                     </Form.Item>
-                    <p style={{ marginBottom: '5px' }}>Atsakingas asmuo</p>
-                    <Select
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite atsakingą asmenį"
-                        optionFilterProp="children"
-                        onChange={(e) => onDataChange(e, "userId")}
-                    >
-                        {usersListReducer.users.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.name}</Option>)
-                        })}
-                    </Select>
-
+                    <Form.Item
+                        key="user"
+                        name="user"
+                        label="Atsakingas asmuo"
+                        rules={[{ required: true, message: "Pasirinkite atsakingą asmenį!" }]}>
+                        <Select
+                            showSearch
+                            style={{ width: '320px' }}
+                            placeholder="Priskirkite atsakingą asmenį"
+                            optionFilterProp="children"
+                            onChange={(e) => onDataChange(e, "userId")}
+                        >
+                            {usersListReducer.users.map((element, index) => {
+                                return (<Option key={element.id} value={element.id}>{element.name}</Option>)
+                            })}
+                        </Select>
+                    </Form.Item>
                 </Form>
             </Modal>
         </>
