@@ -8,6 +8,7 @@ import { getLoggedUser } from '../../appStore/actions/userAction';
 import { getProducts } from '../../appStore/actions/productsActions'
 import { getWarehouseProduct } from '../../appStore/actions/warehouseActions'
 import { getOrders } from '../../appStore/actions/ordersAction'
+import { getShipments } from '../../appStore/actions/shipmentsActions';
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
@@ -65,6 +66,7 @@ function AddOrderComponent(props) {
     const orderReducer = useSelector((state) => state.orderReducer)
     const warehouseReducer = useSelector((state) => state.warehouseReducer)
     const usersReducer = useSelector((state) => state.usersReducer)
+    const shipmentsReducer = useSelector((state) => state.shipmentsReducer)
 
     const changeFile = (e) => {
         console.log(e.target.files[0])
@@ -205,6 +207,7 @@ function AddOrderComponent(props) {
         dispatch(getSalesChannels())
         dispatch(getProducts());
         dispatch(getLoggedUser())
+        dispatch(getShipments())
         //getOrderId();
     }, [dispatch]);
     return (
@@ -258,26 +261,26 @@ function AddOrderComponent(props) {
                         <Input style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} defaultValue={moment().format("YYYY/MM/DD")} onChange={(e) => onDataChange(e.target.value, "date")} />
                     </Form.Item> */}
 
-                    <div>
-                        <Form.Item
-                            key="platforma"
-                            name="platforma"
-                            label="Platforma"
+
+                    <Form.Item
+                        key="platforma"
+                        name="platforma"
+                        label="Platforma"
+                    >
+                        <Select
+                            disabled={sandelis}
+                            showSearch
+                            style={{ width: '100%' }}
+                            placeholder="Priskirkite platforma"
+                            optionFilterProp="children"
+                            onChange={(e) => onDataChange(e, "platforma")}
                         >
-                            <Select
-                                disabled={sandelis}
-                                showSearch
-                                style={{ width: '100%' }}
-                                placeholder="Priskirkite platforma"
-                                optionFilterProp="children"
-                                onChange={(e) => onDataChange(e, "platforma")}
-                            >
-                                {salesChannelsReducer.salesChannels.map((element, index) => {
-                                    return (<Option key={element.id} value={element.title}>{element.title}</Option>)
-                                })}
-                            </Select>
-                        </Form.Item>
-                    </div>
+                            {salesChannelsReducer.salesChannels.map((element, index) => {
+                                return (<Option key={element.id} value={element.title}>{element.title}</Option>)
+                            })}
+                        </Select>
+                    </Form.Item>
+
                     <Form.Item key="name4" name="name4" label="Daugiau informacijos">
                         <Input
                             style={{ width: '100%' }}
@@ -419,8 +422,11 @@ function AddOrderComponent(props) {
                             defaultValue={order.shipmentTypeId}
                             onChange={(e) => onDataChange(e, "shipmentTypeId")}
                         >
-                            <Option key="Express" value={1}>{'Express'}</Option>
-                            <Option key="Paprastas" value={2}>{'Paprastas'}</Option>
+                            {shipmentsReducer.shipments.map((element,index)=>(
+                                <Option key={element.id} value={element.id}>{element.type}</Option>
+                            ))}
+                            {/* <Option key="Express" value={1}>{'Express'}</Option>
+                            <Option key="Paprastas" value={2}>{'Paprastas'}</Option> */}
                         </Select>
                     </Form.Item>
                     <Form.Item
@@ -496,7 +502,7 @@ function AddOrderComponent(props) {
                             })}
                         </Select>
                     </Form.Item>
-                    <div style={{marginTop: '5px'}}></div>
+                    <div style={{ marginTop: '5px' }}></div>
                     <Form.Item>
                         <Button
                             type="primary"

@@ -7,6 +7,7 @@ import { getUsers } from '../../appStore/actions/userListActions'
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { getWarehouseProduct } from '../../appStore/actions/warehouseActions';
 import { updateOrderTakeProductsFromWarehouse } from '../../appStore/actions/ordersAction';
+import { getShipments } from '../../appStore/actions/shipmentsActions';
 import { Modal, Button, Form, Space, Select, Input, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -38,7 +39,7 @@ function UpdateOrderComponent(props) {
     const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
     const warehouseReducer = useSelector((state) => state.warehouseReducer)
     const ordersReducer = useSelector((state) => state.ordersReducer)
-
+    const shipmentsReducer = useSelector((state) => state.shipmentsReducer)
     const onBack = () => {
         props.onClose();
     }
@@ -226,7 +227,7 @@ function UpdateOrderComponent(props) {
 
                     {order.orderType === "Standartinis" && order.productCode !== "" ?
                         <div>
-                        <p style={{...textStyle}}>Panaudosime sandėlio produktus?</p>
+                            <p style={{ ...textStyle }}>Panaudosime sandėlio produktus?</p>
                             <Input disabled={
                                 order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse &&
                                     order.warehouseProductsTaken === false ? false : true} style={{ width: '35px', height: '35px' }} type={'checkbox'} value={order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")} />
@@ -238,16 +239,16 @@ function UpdateOrderComponent(props) {
                     <p>Sandėlyje yra: <i style={{fontSize: '20px', color: 'green', fontWeight: 'bold'}}>{warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
                     :<p>Sandėlyje neturime</p>} */}
                     {order.orderType === "Standartinis" && order.status == false &&
-                    warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined?
-                    <div>
-                    {warehouseReducer.warehouse_product.quantityProductWarehouse < order.quantity?
-                        <p>Sandėlyje <i style={{fontSize: '20px', color: 'orange', fontWeight: 'bold'}}>turime nepakankamai, {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
-                        :  <p>Sandėlyje yra:<i style={{fontSize: '20px', color: 'green', fontWeight: 'bold'}}> {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>}
-                    </div>
-                    :order.orderType === "Standartinis" && order.status == false &&
-                    warehouseReducer.warehouse_product.quantityProductWarehouse === undefined?
-                    <p>Sandėlyje yra: <i style={{fontSize: '20px', color: 'orange', fontWeight: 'bold'}}>nėra produktų</i></p>
-                    :null
+                        warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined ?
+                        <div>
+                            {warehouseReducer.warehouse_product.quantityProductWarehouse < order.quantity ?
+                                <p>Sandėlyje <i style={{ fontSize: '20px', color: 'orange', fontWeight: 'bold' }}>turime nepakankamai, {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
+                                : <p>Sandėlyje yra:<i style={{ fontSize: '20px', color: 'green', fontWeight: 'bold' }}> {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>}
+                        </div>
+                        : order.orderType === "Standartinis" && order.status == false &&
+                            warehouseReducer.warehouse_product.quantityProductWarehouse === undefined ?
+                            <p>Sandėlyje yra: <i style={{ fontSize: '20px', color: 'orange', fontWeight: 'bold' }}>nėra produktų</i></p>
+                            : null
                     }
 
                     {/* all work times */}
@@ -332,8 +333,9 @@ function UpdateOrderComponent(props) {
                         value={order.shipmentTypeId}
                         onChange={(e) => onDataChange(e, "shipmentTypeId")}
                     >
-                        <Option key={1} value={1}>{'Express'}</Option>
-                        <Option key={2} value={2}>{'Paprastas'}</Option>
+                        {shipmentsReducer.shipments.map((element, index) => (
+                            <Option key={element.id} value={element.id}>{element.type}</Option>
+                        ))}
                     </Select>
                     <p style={{ marginBottom: '5px' }}>Klientas</p>
                     <Select
