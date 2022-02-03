@@ -165,7 +165,8 @@ function AddOrderComponent(props) {
             const postObj = {
                 ...clone,
                 "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
-                "platforma":clone.platforma === null ? "Nera":clone.platforma
+                "platforma": clone.platforma === null ? "Nera" : clone.platforma,
+                "productCode": null
             }
             props.save(postObj)
         } else {
@@ -267,7 +268,7 @@ function AddOrderComponent(props) {
                         <div>
                             <p>Ne-standartinis</p>
                             <select
-                                 className="form-select" aria-label="Default select example"
+                                className="form-select" aria-label="Default select example"
                                 name='platforma'
                                 key='platforma'
                                 id="platforma"
@@ -321,24 +322,44 @@ function AddOrderComponent(props) {
                             value={order.quantity}
                             onChange={(e) => onDataChange(e.target.value, "quantity")} />
                     </Form.Item>
-
-                    <Form.Item
-                        key="productCode"
-                        name="productCode"
-                        label="Prekės kodas">
-                        <Select
-                            showSearch
-                            disabled={!notStandart}
-                            style={{ width: '100%' }}
-                            placeholder="Priskirkite prekės kodą"
-                            optionFilterProp="children"
-                            onChange={(e) => onProductDataChange(e, "productCode")}
+                    {/* if order is Standart or Sandeliui then productCode is required */}
+                    {order.orderType === "Standartinis" || order.orderType === "Sandelis" ?
+                        <Form.Item
+                            key="productCode"
+                            name="productCode"
+                            label="Prekės kodas"
+                            rules={[{ required: true, message: "Įveskite prekės kodą!" }]}
                         >
-                            {productsReducer.products.map((element, index) => {
-                                return (<Option key={element.id} value={element.code}>{element.code}</Option>)
-                            })}
-                        </Select>
-                    </Form.Item>
+                            <Select
+                                showSearch
+                                disabled={!notStandart}
+                                style={{ width: '100%' }}
+                                placeholder="Priskirkite prekės kodą"
+                                optionFilterProp="children"
+                                onChange={(e) => onProductDataChange(e, "productCode")}
+                            >
+                                {productsReducer.products.map((element, index) => {
+                                    return (<Option key={element.id} value={element.code}>{element.code}</Option>)
+                                })}
+                            </Select>
+                        </Form.Item>
+                        :
+                        <div>
+                            <p>Prekės kodas</p>
+                            <select
+                                className="form-select" aria-label="Default select example"
+                                disabled
+                                name='productCode1'
+                                key='productCode1'
+                                onChange={(e) => onDataChange(e, "productCode")}
+                            >
+                                {/* {productsReducer.products.map((element, index) => {
+                                    return (<option key={element.id} value={element.code}>{element.code}</option>)
+                                })} */}
+                            </select>
+                        </div>
+                    }
+
                     {order.orderType === "Standartinis" && order.productCode !== '' && warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined &&
                         warehouseReducer.warehouse_product.quantityProductWarehouse !== null && warehouseReducer.warehouse_product.quantityProductWarehouse !== 0 ?
                         <p>Sandėlyje yra: <i style={{ fontSize: '20px', color: 'green', fontWeight: 'bold' }}>{warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>

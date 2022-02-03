@@ -621,9 +621,13 @@ class HomeScreen extends React.Component {
                 title: 'Klientas',
                 dataIndex: 'customer',
                 width: '25%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text.name}  {text.companyName}</Typography.Text>
-                )
+                render: (text, record, index) => {
+                    if(text === null)
+                        return (<p></p>)
+                    else
+                        return (<Typography.Text>{text.name}  {text.companyName}</Typography.Text>)
+                    
+                }
             },
             {
                 title: 'Būklė',
