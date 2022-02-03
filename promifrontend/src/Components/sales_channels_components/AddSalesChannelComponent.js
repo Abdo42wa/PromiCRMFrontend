@@ -37,6 +37,12 @@ function AddSalesChannelComponent(props) {
         const postObj = salesChannel;
         props.save(postObj);
     }
+    // footer={
+    //     <div>
+    //         <Button key="customCancel" onClick={onCancel}>Atšaukti</Button>
+    //         <Button key="customSubmit" form="myForm" onClick={saveChanges} htmlType="submit" type={'primary'}>Pridėti</Button>
+    //     </div>
+    // }
     useEffect(() => {
         dispatch(getUsers())
     }, [dispatch])
@@ -50,39 +56,39 @@ function AddSalesChannelComponent(props) {
                 cancelButtonProps={{ disabled: false }}
                 title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują pardavimo kanalą</Space>}
                 visible={props.visible}
-                footer={
-                    <div>
-                        <Button key="customCancel" onClick={onCancel}>Atšaukti</Button>
-                        <Button key="customSubmit" form="myForm" onClick={saveChanges} htmlType="submit" type={'primary'}>Pridėti</Button>
-                    </div>
-                }
+                footer={null}
             >
-                <Form layout="vertical" id="myForm" name="myForm">
+                <Form 
+                layout="vertical"
+                 id="myForm"
+                  name="myForm"
+                  onFinish={saveChanges}
+                  >
                     <Form.Item
                         key="name"
                         name="name"
                         label="Pavadinimas"
                         rules={[{ required: true, message: "Įveskite pavadinimą!" }]}
                     >
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite pavadinimą" value={salesChannel.title} onChange={(e) => onDataChange(e.target.value, "title")} />
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite pavadinimą" value={salesChannel.title} onChange={(e) => onDataChange(e.target.value, "title")} />
                     </Form.Item>
                     <Form.Item key="name2" name="name2" label="Kontaktinis asmuo">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite kontaktinis asmenį" value={salesChannel.contactPerson} onChange={(e) => onDataChange(e.target.value, "contactPerson")} />
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite kontaktinis asmenį" value={salesChannel.contactPerson} onChange={(e) => onDataChange(e.target.value, "contactPerson")} />
                     </Form.Item>
                     <Form.Item key="name3" name="name3" label="El. paštas">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite el. paštą" value={salesChannel.email} onChange={(e) => onDataChange(e.target.value, "email")} />
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite el. paštą" value={salesChannel.email} onChange={(e) => onDataChange(e.target.value, "email")} />
                     </Form.Item>
                     <Form.Item key="name4" name="name4" label="Telefono numeris">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite telefono numerį" value={salesChannel.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite telefono numerį" value={salesChannel.phoneNumber} onChange={(e) => onDataChange(e.target.value, "phoneNumber")} />
                     </Form.Item>
                     <Form.Item key="name5" name="name5" label="Adresas siuntų pristatymui">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={salesChannel.deliveryAddress} onChange={(e) => onDataChange(e.target.value, "deliveryAddress")} />
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite adresą" value={salesChannel.deliveryAddress} onChange={(e) => onDataChange(e.target.value, "deliveryAddress")} />
                     </Form.Item>
                     <Form.Item key="name6" name="name6" label="Nuolaida">
-                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite nuolaidą" value={salesChannel.discount} onChange={(e) => onDataChange(e, "discount")} />
+                        <InputNumber style={{ width: '100%' }} placeholder="Įrašykite nuolaidą" value={salesChannel.discount} onChange={(e) => onDataChange(e, "discount")} />
                     </Form.Item>
                     <Form.Item key="name7" name="name7" label="Tarpininkavimo mokestis">
-                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite tarpininkavimo mokestį" value={salesChannel.brokerageFee} onChange={(e) => onDataChange(e, "brokerageFee")} />
+                        <InputNumber style={{ width: '100%' }} placeholder="Įrašykite tarpininkavimo mokestį" value={salesChannel.brokerageFee} onChange={(e) => onDataChange(e, "brokerageFee")} />
                     </Form.Item>
                     <Form.Item
                         key="user"
@@ -100,6 +106,14 @@ function AddSalesChannelComponent(props) {
                                 return (<Option key={element.id} value={element.id}>{element.name}</Option>)
                             })}
                         </Select>
+                    </Form.Item>
+                    <div style={{marginTop: '5px'}}></div>
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit">
+                            Pridėti
+                        </Button>
                     </Form.Item>
                 </Form>
             </Modal>
