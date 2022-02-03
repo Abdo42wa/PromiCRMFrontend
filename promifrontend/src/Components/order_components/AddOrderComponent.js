@@ -24,7 +24,7 @@ function AddOrderComponent(props) {
         "status": false,
         "orderNumber": null,
         "date": moment().format('YYYY/MM/DD,h:mm:ss a'),
-        "platforma": "",
+        "platforma": null,
         "warehouseProductsNumber": 0,
         "warehouseProductsDate": moment().format('YYYY/MM/DD'),
         "warehouseProductsTaken": false,
@@ -164,7 +164,8 @@ function AddOrderComponent(props) {
         if (clone.orderType === "Ne-standartinis") {
             const postObj = {
                 ...clone,
-                "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber
+                "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
+                "platforma":clone.platforma === null ? "Nera":clone.platforma
             }
             props.save(postObj)
         } else {
@@ -262,24 +263,44 @@ function AddOrderComponent(props) {
                     </Form.Item> */}
 
 
-                    <Form.Item
-                        key="platforma"
-                        name="platforma"
-                        label="Platforma"
-                    >
-                        <Select
-                            disabled={sandelis}
-                            showSearch
-                            style={{ width: '100%' }}
-                            placeholder="Priskirkite platforma"
-                            optionFilterProp="children"
-                            onChange={(e) => onDataChange(e, "platforma")}
+                    {order.orderType === "Ne-standartinis" ?
+                        <div>
+                            <p>Ne-standartinis</p>
+                            <select
+                                 className="form-select" aria-label="Default select example"
+                                name='platforma'
+                                key='platforma'
+                                id="platforma"
+                                defaultValue={"Nera"}
+                                onChange={(e) => onDataChange(e, "platforma")}
+                            >
+                                {salesChannelsReducer.salesChannels.map((element, index) => {
+                                    return (<option key={element.id} value={element.title}>{element.title}</option>)
+                                })}
+                                <option key="none" value="Nera">Nera</option>
+                            </select>
+                        </div>
+                        :
+                        <Form.Item
+                            key="platforma"
+                            name="platforma"
+                            label="Platforma"
+                            initialValue={null}
                         >
-                            {salesChannelsReducer.salesChannels.map((element, index) => {
-                                return (<Option key={element.id} value={element.title}>{element.title}</Option>)
-                            })}
-                        </Select>
-                    </Form.Item>
+                            <Select
+                                disabled={sandelis}
+                                showSearch
+                                style={{ width: '100%' }}
+                                placeholder="Priskirkite platforma"
+                                optionFilterProp="children"
+                                defaultValue={null}
+                                onChange={(e) => onDataChange(e, "platforma")}
+                            >
+                                {salesChannelsReducer.salesChannels.map((element, index) => {
+                                    return (<Option key={element.id} value={element.title}>{element.title}</Option>)
+                                })}
+                            </Select>
+                        </Form.Item>}
 
                     <Form.Item key="name4" name="name4" label="Daugiau informacijos">
                         <Input
@@ -422,7 +443,7 @@ function AddOrderComponent(props) {
                             defaultValue={order.shipmentTypeId}
                             onChange={(e) => onDataChange(e, "shipmentTypeId")}
                         >
-                            {shipmentsReducer.shipments.map((element,index)=>(
+                            {shipmentsReducer.shipments.map((element, index) => (
                                 <Option key={element.id} value={element.id}>{element.type}</Option>
                             ))}
                             {/* <Option key="Express" value={1}>{'Express'}</Option>
