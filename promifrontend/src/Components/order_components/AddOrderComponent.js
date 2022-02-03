@@ -216,14 +216,14 @@ function AddOrderComponent(props) {
                 cancelButtonProps={{ disabled: false }}
                 title={<Space><ArrowLeftOutlined onClick={onBack} />Pridėti naują užsakymą</Space>}
                 visible={props.visible}
-                footer={
-                    <div>
-                        <Button key="customCancel" onClick={onCancel}>Atšaukti</Button>
-                        <Button key="customSubmit" form="myForm" onClick={saveChanges} htmlType="submit" type={'primary'}>Pridėti</Button>
-                    </div>
-                }
+                footer={null}
             >
-                <Form layout="vertical" id="myForm" name="myForm">
+                <Form
+                    layout="vertical"
+                    id="myForm"
+                    name="myForm"
+                    onFinish={saveChanges}
+                >
                     <Form.Item
                         name="orderType"
                         key="orderType"
@@ -242,64 +242,79 @@ function AddOrderComponent(props) {
                         </Select>
                     </Form.Item>
                     <Form.Item
-                        key="name1"
-                        name="name1"
+                        key="orderNumber"
+                        name="orderNumber"
                         label="Užsakymo numeris"
+                        initialValue={getOrderNumber()}
                         rules={[{ required: true, message: "Įveskite užsakymo numerį!" }]}
                     >
-                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} defaultValue={getOrderNumber()} onChange={(e) => onDataChange(e, "orderNumber")} />
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite užsakymo numerį"
+                            value={order.orderNumber}
+                            onChange={(e) => onDataChange(e, "orderNumber")} />
                     </Form.Item>
                     {/* <Form.Item key="name2" name="name2" label="Data">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} defaultValue={moment().format("YYYY/MM/DD")} onChange={(e) => onDataChange(e.target.value, "date")} />
+                        <Input style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} defaultValue={moment().format("YYYY/MM/DD")} onChange={(e) => onDataChange(e.target.value, "date")} />
                     </Form.Item> */}
 
                     <div>
-                        <p style={{ marginBottom: '5px' }}>Platforma</p>
-                        <Select
-                            disabled={sandelis}
-                            showSearch
-                            style={{ width: '100%' }}
-                            placeholder="Priskirkite platforma"
-                            optionFilterProp="children"
-                            onChange={(e) => onDataChange(e, "platforma")}
+                        <Form.Item
+                            key="platforma"
+                            name="platforma"
+                            label="Platforma"
                         >
-                            {salesChannelsReducer.salesChannels.map((element, index) => {
-                                return (<Option key={element.id} value={element.title}>{element.title}</Option>)
-                            })}
-                        </Select>
+                            <Select
+                                disabled={sandelis}
+                                showSearch
+                                style={{ width: '100%' }}
+                                placeholder="Priskirkite platforma"
+                                optionFilterProp="children"
+                                onChange={(e) => onDataChange(e, "platforma")}
+                            >
+                                {salesChannelsReducer.salesChannels.map((element, index) => {
+                                    return (<Option key={element.id} value={element.title}>{element.title}</Option>)
+                                })}
+                            </Select>
+                        </Form.Item>
                     </div>
-
-                    {/* <Form.Item key="name3" name="name3" label="Užsakymo platforma">
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite platformą" value={order.platformas} onChange={(e) => onDataChange(e.target.value, "platforma")} />
-                    </Form.Item> */}
                     <Form.Item key="name4" name="name4" label="Daugiau informacijos">
-                        <Input style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
+                        <Input
+                            style={{ width: '100%' }}
+                            placeholder="Pridėkite informacijos"
+                            value={order.moreInfo}
+                            onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
                     </Form.Item>
                     <Form.Item
-                        key="name5"
-                        name="name5"
+                        key="quantity"
+                        name="quantity"
                         label="Kiekis"
                         rules={[{ required: true, message: 'Prašau įvesti kiekį!' }]}
                     >
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
+                        <Input
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite kiekį"
+                            value={order.quantity}
+                            onChange={(e) => onDataChange(e.target.value, "quantity")} />
                     </Form.Item>
-                    {/* <Form.Item key="name7" name="name7" label="Prekės kodas">
-                        <Input required style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite prekės kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
-                    </Form.Item> */}
 
-                    <p style={{ marginBottom: '5px' }}>Prekės kodas</p>
-                    <Select
-                        showSearch
-                        disabled={!notStandart}
-                        style={{ width: '100%' }}
-                        placeholder="Priskirkite prekės kodą"
-                        optionFilterProp="children"
-                        onChange={(e) => onProductDataChange(e, "productCode")}
-                    >
-                        {productsReducer.products.map((element, index) => {
-                            return (<Option key={element.id} value={element.code}>{element.code}</Option>)
-                        })}
-                    </Select>
+                    <Form.Item
+                        key="productCode"
+                        name="productCode"
+                        label="Prekės kodas">
+                        <Select
+                            showSearch
+                            disabled={!notStandart}
+                            style={{ width: '100%' }}
+                            placeholder="Priskirkite prekės kodą"
+                            optionFilterProp="children"
+                            onChange={(e) => onProductDataChange(e, "productCode")}
+                        >
+                            {productsReducer.products.map((element, index) => {
+                                return (<Option key={element.id} value={element.code}>{element.code}</Option>)
+                            })}
+                        </Select>
+                    </Form.Item>
                     {order.orderType === "Standartinis" && order.productCode !== '' && warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined &&
                         warehouseReducer.warehouse_product.quantityProductWarehouse !== null && warehouseReducer.warehouse_product.quantityProductWarehouse !== 0 ?
                         <p>Sandėlyje yra: <i style={{ fontSize: '20px', color: 'green', fontWeight: 'bold' }}>{warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
@@ -311,150 +326,184 @@ function AddOrderComponent(props) {
                         </Form.Item> : null} */}
                     {order.orderType === "Ne-standartinis" ?
                         <div>
-                            <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
+                            <Form.Item key="laserTime" name="laserTime" label="Lazeriavimo laikas">
                                 <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={order.laserTime} value={order.laserTime} onChange={(e) => onDataChange(e, "laserTime")} />
                             </Form.Item>
-                            <Form.Item key="name16" name="name16" label="Frezavimo laikas">
+                            <Form.Item key="milingTime" name="milingTime" label="Frezavimo laikas">
                                 <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={order.milingTime} value={order.milingTime} onChange={(e) => onDataChange(e, "milingTime")} />
                             </Form.Item>
-                            <Form.Item key="name19" name="name19" label="Dažymo laikas">
+                            <Form.Item key="paintingTime" name="paintingTime" label="Dažymo laikas">
                                 <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={order.paintingTime} value={order.paintingTime} onChange={(e) => onDataChange(e, "paintingTime")} />
                             </Form.Item>
-                            <Form.Item key="name20" name="name20" label="Suklijavimo laikas">
+                            <Form.Item key="bondingTime" name="bondingTime" label="Suklijavimo laikas">
                                 <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={order.bondingTime} value={order.bondingTime} onChange={(e) => onDataChange(e, "bondingTime")} />
                             </Form.Item>
-                            <Form.Item key="name17" name="name17" label="Surinkimo laikas">
+                            <Form.Item key="collectionTime" name="collectionTime" label="Surinkimo laikas">
                                 <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={order.collectionTime} value={order.collectionTime} onChange={(e) => onDataChange(e, "collectionTime")} />
                             </Form.Item>
-                            <Form.Item key="name18" name="name18" label=" Pakavimo laikas">
+                            <Form.Item key="packingTime" name="packingTime" label=" Pakavimo laikas">
                                 <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={order.packingTime} value={order.packingTime} onChange={(e) => onDataChange(e, "packingTime")} />
                             </Form.Item>
                         </div> : null
                     }
                     {order.productCode !== '' && product !== null ?
                         <div>
-                            <Form.Item key="name15" name="name15" label="Lazeriavimo laikas">
+                            <Form.Item key="laserTime1" name="laserTime1" label="Lazeriavimo laikas">
                                 <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={product.laserTime} />
                             </Form.Item>
-                            <Form.Item key="name16" name="name16" label="Frezavimo laikas">
+                            <Form.Item key="milingTime1" name="milingTime1" label="Frezavimo laikas">
                                 <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={product.milingTime} />
                             </Form.Item>
-                            <Form.Item key="name19" name="name19" label="Dažymo laikas">
+                            <Form.Item key="paintingTime1" name="paintingTime1" label="Dažymo laikas">
                                 <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={product.paintingTime} />
                             </Form.Item>
-                            <Form.Item key="name20" name="name20" label="Suklijavimo laikas">
+                            <Form.Item key="bondingTime1" name="bondingTime1" label="Suklijavimo laikas">
                                 <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={product.bondingTime} />
                             </Form.Item>
-                            <Form.Item key="name17" name="name17" label="Surinkimo laikas">
+                            <Form.Item key="collectionTime1" name="collectionTime1" label="Surinkimo laikas">
                                 <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={product.collectionTime} />
                             </Form.Item>
-                            <Form.Item key="name18" name="name18" label=" Pakavimo laikas">
+                            <Form.Item key="packingTime1" name="packingTime1" label=" Pakavimo laikas">
                                 <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={product.packingTime} />
                             </Form.Item>
                         </div> : null
 
                     }
-                    <Form.Item key="name8" name="name8" label="Gamybos laikas">
+                    <Form.Item key="productionTime" name="productionTime" label="Gamybos laikas">
                         <InputNumber style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} />
                     </Form.Item>
 
                     {/* <Form.Item key="name9" name="name9" label="Įrenginys">
-                        <Input required style={{ width: '100%' }} placeholder="Pridėkite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} />
+                        <Input style={{ width: '100%' }} placeholder="Pridėkite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} />
                     </Form.Item> */}
-                    <Form.Item key="name10" name="name10" label="Adresas">
+                    <Form.Item key="address" name="address" label="Adresas">
                         <Input disabled={sandelis} style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
                     </Form.Item>
-                    <Form.Item key="name11" name="name11" label="Komentaras">
+                    <Form.Item key="comment" name="comment" label="Komentaras">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={order.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
                     </Form.Item>
-                    <Form.Item key="name12" name="name12" label="Kaina">
+                    <Form.Item key="price" name="price" label="Kaina">
                         <InputNumber disabled={sandelis} style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e, "price")} />
                     </Form.Item>
-                    <Form.Item key="name13" name="name13" label="Vat">
+                    <Form.Item key="vat" name="vat" label="Vat">
                         <InputNumber disabled={sandelis} style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e, "vat")} />
                     </Form.Item>
                     <Form.Item
-                        key="name14"
-                        name="name14"
+                        key="orderFinishDate"
+                        name="orderFinishDate"
                         label="Užsakymo pabaigos data"
-                        rules={[{required: true, message: "Įveskite pabaigos datą!"}]}
+                        initialValue={order.orderFinishDate}
+                        rules={[{ required: true, message: "Įveskite pabaigos datą!" }]}
                     >
-                        <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} defaultValue={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+                        <Input
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite datą"
+                            value={order.orderFinishDate}
+                            onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
                     </Form.Item>
                     {/* for IMAGE */}
                     {/* <p>Nuotrauka</p>
                     <input type="file" onChange={changeFile} /> */}
 
-                    <p style={{ marginBottom: '5px' }}>Siuntos tipas</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '100%' }}
-                        placeholder="Priskirkite tipą"
-                        optionFilterProp="children"
-                        defaultValue={order.shipmentTypeId}
-                        onChange={(e) => onDataChange(e, "shipmentTypeId")}
+                    <Form.Item
+                        key="shipmentId"
+                        name="shipmentId"
+                        label="Siuntos tipas"
                     >
-                        <Option key={1} value={1}>{'Express'}</Option>
-                        <Option key={2} value={2}>{'Paprastas'}</Option>
-                    </Select>
-                    <p style={{ marginBottom: '5px' }}>Klientas</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '100%' }}
-                        placeholder="Priskirkite klientą"
-                        optionFilterProp="children"
-                        onChange={(e) => onDataChange(e, "customerId")}
+                        <Select
+                            disabled={sandelis}
+                            showSearch
+                            style={{ width: '100%' }}
+                            placeholder="Priskirkite tipą"
+                            optionFilterProp="children"
+                            defaultValue={order.shipmentTypeId}
+                            onChange={(e) => onDataChange(e, "shipmentTypeId")}
+                        >
+                            <Option key={1} value={1}>{'Express'}</Option>
+                            <Option key={2} value={2}>{'Paprastas'}</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        key="customerId"
+                        name="customerId"
+                        label="Klientas"
                     >
-                        {customersReducer.customers.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.email}</Option>)
-                        })}
-                    </Select>
-
-                    <p style={{ marginBottom: '5px' }}>Valiuta</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '100%' }}
-                        placeholder="Pasirinkite valiutą"
-                        optionFilterProp="children"
-                        defaultValue={order.currencyId}
-                        onChange={(e) => onDataChange(e, "currencyId")}
+                        <Select
+                            disabled={sandelis}
+                            showSearch
+                            style={{ width: '100%' }}
+                            placeholder="Priskirkite klientą"
+                            optionFilterProp="children"
+                            onChange={(e) => onDataChange(e, "customerId")}
+                        >
+                            {customersReducer.customers.map((element, index) => {
+                                return (<Option key={element.id} value={element.id}>{element.email}</Option>)
+                            })}
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        key="currencyId"
+                        name="currencyId"
+                        label="Valiuta"
                     >
-                        {currencyReducer.currency.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.name}</Option>)
-                        })}
-                    </Select>
-
-                    <p style={{ marginBottom: '5px' }}>Šalis</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '100%' }}
-                        placeholder="Priskirkite šalį"
-                        optionFilterProp="children"
-                        defaultValue={order.countryId}
-                        onChange={(e) => onDataChange(e, "countryId")}
+                        <Select
+                            disabled={sandelis}
+                            showSearch
+                            style={{ width: '100%' }}
+                            placeholder="Pasirinkite valiutą"
+                            optionFilterProp="children"
+                            defaultValue={order.currencyId}
+                            onChange={(e) => onDataChange(e, "currencyId")}
+                        >
+                            {currencyReducer.currency.map((element, index) => {
+                                return (<Option key={element.id} value={element.id}>{element.name}</Option>)
+                            })}
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        key="countryId"
+                        name="countryId"
+                        label="Šalis"
                     >
-                        {countryReducer.countries.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.name}/{element.shortName}</Option>)
-                        })}
-                    </Select>
-
-                    <p style={{ marginBottom: '5px' }}>Atsakingas darbuotojas</p>
-                    <Select
-                        showSearch
-                        style={{ width: '100%' }}
-                        placeholder="Priskirkite darbuotoją"
-                        optionFilterProp="children"
-                        onChange={(e) => onDataChange(e, "userId")}
+                        <Select
+                            disabled={sandelis}
+                            showSearch
+                            style={{ width: '100%' }}
+                            placeholder="Priskirkite šalį"
+                            optionFilterProp="children"
+                            defaultValue={order.countryId}
+                            onChange={(e) => onDataChange(e, "countryId")}
+                        >
+                            {countryReducer.countries.map((element, index) => {
+                                return (<Option key={element.id} value={element.id}>{element.name}/{element.shortName}</Option>)
+                            })}
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        key="userId"
+                        name="userId"
+                        label="Atsakingas darbuotojas"
                     >
-                        {usersListReducer.users.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.name}  {element.surname}</Option>)
-                        })}
-                    </Select>
-
+                        <Select
+                            showSearch
+                            style={{ width: '100%' }}
+                            placeholder="Priskirkite darbuotoją"
+                            optionFilterProp="children"
+                            onChange={(e) => onDataChange(e, "userId")}
+                        >
+                            {usersListReducer.users.map((element, index) => {
+                                return (<Option key={element.id} value={element.id}>{element.name}  {element.surname}</Option>)
+                            })}
+                        </Select>
+                    </Form.Item>
+                    <div style={{marginTop: '5px'}}></div>
+                    <Form.Item>
+                        <Button
+                            type="primary"
+                            htmlType="submit">
+                            Pridėti
+                        </Button>
+                    </Form.Item>
                 </Form>
             </Modal>
         </>
