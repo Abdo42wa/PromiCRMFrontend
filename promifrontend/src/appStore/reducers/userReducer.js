@@ -1,5 +1,5 @@
 
-export const usersReducer = (state = { currentUser: null, user: null }, action) => {
+export const usersReducer = (state = { currentUser: null, user: null, userInfo: null }, action) => {
     switch (action.type) {
         case 'USER_LOGIN_REQUEST':
             return { loading: true }
@@ -15,6 +15,10 @@ export const usersReducer = (state = { currentUser: null, user: null }, action) 
             return { ...state, loading: false, user: action.payload };
         case 'USER_DATA_FAIL':
             return { ...state, loading: false, error: action.payload };
+        case 'GET_LOGGED_USER_SUCCESS':
+            return {...state, loading: false, userInfo: action.payload}
+        case 'GET_LOGGED_USER_FAIL':
+            return {...state, loading: false, error: action.payload}
         default:
             return state
     }

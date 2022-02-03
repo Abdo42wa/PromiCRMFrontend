@@ -120,3 +120,23 @@ export const getUserData = (callback) => async (dispatch, getState) => {
         })
     }
 }
+
+export const getLoggedUser = () => async(dispatch,getState)=> {
+    try{
+        const connectedUser = getState().usersReducer.currentUser;
+        const decodedUser = jwtDecode(connectedUser); // decode your token here
+        dispatch({
+            type: 'GET_LOGGED_USER_SUCCESS',
+            payload: decodedUser
+        })
+    }catch(error){
+        dispatch({
+            type: 'GET_LOGGED_USER_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+    
+}
