@@ -236,9 +236,9 @@ function AddOrderComponent(props) {
                             optionFilterProp="children"
                             onChange={(e) => onOrderTypeChange(e, "orderType")}
                         >
-                            <Option key={1} value={'Standartinis'}>{'Standartinis'}</Option>
-                            <Option key={2} value={'Ne-standartinis'}>{'Ne-standartinis'}</Option>
-                            <Option key={3} value={'Sandelis'}>{'Sandelis'}</Option>
+                            <Option key="standartinis" value={'Standartinis'}>{'Standartinis'}</Option>
+                            <Option key="Ne-standartinis" value={'Ne-standartinis'}>{'Ne-standartinis'}</Option>
+                            <Option key="Sandelis" value={'Sandelis'}>{'Sandelis'}</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item
@@ -419,8 +419,8 @@ function AddOrderComponent(props) {
                             defaultValue={order.shipmentTypeId}
                             onChange={(e) => onDataChange(e, "shipmentTypeId")}
                         >
-                            <Option key={1} value={1}>{'Express'}</Option>
-                            <Option key={2} value={2}>{'Paprastas'}</Option>
+                            <Option key="Express" value={1}>{'Express'}</Option>
+                            <Option key="Paprastas" value={2}>{'Paprastas'}</Option>
                         </Select>
                     </Form.Item>
                     <Form.Item

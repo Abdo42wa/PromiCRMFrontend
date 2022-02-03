@@ -363,7 +363,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
+                            disabled={record.warehouseProductsNumber !== 0 ? true : record.laserTime === 0? true:false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "laserUserId", e, "laserComplete")}
@@ -387,7 +387,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
+                            disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0? true : false}
                             style={{ ...selectOptionStyle }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
@@ -412,7 +412,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
+                            disabled={record.warehouseProductsNumber !== 0 ? true : record.paintingTime === 0? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "paintingUserId", e, "paintingComplete")}
@@ -436,7 +436,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
+                            disabled={record.warehouseProductsNumber !== 0 ? true : record.bondingTime === 0? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "bondingUserId", e, "bondingComplete")}
@@ -459,7 +459,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : false}
+                            disabled={record.warehouseProductsNumber !== 0 ? true : record.collectionTime === 0 ? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "collectionUserId", e, "collectionComplete")}
