@@ -273,7 +273,7 @@ function AddOrderComponent(props) {
                                 key='platforma'
                                 id="platforma"
                                 defaultValue={"Nera"}
-                                onChange={(e) => onDataChange(e, "platforma")}
+                                onChange={(e) => onDataChange(e.target.value, "platforma")}
                             >
                                 {salesChannelsReducer.salesChannels.map((element, index) => {
                                     return (<option key={element.id} value={element.title}>{element.title}</option>)

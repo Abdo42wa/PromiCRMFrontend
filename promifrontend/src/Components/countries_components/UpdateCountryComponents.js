@@ -29,10 +29,8 @@ function UpdateCountryComponent(props) {
         }));
     }
     const saveChanges = () => {
-
-        const countryClone = JSON.parse(JSON.stringify(country));
-        const {id,...postObj} = countryClone;
-        const reducerObj = countryClone;
+        const {id,...postObj} = country;
+        const reducerObj = country;
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
@@ -60,8 +58,6 @@ function UpdateCountryComponent(props) {
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite pavadinimas" value={country.name} onChange={(e) => onDataChange(e.target.value, "name")} />
                     <p style={{ ...textStyle }}>Trumpas pavadinimas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite trumpas pavadinimas" value={country.shortName} onChange={(e) => onDataChange(e.target.value, "shortName")} />
-                    <p style={{ ...textStyle }}>kontinentas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kontinentas" value={country.continent} onChange={(e) => onDataChange(e.target.value, "continent")} />
                 </Form>
             </Modal>
         </>
