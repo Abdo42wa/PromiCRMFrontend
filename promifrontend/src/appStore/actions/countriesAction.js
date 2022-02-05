@@ -50,6 +50,8 @@ export const updateCountry = (postObj, reducerObj) => async (dispatch, getState)
         dispatch({
             type: 'COUNTRY_UPDATE_REQUEST'
         });
+        console.log()
+        console.log(JSON.stringify(reducerObj))
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
         const response = await promiAPI.put(`/api/Countries/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
