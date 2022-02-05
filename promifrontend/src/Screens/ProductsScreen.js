@@ -223,50 +223,112 @@ class ProductsScrenn extends React.Component {
                 width: '10%'
             },
             {
-                title: 'svoris Bruto',
+                title: 'Svoris Bruto',
                 dataIndex: 'weightGross',
                 width: '10%'
             },
             {
-                title: 'svoris Netto',
+                title: 'Svoris Netto',
                 dataIndex: 'weightNetto',
                 width: '10%'
             },
             {
-                title: 'surinkimo laikas',
-                dataIndex: 'collectionTime',
-                width: '10%'
-            },
-            {
-                title: 'Suklijavimo laikas',
-                dataIndex: 'bondingTime',
-                width: '10%'
-            },
-            {
                 title: 'Lazeriavimo  laikas',
-                dataIndex: 'laserTime',
-                width: '10%'
-            },
-            {
-                title: 'Dažymo laikas',
-                dataIndex: 'paintingTime',
-                width: '10%'
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text,record,index)=>{
+                    if(text !== undefined && text !== null){
+                        const obj = text.find(x => x.productId === record.id && x.serviceId === 1)
+                        if(obj !== null && obj !== undefined)
+                            return (<p>{obj.timeConsumption}</p>)
+                    }else
+                        return (<p></p>)
+                }
             },
             {
                 title: 'Frezavimo laikas',
-                dataIndex: 'milingTime',
-                width: '10%'
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text,record,index)=>{
+                    if(text !== undefined && text !== null){
+                        const obj = text.find(x => x.productId === record.id && x.serviceId === 2)
+                        if(obj !== null && obj !== undefined)
+                            return (<p>{obj.timeConsumption}</p>)
+                    }else
+                        return (<p></p>)
+                }
+            },
+            {
+                title: 'Dažymo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text,record,index)=>{
+                    if(text !== undefined && text !== null){
+                        const obj = text.find(x => x.productId === record.id && x.serviceId === 3)
+                        if(obj !== null && obj !== undefined)
+                            return (<p>{obj.timeConsumption}</p>)
+                    }else
+                        return (<p></p>)
+                }
+            },
+            {
+                title: 'Šlifavimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text,record,index)=>{
+                    if(text !== undefined && text !== null){
+                        const obj = text.find(x => x.productId === record.id && x.serviceId === 4)
+                        if(obj !== null && obj !== undefined)
+                            return (<p>{obj.timeConsumption}</p>)
+                    }else
+                        return (<p></p>)
+                }
+            },
+            {
+                title: 'Suklijavimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text,record,index)=>{
+                    if(text !== undefined && text !== null){
+                        const obj = text.find(x => x.productId === record.id && x.serviceId === 5)
+                        if(obj !== null && obj !== undefined)
+                            return (<p>{obj.timeConsumption}</p>)
+                    }else
+                        return (<p></p>)
+                }
+            },
+            {
+                title: 'Surinkimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text,record,index)=>{
+                    if(text !== undefined && text !== null){
+                        const obj = text.find(x => x.productId === record.id && x.serviceId === 6)
+                        if(obj !== null && obj !== undefined)
+                            return (<p>{obj.timeConsumption}</p>)
+                    }else
+                        return (<p></p>)
+                }
+            },
+            {
+                title: 'Pakavimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text,record,index)=>{
+                    if(text !== undefined && text !== null){
+                        const obj = text.find(x => x.productId === record.id && x.serviceId === 7)
+                        if(obj !== null && obj !== undefined)
+                            return (<p>{obj.timeConsumption}</p>)
+                    }else
+                        return (<p></p>)
+                }
             },
             {
                 title: 'Pakavimo dėžutės kodas',
                 dataIndex: 'packagingBoxCode',
                 width: '10%'
             },
-            {
-                title: 'Pakavimo laikas',
-                dataIndex: 'packingTime',
-                width: '10%'
-            }
+            
 
 
         ]

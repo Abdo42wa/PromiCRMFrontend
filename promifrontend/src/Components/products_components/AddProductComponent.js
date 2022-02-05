@@ -93,7 +93,7 @@ function AddProductComponent(props) {
         formData.append("widthWithPackaging", dataProduct.widthWithPackaging)
         formData.append("lengthWithPackaging", dataProduct.lengthWithPackaging)
         formData.append("weightNetto", dataProduct.weightNetto)
-        // formData.append("orderServices", JSON.stringify(productServices))
+        // formData.append("file", file)
 
         for(let i=0;i<servicesClone.length; i++){
             formData.append(
@@ -105,15 +105,10 @@ function AddProductComponent(props) {
                 servicesClone[i].timeConsumption
             )
         }
-        // formData.append("file", file)
-
-        // props.save(formData);
+        props.save(formData);
         for (let [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
-        props.save(formData);
-        // console.log(JSON.stringify(productServices))
-        // console.log(file)
     }
 
     useEffect(() => {
