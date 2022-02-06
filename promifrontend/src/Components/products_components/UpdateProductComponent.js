@@ -4,8 +4,6 @@ import { Modal, Button, Form, Space, Select, Input, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getOrders } from '../../appStore/actions/ordersAction'
 import { getMaterialsWarehouseData } from '../../appStore/actions/materialsWarehouseActions'
-import { getMaterialsByProduct, createMaterial, getMaterials } from '../../appStore/actions/productMaterials'
-import AddMaterialComponent from '../product_materials_components/AddMaterialComponent';
 const { Option } = Select;
 const textStyle = {
     fontSize: '18px',
@@ -22,15 +20,9 @@ const textStyle = {
 function UpdateProductComponent(props) {
     const dispatch = useDispatch();
 
-    const orderReducer = useSelector((state) => state.orderReducer);
-    const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer);
-    const materialsReducer = useSelector((state) => state.materialsReducer)
-
     const [product, setProduct] = useState({});
-    // const [productMaterials, setProductMaterials] = useState([])
     const [file, setFile] = useState();
     const [fileChanged, setFileChanged] = useState(0)
-    const [addMaterialVisibility, setAddMaterialVisibility] = useState(false)
 
     const onBack = () => {
         props.onClose();
@@ -57,29 +49,16 @@ function UpdateProductComponent(props) {
         }
     }
 
-    // const onMaterialChange = (value, id) => {
-    //     const array = JSON.parse(JSON.stringify(productMaterials))
-    //     array.forEach(element => {
-    //         if (element.id === id) {
-    //             element.materialWarehouseId = value;
-    //         }
-    //     });
-    //     setProductMaterials(array)
-    // }
+    const onServiceDataChange = (id, value) => {
+        setProduct(prevState => ({
+            ...prevState,
+            orderServices: prevState.orderServices.map(x => x.id === id?{...x, "timeConsumption":value}:x) 
+        }))
+    }
+
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(product));
-        // const clone1 = JSON.parse(JSON.stringify(productMaterials))
         const materialsArray = [];
-        // just materialsArray without all unnecessary things
-
-        // clone1.forEach(element => {
-        //     const obj = {
-        //         "id": element.id,
-        //         "productId": element.productId,
-        //         "materialWarehouseId": element.materialWarehouseId
-        //     }
-        //     materialsArray.push(obj);
-        // })
         if (fileChanged === 0) {
             const postObj = {
                 "orderId": clone.orderId,
@@ -97,13 +76,8 @@ function UpdateProductComponent(props) {
                 "heightWithPackaging": clone.heightWithPackaging,
                 "weightGross": clone.weightGross,
                 "weightNetto": clone.weightNetto,
-                "collectionTime": clone.collectionTime,
-                "bondingTime": clone.bondingTime,
-                "paintingTime": clone.paintingTime,
-                "laserTime": clone.laserTime,
-                "milingTime": clone.milingTime,
                 "packagingBoxCode": clone.packagingBoxCode,
-                "packingTime": clone.packingTime
+                "orderServices":clone.orderServices
             }
             const reducerObj = {
                 "id": clone.id,
@@ -121,18 +95,21 @@ function UpdateProductComponent(props) {
                 "heightWithPackaging": clone.heightWithPackaging,
                 "weightGross": clone.weightGross,
                 "weightNetto": clone.weightNetto,
-                "collectionTime": clone.collectionTime,
-                "bondingTime": clone.bondingTime,
-                "paintingTime": clone.paintingTime,
-                "laserTime": clone.laserTime,
-                "milingTime": clone.milingTime,
                 "packagingBoxCode": clone.packagingBoxCode,
-                "packingTime": clone.packingTime
+                "orderServices":clone.orderServices
             }
 
-            props.save(postObj, reducerObj, materialsArray);
+            for(let i=0; i<clone.orderServices.length;i++){
+                console.log(clone.orderServices[i].timeConsumption)
+            }
+            console.log(JSON.stringify(postObj))
+            // const {id, ...postObj} = clone;
+            // const reducerObj = clone;
+
+            // props.save(postObj, reducerObj, materialsArray);
             // console.log(JSON.stringify(postObj))
-            // console.log(JSON.stringify(materialsArray))
+            // console.log(JSON.stringify(reducerObj))
+        
         } else {
             console.log(file)
             const formData = new FormData();
@@ -166,44 +143,20 @@ function UpdateProductComponent(props) {
 
     const deleteImage = () => {
         const clone = JSON.parse(JSON.stringify(product))
-        // materialClone.imageName = null;
         clone.imagePath = null;
-        // dispatch(deleteMaterialImage(material.id, material.imageName))
         setProduct(clone)
     }
     const changeFile = (e) => {
         setFileChanged(1);
         setFile(e.target.files[0])
     }
-
-    const showAddMaterial = () => {
-        setAddMaterialVisibility(true)
-        console.log('show')
-    }
-
-    const unshowAddMaterial = () => {
-        setAddMaterialVisibility(false)
-    }
-
-    const saveAddMaterial = (postObject) => {
-        dispatch(createMaterial(postObject, () => {
-            // const array = JSON.parse(JSON.stringify(productMaterials))
-            // array.push(postObject);
-            // setProductMaterials(oldArray => [...oldArray, postObject])
-            // setAddMaterialVisibility(false)
-        }));
-    }
-
     useEffect(() => {
         dispatch(getOrders())
         dispatch(getMaterialsWarehouseData())
         const obj = {
             ...props.record
-            // "productMaterials": props.record.productMaterials.map((x) => x.materialWarehouseId)
         }
-        // dispatch(getMaterialsByProduct(props.record.id, () =>{
-        //     setProductMaterials(props.record.productMaterials)
-        // }))
+        console.log(props.record.orderServices)
         setProduct(obj);
     }, [dispatch, props.record.id]);
     return (
@@ -249,22 +202,40 @@ function UpdateProductComponent(props) {
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite svorį" value={product.weightNetto} onChange={(e) => onDataChange(e.target.value, "weightNetto")} />
                     <p style={{ ...textStyle }}>Dėžutės kodas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite kodą" value={product.packagingBoxCode} onChange={(e) => onDataChange(e.target.value, "packagingBoxCode")} />
-                    <p style={{ ...textStyle }}>Pakavimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite pakavimo laiką" value={product.packingTime} onChange={(e) => onDataChange(e.target.value, "packingTime")} />
-                    <p style={{ ...textStyle }}>surinkimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite surinkimo laiką" value={product.collectionTime} onChange={(e) => onDataChange(e.target.value, "collectionTime")} />
 
-                    <p style={{ ...textStyle }}>Suklijavimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite suklijavimo laiką" value={product.bondingTime} onChange={(e) => onDataChange(e.target.value, "bondingTime")} />
-                    <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
-
+                    {product.orderServices !== null && product.orderServices !== undefined?
+                        <div>
+                            {product.orderServices.map((element,index)=>{
+                                return (
+                                    <div key={index}>
+                                        <p>{element.service.name}</p>
+                                        <Input key={index} style={{width: '100%'}} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} onChange={(e) => onServiceDataChange(element.id, e.target.value)}/>
+                                    </div>
+                                )
+                            })}
+                        </div>:null
+                    }
+                    {/* <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={product.laserTime} onChange={(e) => onDataChange(e.target.value, "laserTime")} />
-                    <p style={{ ...textStyle }}>Dažymo laikas</p>
-
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite dažymo laiką" value={product.paintingTime} onChange={(e) => onDataChange(e.target.value, "paintingTime")} />
 
                     <p style={{ ...textStyle }}>Frezavimo laikas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite frezavimo laiką" value={product.milingTime} onChange={(e) => onDataChange(e.target.value, "milingTime")} />
+
+                    <p style={{ ...textStyle }}>Dažymo laikas</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite dažymo laiką" value={product.paintingTime} onChange={(e) => onDataChange(e.target.value, "paintingTime")} />
+
+                    <p style={{ ...textStyle }}>Šlifavimo laikas</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite šlifavimo laiką" value={product.paintingTime} onChange={(e) => onDataChange(e.target.value, "paintingTime")} />
+
+                    <p style={{ ...textStyle }}>Suklijavimo laikas</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite suklijavimo laiką" value={product.bondingTime} onChange={(e) => onDataChange(e.target.value, "bondingTime")} />
+
+                    <p style={{ ...textStyle }}>Surinkimo laikas</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite surinkimo laiką" value={product.collectionTime} onChange={(e) => onDataChange(e.target.value, "collectionTime")} />
+
+                    <p style={{ ...textStyle }}>Pakavimo laikas</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite pakavimo laiką" value={product.packingTime} onChange={(e) => onDataChange(e.target.value, "packingTime")} /> */}
+
                     {/* FOR IMGAE */}
                     {product.imagePath !== null && product.imagePath !== undefined ?
                         <div>
@@ -277,42 +248,8 @@ function UpdateProductComponent(props) {
                             <p style={{ ...textStyle }}>Nuotraukos ikėlimas</p>
                             <input required type='file' onChange={changeFile} />
                         </div>}
-
-                    {/* <p style={{ marginBottom: '5px' }}>Medžiagos </p>
-                    {productMaterials.length > 0 ?
-                        <div>
-                            {productMaterials.map((element, index) => (
-                                <Select
-                                    showSearch
-                                    // mode="multiple"
-                                    allowClear
-                                    style={{ width: '320px' }}
-                                    placeholder="Priskirkite medžiagą"
-                                    optionFilterProp="children"
-                                    // defaultValue={element.id}
-                                    value={element.materialWarehouseId}
-                                    onChange={(e) => onMaterialChange(e, element.id)}
-                                >
-                                    {materialsWarehouseReducer.materialsWarehouseData.map((element, index) => {
-                                        return (<Option key={element.id} value={element.id}>{element.title}</Option>)
-                                    })}
-                                </Select>
-                            ))}
-                        </div>
-                        : null}
-                    {productMaterials.length <= 5 ?
-                        <Button onClick={showAddMaterial}>
-                            Pridėti medžiagą
-                        </Button> : null} */}
-
-
                 </Form>
-
             </Modal>
-            {/* {addMaterialVisibility !== false ?
-                <AddMaterialComponent save={saveAddMaterial} onClose={unshowAddMaterial}
-                    visible={addMaterialVisibility}
-                /> : null} */}
         </>
     )
 

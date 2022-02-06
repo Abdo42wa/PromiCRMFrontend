@@ -240,9 +240,9 @@ class ProductsScrenn extends React.Component {
                     if(text !== undefined && text !== null){
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 1)
                         if(obj !== null && obj !== undefined)
-                            return (<p>{obj.timeConsumption}</p>)
+                            return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
                     }else
-                        return (<p></p>)
+                        return (<Typography.Text></Typography.Text>)
                 }
             },
             {
@@ -253,9 +253,9 @@ class ProductsScrenn extends React.Component {
                     if(text !== undefined && text !== null){
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 2)
                         if(obj !== null && obj !== undefined)
-                            return (<p>{obj.timeConsumption}</p>)
+                            return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
                     }else
-                        return (<p></p>)
+                        return (<Typography.Text></Typography.Text>)
                 }
             },
             {
@@ -266,9 +266,9 @@ class ProductsScrenn extends React.Component {
                     if(text !== undefined && text !== null){
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 3)
                         if(obj !== null && obj !== undefined)
-                            return (<p>{obj.timeConsumption}</p>)
+                            return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
                     }else
-                        return (<p></p>)
+                        return (<Typography.Text></Typography.Text>)
                 }
             },
             {
@@ -279,9 +279,9 @@ class ProductsScrenn extends React.Component {
                     if(text !== undefined && text !== null){
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 4)
                         if(obj !== null && obj !== undefined)
-                            return (<p>{obj.timeConsumption}</p>)
+                            return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
                     }else
-                        return (<p></p>)
+                        return (<Typography.Text></Typography.Text>)
                 }
             },
             {
@@ -292,9 +292,9 @@ class ProductsScrenn extends React.Component {
                     if(text !== undefined && text !== null){
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 5)
                         if(obj !== null && obj !== undefined)
-                            return (<p>{obj.timeConsumption}</p>)
+                            return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
                     }else
-                        return (<p></p>)
+                        return (<Typography.Text></Typography.Text>)
                 }
             },
             {
@@ -305,9 +305,9 @@ class ProductsScrenn extends React.Component {
                     if(text !== undefined && text !== null){
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 6)
                         if(obj !== null && obj !== undefined)
-                            return (<p>{obj.timeConsumption}</p>)
+                            return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
                     }else
-                        return (<p></p>)
+                        return (<Typography.Text></Typography.Text>)
                 }
             },
             {
@@ -318,9 +318,9 @@ class ProductsScrenn extends React.Component {
                     if(text !== undefined && text !== null){
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 7)
                         if(obj !== null && obj !== undefined)
-                            return (<p>{obj.timeConsumption}</p>)
+                            return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
                     }else
-                        return (<p></p>)
+                        return (<Typography.Text></Typography.Text>)
                 }
             },
             {
