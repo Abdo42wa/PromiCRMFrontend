@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse, createNonStandartOrder, updateNonStandartOrder } from '../appStore/actions/ordersAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../appStore/actions/warehouseActions'
 import { updateManyMaterials } from '../appStore/actions/productMaterials';
-import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox, Tabs } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import { withRouter } from 'react-router-dom';
 import AddOrderComponent from '../components/order_components/AddOrderComponent';
@@ -13,11 +13,10 @@ import { getUsers } from '../appStore/actions/userListActions'
 import moment from 'moment';
 import AddOrderMaterialsComponent from '../components/order_components/addMaterials/AddOrderMaterialsComponent';
 import '../styles/orders.css'
+import StandartOrdersComponent from '../components/order_components/StandartOrdersComponent';
 
 const { Option } = Select;
-const inputStyle = {
-    width: '80px'
-}
+const {TabPane} = Tabs;
 const selectOptionStyle = {
     width: '90px'
 }
@@ -122,7 +121,7 @@ class OrderScrenn extends React.Component {
             ...record,
             [inputName]: value,
             [completeDateName]: moment().format('YYYY/MM/DD,h:mm:ss a')
-        }
+        } 
         //destructuring obj. couse i dont want to add id to postObj
         // reducer obj will have it. so deleting id from postobj
         const { id, ...postObj1 } = obj;
@@ -135,12 +134,12 @@ class OrderScrenn extends React.Component {
                 const postObj = {
                     ...postObj1,
                     "status": true,
-                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
+                    "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 const reducerObj = {
                     ...reducerObj1,
                     "status": true,
-                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
+                    "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 this.props.updateOrder(postObj, reducerObj)
             }
@@ -152,12 +151,12 @@ class OrderScrenn extends React.Component {
                 const postObj = {
                     ...postObj1,
                     "status": true,
-                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
+                    "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 const reducerObj = {
                     ...reducerObj1,
                     "status": true,
-                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
+                    "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 const warehouseCountingPostObj = {
                     "orderId": reducerObj.id,
@@ -177,12 +176,12 @@ class OrderScrenn extends React.Component {
                 const postObj = {
                     ...postObj1,
                     "status": true,
-                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
+                    "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 const reducerObj = {
                     ...reducerObj1,
                     "status": true,
-                    "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
+                    "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
                 }
                 this.props.updateNonStandartOrder(postObj, reducerObj)
             }
@@ -195,7 +194,7 @@ class OrderScrenn extends React.Component {
             [inputName]: value,
             "warehouseProductsDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
             "status": true,
-            "completionDate":moment().format('YYYY/MM/DD,h:mm:ss a')
+            "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
         }
         const { id, ...postObj } = obj;
         const reducerObj = obj;
@@ -203,8 +202,6 @@ class OrderScrenn extends React.Component {
 
         // update order and take from warehouse that products
     }
-
-
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             this.props.getUsers()
@@ -243,7 +240,7 @@ class OrderScrenn extends React.Component {
                     if (record.status === false && record.warehouseProductsNumber !== 0) {
                         //onChange={(e) => this.getProductsFromWarehouse(e.target.checked, "warehouseProductsTaken", record)}
                         return (<div style={{ display: 'flex' }}>
-                            <Input type={'checkbox'} style={{ width: '35px', height: '35px' }} disabled={text === true ? true : false} value={text}  />
+                            <Input type={'checkbox'} style={{ width: '35px', height: '35px' }} disabled={text === true ? true : false} value={text} />
                             <Typography.Text style={{ paddingLeft: '15px', fontSize: '20px' }}> ({record.warehouseProductsNumber})</Typography.Text>
                         </div>)
                     } else if (record.status === true && record.warehouseProductsNumber !== 0) {
@@ -360,25 +357,35 @@ class OrderScrenn extends React.Component {
                 title: 'Lazeriavimas',
                 dataIndex: 'laserUserId',
                 width: '10%',
-                render: (text, record, index) => (
-                    <div style={{ display: 'flex' }}>
-                        <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : record.laserTime === 0? true:false}
-                            style={{ width: '80px' }}
-                            optionFilterProp="children"
-                            onChange={(e) => this.onDataChange(record, "laserUserId", e, "laserComplete")}
-                            defaultValue={text}
-                        >
-                            {this.props.usersListReducer.users.map((element, index) => {
-                                return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                            })}
-                        </Select>
-                        <div>
-                            <div className='order-times' ><p>{record.laserTime} min</p></div>
-                        </div>
-                    </div>
+                render: (text, record, index) => {
+                    if (record.orderType !== undefined && record.orderType === "Ne-standartinis" &&
+                        record.orderServices !== undefined && record.orderServices.length > 0) {
+                        let oService = record.orderServices.find(x => x.orderId === record.id && x.serviceId === 1)
+                        if (oService !== null)
+                            return (
+                                <div style={{ display: 'flex' }}>
+                                    <Select
+                                        disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
+                                        style={{ ...selectOptionStyle }}
+                                        optionFilterProp="children"
+                                        // onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
+                                        defaultValue={text}
+                                    >
+                                        {this.props.usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                                        })}
+                                    </Select>
+                                    {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
+                                    <div>
+                                        <div className='order-times' ><p>{record.milingTime} min</p></div>
+                                    </div>
 
-                )
+                                </div>
+                            )
+
+                    }
+
+                }
             },
             {
                 title: 'Frezavimas',
@@ -387,7 +394,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0? true : false}
+                            disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
                             style={{ ...selectOptionStyle }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
@@ -412,7 +419,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : record.paintingTime === 0? true : false}
+                            disabled={record.warehouseProductsNumber !== 0 ? true : record.paintingTime === 0 ? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "paintingUserId", e, "paintingComplete")}
@@ -436,7 +443,7 @@ class OrderScrenn extends React.Component {
                 render: (text, record, index) => (
                     <div style={{ display: 'flex' }}>
                         <Select
-                            disabled={record.warehouseProductsNumber !== 0 ? true : record.bondingTime === 0? true : false}
+                            disabled={record.warehouseProductsNumber !== 0 ? true : record.bondingTime === 0 ? true : false}
                             style={{ width: '80px' }}
                             optionFilterProp="children"
                             onChange={(e) => this.onDataChange(record, "bondingUserId", e, "bondingComplete")}
@@ -537,36 +544,42 @@ class OrderScrenn extends React.Component {
                     <p>{moment(text).format('YYYY/MM/DD')}</p>
                 )
             },
-
-
         ]
         return (
             <>
 
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
                     <Col span={24} >
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <Typography.Title>Užsakymai</Typography.Title>
-                                    <Typography.Text>Pridėkite ir atnaujinkite užsakymus</Typography.Text>
-                                </div>
-                            </Col>
-                        </Row>
-                        <div style={{ padding: '15px' }}></div>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Table
-                                    rowKey="id"
-                                    columns={columns}
-                                    dataSource={this.props.orderReducer.orders}
-                                    pagination={{ pageSize: 15 }}
-                                    bordered
-                                    scroll={{ x: 'calc(1200px + 50%)' }}
-                                    footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti užsakymą</Button></Space>)}
-                                />
-                            </Col>
-                        </Row>
+                        <Tabs defaultActiveKey='1'>
+                            <TabPane tab="Standartiniai" key='1'>
+                                <StandartOrdersComponent />
+                            </TabPane>
+                            <TabPane tab="Ne-standartiniai" key='2'>
+                                <Row gutter={16}>
+                                    <Col span={16}>
+                                        <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                            <Typography.Title>Ne-standartiniai užsakymai</Typography.Title>
+                                            <Typography.Text>Pridėkite ir atnaujinkite ne-standartinius užsakymus </Typography.Text>
+                                        </div>
+                                    </Col>
+                                </Row>
+                                <div style={{ padding: '15px' }}></div>
+                                <Row gutter={16}>
+                                    <Col span={24}>
+                                        <Table
+                                            rowKey="id"
+                                            columns={columns}
+                                            dataSource={this.props.orderReducer.not_standart_orders}
+                                            pagination={{ pageSize: 15 }}
+                                            bordered
+                                            scroll={{ x: 'calc(1200px + 50%)' }}
+                                            footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={this.showAddOrderModal}>Pridėti užsakymą</Button></Space>)}
+                                        />
+                                    </Col>
+                                </Row>
+                            </TabPane>
+                        </Tabs>
+
                     </Col>
                 </div>
                 {this.state.addOrderVisibility !== false ?

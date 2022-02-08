@@ -23,6 +23,28 @@ export const getOrders = () => async (dispatch, getState) => {
     }
 }
 
+export const getNonStandartOrders = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'NON_STANDART_ORDER_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get('/api/Orders/nonstandart',{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'NON_STANDART_ORDER_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'NON_STANDART_ORDER_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const insertManyMaterials = (postObj,callback) => async (dispatch, getState) => {
     try {
         dispatch({
