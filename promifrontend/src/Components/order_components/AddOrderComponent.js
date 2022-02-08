@@ -124,7 +124,7 @@ function AddOrderComponent(props) {
 
     const onDataChange = (value, inputName) => {
         if (inputName === 'orderNumber' ||
-            inputName === 'customerId' || inputName === 'currencyId' ||
+            inputName === 'customerId' ||
             inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
             setOrder(prevState => ({
                 ...prevState,
