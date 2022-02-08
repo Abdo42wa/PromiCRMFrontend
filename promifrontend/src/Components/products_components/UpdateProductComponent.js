@@ -21,6 +21,7 @@ function UpdateProductComponent(props) {
     const dispatch = useDispatch();
 
     const [product, setProduct] = useState({});
+    const [productServices, setProductServices] = useState([])
     const [file, setFile] = useState();
     const [fileChanged, setFileChanged] = useState(0)
 
@@ -49,10 +50,23 @@ function UpdateProductComponent(props) {
         }
     }
 
-    const onServiceDataChange = (id, value) => {
+    const onServiceDataChange = (id, value, record) => {
+        const index = productServices.findIndex(x => x.id === id)
+        if (index === -1) {
+            //if there isnt service add it
+            console.log(record)
+            const obj = {
+                ...record,
+                "service": null,
+                "timeConsumption": value
+            }
+            setProductServices(prevState => [...prevState, {...obj}])
+        } else {
+            setProductServices(productServices.map(x => x.id === id ? { ...x, "timeConsumption": value } : x))
+        }
         setProduct(prevState => ({
             ...prevState,
-            orderServices: prevState.orderServices.map(x => x.id === id?{...x, "timeConsumption":value}:x) 
+            orderServices: prevState.orderServices.map(x => x.id === id ? { ...x, "timeConsumption": value } : x)
         }))
     }
 
@@ -77,7 +91,7 @@ function UpdateProductComponent(props) {
                 "weightGross": clone.weightGross,
                 "weightNetto": clone.weightNetto,
                 "packagingBoxCode": clone.packagingBoxCode,
-                "orderServices":clone.orderServices
+                "orderServices": productServices
             }
             const reducerObj = {
                 "id": clone.id,
@@ -96,20 +110,22 @@ function UpdateProductComponent(props) {
                 "weightGross": clone.weightGross,
                 "weightNetto": clone.weightNetto,
                 "packagingBoxCode": clone.packagingBoxCode,
-                "orderServices":clone.orderServices
+                "orderServices": clone.orderServices
             }
 
-            for(let i=0; i<clone.orderServices.length;i++){
+            for (let i = 0; i < clone.orderServices.length; i++) {
                 console.log(clone.orderServices[i].timeConsumption)
             }
-            console.log(JSON.stringify(postObj))
+            console.log("postobj"+JSON.stringify(postObj))
+            console.log(JSON.stringify(productServices))
+            props.save(postObj,reducerObj)
             // const {id, ...postObj} = clone;
             // const reducerObj = clone;
 
             // props.save(postObj, reducerObj, materialsArray);
             // console.log(JSON.stringify(postObj))
             // console.log(JSON.stringify(reducerObj))
-        
+
         } else {
             console.log(file)
             const formData = new FormData();
@@ -122,20 +138,14 @@ function UpdateProductComponent(props) {
             formData.append("heightWithoutPackaging", clone.heightWithoutPackaging)
             formData.append("weightGross", clone.weightGross)
             formData.append("packagingBoxCode", clone.packagingBoxCode)
-            formData.append("packingTime", clone.packingTime)
             formData.append("heightWithPackaging", clone.heightWithPackaging)
             formData.append("widthWithPackaging", clone.widthWithPackaging)
             formData.append("lengthWithPackaging", clone.lengthWithPackaging)
             formData.append("weightNetto", clone.weightNetto)
-            formData.append("collectionTime", clone.collectionTime)
-            formData.append("bondingTime", clone.bondingTime)
-            formData.append("paintingTime", clone.paintingTime)
-            formData.append("laserTime", clone.laserTime)
-            formData.append("milingTime", clone.milingTime)
-            // formData.append("productMaterials", materialsArray)
-            formData.append("file", file)
-            formData.append("imageName", clone.imageName)
-            props.saveWithImg(formData, clone.id, materialsArray)
+            // formData.append("file", file)
+            // formData.append("imageName", clone.imageName)
+
+            // props.saveWithImg(formData, clone.id, materialsArray)
         }
 
 
@@ -203,39 +213,19 @@ function UpdateProductComponent(props) {
                     <p style={{ ...textStyle }}>Dėžutės kodas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite kodą" value={product.packagingBoxCode} onChange={(e) => onDataChange(e.target.value, "packagingBoxCode")} />
 
-                    {product.orderServices !== null && product.orderServices !== undefined?
+                    {product.orderServices !== null && product.orderServices !== undefined ?
                         <div>
-                            {product.orderServices.map((element,index)=>{
+                            {product.orderServices.map((element, index) => {
                                 return (
                                     <div key={index}>
                                         <p>{element.service.name}</p>
-                                        <Input key={index} style={{width: '100%'}} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} onChange={(e) => onServiceDataChange(element.id, e.target.value)}/>
+                                        <Input key={index} style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} onChange={(e) => onServiceDataChange(element.id, e.target.value, element)} />
                                     </div>
                                 )
                             })}
-                        </div>:null
+                        </div> : null
                     }
-                    {/* <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={product.laserTime} onChange={(e) => onDataChange(e.target.value, "laserTime")} />
-
-                    <p style={{ ...textStyle }}>Frezavimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite frezavimo laiką" value={product.milingTime} onChange={(e) => onDataChange(e.target.value, "milingTime")} />
-
-                    <p style={{ ...textStyle }}>Dažymo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite dažymo laiką" value={product.paintingTime} onChange={(e) => onDataChange(e.target.value, "paintingTime")} />
-
-                    <p style={{ ...textStyle }}>Šlifavimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite šlifavimo laiką" value={product.paintingTime} onChange={(e) => onDataChange(e.target.value, "paintingTime")} />
-
-                    <p style={{ ...textStyle }}>Suklijavimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite suklijavimo laiką" value={product.bondingTime} onChange={(e) => onDataChange(e.target.value, "bondingTime")} />
-
-                    <p style={{ ...textStyle }}>Surinkimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite surinkimo laiką" value={product.collectionTime} onChange={(e) => onDataChange(e.target.value, "collectionTime")} />
-
-                    <p style={{ ...textStyle }}>Pakavimo laikas</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite pakavimo laiką" value={product.packingTime} onChange={(e) => onDataChange(e.target.value, "packingTime")} /> */}
-
+                    
                     {/* FOR IMGAE */}
                     {product.imagePath !== null && product.imagePath !== undefined ?
                         <div>
