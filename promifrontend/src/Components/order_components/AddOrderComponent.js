@@ -60,7 +60,12 @@ function AddOrderComponent(props) {
     const [notStandart, setNotStandart] = useState(true);
     const [product, setProduct] = useState(null)
     const [fileName, setFileName] = useState();
-    const [orderServices, setOrderServices] = useState([])
+    const [orderServices, setOrderServices] = useState([
+        {
+            "serviceId": 7,
+            "timeConsumption": 0
+        }
+    ])
 
     const customersReducer = useSelector((state) => state.customersReducer);
     const currencyReducer = useSelector((state) => state.currencyReducer);
