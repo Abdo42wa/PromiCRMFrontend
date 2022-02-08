@@ -112,19 +112,7 @@ function UpdateProductComponent(props) {
                 "packagingBoxCode": clone.packagingBoxCode,
                 "orderServices": clone.orderServices
             }
-
-            for (let i = 0; i < clone.orderServices.length; i++) {
-                console.log(clone.orderServices[i].timeConsumption)
-            }
-            console.log("postobj"+JSON.stringify(postObj))
-            console.log(JSON.stringify(productServices))
             props.save(postObj,reducerObj)
-            // const {id, ...postObj} = clone;
-            // const reducerObj = clone;
-
-            // props.save(postObj, reducerObj, materialsArray);
-            // console.log(JSON.stringify(postObj))
-            // console.log(JSON.stringify(reducerObj))
 
         } else {
             console.log(file)
@@ -142,10 +130,27 @@ function UpdateProductComponent(props) {
             formData.append("widthWithPackaging", clone.widthWithPackaging)
             formData.append("lengthWithPackaging", clone.lengthWithPackaging)
             formData.append("weightNetto", clone.weightNetto)
+            for(let i=0;i<productServices.length; i++){
+                formData.append(
+                    `orderServices[${i}].id`,
+                    productServices[i].id
+                )
+                formData.append(
+                    `orderServices[${i}].productId`,
+                    productServices[i].productId
+                )
+                formData.append(
+                    `orderServices[${i}].serviceId`,
+                    productServices[i].serviceId
+                )
+                formData.append(
+                    `orderServices[${i}].timeConsumption`,
+                    productServices[i].timeConsumption
+                )
+            }
             // formData.append("file", file)
             // formData.append("imageName", clone.imageName)
-
-            // props.saveWithImg(formData, clone.id, materialsArray)
+            props.saveWithImg(formData, clone.id, materialsArray)
         }
 
 
