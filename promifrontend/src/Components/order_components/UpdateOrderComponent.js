@@ -30,10 +30,9 @@ function UpdateOrderComponent(props) {
     const [order, setOrder] = useState({});
     const [sandelis, setSandelis] = useState(false);
     const [notStandart, setNotStandart] = useState(true);
-    const [file, setFile] = useState();
-    const [fileChanged, setFileChanged] = useState(0)
+    const [orderServices, setOrderServices] = useState(true)
+
     const customersReducer = useSelector((state) => state.customersReducer);
-    const currencyReducer = useSelector((state) => state.currencyReducer);
     const countryReducer = useSelector((state) => state.countryReducer);
     const usersListReducer = useSelector((state) => state.usersListReducer)
     const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
@@ -217,7 +216,19 @@ function UpdateOrderComponent(props) {
                                 ))}
                             </div>
                             : null
-                     
+                    }
+
+                    {order.orderType === "Ne-standartinis" && order.orderServices !== null &&
+                        order.orderServices !== undefined ?
+                            <div>
+                                {order.orderServices.map((element,index)=> (
+                                    <div key={index}>
+                                    <p>{element.service.name}</p>
+                                        <Input key={index} style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} />
+                                    </div>
+                                ))}
+                            </div>
+                            : null
                     }
 
                     <p style={{ ...textStyle }}>Gamybos laikas</p>
