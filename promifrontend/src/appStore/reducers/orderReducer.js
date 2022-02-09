@@ -1,4 +1,4 @@
-export const orderReducer = (state = { orders: [], non_standart_orders: [], order: null, non_standart_order: null }, action) => {
+export const orderReducer = (state = { orders: [], non_standart_orders: [], order: null }, action) => {
     switch (action.type) {
         case 'ORDERS_FETCH_REQUEST':
             return { ...state, loading: true }
@@ -12,20 +12,37 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, non_standart_orders: action.payload }
         case 'NON_STANDART_ORDERS_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
-            //for standart or warehouse order
+        //for standart or warehouse order
         case 'ORDER_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'ORDER_FETCH_SUCCESS':
             return { ...state, loading: false, order: action.payload }
         case 'ORDER_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
-            // for Non-standart order fetch
+        // for Non-standart order fetch
         case 'NON_STANDART_ORDER_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'NON_STANDART_ORDER_FETCH_SUCCESS':
-            return { ...state, loading: false, non_standart_order: action.payload }
+            return { ...state, loading: false, order: action.payload }
         case 'NON_STANDART_ORDER_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
+        //FOR updateOrderComponent. updating Standart or Warehouse
+        case 'ORDER_OBJ_UPDATE_SUCCESS':
+            return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }
+        case 'ORDER_NON_STANDART_OBJ_UPDATE_SUCCESS':
+            return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }
+        case 'ORDER_NON_STANDART_OBJ_SERVICE_UPDATE':
+            const n_s_order_obj = state.order;
+            const index = n_s_order_obj.orderServices.findIndex(x => x.id === action.payload.id)
+            if (index === -1) {
+                // const new_n_s_order_services = [...n_s_order_obj.orderServices, { ...action.payload.record, "service": null, "timeConsumption": action.payload.value }]
+                const updated_n_s_order_obj = {...state.order, "orderServices": [...n_s_order_obj.orderServices, {...action.payload.record, "timeConsumption": action.payload.value}]}
+                return {...state, loading: false, order: updated_n_s_order_obj}
+            } else {
+                const updated_obj_services = n_s_order_obj.orderServices.map(x => x.id === action.payload.id ? { ...x,  "timeConsumption": action.payload.value } : x)
+                const updated_n_s_order = { ...state.order, "orderServices": updated_obj_services }
+                return { ...state, loading: false, order: updated_n_s_order }
+            }
         case 'ORDER_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'ORDER_CREATE_SUCCESS':
