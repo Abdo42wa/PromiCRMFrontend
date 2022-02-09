@@ -51,8 +51,8 @@ function UpdateProductComponent(props) {
     }
 
     const onServiceDataChange = (id, value, record) => {
-        const index = productServices.findIndex(x => x.id === id)
-        if (index === -1) {
+        const index = productServices.find(x => x.id === id)
+        if (index === null) {
             //if there isnt service add it
             console.log(record)
             const obj = {

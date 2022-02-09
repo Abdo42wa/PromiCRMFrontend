@@ -39,11 +39,6 @@ function StandartOrdersComponent(props) {
     const unshowAddOrderModal = () => {
         setAddOrderVisibility(false)
     }
-    const saveAddOrder = (postObj) => {
-        dispatch(addOrder(postObj))
-        unshowAddOrderModal();
-    }
-
     const showUpdateOrderModal = (record) => {
         setUpdateOrderModal(prevState => ({
             ...prevState,
@@ -58,15 +53,10 @@ function StandartOrdersComponent(props) {
             record: null
         }))
     }
-    const updateOrderSave = (postObj, reducerObj) => {
-        dispatch(updateOrder(postObj, reducerObj))
-        unshowUpdateOrderModal()
-    }
-
-    const updateOrderWithImg = (postObj, id) => {
-        dispatch(updateOrderWithImage(postObj, id))
-        unshowUpdateOrderModal()
-    }
+    // const updateOrderWithImg = (postObj, id) => {
+    //     dispatch(updateOrderWithImage(postObj, id))
+    //     unshowUpdateOrderModal()
+    // }
 
     const getProductsFromWarehouse = (value, inputName, record) => {
         const obj = {
@@ -237,7 +227,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if (text !== undefined && text !== null  && text.orderServices !== undefined && text.orderServices !== null) {
+                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 1)
                     if (lService !== null && lService !== undefined)
                         return (
@@ -271,7 +261,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if (text !== undefined && text !== null  && text.orderServices !== undefined && text.orderServices !== null) {
+                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 2)
                     if (lService !== null && lService !== undefined)
                         return (
@@ -305,7 +295,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if (text !== undefined && text !== null  && text.orderServices !== undefined && text.orderServices !== null) {
+                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 3)
                     if (lService !== null && lService !== undefined)
                         return (
@@ -339,7 +329,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if (text !== undefined && text !== null  && text.orderServices !== undefined && text.orderServices !== null) {
+                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 4)
                     if (lService !== null && lService !== undefined)
                         return (
@@ -373,7 +363,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if (text !== undefined && text !== null  && text.orderServices !== undefined && text.orderServices !== null) {
+                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 5)
                     if (lService !== null && lService !== undefined)
                         return (
@@ -407,7 +397,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if (text !== undefined && text !== null  && text.orderServices !== undefined && text.orderServices !== null) {
+                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 6)
                     if (lService !== null && lService !== undefined)
                         return (
@@ -441,7 +431,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if (text !== undefined && text !== null  && text.orderServices !== undefined && text.orderServices !== null) {
+                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 7)
                     if (lService !== null && lService !== undefined)
                         return (
@@ -536,16 +526,17 @@ function StandartOrdersComponent(props) {
             </Row>
         </div>
         {addOrderVisiblity !== false ?
-            <AddOrderComponent visible={addOrderVisiblity} save={saveAddOrder}
+            <AddOrderComponent visible={addOrderVisiblity}
                 onClose={unshowAddOrderModal}
             />
             : null}
         {updateOrderModal.visibility !== false ?
             <UpdateOrderComponent visible={updateOrderModal.visibility}
                 record={updateOrderModal.record}
-                save={updateOrderSave} onClose={unshowUpdateOrderModal}
-                saveWithImg={updateOrderWithImg} /> :
+                onClose={unshowUpdateOrderModal}
+            /> :
             null}
+        {/* saveWithImg={updateOrderWithImg} */}
 
         {/* {this.state.addOrderMaterials.visibility !== false ?
             <AddOrderMaterialsComponent visible={this.state.addOrderMaterials.visibility}

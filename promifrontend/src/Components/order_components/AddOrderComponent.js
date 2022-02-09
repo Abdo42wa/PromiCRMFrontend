@@ -194,7 +194,6 @@ function AddOrderComponent(props) {
                 "productCode": null,
                 "orderServices":orderServices
             }
-            console.log(JSON.stringify(postObj))
             dispatch(createNonStandartOrder(postObj))
             props.onClose()
         } else {

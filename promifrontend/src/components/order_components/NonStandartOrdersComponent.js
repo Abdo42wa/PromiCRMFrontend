@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getNonStandartOrders, updateOrder } from '../../appStore/actions/ordersAction'
-import {updateManyMaterials} from '../../appStore/actions/productMaterials'
+import { updateManyMaterials } from '../../appStore/actions/productMaterials'
 import { Table, Space, Typography, Col, Row, Button, Tag, Image, Select } from 'antd'
 import { buttonStyle } from '../../styles/customStyles.js';
 import AddOrderComponent from './AddOrderComponent';
@@ -62,10 +62,6 @@ function NonStandartOrdersComponent(props) {
     const unshowAddOrderModal = () => {
         setAddOrderVisibility(false)
     }
-    // const saveAddOrder = (postObj) => {
-    //     dispatch(createNonStandartOrder(postObj))
-    //     unshowAddOrderModal();
-    // }
     const showUpdateOrderModal = (record) => {
         setUpdateOrderModal(prevState => ({
             ...prevState,
@@ -79,10 +75,6 @@ function NonStandartOrdersComponent(props) {
             visibility: false,
             record: null
         }))
-    }
-    const updateOrderSave = (postObj, reducerObj) => {
-        dispatch(updateOrder(postObj, reducerObj))
-        unshowUpdateOrderModal()
     }
     const onDataChange = (record, inputName, value) => {
 
@@ -528,7 +520,7 @@ function NonStandartOrdersComponent(props) {
         {updateOrderModal.visibility !== false ?
             <UpdateOrderComponent visible={updateOrderModal.visibility}
                 record={updateOrderModal.record}
-                save={updateOrderSave} onClose={unshowUpdateOrderModal} /> :
+                onClose={unshowUpdateOrderModal} /> :
             null}
 
         {addOrderMaterialsModal.visibility !== false ?
