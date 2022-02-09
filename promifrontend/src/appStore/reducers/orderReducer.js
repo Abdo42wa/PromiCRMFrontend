@@ -1,17 +1,31 @@
-export const orderReducer = (state = { orders: [], non_standart_orders: [] }, action) => {
+export const orderReducer = (state = { orders: [], non_standart_orders: [], order: null, non_standart_order: null }, action) => {
     switch (action.type) {
+        case 'ORDERS_FETCH_REQUEST':
+            return { ...state, loading: true }
+        case 'ORDERS_FETCH_SUCCESS':
+            return { ...state, loading: false, orders: action.payload }
+        case 'ORDERS_FETCH_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        case 'NON_STANDART_ORDERS_FETCH_REQUEST':
+            return { ...state, loading: true }
+        case 'NON_STANDART_ORDERS_FETCH_SUCCESS':
+            return { ...state, loading: false, non_standart_orders: action.payload }
+        case 'NON_STANDART_ORDERS_FETCH_FAIL':
+            return { ...state, loading: false, error: action.payload }
+            //for standart or warehouse order
         case 'ORDER_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'ORDER_FETCH_SUCCESS':
-            return { ...state, loading: false, orders: action.payload }
+            return { ...state, loading: false, order: action.payload }
         case 'ORDER_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
+            // for Non-standart order fetch
         case 'NON_STANDART_ORDER_FETCH_REQUEST':
-            return {...state, loading: true}
+            return { ...state, loading: true }
         case 'NON_STANDART_ORDER_FETCH_SUCCESS':
-            return {...state, loading: false, non_standart_orders: action.payload}
+            return { ...state, loading: false, non_standart_order: action.payload }
         case 'NON_STANDART_ORDER_FETCH_FAIL':
-            return {...state, loading: false, error: action.payload}
+            return { ...state, loading: false, error: action.payload }
         case 'ORDER_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'ORDER_CREATE_SUCCESS':
@@ -33,8 +47,8 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [] }, ac
         case 'ORDER_UPDATE_SUCCESS':
             if (action.payload.orderType === "Ne-standartinis") {
                 const n_orders_clone = [...state.non_standart_orders]
-                const update_n_t = n_orders_clone.map(x => x.id === action.payload.id?action.payload:x)
-                return {...state, loading: false, non_standart_orders: update_n_t}
+                const update_n_t = n_orders_clone.map(x => x.id === action.payload.id ? action.payload : x)
+                return { ...state, loading: false, non_standart_orders: update_n_t }
             } else {
                 const orders_clone = [...state.orders];
                 const updated = orders_clone.map(x => x.id === action.payload.id ? action.payload : x)

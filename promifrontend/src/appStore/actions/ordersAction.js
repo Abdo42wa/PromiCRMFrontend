@@ -3,18 +3,18 @@ import promiAPI from "./promiAPI";
 export const getOrders = () => async (dispatch, getState) => {
     try {
         dispatch({
-            type: 'ORDER_FETCH_REQUEST'
+            type: 'ORDERS_FETCH_REQUEST'
         });
         //get token from users reducer
         const token = getState().usersReducer.currentUser;
         const response = await promiAPI.get(`/api/Orders`, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
-            type: 'ORDER_FETCH_SUCCESS',
+            type: 'ORDERS_FETCH_SUCCESS',
             payload: response.data
         });
     } catch (error) {
         dispatch({
-            type: 'ORDER_FETCH_FAIL',
+            type: 'ORDERS_FETCH_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
@@ -26,10 +26,54 @@ export const getOrders = () => async (dispatch, getState) => {
 export const getNonStandartOrders = () => async(dispatch,getState)=>{
     try{
         dispatch({
-            type: 'NON_STANDART_ORDER_FETCH_REQUEST'
+            type: 'NON_STANDART_ORDERS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
         const response = await promiAPI.get('/api/Orders/nonstandart',{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'NON_STANDART_ORDERS_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'NON_STANDART_ORDERS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const getOrder = (id) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDER_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/${id}`, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'ORDER_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'ORDER_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const getNonStandartOrder = (id) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'NON_STANDART_ORDER_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/nonstandart/${id}`, {headers: {Authorization: `Bearer ${token}`}})
         dispatch({
             type: 'NON_STANDART_ORDER_FETCH_SUCCESS',
             payload: response.data
@@ -69,6 +113,200 @@ export const insertManyMaterials = (postObj,callback) => async (dispatch, getSta
     }
 }
 
+
+// FOR "Standartinis orders". It will create order and take materials from materialsWarehouse
+export const addOrder = (postObject) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDER_CREATE_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        // ,'Content-Type': 'multipart/form-data'
+        // 'Content-Type': 'application/json'
+        const response = await promiAPI.post(`/api/Orders`, postObject, { headers: { Authorization: `Bearer ${token}` } });
+        dispatch({
+            type: 'ORDER_CREATE_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'ORDER_CREATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const createNonStandartOrder = (postObject) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDER_NON_STANDART_CREATE_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        // ,'Content-Type': 'multipart/form-data'
+        // 'Content-Type': 'application/json'
+        const response = await promiAPI.post(`/api/Orders/nonstandart`, postObject, { headers: { Authorization: `Bearer ${token}` } });
+        dispatch({
+            type: 'ORDER_NON_STANDART_CREATE_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'ORDER_NON_STANDART_CREATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const addOrderWarehouse = (postObject) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDER_CREATE_REQUEST'
+        });
+        //get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.post(`/api/Orders/warehouse`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
+        dispatch({
+            type: 'ORDER_CREATE_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'ORDER_CREATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDER_UPDATE_REQUEST'
+        });
+        // get token from usersReducer
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/Orders/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        dispatch({
+            type: 'ORDER_UPDATE_SUCCESS',
+            payload: reducerObj
+        });
+        console.log(JSON.stringify(reducerObj))
+    } catch (error) {
+        dispatch({
+            type: 'ORDER_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+export const updateNonStandart = (postObj,reducerObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'NON_STANDART_ORDER_UPDATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/Orders/nonstandart/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'NON_STANDART_ORDER_UPDATE_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'NON_STANDART_ORDER_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+//BASICALLY WHEN PACKING IS CLICKED WE CALL THIS METHOD AND THEN IT WILL TAJE
+//MATERIALS FROM MATERIALS WAREHOUSE
+export const updateNonStandartOrderComplete = (postObj,reducerObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/Orders/nonstandart/finished/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const updateOrderTakeProductsFromWarehouse = (postObj,reducerObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDER_WAREHOUSE_UPDATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/Orders/warehouse/subtract/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'ORDER_WAREHOUSE_UPDATE_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'ORDER_WAREHOUSE_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+export const updateOrderWithImage = (postObj, id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDER_UPDATE_IMAGE_REQUEST'
+        });
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.put(`/api/Orders/image/${id}`, postObj, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
+        dispatch({
+            type: 'ORDER_UPDATE_IMAGE_SUCCESS',
+            payload: response.data
+        });
+    } catch (error) {
+        dispatch({
+            type: 'ORDER_UPDATE_IMAGE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+// -------------------------------- DASHBOARD
 
 export const getUncompletedOrdersTimes = () => async(dispatch,getState)=>{
     try{
@@ -365,193 +603,4 @@ export const getLastMonthCompletedOrders = () => async (dispatch, getState) => {
         })
     }
 }
-// FOR "Standartinis orders". It will create order and take materials from materialsWarehouse
-export const addOrder = (postObject) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: 'ORDER_CREATE_REQUEST'
-        });
-        //get token from usersReducer
-        const token = getState().usersReducer.currentUser;
-        // ,'Content-Type': 'multipart/form-data'
-        // 'Content-Type': 'application/json'
-        const response = await promiAPI.post(`/api/Orders`, postObject, { headers: { Authorization: `Bearer ${token}` } });
-        dispatch({
-            type: 'ORDER_CREATE_SUCCESS',
-            payload: response.data
-        });
-    } catch (error) {
-        dispatch({
-            type: 'ORDER_CREATE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
 
-export const createNonStandartOrder = (postObject) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: 'ORDER_NON_STANDART_CREATE_REQUEST'
-        });
-        //get token from usersReducer
-        const token = getState().usersReducer.currentUser;
-        // ,'Content-Type': 'multipart/form-data'
-        // 'Content-Type': 'application/json'
-        const response = await promiAPI.post(`/api/Orders/nonstandart`, postObject, { headers: { Authorization: `Bearer ${token}` } });
-        dispatch({
-            type: 'ORDER_NON_STANDART_CREATE_SUCCESS',
-            payload: response.data
-        });
-    } catch (error) {
-        dispatch({
-            type: 'ORDER_NON_STANDART_CREATE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
-
-export const addOrderWarehouse = (postObject) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: 'ORDER_CREATE_REQUEST'
-        });
-        //get token from usersReducer
-        const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/Orders/warehouse`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
-        dispatch({
-            type: 'ORDER_CREATE_SUCCESS',
-            payload: response.data
-        });
-    } catch (error) {
-        dispatch({
-            type: 'ORDER_CREATE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
-
-export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: 'ORDER_UPDATE_REQUEST'
-        });
-        // get token from usersReducer
-        const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/Orders/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
-        dispatch({
-            type: 'ORDER_UPDATE_SUCCESS',
-            payload: reducerObj
-        });
-        console.log(JSON.stringify(reducerObj))
-    } catch (error) {
-        dispatch({
-            type: 'ORDER_UPDATE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
-
-
-export const updateNonStandart = (postObj,reducerObj) => async(dispatch,getState)=>{
-    try{
-        dispatch({
-            type: 'NON_STANDART_ORDER_UPDATE_REQUEST'
-        })
-        const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/Orders/nonstandart/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
-        dispatch({
-            type: 'NON_STANDART_ORDER_UPDATE_SUCCESS',
-            payload: reducerObj
-        })
-    }catch (error) {
-        dispatch({
-            type: 'NON_STANDART_ORDER_UPDATE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
-
-
-//BASICALLY WHEN PACKING IS CLICKED WE CALL THIS METHOD AND THEN IT WILL TAJE
-//MATERIALS FROM MATERIALS WAREHOUSE
-export const updateNonStandartOrderComplete = (postObj,reducerObj) => async(dispatch,getState)=>{
-    try{
-        dispatch({
-            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_REQUEST'
-        })
-        const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/Orders/nonstandart/finished/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
-        dispatch({
-            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_SUCCESS',
-            payload: reducerObj
-        })
-    }catch (error) {
-        dispatch({
-            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
-
-export const updateOrderTakeProductsFromWarehouse = (postObj,reducerObj) => async(dispatch,getState)=>{
-    try{
-        dispatch({
-            type: 'ORDER_WAREHOUSE_UPDATE_REQUEST'
-        })
-        const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/Orders/warehouse/subtract/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}})
-        dispatch({
-            type: 'ORDER_WAREHOUSE_UPDATE_SUCCESS',
-            payload: reducerObj
-        })
-    }catch (error) {
-        dispatch({
-            type: 'ORDER_WAREHOUSE_UPDATE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
-
-
-export const updateOrderWithImage = (postObj, id) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: 'ORDER_UPDATE_IMAGE_REQUEST'
-        });
-        const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Orders/image/${id}`, postObj, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
-        dispatch({
-            type: 'ORDER_UPDATE_IMAGE_SUCCESS',
-            payload: response.data
-        });
-    } catch (error) {
-        dispatch({
-            type: 'ORDER_UPDATE_IMAGE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}

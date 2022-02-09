@@ -77,7 +77,7 @@ function NonStandartOrdersComponent(props) {
         }))
     }
     const onDataChange = (record, inputName, value) => {
-
+        
     }
     useEffect(() => {
         if (usersReducer.currentUser !== null) {
