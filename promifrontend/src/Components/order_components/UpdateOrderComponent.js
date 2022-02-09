@@ -63,6 +63,27 @@ function UpdateOrderComponent(props) {
             dispatch(getWarehouseProduct(value))
         }
     }
+    //for non standart orders. to update order and orderServices
+    const onServiceDataChange = (id, value, record) => {
+        const index = orderServices.findIndex(x => x.id === id)
+        if (index === -1) {
+            //if there isnt service add it
+            const obj = {
+                ...record,
+                "service": null,
+                "timeConsumption": value
+            }
+            setOrderServices(prevState => [...prevState, {...obj}])
+        } else {
+            //update
+            setOrderServices(orderServices.map(x => x.id === id ? { ...x, "timeConsumption": value } : x))
+        }
+        //update Order obj
+        setOrder(prevState => ({
+            ...prevState,
+            orderServices: prevState.orderServices.map(x => x.id === id ? { ...x, "timeConsumption": value } : x)
+        }))
+    }
     const saveChanges = () => {
         // const clone = JSON.parse(JSON.stringify(order));
         const { id, ...postObj } = order;
@@ -207,28 +228,32 @@ function UpdateOrderComponent(props) {
                     {order.orderType !== "Ne-standartinis" && order.product !== null &&
                         order.product !== undefined && order.product.orderServices !== undefined &&
                         order.product.orderServices !== null ?
-                            <div>
-                                {order.product.orderServices.map((element,index)=> (
-                                    <div key={index}>
+                        <div>
+                            {order.product.orderServices.map((element, index) => (
+                                <div key={index}>
                                     <p>{element.service.name}</p>
-                                        <Input disabled key={index} style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} />
-                                    </div>
-                                ))}
-                            </div>
-                            : null
+                                    <Input disabled key={index} style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} />
+                                </div>
+                            ))}
+                        </div>
+                        : null
                     }
 
                     {order.orderType === "Ne-standartinis" && order.orderServices !== null &&
                         order.orderServices !== undefined ?
-                            <div>
-                                {order.orderServices.map((element,index)=> (
-                                    <div key={index}>
+                        <div>
+                            {order.orderServices.map((element, index) => (
+                                <div key={index}>
                                     <p>{element.service.name}</p>
-                                        <Input key={index} style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} />
-                                    </div>
-                                ))}
-                            </div>
-                            : null
+                                    <Input key={index}
+                                        style={{ width: '100%' }}
+                                        placeholder="Įrašykite lazeriavimo laiką"
+                                        value={element.timeConsumption}
+                                        onChange={(e) => onServiceDataChange(element.id, e.target.value, element)} />
+                                </div>
+                            ))}
+                        </div>
+                        : null
                     }
 
                     <p style={{ ...textStyle }}>Gamybos laikas</p>

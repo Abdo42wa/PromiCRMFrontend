@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getNonStandartOrders, updateOrder, createNonStandartOrder, updateNonStandartOrder, addOrder } from '../../appStore/actions/ordersAction'
+import { getNonStandartOrders, updateOrder } from '../../appStore/actions/ordersAction'
 import {updateManyMaterials} from '../../appStore/actions/productMaterials'
-import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox, Tabs } from 'antd'
-import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../../styles/customStyles.js';
+import { Table, Space, Typography, Col, Row, Button, Tag, Image, Select } from 'antd'
+import { buttonStyle } from '../../styles/customStyles.js';
 import AddOrderComponent from './AddOrderComponent';
 import UpdateOrderComponent from './UpdateOrderComponent';
 import { getUsers } from '../../appStore/actions/userListActions'
@@ -62,10 +62,10 @@ function NonStandartOrdersComponent(props) {
     const unshowAddOrderModal = () => {
         setAddOrderVisibility(false)
     }
-    const saveAddOrder = (postObj) => {
-        dispatch(createNonStandartOrder(postObj))
-        unshowAddOrderModal();
-    }
+    // const saveAddOrder = (postObj) => {
+    //     dispatch(createNonStandartOrder(postObj))
+    //     unshowAddOrderModal();
+    // }
     const showUpdateOrderModal = (record) => {
         setUpdateOrderModal(prevState => ({
             ...prevState,
@@ -521,7 +521,7 @@ function NonStandartOrdersComponent(props) {
             </Row>
         </div>
         {addOrderVisibility !== false ?
-            <AddOrderComponent visible={addOrderVisibility} save={saveAddOrder}
+            <AddOrderComponent visible={addOrderVisibility}
                 onClose={unshowAddOrderModal}
             />
             : null}

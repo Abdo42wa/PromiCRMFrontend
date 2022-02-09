@@ -463,7 +463,8 @@ export const updateOrder = (postObj, reducerObj) => async (dispatch, getState) =
     }
 }
 
-export const updateNonStandartOrder = (postObj,reducerObj) => async(dispatch,getState)=>{
+
+export const updateNonStandart = (postObj,reducerObj) => async(dispatch,getState)=>{
     try{
         dispatch({
             type: 'NON_STANDART_ORDER_UPDATE_REQUEST'
@@ -477,6 +478,31 @@ export const updateNonStandartOrder = (postObj,reducerObj) => async(dispatch,get
     }catch (error) {
         dispatch({
             type: 'NON_STANDART_ORDER_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+//BASICALLY WHEN PACKING IS CLICKED WE CALL THIS METHOD AND THEN IT WILL TAJE
+//MATERIALS FROM MATERIALS WAREHOUSE
+export const updateNonStandartOrderComplete = (postObj,reducerObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/Orders/nonstandart/finished/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'NON_STANDART_FINISHED_ORDER_UPDATE_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

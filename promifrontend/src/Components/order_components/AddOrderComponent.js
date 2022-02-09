@@ -7,7 +7,7 @@ import { getUsers } from '../../appStore/actions/userListActions'
 import { getLoggedUser } from '../../appStore/actions/userAction';
 import { getProducts } from '../../appStore/actions/productsActions'
 import { getWarehouseProduct } from '../../appStore/actions/warehouseActions'
-import { getOrders } from '../../appStore/actions/ordersAction'
+import { getOrders,createNonStandartOrder, addOrder } from '../../appStore/actions/ordersAction'
 import { getShipments } from '../../appStore/actions/shipmentsActions';
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
@@ -195,16 +195,18 @@ function AddOrderComponent(props) {
                 "orderServices":orderServices
             }
             console.log(JSON.stringify(postObj))
-            props.save(postObj)
+            dispatch(createNonStandartOrder(postObj))
+            props.onClose()
         } else {
             //get product that we selected. i need "times" from product
-            const product_data = productsReducer.products.find(o => o.code === clone.productCode)
+            // const product_data = productsReducer.products.find(o => o.code === clone.productCode)
             const postObj = {
                 ...clone,
                 "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
                 "productId": clone.productCode !== null ? getProductId(product.code) : null
             }
-            props.save(postObj)
+            dispatch(addOrder(postObj))
+            props.onClose()
         }
     }
     useEffect(() => {

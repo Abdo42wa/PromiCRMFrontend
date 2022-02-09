@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse, createNonStandartOrder, updateNonStandartOrder } from '../../appStore/actions/ordersAction'
+import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse, updateNonStandartOrder } from '../../appStore/actions/ordersAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../../appStore/actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox, Tabs } from 'antd'
-import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../../styles/customStyles.js';
+import { buttonStyle } from '../../styles/customStyles.js';
 import AddOrderComponent from './AddOrderComponent';
 import UpdateOrderComponent from './UpdateOrderComponent';
 import { getProducts } from '../../appStore/actions/productsActions'
