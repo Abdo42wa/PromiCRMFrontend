@@ -50,27 +50,6 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, orders: newOrder }
         case 'ORDER_CREATE_FAIL':
             return { ...state, loading: false, error: action.payload }
-        //CREATE UserService for NON STANDART ORDER
-        case 'NON_STANDART_ORDER_SERVICE_CREATE_REQUEST':
-            return { ...state, loading: true }
-        case 'NON_STANDART_ORDER_SERVICE_CREATE_SUCCESS':
-            const orders_d_clone = [...state.non_standart_orders]
-            const n_order_found = orders_d_clone.find(x => x.id === action.payload.orderId)
-            const n_order_service = n_order_found.find(x => x.id === action.payload.orderServiceId)
-            const n_order_service_updated = { ...n_order_service, "userServices": [...n_order_service.userServices, { ...action.payload }] }
-            //update order services list. then update that order. then update order in orders array
-            const new_orders_services = orders_d_clone ? orders_d_clone.map(
-                v => v.id === action.payload.orderId ? ({
-                    ...v, orderServices: v.orderServices.map(
-                        o => o.id === action.payload.orderServiceId ? ({ ...n_order_service_updated }) : o
-                    )
-                }) : v
-            ) : []
-
-            console.log(JSON.stringify(new_orders_services))
-            return { ...state, loading: false, non_standart_orders: new_orders_services }
-        case 'NON_STANDART_ORDER_SERVICE_CREATE_FAIL':
-            return { ...state, loading: false, error: action.payload }
         // CREATE NON-STANDART ORDER
         case 'ORDER_NON_STANDART_CREATE_REQUEST':
             return { ...state, loading: true }
@@ -150,6 +129,29 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, non_standart_orders: order_clone_data }
         case 'ORDER_MATERIAL_INSERT_MANY_FAIL':
             return { ...state, loading: false, error: action.payload }
+        //CREATE UserService for NON STANDART ORDER
+        case 'NON_STANDART_ORDER_SERVICE_CREATE_REQUEST':
+            return { ...state, loading: true }
+        case 'NON_STANDART_ORDER_SERVICE_CREATE_SUCCESS':
+            const orders_d_clone = [...state.non_standart_orders]
+            const n_order_found = orders_d_clone.find(x => x.id === action.payload.orderId)
+            const n_order_service = n_order_found.orderServices.find(x => x.id === action.payload.orderServiceId)
+            const n_order_service_updated = { ...n_order_service, "userServices": [...n_order_service.userServices, { ...action.payload }] }
+            //update order services list. then update that order. then update order in orders array
+            const new_orders_services = orders_d_clone ? orders_d_clone.map(
+                v => v.id === action.payload.orderId ? ({
+                    ...v, orderServices: v.orderServices.map(
+                        o => o.id === action.payload.orderServiceId ? ({ ...n_order_service_updated }) : o
+                    )
+                }) : v
+            ) : []
+
+            console.log(JSON.stringify(new_orders_services))
+            return { ...state, loading: false, non_standart_orders: new_orders_services }
+        case 'NON_STANDART_ORDER_SERVICE_CREATE_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        //UPDATE UserService for Non standart order
+        
         default:
             return state;
     }
