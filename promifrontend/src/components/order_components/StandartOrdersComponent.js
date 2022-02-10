@@ -125,7 +125,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'user',
             width: '10%',
             render: (text, record, index) => (
-                <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
+                <p>{text === null ? '' : text.name}</p>
             )
         },
         {
@@ -139,7 +139,7 @@ function StandartOrdersComponent(props) {
             width: '10%',
             render: (text, record, index) => (
                 //<Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
-                <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
+                <p>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</p>
             )
         },
         {
@@ -200,7 +200,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'shipment',
             width: '10%',
             render: (text, record, index) => (
-                <Typography.Text>{text === null ? '' : text.type}</Typography.Text>
+                <p>{text === null ? '' : text.type}</p>
             )
         },
         {
@@ -208,7 +208,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'customer',
             width: '10%',
             render: (text, record, index) => (
-                <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
+                <p>{text === null ? '' : text.name}</p>
             )
         }
 
@@ -465,7 +465,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'country',
             width: '10%',
             render: (text, record, index) => (
-                <Typography.Text>{text === null ? '' : text.name}</Typography.Text>
+                <p>{text === null ? '' : text.name}</p>
             )
         },
         {
@@ -481,10 +481,7 @@ function StandartOrdersComponent(props) {
         {
             title: 'Valiuta',
             dataIndex: 'currencyName',
-            width: '10%',
-            render: (text, record, index) => (
-                <Typography.Text>{text}</Typography.Text>
-            )
+            width: '10%'
         },
         {
             title: 'VAT',

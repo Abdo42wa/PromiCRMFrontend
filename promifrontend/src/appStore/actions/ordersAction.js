@@ -123,6 +123,98 @@ export const updateNonStandartObjServices = (id,value,record) => async(dispatch,
 }
 
 
+//------------------------ ADD AND UPDATE OF ORDERS UserServices
+//ON UserService create in nonStandartOrdersComponent
+export const addNonStandartOrderService = (postObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'NON_STANDART_ORDER_SERVICE_CREATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.post(`/api/UserServices`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'NON_STANDART_ORDER_SERVICE_CREATE_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'NON_STANDART_ORDER_SERVICE_CREATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+//ON UserService create in StandartOrdersComponent
+export const addOrderService = (postObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDER_SERVICE_CREATE_REQUEST',
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.post(`/api/UserServices`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'ORDER_SERVICE_CREATE_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'ORDER_SERVICE_CREATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//UserService update in nonStandartOrdersComponent
+export const updateNonStandartOrderService = (postObj,reducerObj) => async(dispatch,getState)=> {
+    try{
+        dispatch({
+            type: 'NON_STADARNT_ORDER_SERVICE_UPDATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/UserServices/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'NON_STADARNT_ORDER_SERVICE_UPDATE_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'NON_STADARNT_ORDER_SERVICE_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//UserService update in StandartOrdersComponent
+export const updateOrderService = (postObj,reducerObj) => async(dispatch,getState)=> {
+    try{
+        dispatch({
+            type: 'ORDER_SERVICE_UPDATE_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/UserServices/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'ORDER_SERVICE_UPDATE_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'ORDER_SERVICE_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//------------------------ ENDDD OF ADD AND UPDATE OF ORDERS UserServices
+
 export const insertManyMaterials = (postObj,callback) => async (dispatch, getState) => {
     try {
         dispatch({
