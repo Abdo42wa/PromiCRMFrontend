@@ -114,6 +114,7 @@ function AddOrderComponent(props) {
                 "timeConsumption": value
             }
             setOrderServices(prevState => [...prevState, obj])
+            console.log(JSON.stringify(orderServices))
         } else
             setOrderServices(orderServices.map(x => x.serviceId === serviceId ? { ...x, "timeConsumption": value } : x))
         setOrder(prevState => ({
@@ -205,6 +206,7 @@ function AddOrderComponent(props) {
                 "productId": clone.productCode !== null ? getProductId(product.code) : null
             }
             dispatch(addOrder(postObj))
+            console.log(JSON.stringify(order))
             props.onClose()
         }
     }

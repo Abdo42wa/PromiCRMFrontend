@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getNonStandartOrders, addNonStandartOrderService,updateNonStandartOrderService } from '../../appStore/actions/ordersAction'
+import { getNonStandartOrders, addNonStandartOrderService, updateNonStandartOrderService } from '../../appStore/actions/ordersAction'
 import { updateManyMaterials } from '../../appStore/actions/productMaterials'
 import { Table, Space, Typography, Col, Row, Button, Tag, Image, Select } from 'antd'
 import { buttonStyle } from '../../styles/customStyles.js';
@@ -76,36 +76,27 @@ function NonStandartOrdersComponent(props) {
             record: null
         }))
     }
-    const onDataChange = (userService, userId, orderServiceId,orderId) => {
-        console.log(JSON.stringify(userService))
-        // console.log("userId:"+userId)
-        // console.log("orderServiceId:"+orderServiceId)
-        // console.log("orderID:"+orderId)
-
-        // then we need to create service
-        if(userService === undefined || userService === null){
+    const onDataChange = (userService, userId, orderServiceId, orderId) => {
+        if (userService === undefined || userService === null) {
             const postObj = {
-                "userId":userId,
+                "userId": userId,
                 "orderServiceId": orderServiceId,
-                "orderId":orderId,
+                "orderId": orderId,
                 "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
             }
-            console.log("postobj:"+JSON.stringify(postObj))
             dispatch(addNonStandartOrderService(postObj))
-        }else{
-            const {id, ...obj} = userService;
+        } else {
+            const { id, ...obj } = userService;
             const postObj = {
                 ...obj,
-                "userId":userId,
+                "userId": userId,
                 "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
             }
             const reducerObj = {
                 ...postObj,
-                "id":userService.id
+                "id": userService.id
             }
-            console.log("postobj:"+JSON.stringify(postObj))
-            console.log("reducerObj:"+JSON.stringify(reducerObj))
-            dispatch(updateNonStandartOrderService(postObj,reducerObj))            
+            dispatch(updateNonStandartOrderService(postObj, reducerObj))
         }
 
     }
@@ -246,7 +237,7 @@ function NonStandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
@@ -286,7 +277,7 @@ function NonStandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
@@ -326,7 +317,7 @@ function NonStandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
@@ -366,7 +357,7 @@ function NonStandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
@@ -406,7 +397,7 @@ function NonStandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
@@ -446,7 +437,7 @@ function NonStandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
@@ -486,7 +477,7 @@ function NonStandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                        disabled={userService !== undefined && userService !== null && userService.userId !== null ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         onChange={(e) => onDataChange(userService, e, lService.id, record.id)}

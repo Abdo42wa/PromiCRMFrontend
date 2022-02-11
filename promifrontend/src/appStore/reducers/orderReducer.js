@@ -167,6 +167,39 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             ) : []
             return { ...state, loading: false, non_standart_orders: updated_n_standart_orders }
         case 'NON_STADARNT_ORDER_SERVICE_UPDATE_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        case 'ORDER_SERVICE_CREATE_REQUEST':
+            return { ...state, loading: true }
+        case 'ORDER_SERVICE_CREATE_SUCCESS':
+            const orders_s_clone = [...state.orders]
+            const order_s = orders_s_clone.find(x => x.id === action.payload.orderId)
+            const order_s_service = order_s.product.orderServices.find(x => x.id === action.payload.orderServiceId)
+            const order_s_service_updated = { ...order_s_service, "userServices": [...order_s_service.userServices, { ...action.payload }] }
+            const updated_standart_orders = orders_s_clone ? orders_s_clone.map(
+                v => v.id === action.payload.orderId ? ({
+                    ...v, product: ({
+                        ...v.product, orderServices: v.product.orderServices.map(
+                            o => o.id === action.payload.orderServiceId ? ({ ...order_s_service_updated }) : o
+                        )
+                    })
+                }) : v
+            ) : []
+            return { ...state, loading: false, orders: updated_standart_orders}
+        case 'ORDER_SERVICE_CREATE_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        case 'ORDER_SERVICE_UPDATE_REQUEST':
+            return {...state, loading: true}
+        case 'ORDER_SERVICE_UPDATE_SUCCESS':
+                const orders_standart_clone = [...state.orders]
+                const updated_standart_orders_d = orders_standart_clone ? orders_standart_clone.map(
+                    v => v.id === action.payload.orderId? ({...v, product: ({
+                        ...v.product, orderServices: v.product.orderServices.map(o => o.id === action.payload.orderServiceId? ({...o, userServices: o.userServices.map(
+                            s => s.id === action.payload.id? ({...s, "userId":action.payload.userId}):s
+                        )}):o)
+                    })}):v
+                ):[]
+            return {...state, loading: false, orders: updated_standart_orders_d}
+        case 'ORDER_SERVICE_UPDATE_FAIL':
             return {...state, loading: false, error: action.payload}
         //UPDATE UserService for Non standart order
         default:

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrders, addOrder, updateOrder, updateOrderWithImage, addOrderWarehouse, updateOrderTakeProductsFromWarehouse, updateNonStandartOrder } from '../../appStore/actions/ordersAction'
+import { getOrders, addOrderWarehouse, updateOrderTakeProductsFromWarehouse, addOrderService, updateOrderService } from '../../appStore/actions/ordersAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../../appStore/actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox, Tabs } from 'antd'
 import { buttonStyle } from '../../styles/customStyles.js';
@@ -52,6 +52,34 @@ function StandartOrdersComponent(props) {
             visibility: false,
             record: null
         }))
+    }
+
+    const onDataChange = (userService, userId, orderServiceId, orderId) => {
+        if (userService === undefined || userService === null) {
+            const postObj = {
+                "userId": userId,
+                "orderServiceId": orderServiceId,
+                "orderId": orderId,
+                "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
+            }
+            console.log(JSON.stringify(postObj))
+            dispatch(addOrderService(postObj))
+        } else {
+            const { id, ...obj } = userService;
+            const postObj = {
+                ...obj,
+                "userId": userId,
+                "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
+            }
+            const reducerObj = {
+                ...postObj,
+                "id": userService.id
+            }
+            console.log(JSON.stringify(postObj))
+            console.log(JSON.stringify(reducerObj))
+            dispatch(updateOrderService(postObj, reducerObj))
+        }
+
     }
     // const updateOrderWithImg = (postObj, id) => {
     //     dispatch(updateOrderWithImage(postObj, id))
@@ -228,31 +256,40 @@ function StandartOrdersComponent(props) {
             width: '10%',
             render: (text, record, index) => {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
-                    let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 1)
-                    if (lService !== null && lService !== undefined)
-                        return (
-                            <div style={{ display: 'flex' }}>
-                                <Select
-                                    disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
-                                    style={{ ...selectOptionStyle }}
-                                    optionFilterProp="children"
-                                // onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
-                                // defaultValue={text}
-                                >
-                                    {usersListReducer.users.map((element, index) => {
-                                        return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                                    })}
-                                </Select>
-                                {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
-                                <div>
-                                    <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                    //find frezavimas orderService
+                    let lService = text.orderServices.find(x => x.serviceId === 1)
+                    // find this particular order userService by orderid. and orderServiceId
+                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    return (
+                        <div>
+                            {lService !== null && lService !== undefined ?
+                                <div style={{ display: 'flex' }}>
+                                    <Select
+                                        disabled={lService.timeConsumption === 0? true :false}
+                                        style={{ ...selectOptionStyle }}
+                                        optionFilterProp="children"
+                                        defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
+                                        value={userService !== null && userService !== undefined ? userService.userId : null}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                    // defaultValue={text}
+                                    >
+                                        {usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                                        })}
+                                    </Select>
+                                    {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
+                                    <div>
+                                        <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    else
-                        return (<div>
-                            <div className='order-times'><Typography.Text>0 min</Typography.Text></div>
-                        </div>)
+                                :
+                                <div>
+                                    <div className='order-times' ><Typography.Text>0 min</Typography.Text></div>
+                                </div>
+
+                            }
+                        </div>
+                    )
                 }
             }
         },
@@ -262,31 +299,39 @@ function StandartOrdersComponent(props) {
             width: '10%',
             render: (text, record, index) => {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
-                    let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 2)
-                    if (lService !== null && lService !== undefined)
-                        return (
-                            <div style={{ display: 'flex' }}>
+                    //find frezavimas orderService
+                    let lService = text.orderServices.find(x => x.serviceId === 2)
+                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    return (
+                        <div>
+                            {lService !== null && lService !== undefined ?
+                                <div style={{ display: 'flex' }}>
                                 <Select
-                                    disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
-                                    style={{ ...selectOptionStyle }}
-                                    optionFilterProp="children"
-                                // onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
-                                // defaultValue={text}
-                                >
-                                    {usersListReducer.users.map((element, index) => {
-                                        return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                                    })}
-                                </Select>
-                                {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
-                                <div>
-                                    <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                        disabled={lService.timeConsumption === 0? true :false}
+                                        style={{ ...selectOptionStyle }}
+                                        optionFilterProp="children"
+                                        defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
+                                        value={userService !== null && userService !== undefined ? userService.userId : null}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                    // defaultValue={text}
+                                    >
+                                        {usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                                        })}
+                                    </Select>
+                                    {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
+                                    <div>
+                                        <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    else
-                        return (<div>
-                            <div className='order-times'><Typography.Text>0 min</Typography.Text></div>
-                        </div>)
+                                :
+                                <div>
+                                    <div className='order-times' ><Typography.Text>0 min</Typography.Text></div>
+                                </div>
+
+                            }
+                        </div>
+                    )
                 }
             }
         },
@@ -296,31 +341,39 @@ function StandartOrdersComponent(props) {
             width: '10%',
             render: (text, record, index) => {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
-                    let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 3)
-                    if (lService !== null && lService !== undefined)
-                        return (
-                            <div style={{ display: 'flex' }}>
+                    //find frezavimas orderService
+                    let lService = text.orderServices.find(x => x.serviceId === 3)
+                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    return (
+                        <div>
+                            {lService !== null && lService !== undefined ?
+                                <div style={{ display: 'flex' }}>
                                 <Select
-                                    disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
-                                    style={{ ...selectOptionStyle }}
-                                    optionFilterProp="children"
-                                // onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
-                                // defaultValue={text}
-                                >
-                                    {usersListReducer.users.map((element, index) => {
-                                        return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                                    })}
-                                </Select>
-                                {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
-                                <div>
-                                    <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                        disabled={lService.timeConsumption === 0? true :false}
+                                        style={{ ...selectOptionStyle }}
+                                        optionFilterProp="children"
+                                        defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
+                                        value={userService !== null && userService !== undefined ? userService.userId : null}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                    // defaultValue={text}
+                                    >
+                                        {usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                                        })}
+                                    </Select>
+                                    {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
+                                    <div>
+                                        <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    else
-                        return (<div>
-                            <div className='order-times'><Typography.Text>0 min</Typography.Text></div>
-                        </div>)
+                                :
+                                <div>
+                                    <div className='order-times' ><Typography.Text>0 min</Typography.Text></div>
+                                </div>
+
+                            }
+                        </div>
+                    )
                 }
             }
         },
@@ -330,31 +383,39 @@ function StandartOrdersComponent(props) {
             width: '10%',
             render: (text, record, index) => {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
-                    let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 4)
-                    if (lService !== null && lService !== undefined)
-                        return (
-                            <div style={{ display: 'flex' }}>
+                    //find frezavimas orderService
+                    let lService = text.orderServices.find(x => x.serviceId === 4)
+                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    return (
+                        <div>
+                            {lService !== null && lService !== undefined ?
+                                <div style={{ display: 'flex' }}>
                                 <Select
-                                    disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
-                                    style={{ ...selectOptionStyle }}
-                                    optionFilterProp="children"
-                                // onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
-                                // defaultValue={text}
-                                >
-                                    {usersListReducer.users.map((element, index) => {
-                                        return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                                    })}
-                                </Select>
-                                {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
-                                <div>
-                                    <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                        disabled={lService.timeConsumption === 0? true :false}
+                                        style={{ ...selectOptionStyle }}
+                                        optionFilterProp="children"
+                                        defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
+                                        value={userService !== null && userService !== undefined ? userService.userId : null}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                    // defaultValue={text}
+                                    >
+                                        {usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                                        })}
+                                    </Select>
+                                    {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
+                                    <div>
+                                        <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    else
-                        return (<div>
-                            <div className='order-times'><Typography.Text>0 min</Typography.Text></div>
-                        </div>)
+                                :
+                                <div>
+                                    <div className='order-times' ><Typography.Text>0 min</Typography.Text></div>
+                                </div>
+
+                            }
+                        </div>
+                    )
                 }
             }
         },
@@ -364,31 +425,39 @@ function StandartOrdersComponent(props) {
             width: '10%',
             render: (text, record, index) => {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
-                    let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 5)
-                    if (lService !== null && lService !== undefined)
-                        return (
-                            <div style={{ display: 'flex' }}>
+                    //find frezavimas orderService
+                    let lService = text.orderServices.find(x => x.serviceId === 5)
+                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    return (
+                        <div>
+                            {lService !== null && lService !== undefined ?
+                                <div style={{ display: 'flex' }}>
                                 <Select
-                                    disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
-                                    style={{ ...selectOptionStyle }}
-                                    optionFilterProp="children"
-                                // onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
-                                // defaultValue={text}
-                                >
-                                    {usersListReducer.users.map((element, index) => {
-                                        return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                                    })}
-                                </Select>
-                                {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
-                                <div>
-                                    <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                        disabled={lService.timeConsumption === 0? true :false}
+                                        style={{ ...selectOptionStyle }}
+                                        optionFilterProp="children"
+                                        defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
+                                        value={userService !== null && userService !== undefined ? userService.userId : null}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                    // defaultValue={text}
+                                    >
+                                        {usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                                        })}
+                                    </Select>
+                                    {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
+                                    <div>
+                                        <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    else
-                        return (<div>
-                            <div className='order-times'><Typography.Text>0 min</Typography.Text></div>
-                        </div>)
+                                :
+                                <div>
+                                    <div className='order-times' ><Typography.Text>0 min</Typography.Text></div>
+                                </div>
+
+                            }
+                        </div>
+                    )
                 }
             }
         },
@@ -398,31 +467,39 @@ function StandartOrdersComponent(props) {
             width: '10%',
             render: (text, record, index) => {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
-                    let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 6)
-                    if (lService !== null && lService !== undefined)
-                        return (
-                            <div style={{ display: 'flex' }}>
+                    //find frezavimas orderService
+                    let lService = text.orderServices.find(x => x.serviceId === 6)
+                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    return (
+                        <div>
+                            {lService !== null && lService !== undefined ?
+                                <div style={{ display: 'flex' }}>
                                 <Select
-                                    disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
-                                    style={{ ...selectOptionStyle }}
-                                    optionFilterProp="children"
-                                // onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
-                                // defaultValue={text}
-                                >
-                                    {usersListReducer.users.map((element, index) => {
-                                        return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                                    })}
-                                </Select>
-                                {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
-                                <div>
-                                    <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                        disabled={lService.timeConsumption === 0? true :false}
+                                        style={{ ...selectOptionStyle }}
+                                        optionFilterProp="children"
+                                        defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
+                                        value={userService !== null && userService !== undefined ? userService.userId : null}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                    // defaultValue={text}
+                                    >
+                                        {usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                                        })}
+                                    </Select>
+                                    {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
+                                    <div>
+                                        <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    else
-                        return (<div>
-                            <div className='order-times'><Typography.Text>0 min</Typography.Text></div>
-                        </div>)
+                                :
+                                <div>
+                                    <div className='order-times' ><Typography.Text>0 min</Typography.Text></div>
+                                </div>
+
+                            }
+                        </div>
+                    )
                 }
             }
         },
@@ -432,31 +509,39 @@ function StandartOrdersComponent(props) {
             width: '10%',
             render: (text, record, index) => {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
-                    let lService = text.orderServices.find(x => x.productId === text.id && x.serviceId === 7)
-                    if (lService !== null && lService !== undefined)
-                        return (
-                            <div style={{ display: 'flex' }}>
+                    //find frezavimas orderService
+                    let lService = text.orderServices.find(x => x.serviceId === 7)
+                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    return (
+                        <div>
+                            {lService !== null && lService !== undefined ?
+                                <div style={{ display: 'flex' }}>
                                 <Select
-                                    disabled={record.warehouseProductsNumber !== 0 ? true : record.milingTime === 0 ? true : false}
-                                    style={{ ...selectOptionStyle }}
-                                    optionFilterProp="children"
-                                // onChange={(e) => this.onDataChange(record, "milingUserId", e, "milingComplete")}
-                                // defaultValue={text}
-                                >
-                                    {usersListReducer.users.map((element, index) => {
-                                        return (<Option key={element.id} value={element.id}>{element.name} </Option>)
-                                    })}
-                                </Select>
-                                {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
-                                <div>
-                                    <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                        disabled={lService.timeConsumption === 0? true :false}
+                                        style={{ ...selectOptionStyle }}
+                                        optionFilterProp="children"
+                                        defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
+                                        value={userService !== null && userService !== undefined ? userService.userId : null}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                    // defaultValue={text}
+                                    >
+                                        {usersListReducer.users.map((element, index) => {
+                                            return (<Option key={element.id} value={element.id}>{element.name} </Option>)
+                                        })}
+                                    </Select>
+                                    {/* if record doesnt have product its Not-standart work. then display time from Order obj */}
+                                    <div>
+                                        <div className='order-times' ><p>{lService.timeConsumption} min</p></div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    else
-                        return (<div>
-                            <div className='order-times'><Typography.Text>0 min</Typography.Text></div>
-                        </div>)
+                                :
+                                <div>
+                                    <div className='order-times' ><Typography.Text>0 min</Typography.Text></div>
+                                </div>
+
+                            }
+                        </div>
+                    )
                 }
             }
         },
