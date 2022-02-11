@@ -133,21 +133,12 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
         case 'NON_STANDART_ORDER_SERVICE_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'NON_STANDART_ORDER_SERVICE_CREATE_SUCCESS':
-            const orders_d_clone = [...state.non_standart_orders]
-            const n_order_found = orders_d_clone.find(x => x.id === action.payload.orderId)
-            const n_order_service = n_order_found.orderServices.find(x => x.id === action.payload.orderServiceId)
-            const n_order_service_updated = { ...n_order_service, "userServices": [...n_order_service.userServices, { ...action.payload }] }
-            //update order services list. then update that order. then update order in orders array
-            const new_orders_services = orders_d_clone ? orders_d_clone.map(
-                v => v.id === action.payload.orderId ? ({
-                    ...v, orderServices: v.orderServices.map(
-                        o => o.id === action.payload.orderServiceId ? ({ ...n_order_service_updated }) : o
-                    )
-                }) : v
-            ) : []
-
-            console.log(JSON.stringify(new_orders_services))
-            return { ...state, loading: false, non_standart_orders: new_orders_services }
+            const orders_n_clone = [...state.non_standart_orders]
+            const order_n = orders_n_clone.find(x => x.id === action.payload.orderId)
+            const new_order_services = { ...order_n, "userServices": [...order_n.userServices, { ...action.payload }] }
+            const updated_n_orders = orders_n_clone.map(v => v.id === action.payload.orderId ? new_order_services : v)
+            // console.log(JSON.stringify(new_orders_services))
+            return { ...state, loading: false, non_standart_orders: updated_n_orders }
         case 'NON_STANDART_ORDER_SERVICE_CREATE_FAIL':
             return { ...state, loading: false, error: action.payload }
         case 'NON_STADARNT_ORDER_SERVICE_UPDATE_REQUEST':
@@ -156,12 +147,8 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             const n_standart_orders = [...state.non_standart_orders]
             const updated_n_standart_orders = n_standart_orders ? n_standart_orders.map(
                 v => v.id === action.payload.orderId ? ({
-                    ...v, orderServices: v.orderServices.map(
-                        o => o.id === action.payload.orderServiceId ? ({
-                            ...o, userServices: o.userServices.map(
-                                s => s.id === action.payload.id ? ({ ...s, "userId": action.payload.userId }) : s
-                            )
-                        }) : o
+                    ...v, userServices: v.userServices.map(
+                        s => s.id === action.payload.id ? ({ ...s, "userId": action.payload.userId }) : s
                     )
                 }) : v
             ) : []
@@ -173,34 +160,25 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
         case 'ORDER_SERVICE_CREATE_SUCCESS':
             const orders_s_clone = [...state.orders]
             const order_s = orders_s_clone.find(x => x.id === action.payload.orderId)
-            const order_s_service = order_s.product.orderServices.find(x => x.id === action.payload.orderServiceId)
-            const order_s_service_updated = { ...order_s_service, "userServices": [...order_s_service.userServices, { ...action.payload }] }
-            const updated_standart_orders = orders_s_clone ? orders_s_clone.map(
-                v => v.id === action.payload.orderId ? ({
-                    ...v, product: ({
-                        ...v.product, orderServices: v.product.orderServices.map(
-                            o => o.id === action.payload.orderServiceId ? ({ ...order_s_service_updated }) : o
-                        )
-                    })
-                }) : v
-            ) : []
-            return { ...state, loading: false, orders: updated_standart_orders}
+            const order_s_services = { ...order_s, "userServices": [...order_s.userServices, { ...action.payload }] }
+            const updated_s_orders = orders_s_clone.map(x => x.id === action.payload.orderId ? order_s_services : x)
+            return { ...state, loading: false, orders: updated_s_orders }
         case 'ORDER_SERVICE_CREATE_FAIL':
             return { ...state, loading: false, error: action.payload }
         case 'ORDER_SERVICE_UPDATE_REQUEST':
-            return {...state, loading: true}
+            return { ...state, loading: true }
         case 'ORDER_SERVICE_UPDATE_SUCCESS':
-                const orders_standart_clone = [...state.orders]
-                const updated_standart_orders_d = orders_standart_clone ? orders_standart_clone.map(
-                    v => v.id === action.payload.orderId? ({...v, product: ({
-                        ...v.product, orderServices: v.product.orderServices.map(o => o.id === action.payload.orderServiceId? ({...o, userServices: o.userServices.map(
-                            s => s.id === action.payload.id? ({...s, "userId":action.payload.userId}):s
-                        )}):o)
-                    })}):v
-                ):[]
-            return {...state, loading: false, orders: updated_standart_orders_d}
+            const orders_standart_clone = [...state.orders]
+            const updated_standart_orders_d = orders_standart_clone ? orders_standart_clone.map(
+                v => v.id === action.payload.orderId ? ({
+                    ...v, userServices: v.userServices.map(
+                        s => s.id === action.payload.id ? ({ ...s, "userId": action.payload.userId }) : s
+                    )
+                }) : v
+            ) : []
+            return { ...state, loading: false, orders: updated_standart_orders_d }
         case 'ORDER_SERVICE_UPDATE_FAIL':
-            return {...state, loading: false, error: action.payload}
+            return { ...state, loading: false, error: action.payload }
         //UPDATE UserService for Non standart order
         default:
             return state;

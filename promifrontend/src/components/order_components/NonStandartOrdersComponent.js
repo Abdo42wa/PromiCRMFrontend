@@ -230,7 +230,8 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 1)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderServiceId === lService.id) : null
+                    // let userService = lService !== undefined ? record.userServices.find(x => x.orderServiceId === lService.id) : null
+                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -270,7 +271,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 2)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderServiceId === lService.id) : null
+                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -310,7 +311,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 3)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderServiceId === lService.id) : null
+                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -350,7 +351,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 4)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderServiceId === lService.id) : null
+                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -390,7 +391,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 5)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderServiceId === lService.id) : null
+                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -430,7 +431,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 6)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderServiceId === lService.id) : null
+                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -470,7 +471,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 7)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderServiceId === lService.id) : null
+                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>

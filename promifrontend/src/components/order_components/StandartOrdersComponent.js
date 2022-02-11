@@ -259,13 +259,13 @@ function StandartOrdersComponent(props) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 1)
                     // find this particular order userService by orderid. and orderServiceId
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     return (
                         <div>
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -301,13 +301,13 @@ function StandartOrdersComponent(props) {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 2)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     return (
                         <div>
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
-                                <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                    <Select
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -343,13 +343,13 @@ function StandartOrdersComponent(props) {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 3)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     return (
                         <div>
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
-                                <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                    <Select
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -385,13 +385,13 @@ function StandartOrdersComponent(props) {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 4)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     return (
                         <div>
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
-                                <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                    <Select
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -427,13 +427,13 @@ function StandartOrdersComponent(props) {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 5)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     return (
                         <div>
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
-                                <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                    <Select
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -469,13 +469,13 @@ function StandartOrdersComponent(props) {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 6)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     return (
                         <div>
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
-                                <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                    <Select
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -511,13 +511,13 @@ function StandartOrdersComponent(props) {
                 if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 7)
-                    let userService = lService !== undefined ? lService.userServices.find(x => x.orderId === record.id &&  x.orderServiceId === lService.id) : null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     return (
                         <div>
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
-                                <Select
-                                        disabled={lService.timeConsumption === 0? true :false}
+                                    <Select
+                                        disabled={lService.timeConsumption === 0 ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
