@@ -129,7 +129,7 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, non_standart_orders: order_clone_data }
         case 'ORDER_MATERIAL_INSERT_MANY_FAIL':
             return { ...state, loading: false, error: action.payload }
-        //CREATE UserService for NON STANDART ORDER
+        //CREATE UserService for NON STANDART ORDER ------------------
         case 'NON_STANDART_ORDER_SERVICE_CREATE_REQUEST':
             return { ...state, loading: true }
         case 'NON_STANDART_ORDER_SERVICE_CREATE_SUCCESS':
@@ -150,8 +150,25 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, non_standart_orders: new_orders_services }
         case 'NON_STANDART_ORDER_SERVICE_CREATE_FAIL':
             return { ...state, loading: false, error: action.payload }
+        case 'NON_STADARNT_ORDER_SERVICE_UPDATE_REQUEST':
+            return { ...state, loading: true }
+        case 'NON_STADARNT_ORDER_SERVICE_UPDATE_SUCCESS':
+            const n_standart_orders = [...state.non_standart_orders]
+            const updated_n_standart_orders = n_standart_orders ? n_standart_orders.map(
+                v => v.id === action.payload.orderId ? ({
+                    ...v, orderServices: v.orderServices.map(
+                        o => o.id === action.payload.orderServiceId ? ({
+                            ...o, userServices: o.userServices.map(
+                                s => s.id === action.payload.id ? ({ ...s, "userId": action.payload.userId }) : s
+                            )
+                        }) : o
+                    )
+                }) : v
+            ) : []
+            return { ...state, loading: false, non_standart_orders: updated_n_standart_orders }
+        case 'NON_STADARNT_ORDER_SERVICE_UPDATE_FAIL':
+            return {...state, loading: false, error: action.payload}
         //UPDATE UserService for Non standart order
-        
         default:
             return state;
     }

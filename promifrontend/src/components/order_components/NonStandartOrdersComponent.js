@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getNonStandartOrders, addNonStandartOrderService } from '../../appStore/actions/ordersAction'
+import { getNonStandartOrders, addNonStandartOrderService,updateNonStandartOrderService } from '../../appStore/actions/ordersAction'
 import { updateManyMaterials } from '../../appStore/actions/productMaterials'
 import { Table, Space, Typography, Col, Row, Button, Tag, Image, Select } from 'antd'
 import { buttonStyle } from '../../styles/customStyles.js';
@@ -93,20 +93,19 @@ function NonStandartOrdersComponent(props) {
             console.log("postobj:"+JSON.stringify(postObj))
             dispatch(addNonStandartOrderService(postObj))
         }else{
-            const {id, obj} = userService;
+            const {id, ...obj} = userService;
             const postObj = {
                 ...obj,
                 "userId":userId,
                 "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
             }
             const reducerObj = {
-                postObj,
+                ...postObj,
                 "id":userService.id
             }
             console.log("postobj:"+JSON.stringify(postObj))
             console.log("reducerObj:"+JSON.stringify(reducerObj))
-
-            
+            dispatch(updateNonStandartOrderService(postObj,reducerObj))            
         }
 
     }
