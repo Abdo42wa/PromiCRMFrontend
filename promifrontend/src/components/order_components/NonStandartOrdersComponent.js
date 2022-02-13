@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getNonStandartOrders, addNonStandartOrderService, updateNonStandartOrderService } from '../../appStore/actions/ordersAction'
+import { getNonStandartOrders, addNonStandartOrderService, updateNonStandartOrderService, updateNonStandartOrderComplete } from '../../appStore/actions/ordersAction'
 import { updateManyMaterials } from '../../appStore/actions/productMaterials'
 import { Table, Space, Typography, Col, Row, Button, Tag, Image, Select } from 'antd'
 import { buttonStyle } from '../../styles/customStyles.js';
@@ -76,6 +76,38 @@ function NonStandartOrdersComponent(props) {
             record: null
         }))
     }
+
+    const onPackingComplete = (userId, orderServiceId, orderId, order) => {
+        const u_services = [
+            {
+                "userId": userId,
+                "orderServiceId": orderServiceId,
+                "orderId": orderId,
+                "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
+            }
+        ]
+        // const u_services = [...userServices,{...u_service}]
+        const { id, ...obj } = order;
+        const postObj = {
+            ...obj,
+            "status": true,
+            "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
+            "userServices": u_services
+        }
+        //but in reducer it is better to pass all userServices with new Packing service too
+        const reducerObj = {
+            ...order,
+            "status": true,
+            "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
+        };
+        // console.log(JSON.stringify(postObj))
+        // console.log(JSON.stringify(reducerObj))
+        dispatch(updateNonStandartOrderComplete(postObj, reducerObj))
+        console.log("postobj" + JSON.stringify(postObj))
+        console.log("reducerObj" + JSON.stringify(reducerObj))
+
+    }
+
     const onDataChange = (userService, userId, orderServiceId, orderId) => {
         if (userService === undefined || userService === null) {
             const postObj = {
@@ -116,7 +148,11 @@ function NonStandartOrdersComponent(props) {
                 <div style={{ display: 'flex' }}>
                     <Button onClick={(e) => showUpdateOrderModal(record)}>Atnaujinti</Button>
                     {record.orderType === "Ne-standartinis" ?
-                        <Button onClick={(e) => showAddMaterialsModal(record)}>Pridėti medžiagas</Button> : null}
+                        <Button
+                            disabled={record.status === true? true:false}
+                            onClick={(e) => showAddMaterialsModal(record)}>
+                            Pridėti medžiagas
+                        </Button> : null}
                 </div>
 
             )
@@ -231,7 +267,7 @@ function NonStandartOrdersComponent(props) {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 1)
                     // let userService = lService !== undefined ? record.userServices.find(x => x.orderServiceId === lService.id) : null
-                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -271,7 +307,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 2)
-                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -311,7 +347,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 3)
-                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -351,7 +387,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 4)
-                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -391,7 +427,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 5)
-                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -431,7 +467,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 6)
-                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -471,7 +507,7 @@ function NonStandartOrdersComponent(props) {
             render: (text, record, index) => {
                 if (text !== undefined && text !== null) {
                     let lService = text.find(x => x.serviceId === 7)
-                    let userService = lService!== undefined && lService !== null?record.userServices.find(x => x.orderServiceId === lService.id):null
+                    let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
                     // if (lService !== null && lService !== undefined)
                     return (
                         <div>
@@ -481,7 +517,8 @@ function NonStandartOrdersComponent(props) {
                                         disabled={userService !== undefined && userService !== null && userService.userId !== null ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
-                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                        // userId, orderServiceId, orderId, order,userServices
+                                        onChange={(e) => onPackingComplete(e, lService.id, record.id, record, record.userServices)}
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
                                         value={userService !== null && userService !== undefined ? userService.userId : null}
                                     >

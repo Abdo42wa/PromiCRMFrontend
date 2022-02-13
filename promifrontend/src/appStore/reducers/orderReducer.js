@@ -120,12 +120,6 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
                     element.productMaterials = returnedOrderMaterials;
                 }
             })
-            // const orders_clone_data = [...state.orders]
-            // //map through orders each element. return what's already in element
-            // const updated_orders_data = orders_clone_data.map(v => ({
-            //     ...v, productMaterials: v.id === action.payload[0].orderId?({...action.payload}):v.productMaterials
-            // })) 
-
             return { ...state, loading: false, non_standart_orders: order_clone_data }
         case 'ORDER_MATERIAL_INSERT_MANY_FAIL':
             return { ...state, loading: false, error: action.payload }
@@ -179,7 +173,15 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, orders: updated_standart_orders_d }
         case 'ORDER_SERVICE_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
-        //UPDATE UserService for Non standart order
+        //UPDATE AND COMPLETE ORDER(status=true) and add packing service
+        case 'ORDERS_COMPLETE_UPDATE_REQUEST':
+            return { ...state, loading: true }
+        case 'ORDERS_COMPLETE_UPDATE_SUCCESS':
+            const orders_data_c = [...state.orders]
+            const updated_orders_c_data = orders_data_c.map(x => x.id === action.payload.id ? action.payload : x)
+            return { ...state, loading: false, orders: updated_orders_c_data }
+        case 'ORDERS_COMPLETE_UPDATE_FAIL':
+            return { ...state, loading: false, error: action.payload }
         default:
             return state;
     }

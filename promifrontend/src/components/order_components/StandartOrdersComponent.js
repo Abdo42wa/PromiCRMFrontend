@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getOrders, addOrderWarehouse, updateOrderTakeProductsFromWarehouse, addOrderService, updateOrderService } from '../../appStore/actions/ordersAction'
+import { getOrders, addOrderWarehouse, updateStandartOrWarehouseComplete, addOrderService, updateOrderService } from '../../appStore/actions/ordersAction'
 import { checkWarehouseProduct, createOrUpdateWarehouseData } from '../../appStore/actions/warehouseActions'
 import { Table, Space, Card, Typography, Col, Row, Button, Tag, Image, Select, Input, Checkbox, Tabs } from 'antd'
 import { buttonStyle } from '../../styles/customStyles.js';
@@ -54,15 +54,51 @@ function StandartOrdersComponent(props) {
         }))
     }
 
-    const onDataChange = (userService, userId, orderServiceId, orderId) => {
+    const onPackingComplete = (userId, orderServiceId, order) => {
+        console.log('heheh')
+        const u_services = [
+            {
+                "userId": userId,
+                "orderServiceId": orderServiceId,
+                "orderId": order.id,
+                "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
+            }
+        ]
+        const { id, ...obj } = order;
+        const postObj = {
+            ...obj,
+            "status": true,
+            "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
+            "userServices": u_services
+        }
+        //but in reducer it is better to pass all userServices with new Packing service too
+        const reducerObj = {
+            ...order,
+            "status": true,
+            "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
+        };
+        if (order.orderType === "Standartinis") {
+            dispatch(updateStandartOrWarehouseComplete(postObj,reducerObj))
+        } else if (order.orderType === "Sandelis") {
+            const warehouseCountingPostObj = {
+                "orderId": reducerObj.id,
+                "quantityProductWarehouse": reducerObj.quantity,
+                "lastTimeChanging": moment().format('YYYY/MM/DD,h:mm:ss a'),
+                "productCode": reducerObj.productCode
+            }
+            dispatch(updateStandartOrWarehouseComplete(postObj,reducerObj))
+            dispatch(createOrUpdateWarehouseData(warehouseCountingPostObj))
+        }
+    }
+
+    const onDataChange = (userService, userId, orderServiceId, record) => {
         if (userService === undefined || userService === null) {
             const postObj = {
                 "userId": userId,
                 "orderServiceId": orderServiceId,
-                "orderId": orderId,
+                "orderId": record.id,
                 "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
             }
-            console.log(JSON.stringify(postObj))
             dispatch(addOrderService(postObj))
         } else {
             const { id, ...obj } = userService;
@@ -75,29 +111,9 @@ function StandartOrdersComponent(props) {
                 ...postObj,
                 "id": userService.id
             }
-            console.log(JSON.stringify(postObj))
-            console.log(JSON.stringify(reducerObj))
             dispatch(updateOrderService(postObj, reducerObj))
         }
 
-    }
-    // const updateOrderWithImg = (postObj, id) => {
-    //     dispatch(updateOrderWithImage(postObj, id))
-    //     unshowUpdateOrderModal()
-    // }
-
-    const getProductsFromWarehouse = (value, inputName, record) => {
-        const obj = {
-            ...record,
-            [inputName]: value,
-            "warehouseProductsDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
-            "status": true,
-            "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
-        }
-        const { id, ...postObj } = obj;
-        const reducerObj = obj;
-        dispatch(updateOrderTakeProductsFromWarehouse(postObj, reducerObj))
-        // update order and take from warehouse that products
     }
 
     useEffect(() => {
@@ -270,7 +286,7 @@ function StandartOrdersComponent(props) {
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
                                         value={userService !== null && userService !== undefined ? userService.userId : null}
-                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record)}
                                     // defaultValue={text}
                                     >
                                         {usersListReducer.users.map((element, index) => {
@@ -312,7 +328,7 @@ function StandartOrdersComponent(props) {
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
                                         value={userService !== null && userService !== undefined ? userService.userId : null}
-                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record)}
                                     // defaultValue={text}
                                     >
                                         {usersListReducer.users.map((element, index) => {
@@ -354,7 +370,7 @@ function StandartOrdersComponent(props) {
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
                                         value={userService !== null && userService !== undefined ? userService.userId : null}
-                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record)}
                                     // defaultValue={text}
                                     >
                                         {usersListReducer.users.map((element, index) => {
@@ -396,7 +412,7 @@ function StandartOrdersComponent(props) {
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
                                         value={userService !== null && userService !== undefined ? userService.userId : null}
-                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record)}
                                     // defaultValue={text}
                                     >
                                         {usersListReducer.users.map((element, index) => {
@@ -438,7 +454,7 @@ function StandartOrdersComponent(props) {
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
                                         value={userService !== null && userService !== undefined ? userService.userId : null}
-                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record)}
                                     // defaultValue={text}
                                     >
                                         {usersListReducer.users.map((element, index) => {
@@ -480,7 +496,7 @@ function StandartOrdersComponent(props) {
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
                                         value={userService !== null && userService !== undefined ? userService.userId : null}
-                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                        onChange={(e) => onDataChange(userService, e, lService.id, record)}
                                     // defaultValue={text}
                                     >
                                         {usersListReducer.users.map((element, index) => {
@@ -508,7 +524,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
+                if ( text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 7)
                     let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
@@ -517,12 +533,12 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : false}
+                                        disabled={userService !== undefined && userService !== null && userService.userId !== null ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
                                         value={userService !== null && userService !== undefined ? userService.userId : null}
-                                        onChange={(e) => onDataChange(userService, e, lService.id, record.id)}
+                                        onChange={(e) => onPackingComplete(e, lService.id, record)}
                                     // defaultValue={text}
                                     >
                                         {usersListReducer.users.map((element, index) => {

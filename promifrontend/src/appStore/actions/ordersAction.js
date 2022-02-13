@@ -291,28 +291,6 @@ export const createNonStandartOrder = (postObject) => async (dispatch, getState)
     }
 }
 
-export const addOrderWarehouse = (postObject) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: 'ORDER_CREATE_REQUEST'
-        });
-        //get token from usersReducer
-        const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/Orders/warehouse`, postObject, { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } });
-        dispatch({
-            type: 'ORDER_CREATE_SUCCESS',
-            payload: response.data
-        });
-    } catch (error) {
-        dispatch({
-            type: 'ORDER_CREATE_FAIL',
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message,
-        })
-    }
-}
 
 export const updateOrder = () => async (dispatch, getState) => {
     try {
@@ -341,7 +319,33 @@ export const updateOrder = () => async (dispatch, getState) => {
     }
 }
 
+export const updateStandartOrWarehouseComplete = (postObj,reducerObj)=> async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDERS_COMPLETE_UPDATE_REQUEST'
+        })        
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.put(`/api/Orders/warehouse/standart/finished/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}})
+        const obj = {
+            ...reducerObj,
+            "userServices": [...reducerObj.userServices,...response.data]
+        }
+        dispatch({
+            type: 'ORDERS_COMPLETE_UPDATE_SUCCESS',
+            payload: obj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'ORDERS_COMPLETE_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
 
+//just when updating in UpdateOrderComponent
 export const updateNonStandart = () => async(dispatch,getState)=>{
     try{
         dispatch({
@@ -368,7 +372,7 @@ export const updateNonStandart = () => async(dispatch,getState)=>{
 }
 
 
-//BASICALLY WHEN PACKING IS CLICKED WE CALL THIS METHOD AND THEN IT WILL TAJE
+//BASICALLY WHEN PACKING IS CLICKED WE CALL THIS METHOD AND THEN IT WILL TAKE
 //MATERIALS FROM MATERIALS WAREHOUSE
 export const updateNonStandartOrderComplete = (postObj,reducerObj) => async(dispatch,getState)=>{
     try{
@@ -376,10 +380,14 @@ export const updateNonStandartOrderComplete = (postObj,reducerObj) => async(disp
             type: 'NON_STANDART_FINISHED_ORDER_UPDATE_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/Orders/nonstandart/finished/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.put(`/api/Orders/nonstandart/finished/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        const obj = {
+            ...reducerObj,
+            "userServices": [...reducerObj.userServices,...response.data]
+        }
         dispatch({
             type: 'NON_STANDART_FINISHED_ORDER_UPDATE_SUCCESS',
-            payload: reducerObj
+            payload: obj
         })
     }catch (error) {
         dispatch({
