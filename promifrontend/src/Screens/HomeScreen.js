@@ -532,10 +532,10 @@ class HomeScreen extends React.Component {
                 dataIndex: 'imagePath',
                 width: '10%',
                 render: (text, record, index) => {
-                    if(text === null || text === undefined)
+                    if (text === null || text === undefined)
                         return (<p></p>)
                     else
-                        return <Image src={text} height={40} alt='Foto'/>
+                        return <Image src={text} height={40} alt='Foto' />
                 }
             },
             {
@@ -652,11 +652,11 @@ class HomeScreen extends React.Component {
                 dataIndex: 'customer',
                 width: '25%',
                 render: (text, record, index) => {
-                    if(text === null)
+                    if (text === null)
                         return (<p></p>)
                     else
                         return (<Typography.Text>{text.name}  {text.companyName}</Typography.Text>)
-                    
+
                 }
             },
             {
@@ -666,6 +666,174 @@ class HomeScreen extends React.Component {
                 render: (text, record, index) => (
                     <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                 )
+            },
+            {
+                title: 'Lazeriavimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (text !== null && text !== undefined) {
+                        let laserTime = text.find(x => x.serviceId === 1)
+                        let time = laserTime === null || laserTime === undefined ? 0 : laserTime.timeConsumption * record.quantity
+                        if (Math.floor(time / 60) === 0) {
+                            return (
+                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        } else {
+                            return (
+                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        }
+                    } else {
+                        return (
+                            <Typography.Text>0 m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Frezavimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (text !== null && text !== undefined) {
+                        let milingTime = text.find(x => x.serviceId === 2)
+                        let time = milingTime === null || milingTime === undefined ? 0 : milingTime.timeConsumption * record.quantity
+                        if (Math.floor(time / 60) === 0) {
+                            return (
+                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        } else {
+                            return (
+                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        }
+                    } else {
+                        return (
+                            <Typography.Text>0 m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Dažymo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (text !== null && text !== undefined) {
+                        let paintingTime = text.find(x => x.serviceId === 3)
+                        let time = paintingTime === null || paintingTime === undefined ? 0 : paintingTime.timeConsumption * record.quantity
+                        if (Math.floor(time / 60) === 0) {
+                            return (
+                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        } else {
+                            return (
+                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        }
+                    } else {
+                        return (
+                            <Typography.Text>0 m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Šlifavimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (text !== null && text !== undefined) {
+                        let grindingTime = text.find(x => x.serviceId === 4)
+                        let time = grindingTime === null || grindingTime === undefined ? 0 : grindingTime.timeConsumption * record.quantity
+                        if (Math.floor(time / 60) === 0) {
+                            return (
+                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        } else {
+                            return (
+                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        }
+                    } else {
+                        return (
+                            <Typography.Text>0 m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Suklijavimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (text !== null && text !== undefined) {
+                        let bondingTime = text.find(x => x.serviceId === 5)
+                        let time = bondingTime === null || bondingTime === undefined ? 0 : bondingTime.timeConsumption * record.quantity
+                        if (Math.floor(time / 60) === 0) {
+                            return (
+                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        } else {
+                            return (
+                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        }
+                    } else {
+                        return (
+                            <Typography.Text>0 m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Surinkimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (text !== null && text !== undefined) {
+                        let collectionTime = text.find(x => x.serviceId === 6)
+                        let time = collectionTime === null || collectionTime === undefined ? 0 : collectionTime.timeConsumption * record.quantity
+                        if (Math.floor(time / 60) === 0) {
+                            return (
+                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        } else {
+                            return (
+                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        }
+                    } else {
+                        return (
+                            <Typography.Text>0 m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Pakavimo laikas',
+                dataIndex: 'orderServices',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (text !== null && text !== undefined) {
+                        let packingTime = text.find(x => x.serviceId === 7)
+                        let time = packingTime === null || packingTime === undefined ? 0 : packingTime.timeConsumption * record.quantity
+                        if (Math.floor(time / 60) === 0) {
+                            return (
+                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        } else {
+                            return (
+                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
+                            )
+                        }
+                    } else {
+                        return (
+                            <Typography.Text>0 m</Typography.Text>
+                        )
+                    }
+                }
             },
         ]
         return (
@@ -678,7 +846,7 @@ class HomeScreen extends React.Component {
                             <h3>Pagrindiniai rodikliai</h3>
                         </div>
                         <table class="table">
-                            <thead style={{background: 'black', color:'whitesmoke'}}>
+                            <thead style={{ background: 'black', color: 'whitesmoke' }}>
                                 <tr>
                                     <th scope="col-25"></th>
                                     <th scope="col-25">Viso</th>
@@ -689,13 +857,13 @@ class HomeScreen extends React.Component {
                             <tbody>
                                 <tr>
                                     <th scope="row">Laukiantys gaminiai</th>
-                                    <td>{this.props.orderDetailsReducer.main_pending_products === null?"":this.props.orderDetailsReducer.main_pending_products === undefined?"":this.props.orderDetailsReducer.main_pending_products.quantity}</td>
-                                    <td>{this.props.orderDetailsReducer.main_today_made_products === null?"":this.props.orderDetailsReducer.main_today_made_products === undefined?"":this.props.orderDetailsReducer.main_today_made_products.quantity}</td>
-                                    <td>{this.props.orderDetailsReducer.main_new_today_orders === null?"":this.props.orderDetailsReducer.main_new_today_orders === undefined?"":this.props.orderDetailsReducer.main_new_today_orders.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_pending_products === null ? "" : this.props.orderDetailsReducer.main_pending_products === undefined ? "" : this.props.orderDetailsReducer.main_pending_products.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_today_made_products === null ? "" : this.props.orderDetailsReducer.main_today_made_products === undefined ? "" : this.props.orderDetailsReducer.main_today_made_products.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_new_today_orders === null ? "" : this.props.orderDetailsReducer.main_new_today_orders === undefined ? "" : this.props.orderDetailsReducer.main_new_today_orders.quantity}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Būtina šiandien atlikti</th>
-                                    <td>{this.props.orderDetailsReducer.main_necessary_today === null?"":this.props.orderDetailsReducer.main_necessary_today === undefined?"":this.props.orderDetailsReducer.main_necessary_today.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_necessary_today === null ? "" : this.props.orderDetailsReducer.main_necessary_today === undefined ? "" : this.props.orderDetailsReducer.main_necessary_today.quantity}</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -718,7 +886,7 @@ class HomeScreen extends React.Component {
                             <Table
                                 rowKey="id"
                                 columns={workTimesColumns}
-                                dataSource={this.props.orderDetailsReducer.uncompleted_orders_times.length > 0? this.props.orderDetailsReducer.uncompleted_orders_times: []}
+                                dataSource={this.props.orderDetailsReducer.uncompleted_orders_times.length > 0 ? this.props.orderDetailsReducer.uncompleted_orders_times : []}
                                 pagination={{ pageSize: 15 }}
                                 bWorked
                                 scroll={{ x: 'calc(200px + 50%)' }}
