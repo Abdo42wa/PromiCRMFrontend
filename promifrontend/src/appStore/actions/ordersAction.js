@@ -23,18 +23,18 @@ export const getOrders = () => async (dispatch, getState) => {
     }
 }
 
-export const getNonStandartOrders = () => async(dispatch,getState)=>{
-    try{
+export const getNonStandartOrders = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'NON_STANDART_ORDERS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get('/api/Orders/nonstandart',{headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get('/api/Orders/nonstandart', { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'NON_STANDART_ORDERS_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'NON_STANDART_ORDERS_FETCH_FAIL',
             payload:
@@ -45,18 +45,18 @@ export const getNonStandartOrders = () => async(dispatch,getState)=>{
     }
 }
 
-export const getOrder = (id) => async(dispatch,getState)=>{
-    try{
+export const getOrder = (id) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDER_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/${id}`, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/${id}`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'ORDER_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'ORDER_FETCH_FAIL',
             payload:
@@ -67,18 +67,18 @@ export const getOrder = (id) => async(dispatch,getState)=>{
     }
 }
 
-export const getNonStandartOrder = (id) => async(dispatch,getState)=>{
-    try{
+export const getNonStandartOrder = (id) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'NON_STANDART_ORDER_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/nonstandart/${id}`, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/nonstandart/${id}`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'NON_STANDART_ORDER_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'NON_STANDART_ORDER_FETCH_FAIL',
             payload:
@@ -89,13 +89,13 @@ export const getNonStandartOrder = (id) => async(dispatch,getState)=>{
     }
 }
 
-export const updateOrderObj = (inputName,value) => async(dispatch,getState)=>{
-    try{
+export const updateOrderObj = (inputName, value) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDER_OBJ_UPDATE_SUCCESS',
-            payload: {name: inputName, value: value}
+            payload: { name: inputName, value: value }
         })
-    }finally{
+    } finally {
 
     }
 }
@@ -111,13 +111,13 @@ export const updateOrderObj = (inputName,value) => async(dispatch,getState)=>{
 //     }
 // }
 
-export const updateNonStandartObjServices = (id,value,record) => async(dispatch,getState) => {
-    try{
+export const updateNonStandartObjServices = (id, value, record) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDER_NON_STANDART_OBJ_SERVICE_UPDATE',
-            payload: {id: id, value: value, record:record}
+            payload: { id: id, value: value, record: record }
         })
-    }finally{
+    } finally {
 
     }
 }
@@ -125,18 +125,18 @@ export const updateNonStandartObjServices = (id,value,record) => async(dispatch,
 
 //------------------------ ADD AND UPDATE OF ORDERS UserServices
 //ON UserService create in nonStandartOrdersComponent
-export const addNonStandartOrderService = (postObj) => async(dispatch,getState)=>{
-    try{
+export const addNonStandartOrderService = (postObj) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'NON_STANDART_ORDER_SERVICE_CREATE_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/UserServices`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.post(`/api/UserServices`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'NON_STANDART_ORDER_SERVICE_CREATE_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'NON_STANDART_ORDER_SERVICE_CREATE_FAIL',
             payload:
@@ -148,18 +148,18 @@ export const addNonStandartOrderService = (postObj) => async(dispatch,getState)=
 }
 
 //ON UserService create in StandartOrdersComponent
-export const addOrderService = (postObj) => async(dispatch,getState)=>{
-    try{
+export const addOrderService = (postObj) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDER_SERVICE_CREATE_REQUEST',
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.post(`/api/UserServices`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.post(`/api/UserServices`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'ORDER_SERVICE_CREATE_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'ORDER_SERVICE_CREATE_FAIL',
             payload:
@@ -170,18 +170,18 @@ export const addOrderService = (postObj) => async(dispatch,getState)=>{
     }
 }
 //UserService update in nonStandartOrdersComponent
-export const updateNonStandartOrderService = (postObj,reducerObj) => async(dispatch,getState)=> {
-    try{
+export const updateNonStandartOrderService = (postObj, reducerObj) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'NON_STADARNT_ORDER_SERVICE_UPDATE_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/UserServices/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        await promiAPI.put(`/api/UserServices/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'NON_STADARNT_ORDER_SERVICE_UPDATE_SUCCESS',
             payload: reducerObj
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'NON_STADARNT_ORDER_SERVICE_UPDATE_FAIL',
             payload:
@@ -192,18 +192,18 @@ export const updateNonStandartOrderService = (postObj,reducerObj) => async(dispa
     }
 }
 //UserService update in StandartOrdersComponent
-export const updateOrderService = (postObj,reducerObj) => async(dispatch,getState)=> {
-    try{
+export const updateOrderService = (postObj, reducerObj) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDER_SERVICE_UPDATE_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/UserServices/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        await promiAPI.put(`/api/UserServices/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'ORDER_SERVICE_UPDATE_SUCCESS',
             payload: reducerObj
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'ORDER_SERVICE_UPDATE_FAIL',
             payload:
@@ -215,7 +215,7 @@ export const updateOrderService = (postObj,reducerObj) => async(dispatch,getStat
 }
 //------------------------ ENDDD OF ADD AND UPDATE OF ORDERS UserServices
 
-export const insertManyMaterials = (postObj,callback) => async (dispatch, getState) => {
+export const insertManyMaterials = (postObj, callback) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDER_MATERIAL_INSERT_MANY_REQUEST'
@@ -301,7 +301,7 @@ export const updateOrder = () => async (dispatch, getState) => {
         const token = getState().usersReducer.currentUser;
 
         const order = getState().orderReducer.order;
-        const {id, ...postObj} = order;
+        const { id, ...postObj } = order;
         await promiAPI.put(`/api/Orders/${order.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'ORDER_UPDATE_SUCCESS',
@@ -319,22 +319,22 @@ export const updateOrder = () => async (dispatch, getState) => {
     }
 }
 
-export const updateStandartOrWarehouseComplete = (postObj,reducerObj)=> async(dispatch,getState)=>{
-    try{
+export const updateStandartOrWarehouseComplete = (postObj, reducerObj) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDERS_COMPLETE_UPDATE_REQUEST'
-        })        
+        })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Orders/warehouse/standart/finished/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.put(`/api/Orders/warehouse/standart/finished/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         const obj = {
             ...reducerObj,
-            "userServices": [...reducerObj.userServices,...response.data]
+            "userServices": [...reducerObj.userServices, ...response.data]
         }
         dispatch({
             type: 'ORDERS_COMPLETE_UPDATE_SUCCESS',
             payload: obj
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'ORDERS_COMPLETE_UPDATE_FAIL',
             payload:
@@ -346,21 +346,21 @@ export const updateStandartOrWarehouseComplete = (postObj,reducerObj)=> async(di
 }
 
 //just when updating in UpdateOrderComponent
-export const updateNonStandart = () => async(dispatch,getState)=>{
-    try{
+export const updateNonStandart = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'NON_STANDART_ORDER_UPDATE_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        
+
         const order = getState().orderReducer.order;
-        const {id, ...postObj} = order;
-        await promiAPI.put(`/api/Orders/nonstandart/${order.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        const { id, ...postObj } = order;
+        await promiAPI.put(`/api/Orders/nonstandart/${order.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'NON_STANDART_ORDER_UPDATE_SUCCESS',
             payload: order
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'NON_STANDART_ORDER_UPDATE_FAIL',
             payload:
@@ -374,22 +374,22 @@ export const updateNonStandart = () => async(dispatch,getState)=>{
 
 //BASICALLY WHEN PACKING IS CLICKED WE CALL THIS METHOD AND THEN IT WILL TAKE
 //MATERIALS FROM MATERIALS WAREHOUSE
-export const updateNonStandartOrderComplete = (postObj,reducerObj) => async(dispatch,getState)=>{
-    try{
+export const updateNonStandartOrderComplete = (postObj, reducerObj) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'NON_STANDART_FINISHED_ORDER_UPDATE_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Orders/nonstandart/finished/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.put(`/api/Orders/nonstandart/finished/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         const obj = {
             ...reducerObj,
-            "userServices": [...reducerObj.userServices,...response.data]
+            "userServices": [...reducerObj.userServices, ...response.data]
         }
         dispatch({
             type: 'NON_STANDART_FINISHED_ORDER_UPDATE_SUCCESS',
             payload: obj
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'NON_STANDART_FINISHED_ORDER_UPDATE_FAIL',
             payload:
@@ -400,18 +400,18 @@ export const updateNonStandartOrderComplete = (postObj,reducerObj) => async(disp
     }
 }
 
-export const updateOrderTakeProductsFromWarehouse = (postObj,reducerObj) => async(dispatch,getState)=>{
-    try{
+export const updateOrderTakeProductsFromWarehouse = (postObj, reducerObj) => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDER_WAREHOUSE_UPDATE_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        await promiAPI.put(`/api/Orders/warehouse/subtract/${reducerObj.id}`,postObj,{headers: {Authorization: `Bearer ${token}`}})
+        await promiAPI.put(`/api/Orders/warehouse/subtract/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'ORDER_WAREHOUSE_UPDATE_SUCCESS',
             payload: reducerObj
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'ORDER_WAREHOUSE_UPDATE_FAIL',
             payload:
@@ -448,18 +448,18 @@ export const updateOrderWithImage = (postObj, id) => async (dispatch, getState) 
 
 // -------------------------------- DASHBOARD
 
-export const getUncompletedOrdersTimes = () => async(dispatch,getState)=>{
-    try{
+export const getUncompletedOrdersTimes = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDERS_UNCOMPLETED_TIMES_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get('/api/Orders/planned/time',{headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get('/api/Orders/planned/time', { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'ORDERS_UNCOMPLETED_TIMES_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch(error){
+    } catch (error) {
         dispatch({
             type: 'ORDERS_UNCOMPLETED_TIMES_FETCH_FAIL',
             payload:
@@ -473,19 +473,19 @@ export const getUncompletedOrdersTimes = () => async(dispatch,getState)=>{
 
 //MAIN DASHBOARD (FIRST)-------------------------------
 //Laukiantys gaminiai
-export const getMainPendingProducts = () => async(dispatch,getState)=>{
-    try{
+export const getMainPendingProducts = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'MAIN_PENDING_PRODUCTS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/main/pendingproducts`, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/main/pendingproducts`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MAIN_PENDING_PRODUCTS_FETCH_SUCCESS',
             payload: response.data
         })
-        
-    }catch(error){
+
+    } catch (error) {
         dispatch({
             type: 'MAIN_PENDING_PRODUCTS_FETCH_FAIL',
             payload:
@@ -496,18 +496,18 @@ export const getMainPendingProducts = () => async(dispatch,getState)=>{
     }
 }
 //Butina siandien atlitki. These are orders whose deadline is today or they are late
-export const getNecessaryToMakeToday = () => async(dispatch,getState)=>{
-    try{
+export const getNecessaryToMakeToday = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'MAIN_NECESSARY_TODAY_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/main/necessary/make/today`, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/main/necessary/make/today`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MAIN_NECESSARY_TODAY_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch(error){
+    } catch (error) {
         dispatch({
             type: 'MAIN_NECESSARY_TODAY_FETCH_FAIL',
             payload:
@@ -518,18 +518,18 @@ export const getNecessaryToMakeToday = () => async(dispatch,getState)=>{
     }
 }
 //Siandien pagaminti(main dashboard). orders that are made today.
-export const getTodayMadeProducts = () => async(dispatch,getState)=>{
-    try{
+export const getTodayMadeProducts = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'MAIN_TODAY_MADE_PRODUCTS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get('/api/Orders/today/made/products',{headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get('/api/Orders/today/made/products', { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MAIN_TODAY_MADE_PRODUCTS_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch(error){
+    } catch (error) {
         dispatch({
             type: 'MAIN_TODAY_MADE_PRODUCTS_FETCH_FAIL',
             payload:
@@ -540,20 +540,43 @@ export const getTodayMadeProducts = () => async(dispatch,getState)=>{
     }
 }
 //Nauji uzsakyti gaminiai (main dashboard). today made orders (no  completed).
-export const getMainTodayNewOrders = () => async(dispatch,getState)=>{
-    try{
+export const getMainTodayNewOrders = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'MAIN_TODAY_NEW_PRODUCTS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/main/new/orders`,{headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/main/new/orders`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'MAIN_TODAY_NEW_PRODUCTS_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch(error){
+    } catch (error) {
         dispatch({
             type: 'MAIN_TODAY_NEW_PRODUCTS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+export const getUnsendedOrders = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDERS_UNSENDED_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get('/api/Orders/unsended', { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'ORDERS_UNSENDED_FETCH_SUCCESS',
+            payload: response.data
+        })
+    } catch (error) {
+        dispatch({
+            type: 'ORDERS_UNSENDED_FETCH_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
@@ -565,18 +588,18 @@ export const getMainTodayNewOrders = () => async(dispatch,getState)=>{
 
 
 
-export const getUrgetOrders = () => async(dispatch,getState)=>{
-    try{
+export const getUrgetOrders = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDERS_URGENT_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/urgent`,{headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/urgent`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'ORDERS_URGENT_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch(error){
+    } catch (error) {
         dispatch({
             type: 'ORDERS_URGENT_FETCH_FAIL',
             payload:
@@ -587,18 +610,18 @@ export const getUrgetOrders = () => async(dispatch,getState)=>{
     }
 }
 
-export const getRecentOrders = () => async(dispatch,getState)=>{
-    try{
+export const getRecentOrders = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDERS_RECENT_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/recent`,{headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/recent`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'ORDERS_RECENT_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch(error){
+    } catch (error) {
         dispatch({
             type: 'ORDERS_RECENT_FETCH_FAIL',
             payload:

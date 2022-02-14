@@ -7,7 +7,7 @@ import {
     getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,
     getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders
+    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders
 } from '../appStore/actions/ordersAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -114,6 +114,8 @@ class HomeScreen extends React.Component {
             this.props.getLastMonthCompletedOrders()
             // Pagamintu gaminiu kiekis savaitemis
             this.props.getLastWeeksCompletedOrders()
+            // Neisiustu siuntiniu lentele
+            this.props.getUnsendedOrders()
         } else {
             this.props.history.push('/login');
         }
@@ -502,10 +504,10 @@ class HomeScreen extends React.Component {
                 dataIndex: 'imagePath',
                 width: '10%',
                 render: (text, record, index) => {
-                    if(text === null || text === undefined)
+                    if (text === null || text === undefined)
                         return (<p></p>)
                     else
-                        return <Image src={text} height={40} alt='Foto'/>
+                        return <Image src={text} height={40} alt='Foto' />
                 }
             },
             {
@@ -562,6 +564,33 @@ class HomeScreen extends React.Component {
                             <p></p> : <Image src={text} height={30} />}
                     </div>
                 )
+            }
+        ]
+
+        // Neisiustu siuntiniu lentele
+        const unsendedOrders = [
+            {
+                title: 'Uzsakymo numeris',
+                dataIndex: 'orderNumber',
+                width: '20%'
+            },
+            {
+                title: 'Data',
+                dataIndex: 'orderFinishDate',
+                width: '20%',
+                render: (text, record, index) => (
+                    <p>{moment(text).format('YYYY/MM/DD')}</p>
+                )
+            },
+            {
+                title: 'Kodas',
+                dataIndex: 'productCode',
+                width: '20%'
+            },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '20%'
             }
         ]
 
@@ -622,11 +651,11 @@ class HomeScreen extends React.Component {
                 dataIndex: 'customer',
                 width: '25%',
                 render: (text, record, index) => {
-                    if(text === null)
+                    if (text === null)
                         return (<p></p>)
                     else
                         return (<Typography.Text>{text.name}  {text.companyName}</Typography.Text>)
-                    
+
                 }
             },
             {
@@ -648,7 +677,7 @@ class HomeScreen extends React.Component {
                             <h3>Pagrindiniai rodikliai</h3>
                         </div>
                         <table class="table">
-                            <thead style={{background: 'black', color:'whitesmoke'}}>
+                            <thead style={{ background: 'black', color: 'whitesmoke' }}>
                                 <tr>
                                     <th scope="col-25"></th>
                                     <th scope="col-25">Viso</th>
@@ -659,13 +688,13 @@ class HomeScreen extends React.Component {
                             <tbody>
                                 <tr>
                                     <th scope="row">Laukiantys gaminiai</th>
-                                    <td>{this.props.orderDetailsReducer.main_pending_products === null?"":this.props.orderDetailsReducer.main_pending_products === undefined?"":this.props.orderDetailsReducer.main_pending_products.quantity}</td>
-                                    <td>{this.props.orderDetailsReducer.main_today_made_products === null?"":this.props.orderDetailsReducer.main_today_made_products === undefined?"":this.props.orderDetailsReducer.main_today_made_products.quantity}</td>
-                                    <td>{this.props.orderDetailsReducer.main_new_today_orders === null?"":this.props.orderDetailsReducer.main_new_today_orders === undefined?"":this.props.orderDetailsReducer.main_new_today_orders.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_pending_products === null ? "" : this.props.orderDetailsReducer.main_pending_products === undefined ? "" : this.props.orderDetailsReducer.main_pending_products.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_today_made_products === null ? "" : this.props.orderDetailsReducer.main_today_made_products === undefined ? "" : this.props.orderDetailsReducer.main_today_made_products.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_new_today_orders === null ? "" : this.props.orderDetailsReducer.main_new_today_orders === undefined ? "" : this.props.orderDetailsReducer.main_new_today_orders.quantity}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Būtina šiandien atlikti</th>
-                                    <td>{this.props.orderDetailsReducer.main_necessary_today === null?"":this.props.orderDetailsReducer.main_necessary_today === undefined?"":this.props.orderDetailsReducer.main_necessary_today.quantity}</td>
+                                    <td>{this.props.orderDetailsReducer.main_necessary_today === null ? "" : this.props.orderDetailsReducer.main_necessary_today === undefined ? "" : this.props.orderDetailsReducer.main_necessary_today.quantity}</td>
                                     <td></td>
                                     <td></td>
                                 </tr>
@@ -856,6 +885,31 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h3>Neisiustu siuntiniu lentele</h3>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={unsendedOrders}
+                                        dataSource={this.props.orderDetailsReducer.unsended_orders}
+                                        pagination={false}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                    <Col span={24} style={{ marginTop: '20px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
                                     <h3>Gaminimo į sandėlį lentelė</h3>
                                 </div>
                             </Col>
@@ -987,6 +1041,6 @@ export default connect(mapStateToProps, {
     getLastWeeksCompletedOrders, getClientsOrders, getProducts,
     getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders
+    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders
 })(withRouter(HomeScreen))
 
