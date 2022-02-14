@@ -7,12 +7,13 @@ import { getUsers } from '../../appStore/actions/userListActions'
 import { getLoggedUser } from '../../appStore/actions/userAction';
 import { getProducts } from '../../appStore/actions/productsActions'
 import { getWarehouseProduct } from '../../appStore/actions/warehouseActions'
-import { getOrders } from '../../appStore/actions/ordersAction'
+import { getOrders,createNonStandartOrder, addOrder } from '../../appStore/actions/ordersAction'
 import { getShipments } from '../../appStore/actions/shipmentsActions';
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import {currencies} from '../data/currenciesData.js'
 
 const { Option } = Select;
 
@@ -21,6 +22,8 @@ function AddOrderComponent(props) {
     const [order, setOrder] = useState({
         "userId": "",
         "orderType": "",
+        "countryName":"Lithuania",
+        "currencyName": "EUR",
         "status": false,
         "orderNumber": null,
         "date": moment().format('YYYY/MM/DD,h:mm:ss a'),
@@ -39,16 +42,17 @@ function AddOrderComponent(props) {
         "countryId": 1,
         "comment": "",
         "price": 0,
-        "currencyId": 1,
+        // "currencyId": 1,
         "vat": 0,
         "orderFinishDate": moment().format('YYYY/MM/DD'),
         "orderId": null,
         "lastTimeChanging": moment().format("YYYY/MM/DD"),
-        "collectionTime": 0,
-        "bondingTime": 0,
         "laserTime": 0,
-        "paintingTime": 0,
         "milingTime": 0,
+        "paintingTime": 0,
+        "grindingTime": 0,
+        "bondingTime": 0,
+        "collectionTime": 0,
         "packingTime": 0
     });
     const [file, setFile] = useState();
@@ -56,6 +60,12 @@ function AddOrderComponent(props) {
     const [notStandart, setNotStandart] = useState(true);
     const [product, setProduct] = useState(null)
     const [fileName, setFileName] = useState();
+    const [orderServices, setOrderServices] = useState([
+        {
+            "serviceId": 7,
+            "timeConsumption": 0
+        }
+    ])
 
     const customersReducer = useSelector((state) => state.customersReducer);
     const currencyReducer = useSelector((state) => state.currencyReducer);
@@ -96,11 +106,26 @@ function AddOrderComponent(props) {
         }
     }
 
+    const serviceDataChange = (value, inputName, serviceId) => {
+        const index = orderServices.findIndex(x => x.serviceId === serviceId)
+        if (index === -1) {
+            let obj = {
+                "serviceId": serviceId,
+                "timeConsumption": value
+            }
+            setOrderServices(prevState => [...prevState, obj])
+            console.log(JSON.stringify(orderServices))
+        } else
+            setOrderServices(orderServices.map(x => x.serviceId === serviceId ? { ...x, "timeConsumption": value } : x))
+        setOrder(prevState => ({
+            ...prevState,
+            [inputName]: value
+        }))
+    }
 
     const onDataChange = (value, inputName) => {
-
         if (inputName === 'orderNumber' ||
-            inputName === 'customerId' || inputName === 'currencyId' ||
+            inputName === 'customerId' ||
             inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
             setOrder(prevState => ({
                 ...prevState,
@@ -162,48 +187,32 @@ function AddOrderComponent(props) {
         // if ne-standartinis then person writes all "times" by himself.
         // but i need to save "times" for "Sandelis" and "Paprastas" orders too. i can get times from product
         if (clone.orderType === "Ne-standartinis") {
+
             const postObj = {
                 ...clone,
                 "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
                 "platforma": clone.platforma === null ? "Nera" : clone.platforma,
-                "productCode": null
+                "productCode": null,
+                "orderServices":orderServices
             }
-            props.save(postObj)
+            dispatch(createNonStandartOrder(postObj))
+            props.onClose()
         } else {
             //get product that we selected. i need "times" from product
-            const product_data = productsReducer.products.find(o => o.code === clone.productCode)
+            // const product_data = productsReducer.products.find(o => o.code === clone.productCode)
             const postObj = {
                 ...clone,
                 "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
-                "productId": clone.productCode !== null ? getProductId(product.code) : null,
-                "collectionTime": product.collectionTime,
-                "bondingTime": product.bondingTime,
-                "laserTime": product.laserTime,
-                "paintingTime": product.paintingTime,
-                "milingTime": product.milingTime,
-                "packingTime": product.packingTime
+                "productId": clone.productCode !== null ? getProductId(product.code) : null
             }
-            props.save(postObj)
+            dispatch(addOrder(postObj))
+            console.log(JSON.stringify(order))
+            props.onClose()
         }
-    }
-    const onTakeFromWarehouseCheck = (value, inputName) => {
-        let num = 0;
-        if (value === false)
-            num = 0;
-        else {
-            if (order.quantity <= warehouseReducer.warehouse_product.quantityProductWarehouse)
-                num = order.quantity;
-            else
-                num = 0;
-        }
-        setOrder(prevState => ({
-            ...prevState,
-            [inputName]: Number(num)
-        }))
     }
     useEffect(() => {
         dispatch(getCustomers())
-        dispatch(getCurrencies());
+        // dispatch(getCurrencies());
         dispatch(getCountries());
         dispatch(getUsers());
         dispatch(getSalesChannels())
@@ -372,45 +381,38 @@ function AddOrderComponent(props) {
                     {order.orderType === "Ne-standartinis" ?
                         <div>
                             <Form.Item key="laserTime" name="laserTime" label="Lazeriavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={order.laserTime} value={order.laserTime} onChange={(e) => onDataChange(e, "laserTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={order.laserTime} value={order.laserTime} onChange={(e) => serviceDataChange(e, "laserTime",1)} />
                             </Form.Item>
                             <Form.Item key="milingTime" name="milingTime" label="Frezavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={order.milingTime} value={order.milingTime} onChange={(e) => onDataChange(e, "milingTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={order.milingTime} value={order.milingTime} onChange={(e) => serviceDataChange(e, "milingTime",2)} />
                             </Form.Item>
                             <Form.Item key="paintingTime" name="paintingTime" label="Dažymo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={order.paintingTime} value={order.paintingTime} onChange={(e) => onDataChange(e, "paintingTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={order.paintingTime} value={order.paintingTime} onChange={(e) => serviceDataChange(e, "paintingTime",3)} />
+                            </Form.Item>
+                            <Form.Item key="grindingTime" name="grindingTime" label="Šlifavimo laikas">
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Šlifavimo laiką" defaultValue={order.grindingTime} value={order.grindingTime} onChange={(e) => serviceDataChange(e, "grindingTime",4)} />
                             </Form.Item>
                             <Form.Item key="bondingTime" name="bondingTime" label="Suklijavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={order.bondingTime} value={order.bondingTime} onChange={(e) => onDataChange(e, "bondingTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={order.bondingTime} value={order.bondingTime} onChange={(e) => serviceDataChange(e, "bondingTime",5)} />
                             </Form.Item>
                             <Form.Item key="collectionTime" name="collectionTime" label="Surinkimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={order.collectionTime} value={order.collectionTime} onChange={(e) => onDataChange(e, "collectionTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={order.collectionTime} value={order.collectionTime} onChange={(e) => serviceDataChange(e, "collectionTime",6)} />
                             </Form.Item>
                             <Form.Item key="packingTime" name="packingTime" label=" Pakavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={order.packingTime} value={order.packingTime} onChange={(e) => onDataChange(e, "packingTime")} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={order.packingTime} value={order.packingTime} onChange={(e) => serviceDataChange(e, "packingTime",7)} />
                             </Form.Item>
                         </div> : null
                     }
-                    {order.productCode !== '' && product !== null ?
+                    {order.orderType !== "Ne-standartinis" && order.productCode !== '' && product !== null && product.orderServices !== null && product.orderServices !== undefined?
                         <div>
-                            <Form.Item key="laserTime1" name="laserTime1" label="Lazeriavimo laikas">
-                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={product.laserTime} />
-                            </Form.Item>
-                            <Form.Item key="milingTime1" name="milingTime1" label="Frezavimo laikas">
-                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={product.milingTime} />
-                            </Form.Item>
-                            <Form.Item key="paintingTime1" name="paintingTime1" label="Dažymo laikas">
-                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={product.paintingTime} />
-                            </Form.Item>
-                            <Form.Item key="bondingTime1" name="bondingTime1" label="Suklijavimo laikas">
-                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={product.bondingTime} />
-                            </Form.Item>
-                            <Form.Item key="collectionTime1" name="collectionTime1" label="Surinkimo laikas">
-                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={product.collectionTime} />
-                            </Form.Item>
-                            <Form.Item key="packingTime1" name="packingTime1" label=" Pakavimo laikas">
-                                <Input disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={product.packingTime} />
-                            </Form.Item>
+                            {product.orderServices.map((element, index) => {
+                                return (
+                                    <div key={index}>
+                                        <p>{element.service.name}</p>
+                                        <Input disabled key={index} style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} />
+                                    </div>
+                                )
+                            })}
                         </div> : null
 
                     }
@@ -490,8 +492,8 @@ function AddOrderComponent(props) {
                         </Select>
                     </Form.Item>
                     <Form.Item
-                        key="currencyId"
-                        name="currencyId"
+                        key="currencyName"
+                        name="currencyName"
                         label="Valiuta"
                     >
                         <Select
@@ -500,11 +502,11 @@ function AddOrderComponent(props) {
                             style={{ width: '100%' }}
                             placeholder="Pasirinkite valiutą"
                             optionFilterProp="children"
-                            defaultValue={order.currencyId}
-                            onChange={(e) => onDataChange(e, "currencyId")}
+                            defaultValue={order.currencyName}
+                            onChange={(e) => onDataChange(e, "currencyName")}
                         >
-                            {currencyReducer.currency.map((element, index) => {
-                                return (<Option key={element.id} value={element.id}>{element.name}</Option>)
+                            {currencies.map((element, index) => {
+                                return (<Option key={element.cc} value={element.cc}>{element.cc}  {element.name}</Option>)
                             })}
                         </Select>
                     </Form.Item>

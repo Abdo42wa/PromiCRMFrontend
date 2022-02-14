@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getCurrencies } from '../../appStore/actions/currenciesAction'
 import { getCustomers } from '../../appStore/actions/customersActions'
 import { getCountries } from '../../appStore/actions/countriesAction'
 import { getUsers } from '../../appStore/actions/userListActions'
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { getWarehouseProduct } from '../../appStore/actions/warehouseActions';
-import { updateOrderTakeProductsFromWarehouse } from '../../appStore/actions/ordersAction';
+import { updateOrderTakeProductsFromWarehouse, updateNonStandart, updateOrder, getOrder, getNonStandartOrder, updateOrderObj, updateNonStandartObjServices } from '../../appStore/actions/ordersAction';
 import { getShipments } from '../../appStore/actions/shipmentsActions';
 import { Modal, Button, Form, Space, Select, Input, InputNumber, Image } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { currencies } from '../data/currenciesData';
 
 const { Option } = Select;
 const textStyle = {
@@ -27,19 +27,17 @@ const textStyle = {
 
 function UpdateOrderComponent(props) {
     const dispatch = useDispatch();
-    const [order, setOrder] = useState({});
     const [sandelis, setSandelis] = useState(false);
     const [notStandart, setNotStandart] = useState(true);
-    const [file, setFile] = useState();
-    const [fileChanged, setFileChanged] = useState(0)
+    const [orderServices, setOrderServices] = useState([])
+
     const customersReducer = useSelector((state) => state.customersReducer);
-    const currencyReducer = useSelector((state) => state.currencyReducer);
     const countryReducer = useSelector((state) => state.countryReducer);
     const usersListReducer = useSelector((state) => state.usersListReducer)
     const salesChannelsReducer = useSelector((state) => state.salesChannelsReducer)
     const warehouseReducer = useSelector((state) => state.warehouseReducer)
-    const ordersReducer = useSelector((state) => state.ordersReducer)
     const shipmentsReducer = useSelector((state) => state.shipmentsReducer)
+    const orderReducer = useSelector((state) => state.orderReducer)
     const onBack = () => {
         props.onClose();
     }
@@ -47,78 +45,31 @@ function UpdateOrderComponent(props) {
         props.onClose();
     }
     const onDataChange = (value, inputName) => {
-        if (inputName === 'orderNumber' ||
-            inputName === 'customerId' || inputName === 'currencyId' ||
-            inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
-            setOrder(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-            }))
-        } else {
-            setOrder(prevState => ({
-                ...prevState,
-                [inputName]: value
-            }))
-        }
+        if (orderReducer.order !== null && orderReducer.order.orderType === "Standartinis")
+            dispatch(updateOrderObj(inputName, value))
+        else if (orderReducer.order !== null && orderReducer.order.orderType === "Ne-standartinis")
+            dispatch(updateOrderObj(inputName, value))
         if (inputName === "productCode") {
             dispatch(getWarehouseProduct(value))
         }
     }
+    //for non standart orders. to update order and orderServices
+    const onServiceDataChange = (id, value, record) => {
+        dispatch(updateNonStandartObjServices(id, value, record))
+    }
     const saveChanges = () => {
         // const clone = JSON.parse(JSON.stringify(order));
-        const { id, ...postObj } = order;
-        const reducerObj = {
-            ...order
+
+        if (orderReducer.non_standart_order !== null) {
+            dispatch(updateNonStandart())
+            props.onClose()
+        }
+        else {
+            dispatch(updateOrder())
+            props.onClose()
         }
 
-        props.save(postObj, reducerObj);
-        console.log('postobj:' + JSON.stringify(postObj))
-        console.log('reducerObj:' + JSON.stringify(reducerObj))
 
-        // if (fileChanged === 0) {
-        //     const { id, ...postObj } = clone;
-        //     const reducerObj = clone;
-        //     props.save(postObj, reducerObj);
-        // } else {
-        //     const formData = new FormData();
-        //     formData.append("userId", clone.userId)
-        //     formData.append("orderType", clone.orderType)
-        //     formData.append("status", clone.status)
-        //     formData.append("orderNumber", clone.orderNumber)
-        //     formData.append("date", clone.date)
-        //     formData.append("platforma", clone.platforma)
-        //     formData.append("moreInfo", clone.moreInfo)
-        //     formData.append("quantity", clone.quantity)
-        //     formData.append("productCode", clone.productCode)
-        //     formData.append("comment", clone.comment)
-        //     formData.append("shipmentTypeId", clone.shipmentTypeId)
-        //     formData.append("customerId", clone.customerId)
-        //     formData.append("device", clone.device)
-        //     formData.append("productionTime", clone.productionTime)
-        //     formData.append("address", clone.address)
-        //     formData.append("countryId", clone.countryId)
-        //     formData.append("price", clone.price)
-        //     formData.append("currencyId", clone.currencyId)
-        //     formData.append("vat", clone.vat)
-        //     formData.append("orderFinishDate", clone.orderFinishDate)
-        //     formData.append("file", file)
-        //     formData.append("imageName", clone.imageName)
-        //     props.saveWithImg(formData, clone.id)
-        //     console.log(clone.imageName)
-        //     console.log(file)
-        // }
-    }
-
-    const deleteImage = () => {
-        const clone = JSON.parse(JSON.stringify(order))
-        // materialClone.imageName = null;
-        clone.imagePath = null;
-        // dispatch(deleteMaterialImage(material.id, material.imageName))
-        setOrder(clone)
-    }
-    const changeFile = (e) => {
-        setFileChanged(1);
-        setFile(e.target.files[0])
     }
 
     const onTakeFromWarehouseCheck = (value, inputName) => {
@@ -126,8 +77,8 @@ function UpdateOrderComponent(props) {
         if (value === false)
             num = 0;
         else {
-            if (order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse)
-                num = order.quantity;
+            if (orderReducer.order.orderType !== "Ne-standartinis" && orderReducer.order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse)
+                num = orderReducer.order.quantity;
             else
                 num = 0;
         }
@@ -135,9 +86,8 @@ function UpdateOrderComponent(props) {
         //     ...prevState,
         //     [inputName]: Number(num)
         // }))
-
         const obj = {
-            ...order,
+            ...orderReducer.order,
             "warehouseProductsNumber": Number(num),
             "warehouseProductsTaken": true,
             "warehouseProductsDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
@@ -153,24 +103,26 @@ function UpdateOrderComponent(props) {
     }
 
     useEffect(() => {
+        // const obj = {
+        //     ...props.record,
+        //     "date": moment(props.record.date).format('YYYY/MM/DD,h:mm:ss a'),
+        //     "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD')
+        // }
         dispatch(getUsers());
-        dispatch(getCurrencies())
         dispatch(getCountries())
         dispatch(getCustomers())
         dispatch(getWarehouseProduct(props.record.productCode))
-        const obj = {
-            ...props.record,
-            "date": moment(props.record.date).format('YYYY/MM/DD,h:mm:ss a'),
-            "orderFinishDate": moment(props.record.orderFinishDate).format('YYYY/MM/DD')
-        }
-        setOrder(obj);
+        // setOrder(obj);
         if (props.record.orderType === "Sandelis") {
+            dispatch(getOrder(props.record.id))
             setSandelis(true);
             setNotStandart(true)
         } else if (props.record.orderType === "Ne-standartinis") {
+            dispatch(getNonStandartOrder(props.record.id))
             setNotStandart(false)
             setSandelis(false);
         } else {
+            dispatch(getOrder(props.record.id))
             setNotStandart(true)
             setSandelis(false);
         }
@@ -194,210 +146,203 @@ function UpdateOrderComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-                    <p style={{ ...textStyle }}>Užsakymo tipas</p>
-                    <Input disabled style={{ width: '100%' }} placeholder="Paprastas arba nestandartinis" value={order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
-                    <p style={{ ...textStyle }}>Užsakymo numeris</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={order.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
-                    {/* <p style={{ ...textStyle }}>Data</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} onChange={(e) => onDataChange(e.target.value, "date")} /> */}
-
-
-                    <p style={{ marginBottom: '5px' }}>Platforma</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite platforma"
-                        optionFilterProp="children"
-                        value={order.platforma}
-                        onChange={(e) => onDataChange(e, "platforma")}
-                    >
-                        {salesChannelsReducer.salesChannels.map((element, index) => {
-                            return (<Option key={element.id} value={element.title}>{element.title}</Option>)
-                        })}
-                    </Select>
-                    <p style={{ ...textStyle }}>Daugiau informacijos</p>
-                    <Input style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
-                    <p style={{ ...textStyle }}>Kiekis</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
-                    {/* <p style={{ ...textStyle }}>Nuotrauka</p>
-                    <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={order.photo} onChange={(e) => onDataChange(e.target.value, "photo")} /> */}
-                    <p style={{ ...textStyle }}>Prekės kodas</p>
-                    <Input disabled={!notStandart} style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite kodą" value={order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
-
-                    {order.orderType === "Standartinis" && order.productCode !== "" ?
+                    {orderReducer.order !== null && orderReducer.order !== undefined ?
                         <div>
-                            <p style={{ ...textStyle }}>Panaudosime sandėlio produktus?</p>
-                            <Input disabled={
-                                order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse &&
-                                    order.warehouseProductsTaken === false ? false : true} style={{ width: '35px', height: '35px' }} type={'checkbox'} value={order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")} />
+                            <p style={{ ...textStyle }}>Užsakymo tipas</p>
+                            <Input disabled style={{ width: '100%' }} placeholder="Paprastas arba nestandartinis" value={orderReducer.order.orderType} onChange={(e) => onDataChange(e.target.value, "orderType")} />
+                            <p style={{ ...textStyle }}>Užsakymo numeris</p>
+                            <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite užsakymo numerį" value={orderReducer.order.orderNumber} onChange={(e) => onDataChange(e, "orderNumber")} />
+                            {/* <p style={{ ...textStyle }}>Data</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={orderReducer.order.date} onChange={(e) => onDataChange(e.target.value, "date")} /> */}
+
+
+                            <p style={{ marginBottom: '5px' }}>Platforma</p>
+                            <Select
+                                disabled={sandelis}
+                                showSearch
+                                style={{ width: '320px' }}
+                                placeholder="Priskirkite platforma"
+                                optionFilterProp="children"
+                                value={orderReducer.order.platforma}
+                                onChange={(e) => onDataChange(e, "platforma")}
+                            >
+                                {salesChannelsReducer.salesChannels.map((element, index) => {
+                                    return (<Option key={element.id} value={element.title}>{element.title}</Option>)
+                                })}
+                            </Select>
+                            <p style={{ ...textStyle }}>Daugiau informacijos</p>
+                            <Input style={{ width: '100%' }} placeholder="Pridėkite informacijos" value={orderReducer.order.moreInfo} onChange={(e) => onDataChange(e.target.value, "moreInfo")} />
+                            <p style={{ ...textStyle }}>Kiekis</p>
+                            <Input required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={orderReducer.order.quantity} onChange={(e) => onDataChange(e.target.value, "quantity")} />
+                            {/* <p style={{ ...textStyle }}>Nuotrauka</p>
+                    <Input required style={{ width: '100%' }} placeholder="Pridėkite nuotrauką" value={orderReducer.order.photo} onChange={(e) => onDataChange(e.target.value, "photo")} /> */}
+                            <p style={{ ...textStyle }}>Prekės kodas</p>
+                            <Input disabled={!notStandart} style={{ width: '100%', textTransform: 'uppercase' }} placeholder="Įrašykite kodą" value={orderReducer.order.productCode} onChange={(e) => onDataChange(e.target.value.toUpperCase(), "productCode")} />
+
+                            {orderReducer.order.orderType === "Standartinis" && orderReducer.order.productCode !== "" ?
+                                <div>
+                                    <p style={{ ...textStyle }}>Panaudosime sandėlio produktus?</p>
+                                    <Input disabled={
+                                        orderReducer.order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse &&
+                                            orderReducer.order.warehouseProductsTaken === false ? false : true} style={{ width: '35px', height: '35px' }} type={'checkbox'} value={orderReducer.order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")} />
+                                </div>
+                                : null
+                            }
+                            {/* {orderReducer.order.orderType === "Standartinis" && orderReducer.order.productCode !== '' && warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined &&
+                    warehouseReducer.warehouse_product.quantityProductWarehouse !== 0 && orderReducer.order.status === false?
+                    <p>Sandėlyje yra: <i style={{fontSize: '20px', color: 'green', fontWeight: 'bold'}}>{warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
+                    :<p>Sandėlyje neturime</p>} */}
+                            {orderReducer.order.orderType === "Standartinis" && orderReducer.order.status == false &&
+                                warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined ?
+                                <div>
+                                    {warehouseReducer.warehouse_product.quantityProductWarehouse < orderReducer.order.quantity ?
+                                        <p>Sandėlyje <i style={{ fontSize: '20px', color: 'orange', fontWeight: 'bold' }}>turime nepakankamai, {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
+                                        : <p>Sandėlyje yra:<i style={{ fontSize: '20px', color: 'green', fontWeight: 'bold' }}> {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>}
+                                </div>
+                                : orderReducer.order.orderType === "Standartinis" && orderReducer.order.status == false &&
+                                    warehouseReducer.warehouse_product.quantityProductWarehouse === undefined ?
+                                    <p>Sandėlyje yra: <i style={{ fontSize: '20px', color: 'orange', fontWeight: 'bold' }}>nėra produktų</i></p>
+                                    : null
+                            }
+
+                            {/* all work times */}
+                            {orderReducer.order.orderType !== "Ne-standartinis" && orderReducer.order.product !== null &&
+                                orderReducer.order.product !== undefined && orderReducer.order.product.orderServices !== undefined &&
+                                orderReducer.order.product.orderServices !== null ?
+                                <div>
+                                    {orderReducer.order.product.orderServices.map((element, index) => (
+                                        <div key={index}>
+                                            <p>{element.service.name}</p>
+                                            <Input disabled key={index} style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} />
+                                        </div>
+                                    ))}
+                                </div>
+                                : null
+                            }
+
+                            {orderReducer.order.orderType === "Ne-standartinis" && orderReducer.order.orderServices !== null &&
+                                orderReducer.order.orderServices !== undefined ?
+                                <div>
+                                    {orderReducer.order.orderServices.map((element, index) => (
+                                        <div key={index}>
+                                            <p>{element.service.name}</p>
+                                            <Input key={index}
+                                                style={{ width: '100%' }}
+                                                placeholder="Įrašykite lazeriavimo laiką"
+                                                value={element.timeConsumption}
+                                                onChange={(e) => onServiceDataChange(element.id, e.target.value, element)} />
+                                        </div>
+                                    ))}
+                                </div>
+                                : null
+                            }
+
+                            <p style={{ ...textStyle }}>Gamybos laikas</p>
+                            <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={orderReducer.order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
+                            {/* <p style={{ ...textStyle }}> Įrenginys</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={orderReducer.order.device} onChange={(e) => onDataChange(e.target.value, "device")} /> */}
+                            <p style={{ ...textStyle }}>Adresas</p>
+                            <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={orderReducer.order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
+                            <p style={{ ...textStyle }}>Komentaras</p>
+                            <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={orderReducer.order.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
+                            <p style={{ ...textStyle }}>Kaina</p>
+                            <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={orderReducer.order.price} onChange={(e) => onDataChange(e.target.value, "price")} />
+                            <p style={{ ...textStyle }}>Vat</p>
+                            <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={orderReducer.order.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
+                            <p style={{ ...textStyle }}>Užsakymo pabaigos data</p>
+                            <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={orderReducer.order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+                            <p style={{ marginBottom: '5px' }}>Siuntos statusas</p>
+                            <Select
+                                showSearch
+                                style={{ width: '320px' }}
+                                placeholder="Priskirkite statusą"
+                                optionFilterProp="children"
+                                defaultValue={orderReducer.order.status}
+                                value={orderReducer.order.status}
+                                onChange={(e) => onDataChange(e, "status")}
+                            >
+                                <Option key={1} value={true}>{'Atlikta'}</Option>
+                                <Option key={2} value={false}>{'Neatlikta'}</Option>
+                            </Select>
+
+                            <p style={{ marginBottom: '5px' }}>Siuntos tipas</p>
+                            <Select
+                                disabled={sandelis}
+                                showSearch
+                                style={{ width: '320px' }}
+                                placeholder="Priskirkite tipą"
+                                optionFilterProp="children"
+                                defaultValue={orderReducer.order.shipmentTypeId}
+                                value={orderReducer.order.shipmentTypeId}
+                                onChange={(e) => onDataChange(e, "shipmentTypeId")}
+                            >
+                                {shipmentsReducer.shipments.map((element, index) => (
+                                    <Option key={element.id} value={element.id}>{element.type}</Option>
+                                ))}
+                            </Select>
+                            <p style={{ marginBottom: '5px' }}>Klientas</p>
+                            <Select
+                                disabled={sandelis}
+                                showSearch
+                                style={{ width: '320px' }}
+                                placeholder="Priskirkite klientą"
+                                optionFilterProp="children"
+                                defaultValue={orderReducer.order.customerId}
+                                value={orderReducer.order.customerId}
+                                onChange={(e) => onDataChange(e, "customerId")}
+                            >
+                                {customersReducer.customers.map((element, index) => {
+                                    return (<Option key={element.id} value={element.id}>{element.email}</Option>)
+                                })}
+                            </Select>
+
+                            <p style={{ marginBottom: '5px' }}>Valiuta</p>
+                            <Select
+                                disabled={sandelis}
+                                showSearch
+                                style={{ width: '100%' }}
+                                placeholder="Pasirinkite valiutą"
+                                optionFilterProp="children"
+                                defaultValue={orderReducer.order.currencyName}
+                                onChange={(e) => onDataChange(e, "currencyName")}
+                            >
+                                {currencies.map((element, index) => {
+                                    return (<Option key={element.cc} value={element.cc}>{element.cc}  {element.name}</Option>)
+                                })}
+                            </Select>
+
+                            <p style={{ marginBottom: '5px' }}>Šalis</p>
+                            <Select
+                                disabled={sandelis}
+                                showSearch
+                                style={{ width: '320px' }}
+                                placeholder="Priskirkite šalį"
+                                optionFilterProp="children"
+                                defaultValue={orderReducer.order.countryId}
+                                value={orderReducer.order.countryId}
+                                onChange={(e) => onDataChange(e, "countryId")}
+                            >
+                                {countryReducer.countries.map((element, index) => {
+                                    return (<Option key={element.id} value={element.id}>{element.name}/{element.shortName}</Option>)
+                                })}
+                            </Select>
+                            <p style={{ marginBottom: '5px' }}>Priskirtas darbuotojas</p>
+                            <Select
+                                showSearch
+                                style={{ width: '320px' }}
+                                placeholder="Priskirkite darbuotoją"
+                                optionFilterProp="children"
+                                defaultValue={orderReducer.order.userId}
+                                value={orderReducer.order.userId}
+                                onChange={(e) => onDataChange(e, "userId")}
+                            >
+                                {usersListReducer.users.map((element, index) => {
+                                    return (<Option key={element.id} value={element.id}>{element.name}  {element.surname}</Option>)
+                                })}
+                            </Select>
                         </div>
                         : null
                     }
-                    {/* {order.orderType === "Standartinis" && order.productCode !== '' && warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined &&
-                    warehouseReducer.warehouse_product.quantityProductWarehouse !== 0 && order.status === false?
-                    <p>Sandėlyje yra: <i style={{fontSize: '20px', color: 'green', fontWeight: 'bold'}}>{warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
-                    :<p>Sandėlyje neturime</p>} */}
-                    {order.orderType === "Standartinis" && order.status == false &&
-                        warehouseReducer.warehouse_product.quantityProductWarehouse !== undefined ?
-                        <div>
-                            {warehouseReducer.warehouse_product.quantityProductWarehouse < order.quantity ?
-                                <p>Sandėlyje <i style={{ fontSize: '20px', color: 'orange', fontWeight: 'bold' }}>turime nepakankamai, {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
-                                : <p>Sandėlyje yra:<i style={{ fontSize: '20px', color: 'green', fontWeight: 'bold' }}> {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>}
-                        </div>
-                        : order.orderType === "Standartinis" && order.status == false &&
-                            warehouseReducer.warehouse_product.quantityProductWarehouse === undefined ?
-                            <p>Sandėlyje yra: <i style={{ fontSize: '20px', color: 'orange', fontWeight: 'bold' }}>nėra produktų</i></p>
-                            : null
-                    }
-
-                    {/* all work times */}
-                    {order.orderType === "Ne-standartinis" ? <div>
-                        <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
-                        <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" value={order.laserTime} onChange={(e) => onDataChange(e, "laserTime")} />
-                        <p style={{ ...textStyle }}>Frezavimo laikas</p>
-                        <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" value={order.milingTime} onChange={(e) => onDataChange(e, "milingTime")} />
-                        <p style={{ ...textStyle }}>Dažymo laikas</p>
-                        <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" value={order.paintingTime} onChange={(e) => onDataChange(e, "paintingTime")} />
-                        <p style={{ ...textStyle }}>Suklijavimo laikas</p>
-                        <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" value={order.bondingTime} onChange={(e) => onDataChange(e, "bondingTime")} />
-                        <p style={{ ...textStyle }}>Surinkimo laikas</p>
-                        <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" value={order.collectionTime} onChange={(e) => onDataChange(e, "collectionTime")} />
-                        <p style={{ ...textStyle }}>Pakavimo laikas</p>
-                        <InputNumber disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" value={order.packingTime} onChange={(e) => onDataChange(e, "packingTime")} />
-                    </div> :
-                        <div>
-                            <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
-                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" value={order.laserTime} />
-                            <p style={{ ...textStyle }}>Frezavimo laikas</p>
-                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" value={order.milingTime} />
-                            <p style={{ ...textStyle }}>Dažymo laikas</p>
-                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" value={order.paintingTime} />
-                            <p style={{ ...textStyle }}>Suklijavimo laikas</p>
-                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" value={order.bondingTime} />
-                            <p style={{ ...textStyle }}>Surinkimo laikas</p>
-                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" value={order.collectionTime} />
-                            <p style={{ ...textStyle }}>Pakavimo laikas</p>
-                            <Input disabled={notStandart} required style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" value={order.packingTime} />
-                        </div>}
-
-                    <p style={{ ...textStyle }}>Gamybos laikas</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
-                    {/* <p style={{ ...textStyle }}> Įrenginys</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} /> */}
-                    <p style={{ ...textStyle }}>Adresas</p>
-                    <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite adresą" value={order.address} onChange={(e) => onDataChange(e.target.value, "address")} />
-                    <p style={{ ...textStyle }}>Komentaras</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite komentarą" value={order.comment} onChange={(e) => onDataChange(e.target.value, "comment")} />
-                    <p style={{ ...textStyle }}>Kaina</p>
-                    <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite kainą" value={order.price} onChange={(e) => onDataChange(e.target.value, "price")} />
-                    <p style={{ ...textStyle }}>Vat</p>
-                    <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={order.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
-                    <p style={{ ...textStyle }}>Užsakymo pabaigos data</p>
-                    <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
-
-                    {/* for IMAGE */}
-                    {/* {order.imagePath !== null && order.imagePath !== undefined ?
-                        <div>
-                            <p style={{ ...textStyle }}>Nuotrauka</p>
-                            <Image key={order.imageName} src={order.imagePath} width={100} />
-                            <br></br>
-                            <Button onClick={deleteImage}>Ištrinti nuotrauką</Button>
-                        </div> :
-                        <div>
-                            <p style={{ ...textStyle }}>Nuotraukos ikėlimas</p>
-                            <input required type='file' onChange={changeFile} />
-                        </div>} */}
-                    <p style={{ marginBottom: '5px' }}>Siuntos statusas</p>
-                    <Select
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite statusą"
-                        optionFilterProp="children"
-                        defaultValue={order.status}
-                        value={order.status}
-                        onChange={(e) => onDataChange(e, "status")}
-                    >
-                        <Option key={1} value={true}>{'Atlikta'}</Option>
-                        <Option key={2} value={false}>{'Neatlikta'}</Option>
-                    </Select>
-
-                    <p style={{ marginBottom: '5px' }}>Siuntos tipas</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite tipą"
-                        optionFilterProp="children"
-                        defaultValue={order.shipmentTypeId}
-                        value={order.shipmentTypeId}
-                        onChange={(e) => onDataChange(e, "shipmentTypeId")}
-                    >
-                        {shipmentsReducer.shipments.map((element, index) => (
-                            <Option key={element.id} value={element.id}>{element.type}</Option>
-                        ))}
-                    </Select>
-                    <p style={{ marginBottom: '5px' }}>Klientas</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite klientą"
-                        optionFilterProp="children"
-                        defaultValue={order.customerId}
-                        value={order.customerId}
-                        onChange={(e) => onDataChange(e, "customerId")}
-                    >
-                        {customersReducer.customers.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.email}</Option>)
-                        })}
-                    </Select>
-
-                    <p style={{ marginBottom: '5px' }}>Valiuta</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite valiutą"
-                        optionFilterProp="children"
-                        defaultValue={order.currencyId}
-                        value={order.currencyId}
-                        onChange={(e) => onDataChange(e, "currencyId")}
-                    >
-                        {currencyReducer.currency.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.name}</Option>)
-                        })}
-                    </Select>
-
-                    <p style={{ marginBottom: '5px' }}>Šalis</p>
-                    <Select
-                        disabled={sandelis}
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite šalį"
-                        optionFilterProp="children"
-                        defaultValue={order.countryId}
-                        value={order.countryId}
-                        onChange={(e) => onDataChange(e, "countryId")}
-                    >
-                        {countryReducer.countries.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.name}/{element.shortName}</Option>)
-                        })}
-                    </Select>
-                    <p style={{ marginBottom: '5px' }}>Priskirtas darbuotojas</p>
-                    <Select
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite darbuotoją"
-                        optionFilterProp="children"
-                        defaultValue={order.userId}
-                        value={order.userId}
-                        onChange={(e) => onDataChange(e, "userId")}
-                    >
-                        {usersListReducer.users.map((element, index) => {
-                            return (<Option key={element.id} value={element.id}>{element.name}  {element.surname}</Option>)
-                        })}
-                    </Select>
                 </Form>
             </Modal>
         </>
