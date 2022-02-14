@@ -71,6 +71,7 @@ function StandartOrdersComponent(props) {
             "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a'),
             "userServices": u_services
         }
+        // 
         //but in reducer it is better to pass all userServices with new Packing service too
         const reducerObj = {
             ...order,
