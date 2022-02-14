@@ -8,6 +8,7 @@ import { getMaterialsWarehouseData, updateManyWarehouseMaterials } from '../appS
 import AddProductComponent from '../components/products_components/AddProductComponent';
 import UpdateProductComponent from '../components/products_components/UpdateProductComponent';
 import AddProductMaterialsComponent from '../components/products_components/addMaterials/AddProductMaterialsComponent';
+import Paragraph from 'antd/lib/skeleton/Paragraph';
 
 class ProductsScrenn extends React.Component {
     constructor(props) {
@@ -143,6 +144,27 @@ class ProductsScrenn extends React.Component {
                 )
             },
             {
+                title: 'Medžiagos',
+                dataIndex: 'productMaterials',
+                width: '10%',
+                render: (text, record, index) => (
+                    <div style={{ display: 'flex' }}>
+                        {record.productMaterials != null && record.productMaterials.map((obj, index) => (
+                            <Typography.Text
+                                ellipsis={{
+                                    rows: 1,
+                                    expandable: true,
+                                    onExpand: this.typoExpand
+                                }}
+                                >
+                                {obj.materialWarehouse.title} ({obj.quantity}),
+                            </Typography.Text>
+                        ))}
+                    </div>
+
+                )
+            },
+            {
                 title: 'Produkto id',
                 dataIndex: 'id',
                 width: '10%'
@@ -173,20 +195,6 @@ class ProductsScrenn extends React.Component {
                 dataIndex: 'category',
                 width: '10%'
             },
-            {
-                title: 'Medžiagos',
-                dataIndex: 'productMaterials',
-                width: '10%',
-                render: (text, record, index) => (
-                    <div>
-                        {record.productMaterials != null && record.productMaterials.map((obj, index) => (
-                            <Typography.Text>{obj.materialWarehouse.title},</Typography.Text>
-                        ))}
-                    </div>
-
-                )
-            },
-
             {
                 title: 'Produkto pavadinimas',
                 dataIndex: 'name',
@@ -236,12 +244,12 @@ class ProductsScrenn extends React.Component {
                 title: 'Lazeriavimo  laikas',
                 dataIndex: 'orderServices',
                 width: '10%',
-                render: (text,record,index)=>{
-                    if(text !== undefined && text !== null){
+                render: (text, record, index) => {
+                    if (text !== undefined && text !== null) {
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 1)
-                        if(obj !== null && obj !== undefined)
+                        if (obj !== null && obj !== undefined)
                             return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
-                    }else
+                    } else
                         return (<Typography.Text></Typography.Text>)
                 }
             },
@@ -249,12 +257,12 @@ class ProductsScrenn extends React.Component {
                 title: 'Frezavimo laikas',
                 dataIndex: 'orderServices',
                 width: '10%',
-                render: (text,record,index)=>{
-                    if(text !== undefined && text !== null){
+                render: (text, record, index) => {
+                    if (text !== undefined && text !== null) {
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 2)
-                        if(obj !== null && obj !== undefined)
+                        if (obj !== null && obj !== undefined)
                             return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
-                    }else
+                    } else
                         return (<Typography.Text></Typography.Text>)
                 }
             },
@@ -262,12 +270,12 @@ class ProductsScrenn extends React.Component {
                 title: 'Dažymo laikas',
                 dataIndex: 'orderServices',
                 width: '10%',
-                render: (text,record,index)=>{
-                    if(text !== undefined && text !== null){
+                render: (text, record, index) => {
+                    if (text !== undefined && text !== null) {
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 3)
-                        if(obj !== null && obj !== undefined)
+                        if (obj !== null && obj !== undefined)
                             return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
-                    }else
+                    } else
                         return (<Typography.Text></Typography.Text>)
                 }
             },
@@ -275,12 +283,12 @@ class ProductsScrenn extends React.Component {
                 title: 'Šlifavimo laikas',
                 dataIndex: 'orderServices',
                 width: '10%',
-                render: (text,record,index)=>{
-                    if(text !== undefined && text !== null){
+                render: (text, record, index) => {
+                    if (text !== undefined && text !== null) {
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 4)
-                        if(obj !== null && obj !== undefined)
+                        if (obj !== null && obj !== undefined)
                             return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
-                    }else
+                    } else
                         return (<Typography.Text></Typography.Text>)
                 }
             },
@@ -288,12 +296,12 @@ class ProductsScrenn extends React.Component {
                 title: 'Suklijavimo laikas',
                 dataIndex: 'orderServices',
                 width: '10%',
-                render: (text,record,index)=>{
-                    if(text !== undefined && text !== null){
+                render: (text, record, index) => {
+                    if (text !== undefined && text !== null) {
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 5)
-                        if(obj !== null && obj !== undefined)
+                        if (obj !== null && obj !== undefined)
                             return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
-                    }else
+                    } else
                         return (<Typography.Text></Typography.Text>)
                 }
             },
@@ -301,12 +309,12 @@ class ProductsScrenn extends React.Component {
                 title: 'Surinkimo laikas',
                 dataIndex: 'orderServices',
                 width: '10%',
-                render: (text,record,index)=>{
-                    if(text !== undefined && text !== null){
+                render: (text, record, index) => {
+                    if (text !== undefined && text !== null) {
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 6)
-                        if(obj !== null && obj !== undefined)
+                        if (obj !== null && obj !== undefined)
                             return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
-                    }else
+                    } else
                         return (<Typography.Text></Typography.Text>)
                 }
             },
@@ -314,12 +322,12 @@ class ProductsScrenn extends React.Component {
                 title: 'Pakavimo laikas',
                 dataIndex: 'orderServices',
                 width: '10%',
-                render: (text,record,index)=>{
-                    if(text !== undefined && text !== null){
+                render: (text, record, index) => {
+                    if (text !== undefined && text !== null) {
                         const obj = text.find(x => x.productId === record.id && x.serviceId === 7)
-                        if(obj !== null && obj !== undefined)
+                        if (obj !== null && obj !== undefined)
                             return (<Typography.Text>{obj.timeConsumption}</Typography.Text>)
-                    }else
+                    } else
                         return (<Typography.Text></Typography.Text>)
                 }
             },
@@ -328,7 +336,7 @@ class ProductsScrenn extends React.Component {
                 dataIndex: 'packagingBoxCode',
                 width: '10%'
             },
-            
+
 
 
         ]
