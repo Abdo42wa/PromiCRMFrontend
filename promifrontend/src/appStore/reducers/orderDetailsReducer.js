@@ -46,7 +46,29 @@ export const orderDetailsReducer = (state = {
         case 'ORDERS_UNCOMPLETED_TIMES_FETCH_REQUEST':
             return {...state, loading: true}
         case 'ORDERS_UNCOMPLETED_TIMES_FETCH_SUCCESS':
-            return {...state, loading: false, uncompleted_orders_times: action.payload}
+            const uncompleted_orders_times_c = [...action.payload]
+            const updated_orders_times = uncompleted_orders_times_c? uncompleted_orders_times_c.reduce((previousValue, currentValue)=>{
+                return {
+                    laserTime: previousValue.laserTime + currentValue.laserTime,
+                    milingTime: previousValue.milingTime + currentValue.milingTime,
+                    paintingTime: previousValue.paintingTime + currentValue.paintingTime,
+                    grindingTime: previousValue.grindingTime + currentValue.grindingTime,
+                    bondingTime: previousValue.bondingTime + currentValue.bondingTime,
+                    collectionTime: previousValue.collectionTime + currentValue.collectionTime,
+                    packingTime: previousValue.packingTime + currentValue.packingTime,
+                    doneLaserTime: previousValue.doneLaserTime + currentValue.doneLaserTime,
+                    doneMilingTime: previousValue.doneMilingTime + currentValue.doneMilingTime,
+                    donePaintingTime: previousValue.donePaintingTime + currentValue.donePaintingTime,
+                    doneGrindingTime: previousValue.doneGrindingTime + currentValue.doneGrindingTime,
+                    doneBondingTime: previousValue.doneBondingTime + currentValue.doneBondingTime,
+                    doneCollectionTime: previousValue.doneCollectionTime + currentValue.doneCollectionTime,
+                    donePackingTime: previousValue.donePackingTime + currentValue.donePackingTime,
+                }
+            }):[]
+            const _u_array = [
+                updated_orders_times
+            ]
+            return {...state, loading: false, uncompleted_orders_times: _u_array}
         case 'ORDERS_UNCOMPLETED_TIMES_FETCH_FAIL':
             return {...state, loading: false, error: action.payload}
         case 'COMPLETED_WAREHOUSE_ORDERS_FETCH_REQUEST':

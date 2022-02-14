@@ -154,40 +154,24 @@ class HomeScreen extends React.Component {
         ]
         const workTimesColumns = [
             {
-                title: 'Surinkimo laikas',
-                dataIndex: 'collectionTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Suklijavimo laikas',
-                dataIndex: 'bondingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
                 title: 'Lazeriavimo laikas',
                 dataIndex: 'laserTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Frezavimo laikas',
+                dataIndex: 'milingTime',
                 width: '10%',
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
@@ -218,8 +202,8 @@ class HomeScreen extends React.Component {
                 }
             },
             {
-                title: 'Frezavimo laikas',
-                dataIndex: 'milingTime',
+                title: 'Šlifavimo laikas',
+                dataIndex: 'grindingTime',
                 width: '10%',
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
@@ -232,8 +216,38 @@ class HomeScreen extends React.Component {
                         )
                     }
                 }
-
-
+            },
+            {
+                title: 'Suklijavimo laikas',
+                dataIndex: 'bondingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Surinkimo laikas',
+                dataIndex: 'collectionTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
             },
             {
                 title: 'Pakavimo laikas',
@@ -253,40 +267,24 @@ class HomeScreen extends React.Component {
             },
             //DONE TIMES
             {
-                title: 'Surinkimo laikas (padarytas)',
-                dataIndex: 'doneCollectionTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Suklijavimo laikas (padarytas)',
-                dataIndex: 'doneBondingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
                 title: 'Lazeriavimo laikas (padarytas)',
                 dataIndex: 'doneLaserTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Frezavimo laikas (padarytas)',
+                dataIndex: 'doneMilingTime',
                 width: '10%',
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
@@ -317,8 +315,40 @@ class HomeScreen extends React.Component {
                 }
             },
             {
-                title: 'Frezavimo laikas (padarytas)',
-                dataIndex: 'doneMilingTime',
+                title: 'Šlifavimo laikas (padarytas)',
+                dataIndex: 'doneGrindingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Suklijavimo laikas (padarytas)',
+                dataIndex: 'doneBondingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Surinkimo laikas (padarytas)',
+                dataIndex: 'doneCollectionTime',
                 width: '10%',
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
@@ -688,7 +718,7 @@ class HomeScreen extends React.Component {
                             <Table
                                 rowKey="id"
                                 columns={workTimesColumns}
-                                dataSource={this.props.orderDetailsReducer.uncompleted_orders_times}
+                                dataSource={this.props.orderDetailsReducer.uncompleted_orders_times.length > 0? this.props.orderDetailsReducer.uncompleted_orders_times: []}
                                 pagination={{ pageSize: 15 }}
                                 bWorked
                                 scroll={{ x: 'calc(200px + 50%)' }}
