@@ -30,6 +30,37 @@ function UpdateOrderComponent(props) {
     const [sandelis, setSandelis] = useState(false);
     const [notStandart, setNotStandart] = useState(true);
     const [orderServices, setOrderServices] = useState([])
+    const [serviceFakeArray, setServiceFakeArray] = useState([
+        {
+            num: 1,
+            title: 'Lazeriavimo',
+        },
+        {
+            num: 2,
+            title: 'Frezavimo',
+        },
+        {
+            num: 3,
+            title: 'Dažymo',
+        },
+        {
+            num: 4,
+            title: 'Šlifavimo',
+        },
+        {
+            num: 5,
+            title: 'Suklijavimo',
+        },
+        {
+            num: 6,
+            title: 'Surinkimo'
+        },
+        {
+            num: 7,
+            title: 'Pakavimo'
+        },
+
+    ])
 
     const customersReducer = useSelector((state) => state.customersReducer);
     const countryReducer = useSelector((state) => state.countryReducer);
@@ -54,8 +85,12 @@ function UpdateOrderComponent(props) {
         }
     }
     //for non standart orders. to update order and orderServices
-    const onServiceDataChange = (id, value, record) => {
-        dispatch(updateNonStandartObjServices(id, value, record))
+    const onServiceDataChange = (id, value, record,serviceId) => {
+        dispatch(updateNonStandartObjServices(id, value, record,serviceId))
+        console.log('orderServiceId:'+id)
+        console.log('value:'+value)
+        console.log('orderService:'+JSON.stringify(record))
+        console.log('serviceId:'+serviceId)
     }
     const saveChanges = () => {
         // const clone = JSON.parse(JSON.stringify(order));
@@ -209,7 +244,7 @@ function UpdateOrderComponent(props) {
                             {orderReducer.order.orderType !== "Ne-standartinis" && orderReducer.order.product !== null &&
                                 orderReducer.order.product !== undefined && orderReducer.order.product.orderServices !== undefined &&
                                 orderReducer.order.product.orderServices !== null ?
-                                <div style={{width: '100%'}}>
+                                <div style={{ width: '100%' }}>
                                     {/* {orderReducer.order.product.orderServices.map((element, index) => (
                                         <div key={index}>
                                             <p>{element.service.name}</p>
@@ -249,23 +284,29 @@ function UpdateOrderComponent(props) {
 
                             {orderReducer.order.orderType === "Ne-standartinis" && orderReducer.order.orderServices !== null &&
                                 orderReducer.order.orderServices !== undefined ?
-                                /* <div>
-                                    {orderReducer.order.orderServices.map((element, index) => (
-                                        <div key={index}>
-                                            <p>{element.service.name}</p>
-                                            <Input key={index}
-                                                style={{ width: '100%' }}
-                                                placeholder="Įrašykite lazeriavimo laiką"
-                                                value={element.timeConsumption}
-                                                onChange={(e) => onServiceDataChange(element.id, e.target.value, element)} />
-                                        </div>
-                                    ))}
+
+                                <div>
+                                    {serviceFakeArray.map((element, index) => {
+                                        const orderService = orderReducer.order.orderServices.find(x => x.serviceId === element.num) !== undefined ?
+                                            orderReducer.order.orderServices.find(x => x.serviceId === element.num) : null
+                                        return (
+                                            <div key={element.title}>
+                                                <p>{element.title} laikas</p>
+                                                <InputNumber key={index+"ye"}
+                                                    style={{ width: '100%' }}
+                                                    placeholder={`Įrašykite ${element.title} laiką`}
+                                                    value={orderService !== null?orderService.timeConsumption:0}
+                                                    onChange={(e) => onServiceDataChange(orderService !== null?orderService.id:null, e, orderService !== null?orderService:null,element.num)} />
+                                            </div>)
+                                    })}
                                 </div>
-                                : null */
-                                <div style={{width: '100%'}}>
+                                : null
+
+                            }
+                            {/* <div style={{width: '100%'}}>
                                     <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
                                     <Input key="lazerTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 1) !== undefined ?
-                                        orderReducer.order.orderServices.find(x => x.serviceId === 1).timeConsumption : 0} />
+                                        orderReducer.order.orderServices.find(x => x.serviceId === 1).timeConsumption : 0} onChange={(e) => onServiceDataChange(element.id, e.target.value, element)} />
 
                                     <p style={{ ...textStyle }}>Frezavimo laikas</p>
                                     <Input key="milingTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 2) !== undefined ?
@@ -290,9 +331,7 @@ function UpdateOrderComponent(props) {
                                     <p style={{ ...textStyle }}>Pakavimo laikas</p>
                                     <Input key="packingTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 7) !== undefined ?
                                         orderReducer.order.orderServices.find(x => x.serviceId === 7).timeConsumption : 0} />
-                                </div>
-                                : null
-                            }
+                                </div> */}
 
                             <p style={{ ...textStyle }}>Gamybos laikas</p>
                             <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={orderReducer.order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />

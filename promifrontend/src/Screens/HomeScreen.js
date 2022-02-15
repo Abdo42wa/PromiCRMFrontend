@@ -1004,7 +1004,9 @@ class HomeScreen extends React.Component {
                             {this.props.orderDetailsReducer.employees_made_products !== undefined && this.props.orderDetailsReducer.employees_made_products &&
                                 this.props.orderDetailsReducer.employees_made_products.map((element) => (
                                     <div className='col' style={{padding: '10px'}}>
+                                        <div style={{...tableCardStyle}} bodyStyle={{...tableCardBodyStyle}}>
                                         <h3>{element.user.name} {element.user.surname}: {element.quantity}</h3>
+                                        </div>
                                     </div>
                                 ))}
                         </div>
