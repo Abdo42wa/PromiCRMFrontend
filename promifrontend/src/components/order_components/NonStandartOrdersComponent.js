@@ -149,7 +149,7 @@ function NonStandartOrdersComponent(props) {
                     <Button onClick={(e) => showUpdateOrderModal(record)}>Atnaujinti</Button>
                     {record.orderType === "Ne-standartinis" ?
                         <Button
-                            disabled={record.status === true? true:false}
+                            disabled={record.status === true ? true : false}
                             onClick={(e) => showAddMaterialsModal(record)}>
                             Pridėti medžiagas
                         </Button> : null}
@@ -577,6 +577,21 @@ function NonStandartOrdersComponent(props) {
                 <p>{moment(text).format('YYYY/MM/DD')}</p>
             )
         },
+        {
+            title: ' Uzsakovo vardas',
+            dataIndex: 'customerName',
+            width: '10%'
+        },
+        {
+            title: 'Siuntimo kaina',
+            dataIndex: 'shippingCost',
+            width: '10%'
+        },
+        {
+            title: 'Siuntos numeris',
+            dataIndex: 'shippingNumber',
+            width: '10%'
+        }
     ]
     return <>
         <div>

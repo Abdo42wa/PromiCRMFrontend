@@ -79,7 +79,7 @@ function StandartOrdersComponent(props) {
             "completionDate": moment().format('YYYY/MM/DD,h:mm:ss a')
         };
         if (order.orderType === "Standartinis") {
-            dispatch(updateStandartOrWarehouseComplete(postObj,reducerObj))
+            dispatch(updateStandartOrWarehouseComplete(postObj, reducerObj))
         } else if (order.orderType === "Sandelis") {
             const warehouseCountingPostObj = {
                 "orderId": reducerObj.id,
@@ -87,7 +87,7 @@ function StandartOrdersComponent(props) {
                 "lastTimeChanging": moment().format('YYYY/MM/DD,h:mm:ss a'),
                 "productCode": reducerObj.productCode
             }
-            dispatch(updateStandartOrWarehouseComplete(postObj,reducerObj))
+            dispatch(updateStandartOrWarehouseComplete(postObj, reducerObj))
             dispatch(createOrUpdateWarehouseData(warehouseCountingPostObj))
         }
     }
@@ -525,7 +525,7 @@ function StandartOrdersComponent(props) {
             dataIndex: 'product',
             width: '10%',
             render: (text, record, index) => {
-                if ( text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
+                if (text !== undefined && text !== null && text.orderServices !== undefined && text.orderServices !== null) {
                     //find frezavimas orderService
                     let lService = text.orderServices.find(x => x.serviceId === 7)
                     let userService = lService !== undefined && lService !== null ? record.userServices.find(x => x.orderServiceId === lService.id) : null
@@ -598,6 +598,21 @@ function StandartOrdersComponent(props) {
                 <p>{moment(text).format('YYYY/MM/DD')}</p>
             )
         },
+        {
+            title: ' Uzsakovo vardas',
+            dataIndex: 'customerName',
+            width: '10%'
+        },
+        {
+            title: 'Siuntimo kaina',
+            dataIndex: 'shippingCost',
+            width: '10%'
+        },
+        {
+            title: 'Siuntos numeris',
+            dataIndex: 'shippingNumber',
+            width: '10%'
+        }
     ]
     return <>
         <div>

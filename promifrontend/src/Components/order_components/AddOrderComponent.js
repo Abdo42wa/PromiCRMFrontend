@@ -7,13 +7,13 @@ import { getUsers } from '../../appStore/actions/userListActions'
 import { getLoggedUser } from '../../appStore/actions/userAction';
 import { getProducts } from '../../appStore/actions/productsActions'
 import { getWarehouseProduct } from '../../appStore/actions/warehouseActions'
-import { getOrders,createNonStandartOrder, addOrder } from '../../appStore/actions/ordersAction'
+import { getOrders, createNonStandartOrder, addOrder } from '../../appStore/actions/ordersAction'
 import { getShipments } from '../../appStore/actions/shipmentsActions';
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import {currencies} from '../data/currenciesData.js'
+import { currencies } from '../data/currenciesData.js'
 
 const { Option } = Select;
 
@@ -22,7 +22,7 @@ function AddOrderComponent(props) {
     const [order, setOrder] = useState({
         "userId": "",
         "orderType": "",
-        "countryName":"Lithuania",
+        "countryName": "Lithuania",
         "currencyName": "EUR",
         "status": false,
         "orderNumber": null,
@@ -53,7 +53,10 @@ function AddOrderComponent(props) {
         "grindingTime": 0,
         "bondingTime": 0,
         "collectionTime": 0,
-        "packingTime": 0
+        "packingTime": 0,
+        "customerName": "",
+        "shippingCost": "",
+        "shippingNumber": null,
     });
     const [file, setFile] = useState();
     const [sandelis, setSandelis] = useState(false);
@@ -193,7 +196,7 @@ function AddOrderComponent(props) {
                 "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
                 "platforma": clone.platforma === null ? "Nera" : clone.platforma,
                 "productCode": null,
-                "orderServices":orderServices
+                "orderServices": orderServices
             }
             dispatch(createNonStandartOrder(postObj))
             props.onClose()
@@ -381,29 +384,29 @@ function AddOrderComponent(props) {
                     {order.orderType === "Ne-standartinis" ?
                         <div>
                             <Form.Item key="laserTime" name="laserTime" label="Lazeriavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={order.laserTime} value={order.laserTime} onChange={(e) => serviceDataChange(e, "laserTime",1)} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Lazeriavimo laiką" defaultValue={order.laserTime} value={order.laserTime} onChange={(e) => serviceDataChange(e, "laserTime", 1)} />
                             </Form.Item>
                             <Form.Item key="milingTime" name="milingTime" label="Frezavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={order.milingTime} value={order.milingTime} onChange={(e) => serviceDataChange(e, "milingTime",2)} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Frezavimo laiką" defaultValue={order.milingTime} value={order.milingTime} onChange={(e) => serviceDataChange(e, "milingTime", 2)} />
                             </Form.Item>
                             <Form.Item key="paintingTime" name="paintingTime" label="Dažymo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={order.paintingTime} value={order.paintingTime} onChange={(e) => serviceDataChange(e, "paintingTime",3)} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Dažymo laiką" defaultValue={order.paintingTime} value={order.paintingTime} onChange={(e) => serviceDataChange(e, "paintingTime", 3)} />
                             </Form.Item>
                             <Form.Item key="grindingTime" name="grindingTime" label="Šlifavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Šlifavimo laiką" defaultValue={order.grindingTime} value={order.grindingTime} onChange={(e) => serviceDataChange(e, "grindingTime",4)} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Šlifavimo laiką" defaultValue={order.grindingTime} value={order.grindingTime} onChange={(e) => serviceDataChange(e, "grindingTime", 4)} />
                             </Form.Item>
                             <Form.Item key="bondingTime" name="bondingTime" label="Suklijavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={order.bondingTime} value={order.bondingTime} onChange={(e) => serviceDataChange(e, "bondingTime",5)} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Suklijavimo laiką" defaultValue={order.bondingTime} value={order.bondingTime} onChange={(e) => serviceDataChange(e, "bondingTime", 5)} />
                             </Form.Item>
                             <Form.Item key="collectionTime" name="collectionTime" label="Surinkimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={order.collectionTime} value={order.collectionTime} onChange={(e) => serviceDataChange(e, "collectionTime",6)} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Surinkimo laiką" defaultValue={order.collectionTime} value={order.collectionTime} onChange={(e) => serviceDataChange(e, "collectionTime", 6)} />
                             </Form.Item>
                             <Form.Item key="packingTime" name="packingTime" label=" Pakavimo laikas">
-                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={order.packingTime} value={order.packingTime} onChange={(e) => serviceDataChange(e, "packingTime",7)} />
+                                <InputNumber disabled={notStandart} style={{ width: '100%' }} placeholder="Įrašykite Pakavimo laiką" defaultValue={order.packingTime} value={order.packingTime} onChange={(e) => serviceDataChange(e, "packingTime", 7)} />
                             </Form.Item>
                         </div> : null
                     }
-                    {order.orderType !== "Ne-standartinis" && order.productCode !== '' && product !== null && product.orderServices !== null && product.orderServices !== undefined?
+                    {order.orderType !== "Ne-standartinis" && order.productCode !== '' && product !== null && product.orderServices !== null && product.orderServices !== undefined ?
                         <div>
                             {product.orderServices.map((element, index) => {
                                 return (
@@ -447,6 +450,41 @@ function AddOrderComponent(props) {
                             placeholder="Įrašykite datą"
                             value={order.orderFinishDate}
                             onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+                    </Form.Item>
+                    <Form.Item
+                        key="customerName"
+                        name="customerName"
+                        label="Uzsakovo vardas"
+                    >
+                        <Input
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite Uzsakovo varda"
+                            value={order.customerName}
+                            onChange={(e) => onDataChange(e.target.value, "customerName")} />
+                    </Form.Item>
+
+                    <Form.Item
+                        key="shippingCost"
+                        name="shippingCost"
+                        label="Siuntimo kaina"
+                    >
+                        <Input
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite Siuntimo kaina"
+                            value={order.orderFinishDate}
+                            onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
+                    </Form.Item>
+
+                    <Form.Item
+                        key="shippingNumber"
+                        name="shippingNumber"
+                        label="Siuntos numeris"
+                    >
+                        <Input
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite Siuntos numeris"
+                            value={order.orderFinishDate}
+                            onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
                     </Form.Item>
                     {/* for IMAGE */}
                     {/* <p>Nuotrauka</p>
