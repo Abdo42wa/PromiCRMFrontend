@@ -7,7 +7,7 @@ import {
     getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,
     getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders
+    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders
 } from '../appStore/actions/ordersAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -114,6 +114,8 @@ class HomeScreen extends React.Component {
             this.props.getLastMonthCompletedOrders()
             // Pagamintu gaminiu kiekis savaitemis
             this.props.getLastWeeksCompletedOrders()
+            // Neisiustu siuntiniu lentele
+            this.props.getUnsendedOrders()
         } else {
             this.props.history.push('/login');
         }
@@ -154,56 +156,8 @@ class HomeScreen extends React.Component {
         ]
         const workTimesColumns = [
             {
-                title: 'Lazeriavimo laikas',
-                dataIndex: 'laserTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Frezavimo laikas',
-                dataIndex: 'milingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Dažymo laikas',
-                dataIndex: 'paintingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Šlifavimo laikas',
-                dataIndex: 'grindingTime',
+                title: 'Surinkimo laikas',
+                dataIndex: 'collectionTime',
                 width: '10%',
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
@@ -234,8 +188,8 @@ class HomeScreen extends React.Component {
                 }
             },
             {
-                title: 'Surinkimo laikas',
-                dataIndex: 'collectionTime',
+                title: 'Lazeriavimo laikas',
+                dataIndex: 'laserTime',
                 width: '10%',
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
@@ -248,6 +202,40 @@ class HomeScreen extends React.Component {
                         )
                     }
                 }
+            },
+            {
+                title: 'Dažymo laikas',
+                dataIndex: 'paintingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Frezavimo laikas',
+                dataIndex: 'milingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+
+
             },
             {
                 title: 'Pakavimo laikas',
@@ -267,56 +255,8 @@ class HomeScreen extends React.Component {
             },
             //DONE TIMES
             {
-                title: 'Lazeriavimo laikas (padarytas)',
-                dataIndex: 'doneLaserTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Frezavimo laikas (padarytas)',
-                dataIndex: 'doneMilingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Dažymo laikas (padarytas)',
-                dataIndex: 'donePaintingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Šlifavimo laikas (padarytas)',
-                dataIndex: 'doneGrindingTime',
+                title: 'Surinkimo laikas (padarytas)',
+                dataIndex: 'doneCollectionTime',
                 width: '10%',
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
@@ -347,8 +287,40 @@ class HomeScreen extends React.Component {
                 }
             },
             {
-                title: 'Surinkimo laikas (padarytas)',
-                dataIndex: 'doneCollectionTime',
+                title: 'Lazeriavimo laikas (padarytas)',
+                dataIndex: 'doneLaserTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Dažymo laikas (padarytas)',
+                dataIndex: 'donePaintingTime',
+                width: '10%',
+                render: (text, record, index) => {
+                    if (Math.floor(text / 60) === 0) {
+                        return (
+                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    } else {
+                        return (
+                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
+                        )
+                    }
+                }
+            },
+            {
+                title: 'Frezavimo laikas (padarytas)',
+                dataIndex: 'doneMilingTime',
                 width: '10%',
                 render: (text, record, index) => {
                     if (Math.floor(text / 60) === 0) {
@@ -595,6 +567,33 @@ class HomeScreen extends React.Component {
             }
         ]
 
+        // Neisiustu siuntiniu lentele
+        const unsendedOrders = [
+            {
+                title: 'Uzsakymo numeris',
+                dataIndex: 'orderNumber',
+                width: '20%'
+            },
+            {
+                title: 'Data',
+                dataIndex: 'orderFinishDate',
+                width: '20%',
+                render: (text, record, index) => (
+                    <p>{moment(text).format('YYYY/MM/DD')}</p>
+                )
+            },
+            {
+                title: 'Kodas',
+                dataIndex: 'productCode',
+                width: '20%'
+            },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '20%'
+            }
+        ]
+
 
         const uncompletedWarehouseOrders = [
             {
@@ -667,174 +666,6 @@ class HomeScreen extends React.Component {
                     <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                 )
             },
-            {
-                title: 'Lazeriavimo laikas',
-                dataIndex: 'orderServices',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (text !== null && text !== undefined) {
-                        let laserTime = text.find(x => x.serviceId === 1)
-                        let time = laserTime === null || laserTime === undefined ? 0 : laserTime.timeConsumption * record.quantity
-                        if (Math.floor(time / 60) === 0) {
-                            return (
-                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        } else {
-                            return (
-                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        }
-                    } else {
-                        return (
-                            <Typography.Text>0 m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Frezavimo laikas',
-                dataIndex: 'orderServices',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (text !== null && text !== undefined) {
-                        let milingTime = text.find(x => x.serviceId === 2)
-                        let time = milingTime === null || milingTime === undefined ? 0 : milingTime.timeConsumption * record.quantity
-                        if (Math.floor(time / 60) === 0) {
-                            return (
-                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        } else {
-                            return (
-                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        }
-                    } else {
-                        return (
-                            <Typography.Text>0 m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Dažymo laikas',
-                dataIndex: 'orderServices',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (text !== null && text !== undefined) {
-                        let paintingTime = text.find(x => x.serviceId === 3)
-                        let time = paintingTime === null || paintingTime === undefined ? 0 : paintingTime.timeConsumption * record.quantity
-                        if (Math.floor(time / 60) === 0) {
-                            return (
-                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        } else {
-                            return (
-                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        }
-                    } else {
-                        return (
-                            <Typography.Text>0 m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Šlifavimo laikas',
-                dataIndex: 'orderServices',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (text !== null && text !== undefined) {
-                        let grindingTime = text.find(x => x.serviceId === 4)
-                        let time = grindingTime === null || grindingTime === undefined ? 0 : grindingTime.timeConsumption * record.quantity
-                        if (Math.floor(time / 60) === 0) {
-                            return (
-                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        } else {
-                            return (
-                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        }
-                    } else {
-                        return (
-                            <Typography.Text>0 m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Suklijavimo laikas',
-                dataIndex: 'orderServices',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (text !== null && text !== undefined) {
-                        let bondingTime = text.find(x => x.serviceId === 5)
-                        let time = bondingTime === null || bondingTime === undefined ? 0 : bondingTime.timeConsumption * record.quantity
-                        if (Math.floor(time / 60) === 0) {
-                            return (
-                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        } else {
-                            return (
-                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        }
-                    } else {
-                        return (
-                            <Typography.Text>0 m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Surinkimo laikas',
-                dataIndex: 'orderServices',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (text !== null && text !== undefined) {
-                        let collectionTime = text.find(x => x.serviceId === 6)
-                        let time = collectionTime === null || collectionTime === undefined ? 0 : collectionTime.timeConsumption * record.quantity
-                        if (Math.floor(time / 60) === 0) {
-                            return (
-                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        } else {
-                            return (
-                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        }
-                    } else {
-                        return (
-                            <Typography.Text>0 m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Pakavimo laikas',
-                dataIndex: 'orderServices',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (text !== null && text !== undefined) {
-                        let packingTime = text.find(x => x.serviceId === 7)
-                        let time = packingTime === null || packingTime === undefined ? 0 : packingTime.timeConsumption * record.quantity
-                        if (Math.floor(time / 60) === 0) {
-                            return (
-                                <Typography.Text>{Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        } else {
-                            return (
-                                <Typography.Text>{Math.floor(time / 60)}h {Math.round(((time / 60) - Math.floor(time / 60)) * 60)} m</Typography.Text>
-                            )
-                        }
-                    } else {
-                        return (
-                            <Typography.Text>0 m</Typography.Text>
-                        )
-                    }
-                }
-            },
         ]
         return (
             <>
@@ -886,7 +717,7 @@ class HomeScreen extends React.Component {
                             <Table
                                 rowKey="id"
                                 columns={workTimesColumns}
-                                dataSource={this.props.orderDetailsReducer.uncompleted_orders_times.length > 0 ? this.props.orderDetailsReducer.uncompleted_orders_times : []}
+                                dataSource={this.props.orderDetailsReducer.uncompleted_orders_times}
                                 pagination={{ pageSize: 15 }}
                                 bWorked
                                 scroll={{ x: 'calc(200px + 50%)' }}
@@ -1054,6 +885,31 @@ class HomeScreen extends React.Component {
                         <Row gutter={16}>
                             <Col span={16}>
                                 <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h3>Neisiustu siuntiniu lentele</h3>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={unsendedOrders}
+                                        dataSource={this.props.orderDetailsReducer.unsended_orders}
+                                        pagination={false}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+
+                    <Col span={24} style={{ marginTop: '20px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
                                     <h3>Gaminimo į sandėlį lentelė</h3>
                                 </div>
                             </Col>
@@ -1185,6 +1041,6 @@ export default connect(mapStateToProps, {
     getLastWeeksCompletedOrders, getClientsOrders, getProducts,
     getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders
+    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders
 })(withRouter(HomeScreen))
 
