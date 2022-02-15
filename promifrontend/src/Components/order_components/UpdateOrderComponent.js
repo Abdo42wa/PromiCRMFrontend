@@ -209,20 +209,47 @@ function UpdateOrderComponent(props) {
                             {orderReducer.order.orderType !== "Ne-standartinis" && orderReducer.order.product !== null &&
                                 orderReducer.order.product !== undefined && orderReducer.order.product.orderServices !== undefined &&
                                 orderReducer.order.product.orderServices !== null ?
-                                <div>
-                                    {orderReducer.order.product.orderServices.map((element, index) => (
+                                <div style={{width: '100%'}}>
+                                    {/* {orderReducer.order.product.orderServices.map((element, index) => (
                                         <div key={index}>
                                             <p>{element.service.name}</p>
                                             <Input disabled key={index} style={{ width: '100%' }} placeholder="Įrašykite lazeriavimo laiką" value={element.timeConsumption} />
                                         </div>
-                                    ))}
+                                    ))} */}
+                                    <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
+                                    <Input disabled key="lazerTime" style={{ width: '100%' }} value={orderReducer.order.product.orderServices.find(x => x.serviceId === 1) !== undefined ?
+                                        orderReducer.order.product.orderServices.find(x => x.serviceId === 1).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Frezavimo laikas</p>
+                                    <Input disabled key="milingTime" style={{ width: '100%' }} value={orderReducer.order.product.orderServices.find(x => x.serviceId === 2) !== undefined ?
+                                        orderReducer.order.product.orderServices.find(x => x.serviceId === 2).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Dažymo laikas</p>
+                                    <Input disabled key="paintingTime" style={{ width: '100%' }} value={orderReducer.order.product.orderServices.find(x => x.serviceId === 3) !== undefined ?
+                                        orderReducer.order.product.orderServices.find(x => x.serviceId === 3).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Šlifavimo laikas</p>
+                                    <Input disabled key="grindingTime" style={{ width: '100%' }} value={orderReducer.order.product.orderServices.find(x => x.serviceId === 4) !== undefined ?
+                                        orderReducer.order.product.orderServices.find(x => x.serviceId === 4).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Suklijavimo laikas</p>
+                                    <Input disabled key="bondingTime" style={{ width: '100%' }} value={orderReducer.order.product.orderServices.find(x => x.serviceId === 5) !== undefined ?
+                                        orderReducer.order.product.orderServices.find(x => x.serviceId === 5).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Surinkimo laikas</p>
+                                    <Input disabled key="collectionTime" style={{ width: '100%' }} value={orderReducer.order.product.orderServices.find(x => x.serviceId === 6) !== undefined ?
+                                        orderReducer.order.product.orderServices.find(x => x.serviceId === 6).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Pakavimo laikas</p>
+                                    <Input disabled key="packingTime" style={{ width: '100%' }} value={orderReducer.order.product.orderServices.find(x => x.serviceId === 7) !== undefined ?
+                                        orderReducer.order.product.orderServices.find(x => x.serviceId === 7).timeConsumption : 0} />
                                 </div>
                                 : null
                             }
 
                             {orderReducer.order.orderType === "Ne-standartinis" && orderReducer.order.orderServices !== null &&
                                 orderReducer.order.orderServices !== undefined ?
-                                <div>
+                                /* <div>
                                     {orderReducer.order.orderServices.map((element, index) => (
                                         <div key={index}>
                                             <p>{element.service.name}</p>
@@ -233,6 +260,36 @@ function UpdateOrderComponent(props) {
                                                 onChange={(e) => onServiceDataChange(element.id, e.target.value, element)} />
                                         </div>
                                     ))}
+                                </div>
+                                : null */
+                                <div style={{width: '100%'}}>
+                                    <p style={{ ...textStyle }}>Lazeriavimo laikas</p>
+                                    <Input key="lazerTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 1) !== undefined ?
+                                        orderReducer.order.orderServices.find(x => x.serviceId === 1).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Frezavimo laikas</p>
+                                    <Input key="milingTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 2) !== undefined ?
+                                        orderReducer.order.orderServices.find(x => x.serviceId === 2).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Dažymo laikas</p>
+                                    <Input key="paintingTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 3) !== undefined ?
+                                        orderReducer.order.orderServices.find(x => x.serviceId === 3).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Šlifavimo laikas</p>
+                                    <Input key="grindingTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 4) !== undefined ?
+                                        orderReducer.order.orderServices.find(x => x.serviceId === 4).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Suklijavimo laikas</p>
+                                    <Input key="bondingTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 5) !== undefined ?
+                                        orderReducer.order.orderServices.find(x => x.serviceId === 5).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Surinkimo laikas</p>
+                                    <Input key="collectionTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 6) !== undefined ?
+                                        orderReducer.order.orderServices.find(x => x.serviceId === 6).timeConsumption : 0} />
+
+                                    <p style={{ ...textStyle }}>Pakavimo laikas</p>
+                                    <Input key="packingTime" style={{ width: '100%' }} value={orderReducer.order.orderServices.find(x => x.serviceId === 7) !== undefined ?
+                                        orderReducer.order.orderServices.find(x => x.serviceId === 7).timeConsumption : 0} />
                                 </div>
                                 : null
                             }
