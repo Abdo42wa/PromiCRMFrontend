@@ -251,6 +251,20 @@ function UpdateOrderComponent(props) {
                             <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite Vat" value={orderReducer.order.vat} onChange={(e) => onDataChange(e.target.value, "vat")} />
                             <p style={{ ...textStyle }}>Užsakymo pabaigos data</p>
                             <Input required style={{ width: '100%' }} placeholder="Įrašykite datą" value={orderReducer.order.orderFinishDate} onChange={(e) => onDataChange(e.target.value, "orderFinishDate")} />
+
+                            <p style={{ ...textStyle }}>Uzsakovo vardas</p>
+                            <Input required style={{ width: '100%' }} placeholder="Įrašykite Uzsakovo varda" value={orderReducer.order.customerName} onChange={(e) => onDataChange(e.target.value, "customerName")} />
+
+
+                            <p style={{ ...textStyle }}>Siuntimo kaina</p>
+                            <Input required style={{ width: '100%' }} placeholder="Įrašykite Siuntimo kaina" value={orderReducer.order.shippingCost} onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
+
+
+                            <p style={{ ...textStyle }}>Siuntos numeris</p>
+                            <Input required style={{ width: '100%' }} placeholder="Įrašykite Siuntos numeris" value={orderReducer.order.shippingNumber} onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
+
+
+
                             <p style={{ marginBottom: '5px' }}>Siuntos statusas</p>
                             <Select
                                 showSearch
