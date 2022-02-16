@@ -7,7 +7,8 @@ const { Option } = Select;
 function AddCountryComponents(props) {
     const [country, setCountry] = useState({
         name: "Lithuania",
-        shortName: "LT"
+        shortName: "LT",
+        continent: "Europe"
     });
     const onCancel = () => {
         props.onClose();
@@ -23,7 +24,8 @@ function AddCountryComponents(props) {
             setCountry(prevState => ({
                 ...prevState,
                 [inputName]: value,
-                "shortName": obj.code
+                "shortName": obj.code,
+                "continent": obj.continent
 
             }));
         }
@@ -87,6 +89,8 @@ function AddCountryComponents(props) {
                     <p>Trumpas pavadinimas</p>
                     <Input style={{ width: '100%' }} placeholder="Įrašykite trumpinį (LT)" value={country.shortName} />
 
+                    <p>kontinentas</p>
+                    <Input style={{ width: '100%' }} placeholder="Įrašykite kontinenta" value={country.continent} />
                 </Form>
             </Modal>
         </>

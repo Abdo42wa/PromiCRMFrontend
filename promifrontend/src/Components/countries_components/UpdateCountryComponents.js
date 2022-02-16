@@ -37,7 +37,8 @@ function UpdateCountryComponent(props) {
             setCountry(prevState => ({
                 ...prevState,
                 [inputName]: value,
-                "shortName": obj.code
+                "shortName": obj.code,
+                "continent": obj.continent
 
             }));
         }
@@ -46,6 +47,9 @@ function UpdateCountryComponent(props) {
         const { id, ...postObj } = country;
         const reducerObj = country;
         props.save(postObj, reducerObj);
+
+        console.log(postObj)
+        console.log(reducerObj)
     }
     useEffect(() => {
         setCountry(props.record)
@@ -84,6 +88,9 @@ function UpdateCountryComponent(props) {
                     </Select>
                     <p style={{ ...textStyle }}>Trumpas pavadinimas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite trumpas pavadinimas" value={country.shortName} onChange={(e) => onDataChange(e.target.value, "shortName")} />
+
+                    <p>kontinentas</p>
+                    <Input required style={{ width: '100%' }} placeholder="Įrašykite kontinenta" value={country.continent} onChange={(e) => onDataChange(e.target.value, "continent")} />
                 </Form>
             </Modal>
         </>

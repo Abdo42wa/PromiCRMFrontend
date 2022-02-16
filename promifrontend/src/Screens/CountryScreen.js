@@ -70,7 +70,7 @@ class CountryScreen extends React.Component {
         } else {
             this.props.history.push('/login')
         }
-        
+
     }
 
     render() {
@@ -91,6 +91,11 @@ class CountryScreen extends React.Component {
                 title: 'Trumpinys',
                 dataIndex: 'shortName',
                 width: '35%'
+            },
+            {
+                title: 'kontinentas',
+                dataIndex: 'continent',
+                width: '35%'
             }
         ]
         return (
@@ -106,7 +111,7 @@ class CountryScreen extends React.Component {
                                 </div>
                             </Col>
                         </Row>
-                        <div style={{padding: '15px'}}></div>
+                        <div style={{ padding: '15px' }}></div>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
