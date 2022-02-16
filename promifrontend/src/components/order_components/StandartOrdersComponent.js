@@ -571,6 +571,14 @@ function StandartOrdersComponent(props) {
             )
         },
         {
+            title: 'ES/NE ES',
+            dataIndex: 'country',
+            width: '10%',
+            render: (text,record,index)=>(
+                <p>{text === null || record.orderType === "Sandelis"? '' : text.continent === "Europe"? "ES":text.continent !== "Europe"?"NE ES": ""}</p>
+            )
+        },
+        {
             title: 'Komentaras',
             dataIndex: 'comment',
             width: '10%'

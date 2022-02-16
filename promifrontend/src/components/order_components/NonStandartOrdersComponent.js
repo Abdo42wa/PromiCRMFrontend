@@ -550,6 +550,14 @@ function NonStandartOrdersComponent(props) {
             )
         },
         {
+            title: 'ES/NE ES',
+            dataIndex: 'country',
+            width: '10%',
+            render: (text,record,index)=>(
+                <p>{text === null? '' : text.continent === "Europe"? "ES":"NE ES"}</p>
+            )
+        },
+        {
             title: 'Komentaras',
             dataIndex: 'comment',
             width: '10%'
