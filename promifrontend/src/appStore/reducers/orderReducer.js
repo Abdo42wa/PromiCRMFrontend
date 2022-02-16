@@ -33,13 +33,15 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }
         case 'ORDER_NON_STANDART_OBJ_SERVICE_UPDATE':
             const n_s_order_obj = state.order;
-            const index = n_s_order_obj.orderServices.findIndex(x => x.id === action.payload.id)
-            if (index === -1) {
-                // const new_n_s_order_services = [...n_s_order_obj.orderServices, { ...action.payload.record, "service": null, "timeConsumption": action.payload.value }]
-                const updated_n_s_order_obj = { ...state.order, "orderServices": [...n_s_order_obj.orderServices, { ...action.payload.record, "timeConsumption": action.payload.value }] }
+            if (action.payload.record === null) {
+                console.log('RECORD DOESNT EXIST:' + JSON.stringify(action.payload))
+                const obj = { serviceId: action.payload.serviceId, timeConsumption: action.payload.value, orderId: n_s_order_obj.id }
+                const new_n_s_order_services = [...n_s_order_obj.orderServices, { ...obj }]
+                const updated_n_s_order_obj = { ...n_s_order_obj, "orderServices": new_n_s_order_services }
                 return { ...state, loading: false, order: updated_n_s_order_obj }
             } else {
-                const updated_obj_services = n_s_order_obj.orderServices.map(x => x.id === action.payload.id ? { ...x, "timeConsumption": action.payload.value } : x)
+                // const index = n_s_order_obj.orderServices.findIndex(x => x.id === action.payload.id)
+                const updated_obj_services = n_s_order_obj.orderServices.map(x => x.serviceId === action.payload.serviceId ? { ...x, "timeConsumption": action.payload.value } : x)
                 const updated_n_s_order = { ...state.order, "orderServices": updated_obj_services }
                 return { ...state, loading: false, order: updated_n_s_order }
             }
