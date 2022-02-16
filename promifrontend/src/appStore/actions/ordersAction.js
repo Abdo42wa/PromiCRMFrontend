@@ -89,6 +89,31 @@ export const getNonStandartOrder = (id) => async (dispatch, getState) => {
     }
 }
 
+// getting order with max orderNumber
+export const getMaximumOrderNumber = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'ORDERS_ORDER_NUMBER_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get(`/api/Orders/biggest/orderNumber`, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'ORDERS_ORDER_NUMBER_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'ORDERS_ORDER_NUMBER_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }finally{
+        
+    }
+}
+
 export const updateOrderObj = (inputName, value) => async (dispatch, getState) => {
     try {
         dispatch({

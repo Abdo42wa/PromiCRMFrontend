@@ -1,4 +1,4 @@
-export const orderReducer = (state = { orders: [], non_standart_orders: [], order: null }, action) => {
+export const orderReducer = (state = { orders: [], non_standart_orders: [], order: null, orderNumber: null }, action) => {
     switch (action.type) {
         case 'ORDERS_FETCH_REQUEST':
             return { ...state, loading: true }
@@ -26,6 +26,18 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, order: action.payload }
         case 'NON_STANDART_ORDER_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
+        //FETCH MAX ORDER NUMBER
+        case 'ORDERS_ORDER_NUMBER_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'ORDERS_ORDER_NUMBER_FETCH_SUCCESS':
+            let number = action.payload;
+            if(action.payload === null || action.payload === undefined)
+                number = 1;
+            else
+                number = number + 1;
+            return {...state, loading: false, orderNumber: number}
+        case 'ORDERS_ORDER_NUMBER_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
         //FOR updateOrderComponent. updating Standart or Warehouse
         case 'ORDER_OBJ_UPDATE_SUCCESS':
             return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }

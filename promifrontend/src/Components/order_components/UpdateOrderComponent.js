@@ -322,11 +322,11 @@ function UpdateOrderComponent(props) {
 
 
                             <p style={{ ...textStyle }}>Siuntimo kaina</p>
-                            <Input required style={{ width: '100%' }} placeholder="Įrašykite Siuntimo kaina" value={orderReducer.order.shippingCost} onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
+                            <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite Siuntimo kaina" value={orderReducer.order.shippingCost} onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
 
 
                             <p style={{ ...textStyle }}>Siuntos numeris</p>
-                            <Input required style={{ width: '100%' }} placeholder="Įrašykite Siuntos numeris" value={orderReducer.order.shippingNumber} onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
+                            <Input disabled={sandelis} required style={{ width: '100%' }} placeholder="Įrašykite Siuntos numeris" value={orderReducer.order.shippingNumber} onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
 
 
 

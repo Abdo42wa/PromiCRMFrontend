@@ -7,7 +7,7 @@ import { getUsers } from '../../appStore/actions/userListActions'
 import { getLoggedUser } from '../../appStore/actions/userAction';
 import { getProducts } from '../../appStore/actions/productsActions'
 import { getWarehouseProduct } from '../../appStore/actions/warehouseActions'
-import { getOrders, createNonStandartOrder, addOrder } from '../../appStore/actions/ordersAction'
+import { getOrders, createNonStandartOrder, addOrder, getMaximumOrderNumber } from '../../appStore/actions/ordersAction'
 import { getShipments } from '../../appStore/actions/shipmentsActions';
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
@@ -92,23 +92,7 @@ function AddOrderComponent(props) {
     const onCancel = () => {
         props.onClose();
     }
-
-    const getOrderNumber = () => {
-        const orders_clone = JSON.parse(JSON.stringify(orderReducer.orders))
-        //if there are orders then map through them and return max num  +1 
-        if (orders_clone.length > 0) {
-            let num = Number(
-                Math.max.apply(
-                    Math,
-                    orders_clone?.map(o => o.orderNumber || 0),
-                ) || 0,
-            );
-            return num + 1;
-        } else {
-            return 1;
-        }
-    }
-
+    
     const serviceDataChange = (value, inputName, serviceId) => {
         const index = orderServices.findIndex(x => x.serviceId === serviceId)
         if (index === -1) {
@@ -193,7 +177,7 @@ function AddOrderComponent(props) {
 
             const postObj = {
                 ...clone,
-                "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
+                "orderNumber": clone.orderNumber === null ? orderReducer.orderNumber : clone.orderNumber,
                 "platforma": clone.platforma === null ? "Nera" : clone.platforma,
                 "productCode": null,
                 "orderServices": orderServices
@@ -205,7 +189,7 @@ function AddOrderComponent(props) {
             // const product_data = productsReducer.products.find(o => o.code === clone.productCode)
             const postObj = {
                 ...clone,
-                "orderNumber": clone.orderNumber === null ? getOrderNumber() : clone.orderNumber,
+                "orderNumber": clone.orderNumber === null ? orderReducer.orderNumber : clone.orderNumber,
                 "productId": clone.productCode !== null ? getProductId(product.code) : null
             }
             dispatch(addOrder(postObj))
@@ -214,6 +198,7 @@ function AddOrderComponent(props) {
         }
     }
     useEffect(() => {
+        dispatch(getMaximumOrderNumber())
         dispatch(getCustomers())
         // dispatch(getCurrencies());
         dispatch(getCountries());
@@ -258,19 +243,24 @@ function AddOrderComponent(props) {
                             <Option key="Sandelis" value={'Sandelis'}>{'Sandelis'}</Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item
-                        key="orderNumber"
-                        name="orderNumber"
-                        label="Užsakymo numeris"
-                        initialValue={getOrderNumber()}
-                        rules={[{ required: true, message: "Įveskite užsakymo numerį!" }]}
-                    >
-                        <InputNumber
-                            style={{ width: '100%' }}
-                            placeholder="Įrašykite užsakymo numerį"
-                            value={order.orderNumber}
-                            onChange={(e) => onDataChange(e, "orderNumber")} />
-                    </Form.Item>
+                    {orderReducer.orderNumber !== null &&
+                        <Form.Item
+                            key="orderNumber"
+                            name="orderNumber"
+                            label="Užsakymo numeris"
+                            initialValue={orderReducer.orderNumber}
+                            rules={[{ required: true, message: "Įveskite užsakymo numerį!" }]}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder="Įrašykite užsakymo numerį"
+                                value={order.orderNumber}
+                                onChange={(e) => onDataChange(e, "orderNumber")} />
+                        </Form.Item>
+                    }
+
+
+
                     {/* <Form.Item key="name2" name="name2" label="Data">
                         <Input style={{ width: '100%' }} placeholder="Įrašykite datą" value={order.date} defaultValue={moment().format("YYYY/MM/DD")} onChange={(e) => onDataChange(e.target.value, "date")} />
                     </Form.Item> */}
@@ -469,8 +459,9 @@ function AddOrderComponent(props) {
                         label="Siuntimo kaina"
                     >
                         <Input
+                            disabled={sandelis}
                             style={{ width: '100%' }}
-                            placeholder="Įrašykite Siuntimo kaina"
+                            placeholder="Įrašykite siuntimo kaina"
                             value={order.orderFinishDate}
                             onChange={(e) => onDataChange(e.target.value, "shippingCost")} />
                     </Form.Item>
@@ -481,8 +472,9 @@ function AddOrderComponent(props) {
                         label="Siuntos numeris"
                     >
                         <Input
+                            disabled={sandelis}
                             style={{ width: '100%' }}
-                            placeholder="Įrašykite Siuntos numeris"
+                            placeholder="Įrašykite siuntos numeris"
                             value={order.orderFinishDate}
                             onChange={(e) => onDataChange(e.target.value, "shippingNumber")} />
                     </Form.Item>
