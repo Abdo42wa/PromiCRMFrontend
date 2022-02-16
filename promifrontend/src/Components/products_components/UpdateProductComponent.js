@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Modal, Button, Form, Space, Select, Input, Image } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, Image, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getOrders } from '../../appStore/actions/ordersAction'
 import { getMaterialsWarehouseData } from '../../appStore/actions/materialsWarehouseActions'
@@ -24,6 +24,37 @@ function UpdateProductComponent(props) {
     const [productServices, setProductServices] = useState([])
     const [file, setFile] = useState();
     const [fileChanged, setFileChanged] = useState(0)
+    const [serviceFakeArray, setServiceFakeArray] = useState([
+        {
+            num: 1,
+            title: 'Lazeriavimo',
+        },
+        {
+            num: 2,
+            title: 'Frezavimo',
+        },
+        {
+            num: 3,
+            title: 'Dažymo',
+        },
+        {
+            num: 4,
+            title: 'Šlifavimo',
+        },
+        {
+            num: 5,
+            title: 'Suklijavimo',
+        },
+        {
+            num: 6,
+            title: 'Surinkimo'
+        },
+        {
+            num: 7,
+            title: 'Pakavimo'
+        },
+
+    ])
 
     const onBack = () => {
         props.onClose();
@@ -50,72 +81,58 @@ function UpdateProductComponent(props) {
         }
     }
 
-    const onServiceDataChange = (id, value, record) => {
-        const index = productServices.find(x => x.id === id)
-        if (index === null) {
-            //if there isnt service add it
-            console.log(record)
-            const obj = {
-                ...record,
-                "service": null,
-                "timeConsumption": value
+    const onServiceDataChange = (id, value, record, serviceId) => {
+        //if we adding service that doesnt existed
+        if (id === null && record === null) {
+            //have to add new obj to productServices and product orderServices array
+            const index = productServices.findIndex(x => x.serviceId === serviceId)
+            if (index === -1) {
+                //adding service
+                const obj = { "productId": product.id, "serviceId": serviceId, "timeConsumption": value }
+                setProductServices(prevState => [...prevState, { ...obj }])
+                setProduct(prevState => ({
+                    ...prevState,
+                    orderServices: [...prevState.orderServices, { ...obj }]
+                }))
+            } else {
+                //updating service
+                setProductServices(prevState => prevState.map(x => x.serviceId === serviceId ? ({ ...x, "timeConsumption": value }) : x))
+                setProduct(prevState => ({
+                    ...prevState,
+                    orderServices: prevState.orderServices.map(x => x.serviceId === serviceId ? ({ ...x, "timeConsumption": value }) : x)
+                }))
             }
-            setProductServices(prevState => [...prevState, {...obj}])
         } else {
-            setProductServices(productServices.map(x => x.id === id ? { ...x, "timeConsumption": value } : x))
+            const index = productServices.findIndex(x => x.serviceId === serviceId)
+            if (index === -1) {
+                //then need to add it. it doesnt exist
+                const obj = {
+                    ...record,
+                    "service": null,
+                    "timeConsumption": value
+                }
+                setProductServices(prevState => [...prevState, { ...obj }])
+            } else
+                setProductServices(prevState => prevState.map(x => x.serviceId === serviceId ? ({ ...x, "timeConsumption": value }) : x))
+            setProduct(prevState => ({
+                ...prevState,
+                orderServices: prevState.orderServices.map(x => x.serviceId === serviceId?({ ...x, "timeConsumption": value }):x)
+            }))
         }
-        setProduct(prevState => ({
-            ...prevState,
-            orderServices: prevState.orderServices.map(x => x.id === id ? { ...x, "timeConsumption": value } : x)
-        }))
     }
 
     const saveChanges = () => {
         const clone = JSON.parse(JSON.stringify(product));
         const materialsArray = [];
         if (fileChanged === 0) {
+            const { id, ...obj } = clone;
             const postObj = {
-                "orderId": clone.orderId,
-                "imageName": clone.imageName,
-                "imagePath": clone.imagePath,
-                "link": clone.link,
-                "code": clone.code,
-                "category": clone.category,
-                "name": clone.name,
-                "lengthWithoutPackaging": clone.lengthWithoutPackaging,
-                "widthWithoutPackaging": clone.widthWithoutPackaging,
-                "heightWithoutPackaging": clone.heightWithoutPackaging,
-                "lengthWithPackaging": clone.lengthWithPackaging,
-                "widthWithPackaging": clone.widthWithPackaging,
-                "heightWithPackaging": clone.heightWithPackaging,
-                "weightGross": clone.weightGross,
-                "weightNetto": clone.weightNetto,
-                "packagingBoxCode": clone.packagingBoxCode,
+                ...obj,
                 "orderServices": productServices
             }
-            const reducerObj = {
-                "id": clone.id,
-                "imageName": clone.imageName,
-                "imagePath": clone.imagePath,
-                "link": clone.link,
-                "code": clone.code,
-                "category": clone.category,
-                "name": clone.name,
-                "lengthWithoutPackaging": clone.lengthWithoutPackaging,
-                "widthWithoutPackaging": clone.widthWithoutPackaging,
-                "heightWithoutPackaging": clone.heightWithoutPackaging,
-                "lengthWithPackaging": clone.lengthWithPackaging,
-                "widthWithPackaging": clone.widthWithPackaging,
-                "heightWithPackaging": clone.heightWithPackaging,
-                "weightGross": clone.weightGross,
-                "weightNetto": clone.weightNetto,
-                "packagingBoxCode": clone.packagingBoxCode,
-                "orderServices": clone.orderServices
-            }
-            props.save(postObj,reducerObj)
-
+            const reducerObj = clone;
+            props.save(postObj, reducerObj)
         } else {
-            console.log(file)
             const formData = new FormData();
             formData.append("link", clone.link)
             formData.append("code", clone.code)
@@ -130,7 +147,7 @@ function UpdateProductComponent(props) {
             formData.append("widthWithPackaging", clone.widthWithPackaging)
             formData.append("lengthWithPackaging", clone.lengthWithPackaging)
             formData.append("weightNetto", clone.weightNetto)
-            for(let i=0;i<productServices.length; i++){
+            for (let i = 0; i < productServices.length; i++) {
                 formData.append(
                     `orderServices[${i}].id`,
                     productServices[i].id
@@ -218,7 +235,7 @@ function UpdateProductComponent(props) {
                     <p style={{ ...textStyle }}>Dėžutės kodas</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite kodą" value={product.packagingBoxCode} onChange={(e) => onDataChange(e.target.value, "packagingBoxCode")} />
 
-                    {product.orderServices !== null && product.orderServices !== undefined ?
+                    {/* {product.orderServices !== null && product.orderServices !== undefined ?
                         <div>
                             {product.orderServices.map((element, index) => {
                                 return (
@@ -229,8 +246,28 @@ function UpdateProductComponent(props) {
                                 )
                             })}
                         </div> : null
+                    } */}
+                    {product.orderServices !== null && product.orderServices !== undefined ?
+                        <div>
+                            {serviceFakeArray.map((element, index) => {
+                                const productService = product.orderServices.find(x => x.serviceId === element.num) !== undefined ?
+                                    product.orderServices.find(x => x.serviceId === element.num) : null
+                                return (
+                                    <div key={element.title}>
+                                        <p style={{ ...textStyle }}>{element.title} laikas</p>
+                                        <InputNumber key={index + "yee"}
+                                            style={{ width: '100%' }}
+                                            placeholder={`Įrašykite ${element.title} laiką`}
+                                            value={productService !== null ? productService.timeConsumption : 0}
+                                            onChange={(e) => onServiceDataChange(productService !== null ? productService.id : null, e, productService !== null ? productService : null, element.num)}
+
+                                        />
+                                    </div>
+                                )
+                            })}
+                        </div> : null
                     }
-                    
+
                     {/* FOR IMGAE */}
                     {product.imagePath !== null && product.imagePath !== undefined ?
                         <div>

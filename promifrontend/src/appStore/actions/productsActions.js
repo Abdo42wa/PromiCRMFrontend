@@ -79,9 +79,13 @@ export const updateProduct = (postObj, reducerObj, callback) => async (dispatch,
         // get token from usersReducer
         const token = getState().usersReducer.currentUser;
         const response = await promiAPI.put(`/api/Products/${reducerObj.id}`, postObj, {headers: {Authorization: `Bearer ${token}`}});
+        const obj = {
+            ...reducerObj,
+            "orderServices":response.data
+        }
         dispatch({
             type: 'PRODUCTS_UPDATE_SUCCESS',
-            payload: reducerObj
+            payload: obj
         });
         callback();
     } catch (error) {
