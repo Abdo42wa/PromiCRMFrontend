@@ -87,10 +87,6 @@ function UpdateOrderComponent(props) {
     //for non standart orders. to update order and orderServices
     const onServiceDataChange = (id, value, record, serviceId) => {
         dispatch(updateNonStandartObjServices(id, value, record, serviceId))
-        console.log('orderServiceId:' + id)
-        console.log('value:' + value)
-        console.log('orderService:' + JSON.stringify(record))
-        console.log('serviceId:' + serviceId)
     }
     const saveChanges = () => {
         // const clone = JSON.parse(JSON.stringify(order));
@@ -112,7 +108,7 @@ function UpdateOrderComponent(props) {
         if (value === false)
             num = 0;
         else {
-            if (orderReducer.order.orderType !== "Ne-standartinis" && orderReducer.order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse)
+            if (orderReducer.order.orderType !== "Ne-standartinis" && orderReducer.order.quantity <= warehouseReducer.warehouse_product.quantityProductWarehouse)
                 num = orderReducer.order.quantity;
             else
                 num = 0;
@@ -218,8 +214,13 @@ function UpdateOrderComponent(props) {
                                 <div>
                                     <p style={{ ...textStyle }}>Panaudosime sandėlio produktus?</p>
                                     <Input disabled={
-                                        orderReducer.order.quantity < warehouseReducer.warehouse_product.quantityProductWarehouse &&
-                                            orderReducer.order.warehouseProductsTaken === false ? false : true} style={{ width: '35px', height: '35px' }} type={'checkbox'} value={orderReducer.order.warehouseProductsNumber === 0 ? false : true} onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")} />
+                                        orderReducer.order.quantity <= warehouseReducer.warehouse_product.quantityProductWarehouse &&
+                                            orderReducer.order.warehouseProductsTaken === false ? false : true}
+                                        style={{ width: '35px', height: '35px' }}
+                                        type={'checkbox'}
+                                        value={orderReducer.order.warehouseProductsNumber === 0 ? false : true}
+                                        onChange={(e) => onTakeFromWarehouseCheck(e.target.checked, "warehouseProductsNumber")}
+                                    />
                                 </div>
                                 : null
                             }
@@ -232,7 +233,10 @@ function UpdateOrderComponent(props) {
                                 <div>
                                     {warehouseReducer.warehouse_product.quantityProductWarehouse < orderReducer.order.quantity ?
                                         <p>Sandėlyje <i style={{ fontSize: '20px', color: 'orange', fontWeight: 'bold' }}>turime nepakankamai, {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
-                                        : <p>Sandėlyje yra:<i style={{ fontSize: '20px', color: 'green', fontWeight: 'bold' }}> {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>}
+                                        : warehouseReducer.warehouse_product.quantityProductWarehouse >= orderReducer.order.quantity ?
+                                            <p>Sandėlyje yra:<i style={{ fontSize: '20px', color: 'green', fontWeight: 'bold' }}>
+                                                {warehouseReducer.warehouse_product.quantityProductWarehouse}</i></p>
+                                            : null}
                                 </div>
                                 : orderReducer.order.orderType === "Standartinis" && orderReducer.order.status == false &&
                                     warehouseReducer.warehouse_product.quantityProductWarehouse === undefined ?
