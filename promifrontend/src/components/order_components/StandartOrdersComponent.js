@@ -282,7 +282,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -324,7 +324,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -366,7 +366,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -408,7 +408,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -450,7 +450,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -492,7 +492,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -534,7 +534,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={userService !== undefined && userService !== null && userService.userId !== null ? true : false}
+                                        disabled={userService !== undefined && userService !== null && userService.userId !== null ? true : record.warehouseProductsTaken === true? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
