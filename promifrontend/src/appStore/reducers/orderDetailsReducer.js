@@ -48,7 +48,7 @@ export const orderDetailsReducer = (state = {
             return { ...state, loading: true }
         case 'ORDERS_UNCOMPLETED_TIMES_FETCH_SUCCESS':
             const uncompleted_orders_times_c = [...action.payload]
-            const updated_orders_times = uncompleted_orders_times_c? uncompleted_orders_times_c.reduce((previousValue, currentValue)=>{
+            const updated_orders_times = uncompleted_orders_times_c ? uncompleted_orders_times_c.reduce((previousValue, currentValue) => {
                 return {
                     laserTime: previousValue.laserTime + currentValue.laserTime,
                     milingTime: previousValue.milingTime + currentValue.milingTime,
@@ -65,21 +65,29 @@ export const orderDetailsReducer = (state = {
                     doneCollectionTime: previousValue.doneCollectionTime + currentValue.doneCollectionTime,
                     donePackingTime: previousValue.donePackingTime + currentValue.donePackingTime,
                 }
-            }):[]
+            }) : []
             const _u_array = [
                 updated_orders_times
             ]
-            return {...state, loading: false, uncompleted_orders_times: _u_array}
+            return { ...state, loading: false, uncompleted_orders_times: _u_array }
         case 'ORDERS_UNCOMPLETED_TIMES_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
-        // for unsende oredrs
+        // start unsende oredrs
         case 'ORDERS_UNSENDED_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'ORDERS_UNSENDED_FETCH_SUCCESS':
             return { ...state, loading: false, unsended_orders: action.payload }
         case 'ORDERS_UNSENDED_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
-        // unsended orders
+        // end unsended orders
+        // start unsende oredrs
+        case 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_REQUEST':
+            return { ...state, loading: true }
+        case 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_SUCCESS':
+            return { ...state, loading: false, production_orders: action.payload }
+        case 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        // end unsended orders
         case 'COMPLETED_WAREHOUSE_ORDERS_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'COMPLETED_WAREHOUSE_ORDERS_FETCH_SUCCESS':

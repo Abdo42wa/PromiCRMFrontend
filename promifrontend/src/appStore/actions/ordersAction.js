@@ -90,18 +90,18 @@ export const getNonStandartOrder = (id) => async (dispatch, getState) => {
 }
 
 // getting order with max orderNumber
-export const getMaximumOrderNumber = () => async(dispatch,getState)=>{
-    try{
+export const getMaximumOrderNumber = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'ORDERS_ORDER_NUMBER_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/biggest/orderNumber`, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/biggest/orderNumber`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'ORDERS_ORDER_NUMBER_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'ORDERS_ORDER_NUMBER_FETCH_FAIL',
             payload:
@@ -109,8 +109,8 @@ export const getMaximumOrderNumber = () => async(dispatch,getState)=>{
                     ? error.response.data.message
                     : error.message,
         })
-    }finally{
-        
+    } finally {
+
     }
 }
 
@@ -136,7 +136,7 @@ export const updateOrderObj = (inputName, value) => async (dispatch, getState) =
 //     }
 // }
 
-export const updateNonStandartObjServices = (id, value, record,serviceId) => async (dispatch, getState) => {
+export const updateNonStandartObjServices = (id, value, record, serviceId) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDER_NON_STANDART_OBJ_SERVICE_UPDATE',
@@ -382,7 +382,7 @@ export const updateNonStandart = () => async (dispatch, getState) => {
         const response = await promiAPI.put(`/api/Orders/nonstandart/${order.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } })
         const reducerObj = {
             ...order,
-            "orderServices":response.data
+            "orderServices": response.data
         }
         dispatch({
             type: 'NON_STANDART_ORDER_UPDATE_SUCCESS',
@@ -612,6 +612,29 @@ export const getUnsendedOrders = () => async (dispatch, getState) => {
         })
     }
 }
+export const getRecommendedForProductionOrders = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get('/api/Orders/recommendedforproduction', { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_SUCCESS',
+            payload: response.data
+        })
+    } catch (error) {
+        dispatch({
+            type: 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
 //----------------------------------------
 
 
@@ -796,18 +819,18 @@ export const getLastMonthCompletedOrders = () => async (dispatch, getState) => {
 }
 
 
-export const getEmployeeMadeProducts = () => async(dispatch,getState)=>{
-    try{
+export const getEmployeeMadeProducts = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'EMPLOYEE_ORDERS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.get(`/api/Orders/employee/products`, {headers: {Authorization: `Bearer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/employee/products`, { headers: { Authorization: `Bearer ${token}` } })
         dispatch({
             type: 'EMPLOYEE_ORDERS_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'EMPLOYEE_ORDERS_FETCH_FAIL',
             payload:

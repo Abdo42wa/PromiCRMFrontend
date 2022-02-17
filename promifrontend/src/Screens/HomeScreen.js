@@ -7,7 +7,7 @@ import {
     getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,
     getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders, getEmployeeMadeProducts
+    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders, getEmployeeMadeProducts, getRecommendedForProductionOrders
 } from '../appStore/actions/ordersAction'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -121,6 +121,8 @@ class HomeScreen extends React.Component {
             this.props.getLastWeeksCompletedOrders()
             // Neisiustu siuntiniu lentele
             this.props.getUnsendedOrders()
+            // Rekomenduojama gaminti lentele
+            this.props.getRecommendedForProductionOrders()
         } else {
             this.props.history.push('/login');
         }
@@ -449,6 +451,18 @@ class HomeScreen extends React.Component {
                     <Typography.Text>{record.status ? <Tag className='atlikta'>Atlikta</Tag> : this.datediff(record.orderFinishDate) < 0 ? <Tag className='Neatlikta'>{Math.abs(this.datediff(record.orderFinishDate))}</Tag> : <Tag className='atlikta'>{Math.abs(this.datediff(record.orderFinishDate))}</Tag>} </Typography.Text>
 
                 )
+            }
+        ]
+        const productionOrders = [
+            {
+                title: 'Kodas',
+                dataIndex: 'productCode',
+                width: '10%'
+            },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '10%'
             }
         ]
 
@@ -815,6 +829,31 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
+                    <Col span={24} style={{ marginTop: '20px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h3>Rekomenduojama gaminti(Užsakymai)</h3>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={productionOrders}
+                                        dataSource={this.props.productionOrders}
+                                        pagination={{ pageSize: 10 }}
+                                        bordered
+                                        scroll={{ x: 'calc(200px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+
                     {/* Klientu darbu lentele */}
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
@@ -1030,12 +1069,12 @@ class HomeScreen extends React.Component {
                                 </Card>
                             </Col>
                         </Row>
-                        <div className='row' style={{marginTop: '15px', marginBottom: '15px'}}>
+                        <div className='row' style={{ marginTop: '15px', marginBottom: '15px' }}>
                             {this.props.orderDetailsReducer.employees_made_products !== undefined && this.props.orderDetailsReducer.employees_made_products &&
                                 this.props.orderDetailsReducer.employees_made_products.map((element) => (
-                                    <div className='col' style={{padding: '10px'}}>
-                                        <div style={{...tableCardStyle}} bodyStyle={{...tableCardBodyStyle}}>
-                                        <h3>{element.user.name} {element.user.surname}: {element.quantity}</h3>
+                                    <div className='col' style={{ padding: '10px' }}>
+                                        <div style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                            <h3>{element.user.name} {element.user.surname}: {element.quantity}</h3>
                                         </div>
                                     </div>
                                 ))}
@@ -1078,6 +1117,7 @@ const mapStateToProps = (state) => {
         productsReducer: state.productsReducer,
         materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
         orderDetailsReducer: state.orderDetailsReducer,
+        productionOrders: state.orderDetailsReducer.production_orders,
         warehouseReducer: state.warehouseReducer
     }
 }
@@ -1088,6 +1128,6 @@ export default connect(mapStateToProps, {
     getLastWeeksCompletedOrders, getClientsOrders, getProducts,
     getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders, getEmployeeMadeProducts
+    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders, getEmployeeMadeProducts, getRecommendedForProductionOrders
 })(withRouter(HomeScreen))
 
