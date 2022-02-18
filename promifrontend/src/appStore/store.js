@@ -12,7 +12,7 @@ import { warehouseReducer } from './reducers/warehouseReducer';
 import { nonStandartWorksReducer } from './reducers/nonStandartWorksReducer';
 import { countryReducer } from './reducers/countryReducer'
 import { orderReducer } from './reducers/orderReducer'
-import { bonusReducer } from './reducers/bonusReducer';
+import { bonusesReducer } from './reducers/bonusesReducer';
 import { currencyReducer } from './reducers/currencyReducer'
 import { servicesReducer } from './reducers/servicesReducer'
 import { weeklyWorkScheduleReducer } from './reducers/WeeklyWorkScheduleReducer'
@@ -34,7 +34,7 @@ const allReducers = combineReducers({
     nonStandartWorksReducer,
     countryReducer,
     orderReducer,
-    bonusReducer,
+    bonusesReducer,
     currencyReducer,
     servicesReducer,
     weeklyWorkScheduleReducer,

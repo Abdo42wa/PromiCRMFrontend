@@ -1,4 +1,4 @@
-export const bonusReducer = (state = { bonuses: [] }, action) => {
+export const bonusesReducer = (state = { bonuses: [] }, action) => {
     switch (action.type) {
         case 'BONUSES_FETCH_REQUEST':
             return { ...state, loading: true }
