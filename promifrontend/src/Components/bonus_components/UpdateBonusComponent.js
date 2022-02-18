@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getUsers } from '../../appStore/actions/userListActions'
-import { Modal, Button, Form, Space, Select, InputNumber } from 'antd';
+import { Modal, Button, Form, Space, InputNumber, DatePicker } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
-const { Option } = Select;
 const textStyle = {
     fontSize: '18px',
     color: '#8C8C8C',
@@ -19,10 +17,7 @@ const textStyle = {
 
 function UpdateBonusComponent(props) {
     const [bonus, setBonus] = useState({});
-
-    const dispatch = useDispatch();
-    const usersListReducer = useSelector((state) => state.usersListReducer);
-
+    const monthFormat = 'YYYY/MM';
 
     const onBack = () => {
         props.onClose();
@@ -44,13 +39,12 @@ function UpdateBonusComponent(props) {
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
-        dispatch(getUsers())
         const obj = {
             ...props.record
         }
         setBonus(obj);
         // eslint-disable-next-line
-    }, [dispatch,props.record.id]);
+    }, [props.record.id]);
     return (
         <>
             <Modal
@@ -68,27 +62,23 @@ function UpdateBonusComponent(props) {
                 }
             >
                 <Form layout="vertical" id="myForm" name="myForm">
-                    <p style={{ ...textStyle }}>Kiekis</p>
+                    <p style={{ ...textStyle }}>Tikslas per menėsi pagaminti</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Kiekis" value={bonus.quantity} onChange={(e) => onDataChange(e, "quantity")} />
+                    <p style={{ ...textStyle }}>Bonusas</p>
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Bonusas" value={bonus.reward} onChange={(e) => onDataChange(e, "bonusas")} />
                     <p style={{ ...textStyle }}>Sukaupta</p>
                     <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Sukaupta" value={bonus.accumulated} onChange={(e) => onDataChange(e, "accumulated")} />
-                    <p style={{ ...textStyle }}>Bonusas</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Bonusas" value={bonus.bonusas} onChange={(e) => onDataChange(e, "bonusas")} />
-                    <p style={{ marginBottom: '5px' }}>Naudotojai</p>
-                    <Select
-                        showSearch
-                        style={{ width: '320px' }}
-                        placeholder="Priskirkite naudotojai"
-                        optionFilterProp="children"
-                        defaultValue={bonus.userId}
-                        value={bonus.userId}
-                        onChange={(e) => onDataChange(e, "userId")}
-                    >
-                        {usersListReducer.users.map((element, index) => {
-
-                            return (<Option key={element.id} value={element.id}>{element.name}</Option>)
-                        })}
-                    </Select>
+                    {bonus.date !== null &&
+                        <div>
+                            <p style={{ ...textStyle }}>Mėnuo</p>
+                            <DatePicker
+                                disabled
+                                style={{width: '100%'}}
+                                defaultValue={moment(bonus.date)}
+                                format={monthFormat}
+                                picker="month" />
+                        </div>
+                    }
                 </Form>
             </Modal>
         </>

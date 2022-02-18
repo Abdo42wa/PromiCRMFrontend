@@ -7817,7 +7817,12 @@
   "resolved" "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   "version" "1.0.4"
 
-"moment@^2.24.0", "moment@^2.25.3", "moment@^2.29.1":
+"moment-business-days@^1.2.0":
+  "integrity" "sha512-QJlceLfMSxy/jZSOgJYCKeKw+qGYHj8W0jMa/fYruyoJ85+bJuLRiYv5DIaflyuRipmYRfD4kDlSwVYteLN+Jw=="
+  "resolved" "https://registry.npmjs.org/moment-business-days/-/moment-business-days-1.2.0.tgz"
+  "version" "1.2.0"
+
+"moment@^2.24.0", "moment@^2.25.3", "moment@^2.29.1", "moment@2.x.x":
   "integrity" "sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
   "version" "2.29.1"

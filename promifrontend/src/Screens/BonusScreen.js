@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBonuses, createBonus, updateBonus } from '../appStore/actions/bonusesActions'
+import { getBonuses, createBonus, updateBonus, getMonthMadeProducts } from '../appStore/actions/bonusesActions'
 import { useHistory } from 'react-router-dom';
-import { Table, Space, Card, Typography, Col, Row, Button } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, notification, message } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddBonusComponent from '../components/bonus_components/AddBonusComponent'
 import UpdateBonusComponent from '../components/bonus_components/UpdateBonusComponent'
+// import moment from 'moment';
+import moment from 'moment-business-days';
+
 
 function BonusScreen(props) {
     const dispatch = useDispatch()
@@ -20,7 +23,10 @@ function BonusScreen(props) {
 
 
     const showAddBonusModal = () => {
-        setAddBonusVisibility(true)
+        if (bonusesReducer.bonuses.length > 0) {
+            message.error('Bonusas šiam mėnesiui jau yra pridėtas');
+        } else
+            setAddBonusVisibility(true)
     }
     const unshowAddBonusModal = () => {
         setAddBonusVisibility(false)
@@ -52,6 +58,7 @@ function BonusScreen(props) {
     useEffect(() => {
         if (usersReducer.currentUser !== null) {
             dispatch(getBonuses())
+            dispatch(getMonthMadeProducts())
         } else
             history.push('/login')
     }, [usersReducer.currentUser])
@@ -65,33 +72,53 @@ function BonusScreen(props) {
             )
         },
         {
-            title: 'Naudotojas',
-            dataIndex: 'user',
+            title: "Pasiekti tikslui",
             width: '15%',
-            render: (text, record, index) => (
-                <Typography.Text>{text.name === null || text.name === '' ? '' : text.name} </Typography.Text>
-            )
+            render: (text, record, index) => {
+                //if today is not business day get next business day. else get today
+                let today_day = moment().isBusinessDay() === false ? moment().nextBusinessDay().format('YYYY/MM/DD') : moment().format('YYYY/MM/DD')
+                //get this month working days count
+                let business_days = moment().monthBusinessDays()
+                let last_month_business_day = business_days[business_days.length - 1]._d
+                //getting difference between days not including weekends
+                let left_days = moment(last_month_business_day, 'YYYY/MM/DD').businessDiff(moment(today_day, 'YYYY/MM/DD'))
+                
+                //getting how many products left until (quantity) bonus
+                let month_made_products = bonusesReducer.month_made_products !== null && bonusesReducer.month_made_products.quantity !== undefined ? bonusesReducer.month_made_products.quantity : 0
+                let base_quantity = record.quantity !== null && record.quantity !== undefined ? record.quantity : 0
+                let left_to_make = base_quantity - month_made_products
+                let make_in_day_goal = left_to_make / left_days
+
+                return (<Typography.Text>{Math.round(make_in_day_goal) <= 0 ? '0/d' : `${Math.round(make_in_day_goal)}/d.`}</Typography.Text>)
+            }
         },
         {
-            title: 'Kiekis',
+            title: 'Tikslas per mėnesi',
             dataIndex: 'quantity',
             width: '15%'
+        },
+        {
+            title: 'Liko pagaminti',
+            width: '20%',
+            render: (text, record, index) => {
+                let month_made_products = bonusesReducer.month_made_products !== null && bonusesReducer.month_made_products.quantity !== undefined ? bonusesReducer.month_made_products.quantity : 0
+                let base_quantity = record.quantity !== null && record.quantity !== undefined ? record.quantity : 0
+                let left_until = base_quantity - month_made_products
+                return (<Typography.Text>{left_until}</Typography.Text>)
+
+                // <p>heheh</p>
+            }
+        },
+        {
+            title: 'Bonusas',
+            dataIndex: 'reward',
+            width: '20%'
         },
         {
             title: 'Sukaupta',
             dataIndex: 'accumulated',
             width: '20%'
         },
-        {
-            title: 'Bonusas',
-            dataIndex: 'bonusas',
-            width: '20%'
-        },
-        {
-            title: 'Liko iki',
-            dataIndex: 'leftUntil',
-            width: '20%'
-        }
     ]
     return (
         <>
@@ -107,6 +134,7 @@ function BonusScreen(props) {
                         </Col>
                     </Row>
                     <div style={{ padding: '15px' }}></div>
+
                     <Row gutter={16}>
                         <Col span={24}>
                             <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
@@ -114,7 +142,7 @@ function BonusScreen(props) {
                                     rowKey="id"
                                     columns={columns}
                                     dataSource={bonusesReducer.bonuses}
-                                    pagination={{ pageSize: 15 }}
+                                    pagination={false}
                                     bordered
                                     scroll={{ x: 'calc(300px + 50%)' }}
                                     footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddBonusModal()} >Pridėti bonusą</Button></Space>)}
