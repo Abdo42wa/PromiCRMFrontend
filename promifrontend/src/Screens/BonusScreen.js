@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBonuses, createBonus, updateBonus, getMonthMadeProducts, getUsersMonthOperations, getUsersMonthBonuses } from '../appStore/actions/bonusesActions'
+import { getBonuses, createBonus, updateBonus, getMonthMadeProducts, getUsersMonthOperations, getUsersMonthBonuses, updateUserBonus } from '../appStore/actions/bonusesActions'
 import { useHistory } from 'react-router-dom';
 import { Table, Space, Card, Typography, Col, Row, Button, message } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
@@ -9,6 +9,7 @@ import UpdateBonusComponent from '../components/bonus_components/UpdateBonusComp
 // import moment from 'moment';
 import moment from 'moment-business-days';
 import AddIndividualBonusComponent from '../components/bonus_components/individual_bonuses/AddIndividualBonusComponent';
+import UpdateIndividualBonusComponent from '../components/bonus_components/individual_bonuses/UpdateIndividualBonusComponent';
 
 
 function BonusScreen(props) {
@@ -17,6 +18,10 @@ function BonusScreen(props) {
     const [addBonusVisibility, setAddBonusVisibility] = useState(false)
     const [addIndividualBonusVisibility, setAddIndividualBonusVisibility] = useState(false)
     const [updateBonusVisibility, setUpdateBonusVisibility] = useState({
+        visibility: false,
+        record: null
+    })
+    const [updateUserBonusVisibility, setUpdateUserBonusVisibility] = useState({
         visibility: false,
         record: null
     })
@@ -44,6 +49,22 @@ function BonusScreen(props) {
     }
     const unshowAddIndividualBonusModal = () => {
         setAddIndividualBonusVisibility(false)
+    }
+
+    //FOR UpdateIndividualBonusComponent
+    const showUpdateIndividualBonusModal = (record) => {
+        setUpdateUserBonusVisibility(prevState => ({
+            ...prevState,
+            visibility: true,
+            record: record
+        }))
+    }
+    const unshowUpdateIndividualBonusModal = () => {
+        setUpdateUserBonusVisibility(prevState => ({
+            ...prevState,
+            visibility: false,
+            record: null
+        }))
     }
 
     //for UpdateBonusComponent
@@ -137,7 +158,7 @@ function BonusScreen(props) {
         {
             title: 'Vardas',
             dataIndex: 'fullName',
-            width: '25%',
+            width: '50%',
             render: (text, record, index) => (
                 <Typography.Text>{text !== null ? text : ""}</Typography.Text>
             )
@@ -145,7 +166,7 @@ function BonusScreen(props) {
         {
             title: 'Padaryta operacijų',
             dataIndex: 'quantity',
-            width: '25%',
+            width: '50%',
             render: (text, record, index) => (
                 <Typography.Text>{text !== null && text !== undefined ? text : 0}</Typography.Text>
             )
@@ -153,6 +174,13 @@ function BonusScreen(props) {
     ]
 
     const users_month_bonuses_columns = [
+        {
+            title: 'Atnaujinti',
+            width: '25%',
+            render: (text, record, index) => (
+                <Button onClick={(e) => showUpdateIndividualBonusModal(record)}>Atnaujinti</Button>
+            )
+        },
         {
             title: 'Vardas',
             dataIndex: 'user',
@@ -292,6 +320,12 @@ function BonusScreen(props) {
             {addIndividualBonusVisibility !== false ?
                 <AddIndividualBonusComponent visible={addIndividualBonusVisibility}
                     onClose={unshowAddIndividualBonusModal} />
+                : null}
+            {updateUserBonusVisibility.visibility !== false ?
+                <UpdateIndividualBonusComponent
+                    visible={updateUserBonusVisibility.visibility}
+                    record={updateUserBonusVisibility.record}
+                    onClose={unshowUpdateIndividualBonusModal} />
                 : null}
 
         </>
