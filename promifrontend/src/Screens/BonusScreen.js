@@ -174,11 +174,11 @@ function BonusScreen(props) {
         {
             title: 'Individualaus bonuso operaciju k.',
             width: '20%',
-            render: (text, record,index)=>{
+            render: (text, record, index) => {
                 let individualBonusQuantity = bonusesReducer.bonuses.length > 0 &&
-                bonusesReducer.bonuses[0].individualBonusQuantity !== null &&
-                bonusesReducer.bonuses[0].individualBonusQuantity !== undefined? 
-                bonusesReducer.bonuses[0].individualBonusQuantity : "Nėra"  
+                    bonusesReducer.bonuses[0].individualBonusQuantity !== null &&
+                    bonusesReducer.bonuses[0].individualBonusQuantity !== undefined ?
+                    bonusesReducer.bonuses[0].individualBonusQuantity : "Nėra"
                 return (<Typography.Text>{individualBonusQuantity}</Typography.Text>)
             }
         }
@@ -262,7 +262,7 @@ function BonusScreen(props) {
                                             scroll={{ x: 'calc(300px + 50%)' }}
                                             footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddIndividualBonusModal()} >Pridėti ind. bonusą</Button></Space>)}
                                         />
-                                        
+
                                     </Card>
                                 </Col>
                                 <Col lg={12} md={24} sm={24}>
