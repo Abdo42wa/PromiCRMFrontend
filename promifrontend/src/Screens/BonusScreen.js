@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBonuses, createBonus, updateBonus, getMonthMadeProducts, getUsersMonthOperations } from '../appStore/actions/bonusesActions'
+import { getBonuses, createBonus, updateBonus, getMonthMadeProducts, getUsersMonthOperations, getUsersMonthBonuses } from '../appStore/actions/bonusesActions'
 import { useHistory } from 'react-router-dom';
 import { Table, Space, Card, Typography, Col, Row, Button, message } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
@@ -70,6 +70,7 @@ function BonusScreen(props) {
             dispatch(getBonuses())
             dispatch(getMonthMadeProducts())
             dispatch(getUsersMonthOperations())
+            dispatch(getUsersMonthBonuses())
         } else
             history.push('/login')
     }, [usersReducer.currentUser])

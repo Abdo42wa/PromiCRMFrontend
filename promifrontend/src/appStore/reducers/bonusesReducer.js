@@ -45,6 +45,19 @@ export const bonusesReducer = (state = { bonuses: [], month_made_products: null,
             return {...state, loading: false,users_month_bonuses: action.payload }
         case 'USERS_MONTH_BONUSES_FETCH_FAIL':
             return {...state, loading: false, error: action.payload}
+        case 'BONUSES_CREATE_USER_BONUS_REQUEST':
+            return {...state, loading: true}
+        case 'BONUSES_CREATE_USER_BONUS_SUCCESS':
+            const new_users_month_bonuses = [...state.users_month_bonuses, {...action.payload}]
+            return {...state, loading: false, users_month_bonuses: new_users_month_bonuses}
+        case 'BONUSES_CREATE_USER_BONUS_FAIL':
+            return {...state, loading: false, error: action.payload}
+        case 'BONUSES_UPDATE_USER_BONUS_REQUEST':
+            return {...state, loading: true}
+        case 'BONUSES_UPDATE_USER_BONUS_SUCCESS':
+            const users_month_bonuses_c = [...state.users_month_bonuses]
+            const updated_users_month_bonuses = users_month_bonuses_c.map(x => x.id === action.payload.id?action.payload:x)
+            return {...state, loading: false, users_month_bonuses: updated_users_month_bonuses}
         default:
             return state;
     }

@@ -90,6 +90,7 @@ export const getUsersMonthBonuses = () => async(dispatch,getState)=>{
     }
 }
 
+
 export const createBonus = (postObj) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -113,6 +114,29 @@ export const createBonus = (postObj) => async (dispatch, getState) => {
     }
 }
 
+//to create userBonus(individualus bonusas)
+export const createUserBonus = (postObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'BONUSES_CREATE_USER_BONUS_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.post(`/api/UserBonuses`, postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'BONUSES_CREATE_USER_BONUS_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'BONUSES_CREATE_USER_BONUS_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 
 export const updateBonus = (postObj, reducerObj) => async (dispatch, getState) => {
     try {
@@ -121,7 +145,7 @@ export const updateBonus = (postObj, reducerObj) => async (dispatch, getState) =
         });
         //get token from usersReducer
         const token = getState().usersReducer.currentUser;
-        const response = await promiAPI.put(`/api/Bonuses/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
+        await promiAPI.put(`/api/Bonuses/${reducerObj.id}`, postObj, { headers: { Authorization: `Bearer ${token}` } });
         dispatch({
             type: 'BONUSES_UPDATE_SUCCESS',
             payload: reducerObj
@@ -129,6 +153,29 @@ export const updateBonus = (postObj, reducerObj) => async (dispatch, getState) =
     } catch (error) {
         dispatch({
             type: 'BONUSES_UPDATE_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+
+export const updateUserBonus = (postObj,reducerObj) => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'BONUSES_UPDATE_USER_BONUS_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        await promiAPI.put(`/api/UserBonuses/${reducerObj.id}`,postObj, {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'BONUSES_UPDATE_USER_BONUS_SUCCESS',
+            payload: reducerObj
+        })
+    }catch (error) {
+        dispatch({
+            type: 'BONUSES_UPDATE_USER_BONUS_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

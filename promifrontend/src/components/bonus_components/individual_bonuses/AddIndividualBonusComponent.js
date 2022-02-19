@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getUsers } from '../../../appStore/actions/userListActions'
+import {createUserBonus} from '../../../appStore/actions/bonusesActions'
 import { Modal, Button, Form, Space, InputNumber, DatePicker, Select } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -31,8 +32,8 @@ function AddIndividualBonusComponent(props) {
         const postObj = {
             ...bonus
         }
-        console.log(postObj)
-        // props.save(postObj);
+        dispatch(createUserBonus(postObj))
+        props.onClose()
     }
     useEffect(() => {
         dispatch(getUsers())
