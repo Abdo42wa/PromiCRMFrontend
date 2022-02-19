@@ -89,8 +89,8 @@ function UpdateIndividualBonusComponent(props) {
                         ))}
 
                     </Select>
-                    <p style={{ ...textStyle }}>Bonusas</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Bonusas" value={bonus.reward} onChange={(e) => onDataChange(e, "bonusas")} />
+                    <p style={{ ...textStyle }}>Bonusas (€)</p>
+                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite bonusą (€)" value={bonus.reward} onChange={(e) => onDataChange(e, "bonusas")} />
                     {bonus.date !== null &&
                         <div>
                             <p style={{ ...textStyle }}>Mėnuo</p>

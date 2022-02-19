@@ -63,17 +63,39 @@ function UpdateBonusComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Tikslas per menėsi pagaminti</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Kiekis" value={bonus.quantity} onChange={(e) => onDataChange(e, "quantity")} />
-                    <p style={{ ...textStyle }}>Bonusas</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Bonusas" value={bonus.reward} onChange={(e) => onDataChange(e, "bonusas")} />
+                    <InputNumber
+                        required
+                        style={{ width: '100%' }}
+                        placeholder="Įrašykite kiekį"
+                        value={bonus.quantity}
+                        onChange={(e) => onDataChange(e, "quantity")} />
+                    <p style={{ ...textStyle }}>Bonusas (€)</p>
+                    <InputNumber
+                        required
+                        style={{ width: '100%' }}
+                        placeholder="Įrašykite bonusą (€)"
+                        value={bonus.reward}
+                        onChange={(e) => onDataChange(e, "bonusas")} />
                     <p style={{ ...textStyle }}>Sukaupta</p>
-                    <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite Sukaupta" value={bonus.accumulated} onChange={(e) => onDataChange(e, "accumulated")} />
+                    <InputNumber
+                        required
+                        style={{ width: '100%' }}
+                        placeholder="Įrašykite kiek sukaupta šį mėnesį"
+                        value={bonus.accumulated}
+                        onChange={(e) => onDataChange(e, "accumulated")} />
+                    <p style={{ ...textStyle }}>Individualiam bonusui reikiamas operacijų kiekis</p>
+                    <InputNumber
+                        required
+                        style={{ width: '100%' }}
+                        placeholder="Įrašykite operacijų kiekį"
+                        value={bonus.individualBonusQuantity}
+                        onChange={(e) => onDataChange(e, "individualBonusQuantity")} />
                     {bonus.date !== null &&
                         <div>
                             <p style={{ ...textStyle }}>Mėnuo</p>
                             <DatePicker
                                 disabled
-                                style={{width: '100%'}}
+                                style={{ width: '100%' }}
                                 defaultValue={moment(bonus.date)}
                                 format={monthFormat}
                                 picker="month" />

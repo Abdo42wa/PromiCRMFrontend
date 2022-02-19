@@ -171,6 +171,17 @@ function BonusScreen(props) {
                 <Typography.Text>{text !== null && text !== undefined ? text : 0}</Typography.Text>
             )
         },
+        {
+            title: 'Individualaus bonuso operaciju k.',
+            width: '20%',
+            render: (text, record,index)=>{
+                let individualBonusQuantity = bonusesReducer.bonuses.length > 0 &&
+                bonusesReducer.bonuses[0].individualBonusQuantity !== null &&
+                bonusesReducer.bonuses[0].individualBonusQuantity !== undefined? 
+                bonusesReducer.bonuses[0].individualBonusQuantity : "Nėra"  
+                return (<Typography.Text>{individualBonusQuantity}</Typography.Text>)
+            }
+        }
     ]
 
     const users_month_bonuses_columns = [
@@ -234,16 +245,6 @@ function BonusScreen(props) {
                             </Card>
                         </Col>
                     </Row>
-
-                    {/* <div style={{ padding: '15px' }}></div>
-                    <Row gutter={16}>
-                        <Col span={16}>
-                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                <Typography.Title>Padaryta operacijų</Typography.Title>
-                            </div>
-                        </Col>
-                    </Row> */}
-
                     <Row gutter={16}>
                         <Col span={24}>
                             <Row>
@@ -261,6 +262,7 @@ function BonusScreen(props) {
                                             scroll={{ x: 'calc(300px + 50%)' }}
                                             footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddIndividualBonusModal()} >Pridėti ind. bonusą</Button></Space>)}
                                         />
+                                        
                                     </Card>
                                 </Col>
                                 <Col lg={12} md={24} sm={24}>
@@ -281,33 +283,6 @@ function BonusScreen(props) {
                             </Row>
                         </Col>
                     </Row>
-
-
-                    {/* <div style={{ padding: '15px' }}></div>
-                    <Row gutter={16}>
-                        <Col span={16}>
-                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                <Typography.Title>Individualus bonusai</Typography.Title>
-                            </div>
-                        </Col>
-                    </Row> */}
-                    {/* <Row gutter={16}>
-                        <Col span={24}>
-                            <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                <Table
-                                    rowKey="id"
-                                    columns={users_month_bonuses_columns}
-                                    dataSource={bonusesReducer.users_month_bonuses}
-                                    pagination={{ pageSize: 8 }}
-                                    bordered
-                                    scroll={{ x: 'calc(300px + 50%)' }}
-                                />
-                            </Card>
-                        </Col>
-                    </Row> */}
-
-
-
                 </Col>
             </div>
 

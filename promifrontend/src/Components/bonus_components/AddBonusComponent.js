@@ -8,7 +8,8 @@ function AddBonusComponent(props) {
         "quantity": 0,
         "accumulated": 0,
         "reward": 0,
-        "date": moment()
+        "date": moment(),
+        "individualBonusQuantity": 0
 
     });
     const monthFormat = 'YYYY/MM';
@@ -48,11 +49,41 @@ function AddBonusComponent(props) {
             >
                 <Form layout="vertical" id="myForm" name="myForm">
 
-                    <Form.Item key="quantity" name="quantity" label="Tikslas per menėsi pagaminti">
-                        <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite kiekį" value={bonus.quantity} onChange={(e) => onDataChange(e, "quantity")} />
+                    <Form.Item
+                        key="quantity"
+                        name="quantity"
+                        label="Tikslas per menėsi pagaminti"
+                        rules={[{ required: true, message: "Prašau įrašyti kiekį kiek reikia pagaminti!" }]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite kiekį"
+                            defaultValue={bonus.quantity}
+                            value={bonus.quantity}
+                            onChange={(e) => onDataChange(e, "quantity")}
+                        />
                     </Form.Item>
-                    <Form.Item key="reward" name="reward" label="Bonusas">
-                        <InputNumber style={{ width: '100%' }} placeholder="Įrašykite bonusą" value={bonus.reward} onChange={(e) => onDataChange(e, "reward")} />
+                    <Form.Item
+                        key="reward"
+                        name="reward"
+                        label="Bonusas (€)"
+                        rules={[{ required: true, message: "Prašau įrašyti bonusą!" }]}
+                    >
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite bonusą (€)"
+                            defaultValue={bonus.reward}
+                            value={bonus.reward}
+                            onChange={(e) => onDataChange(e, "reward")} />
+                    </Form.Item>
+                    <Form.Item key="individualBonusQuantity" name="individualBonusQuantity" label="Individualiam bonusui reikiamas operacijų kiekis">
+                        <InputNumber
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite operacijų kiekį"
+                            defaultValue={bonus.individualBonusQuantity}
+                            value={bonus.individualBonusQuantity}
+                            onChange={(e) => onDataChange(e, "individualBonusQuantity")}
+                        />
                     </Form.Item>
                     <Form.Item
                         name="date"
