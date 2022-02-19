@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBonuses, createBonus, updateBonus, getMonthMadeProducts } from '../appStore/actions/bonusesActions'
+import { getBonuses, createBonus, updateBonus, getMonthMadeProducts, getUsersMonthOperations } from '../appStore/actions/bonusesActions'
 import { useHistory } from 'react-router-dom';
-import { Table, Space, Card, Typography, Col, Row, Button, notification, message } from 'antd'
+import { Table, Space, Card, Typography, Col, Row, Button, message } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/customStyles.js';
 import AddBonusComponent from '../components/bonus_components/AddBonusComponent'
 import UpdateBonusComponent from '../components/bonus_components/UpdateBonusComponent'
@@ -59,6 +59,7 @@ function BonusScreen(props) {
         if (usersReducer.currentUser !== null) {
             dispatch(getBonuses())
             dispatch(getMonthMadeProducts())
+            dispatch(getUsersMonthOperations())
         } else
             history.push('/login')
     }, [usersReducer.currentUser])
@@ -120,6 +121,25 @@ function BonusScreen(props) {
             width: '20%'
         },
     ]
+
+    const users_month_operations_columns = [
+        {
+            title: 'Vardas',
+            dataIndex: 'fullName',
+            width: '25%',
+            render: (text,record,index)=>(
+                <Typography.Text>{text !== null?text:""}</Typography.Text>
+            )
+        },
+        {
+            title: 'Padaryta operacijų',
+            dataIndex: 'quantity',
+            width: '25%',
+            render: (text,record,index)=>(
+                <Typography.Text>{text !== null && text !== undefined?text:0}</Typography.Text>
+            )
+        },
+    ]
     return (
         <>
 
@@ -129,12 +149,9 @@ function BonusScreen(props) {
                         <Col span={16}>
                             <div style={{ marginRight: '40px', textAlign: 'start' }}>
                                 <Typography.Title>Bonusai</Typography.Title>
-                                <Typography.Text>Pridėkite ir atnaujinkite bonusus</Typography.Text>
                             </div>
                         </Col>
                     </Row>
-                    <div style={{ padding: '15px' }}></div>
-
                     <Row gutter={16}>
                         <Col span={24}>
                             <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
@@ -145,11 +162,37 @@ function BonusScreen(props) {
                                     pagination={false}
                                     bordered
                                     scroll={{ x: 'calc(300px + 50%)' }}
-                                    footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddBonusModal()} >Pridėti bonusą</Button></Space>)}
+                                    // footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddBonusModal()} >Pridėti bonusą</Button></Space>)}
                                 />
                             </Card>
                         </Col>
                     </Row>
+
+                    <div style={{ padding: '15px' }}></div>
+                    <Row gutter={16}>
+                        <Col span={16}>
+                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                <Typography.Title>Padaryta operacijų</Typography.Title>
+                                {/* <Typography.Text>Pridėkite ir atnaujinkite individualius bonusus</Typography.Text> */}
+                            </div>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                <Table
+                                    rowKey="id"
+                                    columns={users_month_operations_columns}
+                                    dataSource={bonusesReducer.users_month_operations}
+                                    pagination={{pageSize: 8}}
+                                    bordered
+                                    scroll={{ x: 'calc(300px + 50%)' }}
+                                />
+                            </Card>
+                        </Col>
+                    </Row>
+                    
                 </Col>
             </div>
 

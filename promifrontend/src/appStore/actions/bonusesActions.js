@@ -45,6 +45,28 @@ export const getMonthMadeProducts = () => async(dispatch,getState)=>{
     }
 }
 
+export const getUsersMonthOperations = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'BONUSES_USERS_MONTH_OPERATIONS_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get('/api/UserServices/month/madeOperations', {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'BONUSES_USERS_MONTH_OPERATIONS_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'BONUSES_USERS_MONTH_OPERATIONS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
 export const createBonus = (postObj) => async (dispatch, getState) => {
     try {
         dispatch({
