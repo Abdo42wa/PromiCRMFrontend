@@ -8,12 +8,14 @@ import AddBonusComponent from '../components/bonus_components/AddBonusComponent'
 import UpdateBonusComponent from '../components/bonus_components/UpdateBonusComponent'
 // import moment from 'moment';
 import moment from 'moment-business-days';
+import AddIndividualBonusComponent from '../components/bonus_components/individual_bonuses/AddIndividualBonusComponent';
 
 
 function BonusScreen(props) {
     const dispatch = useDispatch()
     const history = useHistory()
     const [addBonusVisibility, setAddBonusVisibility] = useState(false)
+    const [addIndividualBonusVisibility, setAddIndividualBonusVisibility] = useState(false)
     const [updateBonusVisibility, setUpdateBonusVisibility] = useState({
         visibility: false,
         record: null
@@ -21,7 +23,7 @@ function BonusScreen(props) {
     const usersReducer = useSelector((state) => state.usersReducer)
     const bonusesReducer = useSelector((state) => state.bonusesReducer)
 
-
+    //For AddBonusComponent
     const showAddBonusModal = () => {
         if (bonusesReducer.bonuses.length > 0) {
             message.error('Bonusas šiam mėnesiui jau yra pridėtas');
@@ -34,6 +36,14 @@ function BonusScreen(props) {
     const saveAddBonus = (postObj) => {
         dispatch(createBonus(postObj))
         unshowAddBonusModal();
+    }
+
+    //For AddIndividualBonusComponent
+    const showAddIndividualBonusModal = () => {
+        setAddIndividualBonusVisibility(true)
+    }
+    const unshowAddIndividualBonusModal = () => {
+        setAddIndividualBonusVisibility(false)
     }
 
     //for UpdateBonusComponent
@@ -83,7 +93,7 @@ function BonusScreen(props) {
                 let last_month_business_day = business_days[business_days.length - 1]._d
                 //getting difference between days not including weekends
                 let left_days = moment(last_month_business_day, 'YYYY/MM/DD').businessDiff(moment(today_day, 'YYYY/MM/DD'))
-                
+
                 //getting how many products left until (quantity) bonus
                 let month_made_products = bonusesReducer.month_made_products !== null && bonusesReducer.month_made_products.quantity !== undefined ? bonusesReducer.month_made_products.quantity : 0
                 let base_quantity = record.quantity !== null && record.quantity !== undefined ? record.quantity : 0
@@ -127,18 +137,46 @@ function BonusScreen(props) {
             title: 'Vardas',
             dataIndex: 'fullName',
             width: '25%',
-            render: (text,record,index)=>(
-                <Typography.Text>{text !== null?text:""}</Typography.Text>
+            render: (text, record, index) => (
+                <Typography.Text>{text !== null ? text : ""}</Typography.Text>
             )
         },
         {
             title: 'Padaryta operacijų',
             dataIndex: 'quantity',
             width: '25%',
-            render: (text,record,index)=>(
-                <Typography.Text>{text !== null && text !== undefined?text:0}</Typography.Text>
+            render: (text, record, index) => (
+                <Typography.Text>{text !== null && text !== undefined ? text : 0}</Typography.Text>
             )
         },
+    ]
+
+    const users_month_bonuses_columns = [
+        {
+            title: 'Vardas',
+            dataIndex: 'user',
+            width: '25%',
+            render: (text, record, index) => (
+                <Typography.Text>{text !== null && text !== undefined ? text.name : ""}</Typography.Text>
+            )
+        },
+        {
+            title: 'Data',
+            dataIndex: 'date',
+            width: '25%',
+            render: (text, record, index) => (
+                <Typography.Text>{text !== null ? moment(text).format('YYYY/MM/DD') : ""}</Typography.Text>
+            )
+        },
+        {
+            title: 'Bonusas',
+            dataIndex: 'reward',
+            width: '25%',
+            render: (text, record, index) => (
+                <Typography.Text>{text !== null ? text : ""}</Typography.Text>
+            )
+        },
+
     ]
     return (
         <>
@@ -162,37 +200,85 @@ function BonusScreen(props) {
                                     pagination={false}
                                     bordered
                                     scroll={{ x: 'calc(300px + 50%)' }}
-                                    // footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddBonusModal()} >Pridėti bonusą</Button></Space>)}
+                                    footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddBonusModal()} >Pridėti bonusą</Button></Space>)}
                                 />
                             </Card>
                         </Col>
                     </Row>
 
-                    <div style={{ padding: '15px' }}></div>
+                    {/* <div style={{ padding: '15px' }}></div>
                     <Row gutter={16}>
                         <Col span={16}>
                             <div style={{ marginRight: '40px', textAlign: 'start' }}>
                                 <Typography.Title>Padaryta operacijų</Typography.Title>
-                                {/* <Typography.Text>Pridėkite ir atnaujinkite individualius bonusus</Typography.Text> */}
                             </div>
+                        </Col>
+                    </Row> */}
+
+                    <Row gutter={16}>
+                        <Col span={24}>
+                            <Row>
+                                <Col lg={12} md={24} sm={24}>
+                                    <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                        <Typography.Title>Individualūs bonusai</Typography.Title>
+                                    </div>
+                                    <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                        <Table
+                                            rowKey="id"
+                                            columns={users_month_bonuses_columns}
+                                            dataSource={bonusesReducer.users_month_bonuses}
+                                            pagination={{ pageSize: 8 }}
+                                            bordered
+                                            scroll={{ x: 'calc(300px + 50%)' }}
+                                            footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddIndividualBonusModal()} >Pridėti ind. bonusą</Button></Space>)}
+                                        />
+                                    </Card>
+                                </Col>
+                                <Col lg={12} md={24} sm={24}>
+                                    <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                        <Typography.Title>Padaryta operacijų</Typography.Title>
+                                    </div>
+                                    <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                        <Table
+                                            rowKey="id"
+                                            columns={users_month_operations_columns}
+                                            dataSource={bonusesReducer.users_month_operations}
+                                            pagination={{ pageSize: 8 }}
+                                            bordered
+                                            scroll={{ x: 'calc(300px + 50%)' }}
+                                        />
+                                    </Card>
+                                </Col>
+                            </Row>
                         </Col>
                     </Row>
 
+
+                    {/* <div style={{ padding: '15px' }}></div>
                     <Row gutter={16}>
+                        <Col span={16}>
+                            <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                <Typography.Title>Individualus bonusai</Typography.Title>
+                            </div>
+                        </Col>
+                    </Row> */}
+                    {/* <Row gutter={16}>
                         <Col span={24}>
                             <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
                                 <Table
                                     rowKey="id"
-                                    columns={users_month_operations_columns}
-                                    dataSource={bonusesReducer.users_month_operations}
-                                    pagination={{pageSize: 8}}
+                                    columns={users_month_bonuses_columns}
+                                    dataSource={bonusesReducer.users_month_bonuses}
+                                    pagination={{ pageSize: 8 }}
                                     bordered
                                     scroll={{ x: 'calc(300px + 50%)' }}
                                 />
                             </Card>
                         </Col>
-                    </Row>
-                    
+                    </Row> */}
+
+
+
                 </Col>
             </div>
 
@@ -202,6 +288,10 @@ function BonusScreen(props) {
                 <UpdateBonusComponent visible={updateBonusVisibility.visibility} record={updateBonusVisibility.record}
                     save={saveUpdateBonus} onClose={unshowUpdateBonusModal} /> :
                 null}
+            {addIndividualBonusVisibility !== false ?
+                <AddIndividualBonusComponent visible={addIndividualBonusVisibility}
+                    onClose={unshowAddIndividualBonusModal} />
+                : null}
 
         </>
     )

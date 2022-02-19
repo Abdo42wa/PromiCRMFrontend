@@ -1,5 +1,6 @@
 import promiAPI from "./promiAPI";
 
+//getting MONTH bonus for team. employes have to make specified number of products for that 
 export const getBonuses = () => async (dispatch, getState) => {
     try {
         dispatch({
@@ -22,7 +23,7 @@ export const getBonuses = () => async (dispatch, getState) => {
         })
     }
 }
-
+//get how many products were made this MONTH
 export const getMonthMadeProducts = () => async(dispatch,getState)=>{
     try{
         dispatch({
@@ -44,7 +45,7 @@ export const getMonthMadeProducts = () => async(dispatch,getState)=>{
         })
     }
 }
-
+//to get how many operations all users did in MONTH period
 export const getUsersMonthOperations = () => async(dispatch,getState)=>{
     try{
         dispatch({
@@ -59,6 +60,28 @@ export const getUsersMonthOperations = () => async(dispatch,getState)=>{
     }catch (error) {
         dispatch({
             type: 'BONUSES_USERS_MONTH_OPERATIONS_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const getUsersMonthBonuses = () => async(dispatch,getState)=>{
+    try{
+        dispatch({
+            type: 'USERS_MONTH_BONUSES_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get('/api/UserBonuses', {headers: {Authorization: `Bearer ${token}`}})
+        dispatch({
+            type: 'USERS_MONTH_BONUSES_FETCH_SUCCESS',
+            payload: response.data
+        })
+    }catch (error) {
+        dispatch({
+            type: 'USERS_MONTH_BONUSES_FETCH_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

@@ -1,4 +1,4 @@
-export const bonusesReducer = (state = { bonuses: [], month_made_products: null, users_month_operations: [] }, action) => {
+export const bonusesReducer = (state = { bonuses: [], month_made_products: null, users_month_operations: [], users_month_bonuses:[] }, action) => {
     switch (action.type) {
         case 'BONUSES_FETCH_REQUEST':
             return { ...state, loading: true }
@@ -37,6 +37,13 @@ export const bonusesReducer = (state = { bonuses: [], month_made_products: null,
         case 'BONUSES_USERS_MONTH_OPERATIONS_FETCH_SUCCESS':
             return {...state, loading: false, users_month_operations: action.payload}
         case 'BONUSES_USERS_MONTH_OPERATIONS_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
+            // users_month_bonuses
+        case 'USERS_MONTH_BONUSES_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'USERS_MONTH_BONUSES_FETCH_SUCCESS':
+            return {...state, loading: false,users_month_bonuses: action.payload }
+        case 'USERS_MONTH_BONUSES_FETCH_FAIL':
             return {...state, loading: false, error: action.payload}
         default:
             return state;
