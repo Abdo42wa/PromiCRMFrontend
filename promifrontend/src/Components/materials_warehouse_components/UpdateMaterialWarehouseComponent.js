@@ -119,7 +119,7 @@ function UpdateMaterialWarehouseComponent(props) {
                 footer={
                     <div>
                         <Button key="customCancel" onClick={onCancel}>Atšaukti</Button>
-                        <Button key="customSubmit" form="myForm" onClick={saveChanges} htmlType="submit" type={'primary'}>Pridėti</Button>
+                        <Button key="customSubmit" form="myForm" onClick={saveChanges} htmlType="submit" type={'primary'}>Atnaujinti</Button>
                     </div>
                 }
             >
