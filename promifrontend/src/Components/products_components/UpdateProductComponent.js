@@ -165,8 +165,8 @@ function UpdateProductComponent(props) {
                     productServices[i].timeConsumption
                 )
             }
-            // formData.append("file", file)
-            // formData.append("imageName", clone.imageName)
+            formData.append("file", file)
+            formData.append("imageName", clone.imageName)
             props.saveWithImg(formData, clone.id, materialsArray)
         }
 

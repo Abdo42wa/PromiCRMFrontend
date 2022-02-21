@@ -25,10 +25,8 @@ function AddMaterialWarehouseComponent(props) {
         "lastAdittion": moment().format('YYYY/MM/DD'),
     });
     const [file, setFile] = useState();
-    const [fileName,setFileName] = useState();
 
     const changeFile = (e) => {
-        console.log(e.target.files[0])
         setFile(e.target.files[0]);
         // setFileName(e.target.files[0].name);
     }
@@ -46,8 +44,6 @@ function AddMaterialWarehouseComponent(props) {
         }))
     }
     const saveChanges = () => {
-        console.log(file)
-        console.log(fileName)
         const formData = new FormData();
         formData.append("title",material.title);
         formData.append("measuringUnit",material.measuringUnit);

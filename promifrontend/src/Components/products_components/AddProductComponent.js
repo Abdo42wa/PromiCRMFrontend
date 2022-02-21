@@ -40,10 +40,8 @@ function AddProductComponent(props) {
     ])
 
     const [file, setFile] = useState();
-    const [fileName, setFileName] = useState();
 
     const changeFile = (e) => {
-        console.log(e.target.files[0])
         setFile(e.target.files[0]);
         // setFileName(e.target.files[0].name);
     }
@@ -93,7 +91,7 @@ function AddProductComponent(props) {
         formData.append("widthWithPackaging", dataProduct.widthWithPackaging)
         formData.append("lengthWithPackaging", dataProduct.lengthWithPackaging)
         formData.append("weightNetto", dataProduct.weightNetto)
-        // formData.append("file", file)
+        formData.append("file", file)
 
         for(let i=0;i<servicesClone.length; i++){
             formData.append(
