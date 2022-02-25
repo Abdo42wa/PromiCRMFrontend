@@ -20,6 +20,7 @@ function NonStandartOrdersComponent(props) {
     const dispatch = useDispatch()
     const history = useHistory()
     const [addOrderVisibility, setAddOrderVisibility] = useState(false)
+    const [duplicateNumbers, setDuplicateNumbers] = useState([])
     const [updateOrderModal, setUpdateOrderModal] = useState({
         visibility: false,
         record: null
@@ -132,10 +133,18 @@ function NonStandartOrdersComponent(props) {
         }
 
     }
+
+    const getDuplicatesOrderNumber = () => {
+        const arry = orderReducer.orders.map((x) => x.orderNumber)
+        const toFindDuplicates = arry => arry.filter((item, index) => arry.indexOf(item) !== index)
+        const duplicateElementa = toFindDuplicates(arry);
+        setDuplicateNumbers(duplicateElementa);
+    }
     useEffect(() => {
         if (usersReducer.currentUser !== null) {
             dispatch(getUsers())
             dispatch(getNonStandartOrders())
+            getDuplicatesOrderNumber();
         } else {
             history.push('/login')
         }
@@ -202,7 +211,10 @@ function NonStandartOrdersComponent(props) {
         {
             title: 'Užsakymo numeris',
             dataIndex: 'orderNumber',
-            width: '10%'
+            width: '10%',
+            render: (text, record, index) => (
+                <p>{duplicateNumbers.includes(text) === true ? <p className='duplicate'>{text}</p> : <p>{text}</p>}</p>
+            )
         },
         {
             title: 'Data',
@@ -553,8 +565,8 @@ function NonStandartOrdersComponent(props) {
             title: 'ES/NE ES',
             dataIndex: 'country',
             width: '10%',
-            render: (text,record,index)=>(
-                <p>{text === null? '' : text.continent === "Europe"? "ES":"NE ES"}</p>
+            render: (text, record, index) => (
+                <p>{text === null ? '' : text.continent === "Europe" ? "ES" : "NE ES"}</p>
             )
         },
         {

@@ -1,6 +1,6 @@
 {
   "name": "promifrontend",
-  "proxy": "https://promicrm20220221134904.azurewebsites.net",
+  "proxy": "https://promicrm20220225174254.azurewebsites.net",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
