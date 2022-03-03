@@ -38,6 +38,7 @@ function AddOrderComponent(props) {
         "customerId": null,
         "device": "",
         "productionTime": 0,
+        "nonStandartProductionTime": 0,
         "address": "",
         "countryId": 1,
         "comment": "",
@@ -69,6 +70,7 @@ function AddOrderComponent(props) {
             "timeConsumption": 0
         }
     ])
+    const [productionTime, setProductionTime] = useState(0)
 
     const customersReducer = useSelector((state) => state.customersReducer);
     const currencyReducer = useSelector((state) => state.currencyReducer);
@@ -92,7 +94,7 @@ function AddOrderComponent(props) {
     const onCancel = () => {
         props.onClose();
     }
-    
+
     const serviceDataChange = (value, inputName, serviceId) => {
         const index = orderServices.findIndex(x => x.serviceId === serviceId)
         if (index === -1) {
@@ -101,25 +103,46 @@ function AddOrderComponent(props) {
                 "timeConsumption": value
             }
             setOrderServices(prevState => [...prevState, obj])
-            console.log(JSON.stringify(orderServices))
         } else
             setOrderServices(orderServices.map(x => x.serviceId === serviceId ? { ...x, "timeConsumption": value } : x))
+        // let time = order.laserTime + order.milingTime + order.paintingTime + order.grindingTime + order.bondingTime + order.collectionTime + order.packingTime;
+        let initialValue = 0;
+        for (let a = 0; a < orderServices.length; a++) {
+            if (orderServices[a].serviceId !== serviceId)
+                initialValue += orderServices[a].timeConsumption
+            else
+                initialValue += 0
+        }
+        initialValue = (initialValue + value) * order.quantity
+        console.log(initialValue)
         setOrder(prevState => ({
             ...prevState,
-            [inputName]: value
+            [inputName]: value,
+            nonStandartProductionTime: initialValue
         }))
     }
 
     const onDataChange = (value, inputName) => {
-        if (inputName === 'orderNumber' ||
-            inputName === 'customerId' ||
-            inputName === 'countryId' || inputName === 'shipmentTypeId' || inputName === 'productionTime') {
-            setOrder(prevState => ({
-                ...prevState,
-                [inputName]: Number(value)
-
-            }))
-        } else {
+        if (inputName === "quantity") {
+            if (order.orderType !== "Ne-standartinis") {
+                let time = value * productionTime
+                setOrder(prevState => ({
+                    ...prevState,
+                    [inputName]: value,
+                    productionTime: time
+                }))
+            } else {
+                let time = (order.laserTime + order.milingTime +
+                    order.paintingTime + order.grindingTime + order.bondingTime +
+                    order.collectionTime + order.packingTime) * value;
+                setOrder(prevState => ({
+                    ...prevState,
+                    [inputName]: value,
+                    nonStandartProductionTime: time
+                }))
+            }
+        }
+        else {
             setOrder(prevState => ({
                 ...prevState,
                 [inputName]: value
@@ -128,21 +151,24 @@ function AddOrderComponent(props) {
     }
 
     const onProductDataChange = (value, inputName) => {
-        setOrder(prevState => ({
-            ...prevState,
-            [inputName]: value
-
-        }))
+        //calculating productionTime by adding all services times. then multiplying with quantity
         const obj = productsReducer.products.find(x => x.code === value)
         setProduct(obj)
+        let productionTime = 0;
+        for (let a = 0; a < obj.orderServices.length; a++)
+            productionTime += obj.orderServices[a].timeConsumption
+        let quantityProductionTime = productionTime * order.quantity
+        setProductionTime(productionTime)
+        setOrder(prevState => ({
+            ...prevState,
+            [inputName]: value,
+            "productionTime": quantityProductionTime
+        }))
+
         dispatch(getWarehouseProduct(value))
 
     }
     const onOrderTypeChange = (value, inputName) => {
-        setOrder(prevState => ({
-            ...prevState,
-            [inputName]: value
-        }))
         if (inputName === "orderType" && value === "Sandelis") {
             // disable not standart
             setSandelis(true);
@@ -155,6 +181,10 @@ function AddOrderComponent(props) {
             setNotStandart(true)
             setSandelis(false);
         }
+        setOrder(prevState => ({
+            ...prevState,
+            [inputName]: value,
+        }))
     }
 
     const getProductId = (productCode) => {
@@ -180,7 +210,8 @@ function AddOrderComponent(props) {
                 "orderNumber": clone.orderNumber === null ? orderReducer.orderNumber : clone.orderNumber,
                 "platforma": clone.platforma === null ? "Nera" : clone.platforma,
                 "productCode": null,
-                "orderServices": orderServices
+                "orderServices": orderServices,
+                "productionTime":order.nonStandartProductionTime
             }
             dispatch(createNonStandartOrder(postObj))
             props.onClose()
@@ -190,10 +221,11 @@ function AddOrderComponent(props) {
             const postObj = {
                 ...clone,
                 "orderNumber": clone.orderNumber === null ? orderReducer.orderNumber : clone.orderNumber,
-                "productId": clone.productCode !== null ? getProductId(product.code) : null
+                "productId": clone.productCode !== null ? getProductId(product.code) : null,
+                "productionTime":order.productionTime
             }
             dispatch(addOrder(postObj))
-            console.log(JSON.stringify(order))
+            console.log(JSON.stringify(postObj))
             props.onClose()
         }
     }
@@ -409,9 +441,20 @@ function AddOrderComponent(props) {
                         </div> : null
 
                     }
-                    <Form.Item key="productionTime" name="productionTime" label="Gamybos laikas">
-                        <InputNumber style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} />
-                    </Form.Item>
+                    {order.orderType !== "Ne-standartinis" &&
+                        <div>
+                            <p>Gamybos laikas</p>
+                            <input className='form-control' type={'number'} style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.productionTime} onChange={(e) => onDataChange(e.target.value, "productionTime")} />
+                        </div>
+                    }
+                    {order.orderType === "Ne-standartinis" &&
+                        <div>
+                            <p>Gamybos laikas (min)</p>
+                            <input className='form-control' type={'number'} style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={order.nonStandartProductionTime} onChange={(e) => onDataChange(e.target.value, "nonStandartProductionTime")} />
+                        </div>
+                    }
+
+
 
                     {/* <Form.Item key="name9" name="name9" label="Įrenginys">
                         <Input style={{ width: '100%' }} placeholder="Pridėkite įrenginį" value={order.device} onChange={(e) => onDataChange(e.target.value, "device")} />
