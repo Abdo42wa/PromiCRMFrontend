@@ -114,11 +114,11 @@ export const getMaximumOrderNumber = () => async (dispatch, getState) => {
     }
 }
 
-export const updateOrderObj = (inputName, value) => async (dispatch, getState) => {
+export const updateOrderObj = (inputName, value, orderType) => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDER_OBJ_UPDATE_SUCCESS',
-            payload: { name: inputName, value: value }
+            payload: { name: inputName, value: value, orderType: orderType }
         })
     } finally {
 

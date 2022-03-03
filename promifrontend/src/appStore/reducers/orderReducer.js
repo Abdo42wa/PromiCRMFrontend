@@ -28,33 +28,70 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, error: action.payload }
         //FETCH MAX ORDER NUMBER
         case 'ORDERS_ORDER_NUMBER_FETCH_REQUEST':
-            return {...state, loading: true}
+            return { ...state, loading: true }
         case 'ORDERS_ORDER_NUMBER_FETCH_SUCCESS':
             let number = action.payload;
-            if(action.payload === null || action.payload === undefined)
+            if (action.payload === null || action.payload === undefined)
                 number = 1;
             else
                 number = number + 1;
-            return {...state, loading: false, orderNumber: number}
+            return { ...state, loading: false, orderNumber: number }
         case 'ORDERS_ORDER_NUMBER_FETCH_FAIL':
-            return {...state, loading: false, error: action.payload}
+            return { ...state, loading: false, error: action.payload }
         //FOR updateOrderComponent. updating Standart or Warehouse
         case 'ORDER_OBJ_UPDATE_SUCCESS':
-            return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }
-        case 'ORDER_NON_STANDART_OBJ_UPDATE_SUCCESS':
-            return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }
+            const order_clone = state.order;
+            if (action.payload.orderType === "Ne-standartinis") {
+                //check if we update quantity or not
+                if (action.payload.name === "quantity") {
+                    //order=>orderServices
+                    let time = 0;
+                    for (let a = 0; a < order_clone.orderServices.length; a++)
+                        time += order_clone.orderServices[a].timeConsumption
+                    time = time * action.payload.value
+                    return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value, "productionTime": time } }
+                } else {
+                    return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }
+                }
+            } else {
+                if (action.payload.name === "quantity") {
+                    //order=>product=>orderServices
+                    let time = 0;
+                    for (let a = 0; a < order_clone.product.orderServices.length; a++)
+                        time += order_clone.product.orderServices[a].timeConsumption
+                    time = time * action.payload.value
+                    return {...state, loading: false, order: {...state.order, [action.payload.name]:action.payload.value, "productionTime":time}}
+                } else {
+                    return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }
+                }
+
+            }
         case 'ORDER_NON_STANDART_OBJ_SERVICE_UPDATE':
             const n_s_order_obj = state.order;
             if (action.payload.record === null) {
                 console.log('RECORD DOESNT EXIST:' + JSON.stringify(action.payload))
                 const obj = { serviceId: action.payload.serviceId, timeConsumption: action.payload.value, orderId: n_s_order_obj.id }
                 const new_n_s_order_services = [...n_s_order_obj.orderServices, { ...obj }]
-                const updated_n_s_order_obj = { ...n_s_order_obj, "orderServices": new_n_s_order_services }
+                
+                //recount productionTime
+                let time = 0;
+                for(let a=0;a<new_n_s_order_services.length;a++)
+                    time += new_n_s_order_services[a].timeConsumption
+                time = time * n_s_order_obj.quantity
+
+                const updated_n_s_order_obj = { ...n_s_order_obj, "orderServices": new_n_s_order_services, "productionTime":time }
                 return { ...state, loading: false, order: updated_n_s_order_obj }
             } else {
                 // const index = n_s_order_obj.orderServices.findIndex(x => x.id === action.payload.id)
                 const updated_obj_services = n_s_order_obj.orderServices.map(x => x.serviceId === action.payload.serviceId ? { ...x, "timeConsumption": action.payload.value } : x)
-                const updated_n_s_order = { ...state.order, "orderServices": updated_obj_services }
+                
+                //recount productionTime
+                let time = 0;
+                for(let a=0;a<updated_obj_services.length;a++)
+                    time += updated_obj_services[a].timeConsumption
+                time = time * n_s_order_obj.quantity
+                
+                const updated_n_s_order = { ...state.order, "orderServices": updated_obj_services, "productionTime":time }
                 return { ...state, loading: false, order: updated_n_s_order }
             }
         case 'ORDER_CREATE_REQUEST':
