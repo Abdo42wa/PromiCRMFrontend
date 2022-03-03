@@ -76,7 +76,7 @@ function UpdateOrderComponent(props) {
         props.onClose();
     }
     const onDataChange = (value, inputName) => {
-        if (orderReducer.order !== null && orderReducer.order.orderType === "Standartinis")
+        if (orderReducer.order !== null && orderReducer.order.orderType === "Standartinis" || orderReducer.order.orderType === "Sandelis")
             dispatch(updateOrderObj(inputName, value))
         else if (orderReducer.order !== null && orderReducer.order.orderType === "Ne-standartinis")
             dispatch(updateOrderObj(inputName, value))
