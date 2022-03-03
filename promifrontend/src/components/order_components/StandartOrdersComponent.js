@@ -20,6 +20,7 @@ const selectOptionStyle = {
 function StandartOrdersComponent(props) {
     const dispatch = useDispatch();
     const history = useHistory();
+    const [duplicateNumbers, setDuplicateNumbers] = useState([])
     const [addOrderVisiblity, setAddOrderVisibility] = useState(false)
     const [updateOrderModal, setUpdateOrderModal] = useState({
         visibility: false,
@@ -52,6 +53,13 @@ function StandartOrdersComponent(props) {
             visibility: false,
             record: null
         }))
+    }
+
+    const getDuplicatesOrderNumber = () => {
+        const arry = orderReducer.orders.map((x) => x.orderNumber)
+        const toFindDuplicates = arry => arry.filter((item, index) => arry.indexOf(item) !== index)
+        const duplicateElementa = toFindDuplicates(arry);
+        setDuplicateNumbers(duplicateElementa);
     }
 
     const onPackingComplete = (userId, orderServiceId, order) => {
@@ -121,6 +129,7 @@ function StandartOrdersComponent(props) {
         if (usersReducer.currentUser !== null) {
             dispatch(getUsers())
             dispatch(getOrders())
+            getDuplicatesOrderNumber();
         } else {
             history.push('/login')
         }
@@ -210,7 +219,10 @@ function StandartOrdersComponent(props) {
         {
             title: 'Užsakymo numeris',
             dataIndex: 'orderNumber',
-            width: '10%'
+            width: '10%',
+            render: (text, record, index) => (
+                <p>{duplicateNumbers.includes(text) === true ? <p className='duplicate'>{text}</p> : <p>{text}</p>}</p>
+            )
         },
         {
             title: 'Data',
@@ -282,7 +294,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -324,7 +336,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -366,7 +378,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -408,7 +420,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -450,7 +462,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -492,7 +504,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true? true : false}
+                                        disabled={lService.timeConsumption === 0 ? true : record.warehouseProductsTaken === true ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -534,7 +546,7 @@ function StandartOrdersComponent(props) {
                             {lService !== null && lService !== undefined ?
                                 <div style={{ display: 'flex' }}>
                                     <Select
-                                        disabled={userService !== undefined && userService !== null && userService.userId !== null ? true : record.warehouseProductsTaken === true? true : false}
+                                        disabled={userService !== undefined && userService !== null && userService.userId !== null ? true : record.warehouseProductsTaken === true ? true : false}
                                         style={{ ...selectOptionStyle }}
                                         optionFilterProp="children"
                                         defaultValue={userService !== null && userService !== undefined ? userService.userId : null}
@@ -574,8 +586,8 @@ function StandartOrdersComponent(props) {
             title: 'ES/NE ES',
             dataIndex: 'country',
             width: '10%',
-            render: (text,record,index)=>(
-                <p>{text === null || record.orderType === "Sandelis"? '' : text.continent === "Europe"? "ES":text.continent !== "Europe"?"NE ES": ""}</p>
+            render: (text, record, index) => (
+                <p>{text === null || record.orderType === "Sandelis" ? '' : text.continent === "Europe" ? "ES" : text.continent !== "Europe" ? "NE ES" : ""}</p>
             )
         },
         {
@@ -645,6 +657,7 @@ function StandartOrdersComponent(props) {
                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddOrderModal()}>Pridėti užsakymą</Button></Space>)}
                     />
                 </Col>
+                <button onClick={() => getDuplicatesOrderNumber()}>tes</button>
             </Row>
         </div>
         {addOrderVisiblity !== false ?
