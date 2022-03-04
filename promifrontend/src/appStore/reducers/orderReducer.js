@@ -1,3 +1,4 @@
+import moment from 'moment'
 export const orderReducer = (state = { orders: [], non_standart_orders: [], order: null, orderNumber: null }, action) => {
     switch (action.type) {
         case 'ORDERS_FETCH_REQUEST':
@@ -16,7 +17,7 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
         case 'ORDER_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'ORDER_FETCH_SUCCESS':
-            return { ...state, loading: false, order: action.payload }
+            return { ...state, loading: false, order: {...action.payload, "orderFinishDate": moment(action.payload.orderFinishDate).format('YYYY/MM/DD')} }
         case 'ORDER_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
         // for Non-standart order fetch
