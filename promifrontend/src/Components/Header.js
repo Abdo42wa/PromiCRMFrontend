@@ -97,6 +97,11 @@ const Header = () => {
                                                 <i class="fas fa-truck-loading"></i> Pardavimo kanalai
                                             </NavDropdown.Item>
                                         </LinkContainer>
+                                        <LinkContainer to="/reports">
+                                            <NavDropdown.Item>
+                                                <i class="fa-solid fa-file-pdf"></i> Ataskaitos
+                                            </NavDropdown.Item>
+                                        </LinkContainer>
 
                                         {/* <LinkContainer to='/recent-works'>
                                             <NavDropdown.Item>

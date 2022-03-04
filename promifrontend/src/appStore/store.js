@@ -21,6 +21,7 @@ import { salesChannelsReducer } from './reducers/salesChannelsReducer'
 import { materialsWarehouseReducer } from './reducers/materialsWarehouseReducer';
 import { recentWorksReducer } from './reducers/recentWorksReducer';
 import { orderDetailsReducer } from './reducers/orderDetailsReducer';
+import { reportsReducer } from './reducers/reportsReducer';
 import Cookies from 'js-cookie';
 
 const allReducers = combineReducers({
@@ -42,7 +43,8 @@ const allReducers = combineReducers({
     salesChannelsReducer,
     materialsWarehouseReducer,
     recentWorksReducer,
-    orderDetailsReducer
+    orderDetailsReducer,
+    reportsReducer
 });
 
 
