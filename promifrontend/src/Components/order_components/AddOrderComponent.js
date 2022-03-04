@@ -113,7 +113,8 @@ function AddOrderComponent(props) {
             else
                 initialValue += 0
         }
-        initialValue = (initialValue + value) * order.quantity
+        //initialValue = initialValue + value * order.quantity
+        initialValue = initialValue + value
         console.log(initialValue)
         setOrder(prevState => ({
             ...prevState,
@@ -132,9 +133,9 @@ function AddOrderComponent(props) {
                     productionTime: time
                 }))
             } else {
-                let time = (order.laserTime + order.milingTime +
+                let time = order.laserTime + order.milingTime +
                     order.paintingTime + order.grindingTime + order.bondingTime +
-                    order.collectionTime + order.packingTime) * value;
+                    order.collectionTime + order.packingTime;
                 setOrder(prevState => ({
                     ...prevState,
                     [inputName]: value,

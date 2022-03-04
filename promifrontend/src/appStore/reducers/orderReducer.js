@@ -48,7 +48,7 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
                     let time = 0;
                     for (let a = 0; a < order_clone.orderServices.length; a++)
                         time += order_clone.orderServices[a].timeConsumption
-                    time = time * action.payload.value
+                    // time = time * action.payload.value
                     return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value, "productionTime": time } }
                 } else {
                     return { ...state, loading: false, order: { ...state.order, [action.payload.name]: action.payload.value } }
@@ -77,7 +77,7 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
                 let time = 0;
                 for(let a=0;a<new_n_s_order_services.length;a++)
                     time += new_n_s_order_services[a].timeConsumption
-                time = time * n_s_order_obj.quantity
+                // time = time * n_s_order_obj.quantity 
 
                 const updated_n_s_order_obj = { ...n_s_order_obj, "orderServices": new_n_s_order_services, "productionTime":time }
                 return { ...state, loading: false, order: updated_n_s_order_obj }
@@ -89,7 +89,7 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
                 let time = 0;
                 for(let a=0;a<updated_obj_services.length;a++)
                     time += updated_obj_services[a].timeConsumption
-                time = time * n_s_order_obj.quantity
+                // time = time * n_s_order_obj.quantity
                 
                 const updated_n_s_order = { ...state.order, "orderServices": updated_obj_services, "productionTime":time }
                 return { ...state, loading: false, order: updated_n_s_order }
