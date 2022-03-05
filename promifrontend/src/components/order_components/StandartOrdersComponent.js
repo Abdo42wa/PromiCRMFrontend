@@ -657,7 +657,6 @@ function StandartOrdersComponent(props) {
                         footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => showAddOrderModal()}>Pridėti užsakymą</Button></Space>)}
                     />
                 </Col>
-                <button onClick={() => getDuplicatesOrderNumber()}>tes</button>
             </Row>
         </div>
         {addOrderVisiblity !== false ?
