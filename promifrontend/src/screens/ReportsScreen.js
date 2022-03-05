@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
+import CompletedPlatformsOrdersByTime from '../components/reports_components/CompletedPlatformsOrdersByTime.js';
 import LastMonthSoldProducts from '../components/reports_components/LastMonthSoldProducts.js';
 
 function ReportsScreen(props) {
@@ -15,6 +16,7 @@ function ReportsScreen(props) {
   return (
     <div style={{ marginTop: 45, marginBottom: 45 }}>
       <LastMonthSoldProducts/>
+      <CompletedPlatformsOrdersByTime/>
     </div>
   )
 }

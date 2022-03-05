@@ -150,10 +150,14 @@ function UpdateOrderComponent(props) {
             setNotStandart(true)
         } else if (props.record.orderType === "Ne-standartinis") {
             dispatch(getNonStandartOrder(props.record.id))
+            dispatch(getSalesChannels())
+            dispatch(getShipments())
             setNotStandart(false)
             setSandelis(false);
         } else {
             dispatch(getOrder(props.record.id))
+            dispatch(getSalesChannels())
+            dispatch(getShipments())
             setNotStandart(true)
             setSandelis(false);
         }

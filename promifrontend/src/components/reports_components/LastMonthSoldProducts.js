@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Table, Space, Card, Typography, Col, Row, Button, Image } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../../styles/customStyles.js';
-import { getLastMonthSoldProducts, getCompletedPlatformsOrdersByTime } from '../../appStore/actions/reportsActions'
+import { getLastMonthSoldProducts } from '../../appStore/actions/reportsActions'
 //you can either import the `OutputType` const or `jsPDF` class if you want to create another PDF from scratch (without using the template) 
 import jsPDFInvoiceTemplate, { OutputType, jsPDF } from "jspdf-invoice-template";
 import moment from 'moment';
@@ -173,7 +173,7 @@ function LastMonthSoldProducts() {
                     dataSource={reportsReducer.last_month_sold_products}
                     pagination={{ pageSize: 15 }}
                     scroll={{ x: 'calc(200px + 50%)' }}
-                    footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => downloadPdf()}><i class="fas fa-print"></i> Export pdf</Button></Space>)}
+                    footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}><Button size="large" style={{ ...buttonStyle }} onClick={(e) => downloadPdf()}><i className="fas fa-print"></i> Export pdf</Button></Space>)}
                 />
 
             </Card>
