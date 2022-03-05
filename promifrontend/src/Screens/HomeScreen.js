@@ -2,13 +2,14 @@ import React from 'react'
 import { getUsers } from '../appStore/actions/userListActions'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
+import { getOrders } from '../appStore/actions/ordersAction'
 import {
-    getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,
-    getOrdersUncompleted, getClientsOrders, getLastWeeksCompletedOrders,
-    getRecentOrders, getLastMonthCompletedOrders, getUrgetOrders,
-    getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders, getEmployeeMadeProducts, getRecommendedForProductionOrders
-} from '../appStore/actions/ordersAction'
+    getClientsOrders, getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
+    getMainPendingProducts, getRecentOrders, getUrgetOrders, getUncompletedOrdersTimes, getNecessaryToMakeToday,
+    getTodayMadeProducts, getMainTodayNewOrders, getOrdersUncompleted, getUnsendedOrders,
+    getRecommendedForProductionOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,
+    getUncompletedOrdersByPlatforms
+} from '../appStore/actions/ordersDetailsActions'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getWeekWorks, updateWork } from '../appStore/actions/weeklyworkschedulesAction'
@@ -111,6 +112,9 @@ class HomeScreen extends React.Component {
             this.props.getWarehouseProducts();
             //Get most recents orders/works. Newest 10 works. Naujausi atlikti darbai
             this.props.getRecentOrders();
+
+            //Atvaizdavimas pagal platforma kiek uzsakyta ir labiausiai veluojantys is tu eiles tvarka.
+            this.props.getUncompletedOrdersByPlatforms()
 
 
             // Pagamintu gaminiu ataskaita per 30 dienu. Uz kiekviena diena
@@ -644,6 +648,38 @@ class HomeScreen extends React.Component {
             }
         ]
 
+        const uncompleted_orders_by_platforms_columns = [
+            {
+                title: 'Platforma',
+                dataIndex: 'platforma',
+                width: '20%',
+                render: (text,record,index)=>(
+                    <Typography.Text>{text !== null? text : ""}</Typography.Text>
+                )
+            },
+            {
+                title: 'Kiekis',
+                dataIndex: 'quantity',
+                width: '20%'
+            },
+            {
+                title: 'Kaina',
+                dataIndex: 'price',
+                width: '20%',
+                render: (text,record,index)=>(
+                    <Typography.Text>{text !== null? text : ""}</Typography.Text>
+                )
+            },
+            {
+                title: 'Platforma',
+                dataIndex: 'orderFinishDate',
+                width: '20%',
+                render: (text,record,index)=>(
+                    <Typography.Text>{text !== null? moment(text).format("YYYY/MM/DD") : ""}</Typography.Text>
+                )
+            },
+        ]
+
 
         const uncompletedWarehouseOrders = [
             {
@@ -726,7 +762,7 @@ class HomeScreen extends React.Component {
                         <div style={{ marginRight: '40px', textAlign: 'start' }}>
                             <h3>Pagrindiniai rodikliai</h3>
                         </div>
-                        <table class="table">
+                        <table className="table">
                             <thead style={{ background: 'black', color: 'whitesmoke' }}>
                                 <tr>
                                     <th scope="col-25"></th>
@@ -981,6 +1017,32 @@ class HomeScreen extends React.Component {
                         </Row>
                     </Col>
 
+                    {/* //Atvaizdavimas pagal platforma kiek uzsakyta ir labiausiai veluojantys is tu eiles tvarka. */}
+                    <Col span={24} style={{ marginTop: '20px' }}>
+                        <Row gutter={16}>
+                            <Col span={16}>
+                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
+                                    <h3>Nepadaryti užsakymai pagal Platforma</h3>
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
+                                    <Table
+                                        rowKey="id"
+                                        columns={uncompleted_orders_by_platforms_columns}
+                                        dataSource={this.props.orderDetailsReducer.uncompleted_orders_by_platforms}
+                                        pagination={false}
+                                        bordered
+                                        scroll={{ x: 'calc(300px + 50%)' }}
+                                    />
+
+                                </Card>
+                            </Col>
+                        </Row>
+                    </Col>
+
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
@@ -1072,7 +1134,7 @@ class HomeScreen extends React.Component {
                         <div className='row' style={{ marginTop: '15px', marginBottom: '15px' }}>
                             {this.props.orderDetailsReducer.employees_made_products !== undefined && this.props.orderDetailsReducer.employees_made_products &&
                                 this.props.orderDetailsReducer.employees_made_products.map((element) => (
-                                    <div className='col' style={{ padding: '10px' }}>
+                                    <div id={element.id + "fa"} className='col' style={{ padding: '10px' }}>
                                         <div style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
                                             <h3>{element.user.name} {element.user.surname}: {element.quantity}</h3>
                                         </div>
@@ -1128,6 +1190,8 @@ export default connect(mapStateToProps, {
     getLastWeeksCompletedOrders, getClientsOrders, getProducts,
     getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders, getEmployeeMadeProducts, getRecommendedForProductionOrders
+    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders,
+    getEmployeeMadeProducts, getRecommendedForProductionOrders,
+    getUncompletedOrdersByPlatforms
 })(withRouter(HomeScreen))
 

@@ -15,7 +15,8 @@ export const orderDetailsReducer = (state = {
     last_month_orders: [],
     urgent_orders: [],
     recent_orders: [],
-    employees_made_products: []
+    employees_made_products: [],
+    uncompleted_orders_by_platforms: []
 }, action) => {
     switch (action.type) {
         //first main dashboard -------
@@ -150,6 +151,12 @@ export const orderDetailsReducer = (state = {
             return { ...state, loading: false, employees_made_products: action.payload }
         case 'EMPLOYEE_ORDERS_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
+        case 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_REQUEST':
+            return {...state, loading: true}
+        case 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_SUCCESS':
+            return {...state, loading: false,uncompleted_orders_by_platforms: action.payload }
+        case 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_FAIL':
+            return {...state, loading: false, error: action.payload}
         default:
             return state;
     }
