@@ -189,7 +189,7 @@ export const getRecommendedForProductionOrders = () => async (dispatch, getState
 
 
 
-export const getUrgetOrders = () => async (dispatch, getState) => {
+export const getUrgentOrders = () => async (dispatch, getState) => {
     try {
         dispatch({
             type: 'ORDERS_URGENT_FETCH_REQUEST'

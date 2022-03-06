@@ -5,14 +5,13 @@ import { Image } from 'antd'
 import { getOrders } from '../appStore/actions/ordersAction'
 import {
     getClientsOrders, getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
-    getMainPendingProducts, getRecentOrders, getUrgetOrders, getUncompletedOrdersTimes, getNecessaryToMakeToday,
+    getMainPendingProducts, getRecentOrders, getUncompletedOrdersTimes, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders, getOrdersUncompleted, getUnsendedOrders,
     getRecommendedForProductionOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,
     getUncompletedOrdersByPlatforms
 } from '../appStore/actions/ordersDetailsActions'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getWeekWorks, updateWork } from '../appStore/actions/weeklyworkschedulesAction'
 import { tableCardStyle, tableCardBodyStyle } from '../styles/customStyles.js';
 import { getMaterialsWarehouseData } from '../appStore/actions/materialsWarehouseActions';
 import { getProducts } from '../appStore/actions/productsActions'
@@ -25,6 +24,7 @@ import LastMonthProducts from '../components/LastMonthProducts'
 import PendingProductsComponent from '../components/dashboard_components/PendingProductsComponent'
 import PlannedWorkTimeComponent from '../components/dashboard_components/PlannedWorkTimeComponent'
 import WeeklyWorkScheduleComponent from '../components/dashboard_components/WeeklyWorkScheduleComponent'
+import UrgentOrdersComponent from '../components/dashboard_components/UrgentOrdersComponent'
 
 
 
@@ -55,8 +55,6 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            //Gaminiu tvarkarascio darbai.
-            this.props.getUrgetOrders()
             //Klientu darbu lentele. Not-standart works.
             this.props.getClientsOrders();
 
@@ -93,69 +91,6 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        const urgentOrders = [
-            {
-                title: 'Deadline',
-                dataIndex: 'orderFinishDate',
-                width: '10%',
-                render: (text, record, index) => (
-                    <p>{moment(text).format('YYYY/MM/DD')}</p>
-                )
-            },
-            {
-                title: 'NR',
-                dataIndex: 'orderNumber',
-                width: '10%'
-            },
-            {
-                title: 'Kodas',
-                dataIndex: 'productCode',
-                width: '10%'
-            },
-            // {
-            //     title: 'Foto',
-            //     dataIndex: 'product',
-            //     width: '10%',
-            //     render: (text, record, index) => (
-            //         <div>
-            //             {text.imagePath === null || text.imagePath === undefined ?
-            //                 <p></p> : <Image src={text.imagePath} />}
-            //         </div>
-            //     )
-            // },
-            {
-                title: 'Kiekis',
-                dataIndex: 'quantity',
-                width: '10%'
-            },
-            {
-                title: 'Užsakymo tipas',
-                dataIndex: 'orderType',
-                width: '10%'
-            },
-            {
-                title: 'Platforma',
-                dataIndex: 'platforma',
-                width: '10%'
-            },
-            // {
-            //     title: 'Surinkta',
-            //     dataIndex: 'CollectionUserId',
-            //     width: '10%',
-            //     render: (text, record, index) => {
-            //         this.getUser
-            //     }
-            // },
-            {
-                title: 'Vėluojama dienų',
-                width: '10%',
-                render: (text, record, index) => (
-                    // <Tag className='Neatlikta'>{record.status ? 'Atlikta' : this.datediff(record.orderFinishDate)}</Tag>
-                    <Typography.Text>{record.status ? <Tag className='atlikta'>Atlikta</Tag> : this.datediff(record.orderFinishDate) < 0 ? <Tag className='Neatlikta'>{Math.abs(this.datediff(record.orderFinishDate))}</Tag> : <Tag className='atlikta'>{Math.abs(this.datediff(record.orderFinishDate))}</Tag>} </Typography.Text>
-
-                )
-            }
-        ]
         const productionOrders = [
             {
                 title: 'Kodas',
@@ -461,31 +396,8 @@ class HomeScreen extends React.Component {
                     <PlannedWorkTimeComponent/>
                     {/* Savaites ukio darbai */}
                     <WeeklyWorkScheduleComponent/>
-
-                    <Col span={24} style={{ marginTop: '20px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Gaminių tvarkaraškis(Užsakymai)</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={urgentOrders}
-                                        dataSource={this.props.orderDetailsReducer.urgent_orders}
-                                        pagination={{ pageSize: 10 }}
-                                        bordered
-                                        scroll={{ x: 'calc(200px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
+                    {/* Gaminiu tvarkarastis(Uzsakymai) / Urgent Orders*/}
+                    <UrgentOrdersComponent/>
 
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
@@ -806,11 +718,11 @@ const mapStateToProps = (state) => {
     }
 }
 export default connect(mapStateToProps, {
-    getWeekWorks, getUsers, updateWork,
+    getUsers,
     getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,
     getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData,
     getLastWeeksCompletedOrders, getClientsOrders, getProducts,
-    getLastMonthCompletedOrders, getUrgetOrders, getRecentOrders,
+    getLastMonthCompletedOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders,
     getEmployeeMadeProducts, getRecommendedForProductionOrders,
