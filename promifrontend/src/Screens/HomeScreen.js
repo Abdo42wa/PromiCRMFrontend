@@ -24,6 +24,7 @@ import LastWeeksProducts from '../components/LastWeeksProducts'
 import LastMonthProducts from '../components/LastMonthProducts'
 import PendingProductsComponent from '../components/dashboard_components/PendingProductsComponent'
 import PlannedWorkTimeComponent from '../components/dashboard_components/PlannedWorkTimeComponent'
+import WeeklyWorkScheduleComponent from '../components/dashboard_components/WeeklyWorkScheduleComponent'
 
 
 
@@ -88,8 +89,6 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            //WeeklyWorkSchedule works. Only for this particular week. Savaites ukio darbai
-            this.props.getWeekWorks()
             //Gaminiu tvarkarascio darbai.
             this.props.getUrgetOrders()
             //Klientu darbu lentele. Not-standart works.
@@ -128,38 +127,6 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        const columns = [
-            {
-                title: 'Vardas',
-                dataIndex: 'user',
-                width: '25%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text.name}</Typography.Text>
-                )
-            },
-            {
-                title: 'Darbas',
-                dataIndex: 'description',
-                width: '25%'
-            },
-            {
-                title: 'Atlikta',
-                dataIndex: 'done',
-                width: '25%',
-                render: (text, record, index) => (
-                    // <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
-                    <Checkbox onChange={(e) => this.onChange(e.target.checked, record)} value={text} defaultChecked={text} />
-                )
-            },
-            {
-                title: 'Data',
-                dataIndex: 'date',
-                width: '25%',
-                render: (text, record, index) => (
-                    <Typography.Text>{moment(text).format('YYYY/MM/DD')}</Typography.Text>
-                )
-            }
-        ]
         const urgentOrders = [
             {
                 title: 'Deadline',
@@ -526,33 +493,8 @@ class HomeScreen extends React.Component {
                     <PendingProductsComponent/>
                     {/* Suplanuotas darbo laikas */}
                     <PlannedWorkTimeComponent/>
-
-                    
-                    <Col lg={24} style={{ marginTop: '20px' }}>
-                        {/* <Row gutter={16}>
-                                <Col span={16}> */}
-                        <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                            <h3>Savaitės ūkio darbai</h3>
-                        </div>
-                        {/* </Col>
-                            </Row> */}
-                        {/* <Row gutter={16}> */}
-                        {/* <Col span={24}> */}
-                        <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                            <Table
-                                rowKey="id"
-                                columns={columns}
-                                dataSource={this.props.weeklyWorkScheduleReducer.workSchedules}
-                                pagination={{ pageSize: 15 }}
-                                bWorked
-                                scroll={{ x: 'calc(200px + 50%)' }}
-
-                            />
-
-                        </Card>
-                        {/* </Col> */}
-                        {/* </Row> */}
-                    </Col>
+                    {/* Savaites ukio darbai */}
+                    <WeeklyWorkScheduleComponent/>
 
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
