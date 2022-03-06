@@ -6,9 +6,7 @@ import { getOrders } from '../appStore/actions/ordersAction'
 import {
     getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
     getMainPendingProducts, getRecentOrders, getUncompletedOrdersTimes, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders,
-    getUncompletedWarehouseOrders,
-    getUncompletedOrdersByPlatforms
+    getTodayMadeProducts, getMainTodayNewOrders
 } from '../appStore/actions/ordersDetailsActions'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -28,6 +26,8 @@ import ClientsOrdersComponent from '../components/dashboard_components/ClientsOr
 import UncompletedExpressOrdersComponent from '../components/dashboard_components/UncompletedExpressOrdersComponent'
 import MostUncompletedOrders from '../components/dashboard_components/MostUncompletedOrders'
 import UnsendedOrdersComponent from '../components/dashboard_components/UnsendedOrdersComponent'
+import UncompletedOrdersByPlatformsComponent from '../components/dashboard_components/UncompletedOrdersByPlatformsComponent'
+import UncompletedWarehouseOrdersComponent from '../components/dashboard_components/UncompletedWarehouseOrdersComponent'
 
 
 
@@ -52,16 +52,10 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            // get uncompleted orders for warehouse. Gaminimo i sandeli lentele
-            this.props.getUncompletedWarehouseOrders();
             // get from warehouse. Gaminiu kiekis sandelyje
             this.props.getWarehouseProducts();
             //Get most recents orders/works. Newest 10 works. Naujausi atlikti darbai
             this.props.getRecentOrders();
-
-            //Atvaizdavimas pagal platforma kiek uzsakyta ir labiausiai veluojantys is tu eiles tvarka.
-            this.props.getUncompletedOrdersByPlatforms()
-
 
             // Pagamintu gaminiu ataskaita per 30 dienu. Uz kiekviena diena
             this.props.getLastMonthCompletedOrders()
@@ -156,80 +150,6 @@ class HomeScreen extends React.Component {
                 )
             },
         ]
-        const uncompleted_orders_by_platforms_columns = [
-            {
-                title: 'Platforma',
-                dataIndex: 'platforma',
-                width: '20%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text !== null ? text : ""}</Typography.Text>
-                )
-            },
-            {
-                title: 'Kiekis',
-                dataIndex: 'quantity',
-                width: '20%'
-            },
-            {
-                title: 'Kaina',
-                dataIndex: 'price',
-                width: '20%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text !== null ? text : ""}</Typography.Text>
-                )
-            },
-            {
-                title: 'Platforma',
-                dataIndex: 'orderFinishDate',
-                width: '20%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text !== null ? moment(text).format("YYYY/MM/DD") : ""}</Typography.Text>
-                )
-            },
-        ]
-
-
-        const uncompletedWarehouseOrders = [
-            {
-                title: 'Kiekis',
-                dataIndex: 'quantity',
-                width: '20%'
-            },
-            {
-                title: 'Kodas',
-                dataIndex: 'productCode',
-                width: '20%'
-            },
-            {
-                title: 'Foto',
-                dataIndex: 'imagePath',
-                width: '20%',
-                render: (text, record, index) => (
-                    <div>
-                        {text === null || text === undefined ?
-                            <p></p> : <Image src={text} height={30} />}
-                    </div>
-                )
-            },
-            // {
-            //     title: 'Deadline(didžiausia)',
-            //     dataIndex: 'orderFinishDate',
-            //     width: '20%',
-            //     render: (text, record, index) => (
-            //         <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
-            //     )
-            // },
-            {
-                title: 'Data(seniausia)',
-                dataIndex: 'minOrderFinishDate',
-                width: '20%',
-                render: (text, record, index) => (
-                    <Typography.Text>{moment(text).format("YYYY/MM/DD")}</Typography.Text>
-                )
-            }
-        ]
-
-
         return (
             <>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
@@ -252,56 +172,11 @@ class HomeScreen extends React.Component {
                     {/* Neisiustu siuntiniu lentele */}
                     <UnsendedOrdersComponent/>
 
-                    {/* //Atvaizdavimas pagal platforma kiek uzsakyta ir labiausiai veluojantys is tu eiles tvarka. */}
-                    <Col span={24} style={{ marginTop: '20px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Nepadaryti užsakymai pagal Platforma</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={uncompleted_orders_by_platforms_columns}
-                                        dataSource={this.props.orderDetailsReducer.uncompleted_orders_by_platforms}
-                                        pagination={false}
-                                        bordered
-                                        scroll={{ x: 'calc(300px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
-
-                    <Col span={24} style={{ marginTop: '20px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Gaminimo į sandėlį lentelė</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={uncompletedWarehouseOrders}
-                                        dataSource={this.props.orderDetailsReducer.uncompleted_warehouse_orders}
-                                        pagination={false}
-                                        bordered
-                                        scroll={{ x: 'calc(300px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
+                    {/* Atvaizdavimas pagal platforma kiek uzsakyta ir labiausiai veluojantys is tu eiles tvarka. */}
+                    <UncompletedOrdersByPlatformsComponent/>
+                    {/* Gaminimo i sandeli lentele */}
+                    <UncompletedWarehouseOrdersComponent/>
+                    
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
@@ -419,12 +294,12 @@ const mapStateToProps = (state) => {
 }
 export default connect(mapStateToProps, {
     getUsers,
-    getOrders, getUncompletedWarehouseOrders,
+    getOrders,
     getWarehouseProducts, getMaterialsWarehouseData,
     getLastWeeksCompletedOrders, getProducts,
     getLastMonthCompletedOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders,
-    getEmployeeMadeProducts, getUncompletedOrdersByPlatforms
+    getEmployeeMadeProducts
 })(withRouter(HomeScreen))
 
