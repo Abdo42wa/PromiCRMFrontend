@@ -6,7 +6,7 @@ import { getOrders } from '../appStore/actions/ordersAction'
 import {
     getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
     getMainPendingProducts, getRecentOrders, getUncompletedOrdersTimes, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders, getOrdersUncompleted, getUnsendedOrders,
+    getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders,
     getUncompletedWarehouseOrders,
     getUncompletedOrdersByPlatforms
 } from '../appStore/actions/ordersDetailsActions'
@@ -26,6 +26,7 @@ import UrgentOrdersComponent from '../components/dashboard_components/UrgentOrde
 import RecomendedOrdersComponent from '../components/dashboard_components/RecomendedOrdersComponent'
 import ClientsOrdersComponent from '../components/dashboard_components/ClientsOrdersComponent'
 import UncompletedExpressOrdersComponent from '../components/dashboard_components/UncompletedExpressOrdersComponent'
+import MostUncompletedOrders from '../components/dashboard_components/MostUncompletedOrders'
 
 
 
@@ -50,8 +51,6 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            // get uncompleted orders. Daugiausia nepagamintu produktu
-            this.props.getOrdersUncompleted();
             // get uncompleted orders for warehouse. Gaminimo i sandeli lentele
             this.props.getUncompletedWarehouseOrders();
             // get from warehouse. Gaminiu kiekis sandelyje
@@ -158,31 +157,6 @@ class HomeScreen extends React.Component {
                 )
             },
         ]
-        //daugiausia nepagamintu produktu
-        const uncompletedOrders = [
-            {
-                title: 'Kodas',
-                dataIndex: 'productCode',
-                width: '20%'
-            },
-            {
-                title: 'Kiekis',
-                dataIndex: 'quantity',
-                width: '20%'
-            },
-            {
-                title: 'Nuotrauka',
-                dataIndex: 'imagePath',
-                width: '20%',
-                render: (text, record, index) => (
-                    <div>
-                        {text === null || text === undefined ?
-                            <p></p> : <Image src={text} height={30} />}
-                    </div>
-                )
-            }
-        ]
-
         // Neisiustu siuntiniu lentele
         const unsendedOrders = [
             {
@@ -301,33 +275,9 @@ class HomeScreen extends React.Component {
                     <ClientsOrdersComponent/>
                     {/* Express neatlikti užsakymai */}
                     <UncompletedExpressOrdersComponent/>
-
-                    {/* daugiausia nepagamintu produkt */}
-                    <Col span={24} style={{ marginTop: '20px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Daugiausia nepagamintų produktų</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={uncompletedOrders}
-                                        dataSource={this.props.orderDetailsReducer.uncompleted_orders}
-                                        pagination={false}
-                                        bordered
-                                        scroll={{ x: 'calc(300px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
-
+                    {/* Daugiausia nepagamintu produkt */}
+                    <MostUncompletedOrders/>
+                    
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
@@ -521,7 +471,7 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
     getUsers,
     getOrders, getUncompletedWarehouseOrders,
-    getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData,
+    getWarehouseProducts, getMaterialsWarehouseData,
     getLastWeeksCompletedOrders, getProducts,
     getLastMonthCompletedOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
