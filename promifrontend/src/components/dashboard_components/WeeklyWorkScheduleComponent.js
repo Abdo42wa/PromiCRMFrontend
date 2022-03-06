@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
+import { Table, Card, Typography, Col,Checkbox } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { getWeekWorks,updateWork } from '../../appStore/actions/weeklyworkschedulesAction'
 import { tableCardStyle, tableCardBodyStyle } from '../../styles/customStyles.js';

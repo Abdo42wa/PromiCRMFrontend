@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
+import { Table, Card, Col, Row } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { getRecommendedForProductionOrders } from '../../appStore/actions/ordersDetailsActions'
 import { tableCardStyle, tableCardBodyStyle } from '../../styles/customStyles.js';

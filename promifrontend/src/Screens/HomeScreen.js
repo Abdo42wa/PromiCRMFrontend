@@ -4,7 +4,7 @@ import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { Image } from 'antd'
 import { getOrders } from '../appStore/actions/ordersAction'
 import {
-    getClientsOrders, getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
+    getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
     getMainPendingProducts, getRecentOrders, getUncompletedOrdersTimes, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders, getOrdersUncompleted, getUnsendedOrders,
     getUncompletedWarehouseOrders, getUncompletedExpressOrders,
@@ -26,6 +26,7 @@ import PlannedWorkTimeComponent from '../components/dashboard_components/Planned
 import WeeklyWorkScheduleComponent from '../components/dashboard_components/WeeklyWorkScheduleComponent'
 import UrgentOrdersComponent from '../components/dashboard_components/UrgentOrdersComponent'
 import RecomendedOrdersComponent from '../components/dashboard_components/RecomendedOrdersComponent'
+import ClientsOrdersComponent from '../components/dashboard_components/ClientsOrdersComponent'
 
 
 
@@ -50,10 +51,6 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            //Klientu darbu lentele. Not-standart works.
-            this.props.getClientsOrders();
-
-
             //Express neatlikti uzsakymai
             this.props.getUncompletedExpressOrders();
             // get uncompleted orders. Daugiausia nepagamintu produktu
@@ -333,38 +330,7 @@ class HomeScreen extends React.Component {
             }
         ]
 
-        const clientOrders = [
-            {
-                title: 'Data',
-                dataIndex: 'date',
-                width: '25%'
-            },
-            {
-                title: 'NR',
-                dataIndex: 'orderNumber',
-                width: '25%',
-            },
-            {
-                title: 'Klientas',
-                dataIndex: 'customer',
-                width: '25%',
-                render: (text, record, index) => {
-                    if (text === null)
-                        return (<p></p>)
-                    else
-                        return (<Typography.Text>{text.name}  {text.companyName}</Typography.Text>)
-
-                }
-            },
-            {
-                title: 'Būklė',
-                dataIndex: 'status',
-                width: '25%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
-                )
-            },
-        ]
+        
         return (
             <>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
@@ -378,32 +344,8 @@ class HomeScreen extends React.Component {
                     <UrgentOrdersComponent />
                     {/* Rekomenduojama gaminti(Užsakymai) */}
                     <RecomendedOrdersComponent/>
-
                     {/* Klientu darbu lentele */}
-                    <Col span={24} style={{ marginTop: '20px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Klientų darbų lentelė</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={clientOrders}
-                                        dataSource={this.props.orderDetailsReducer.clients_orders}
-                                        pagination={{ pageSize: 10 }}
-                                        bordered
-                                        scroll={{ x: 'calc(200px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
+                    <ClientsOrdersComponent/>
 
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
@@ -429,31 +371,6 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
-
-                    {/* <Col span={24} style={{ marginTop: '60px', bottom: '50px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Naujausi produktai</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={productColumns}
-                                        dataSource={this.state.products.slice(-3)}
-                                        pagination={{ pageSize: 15 }}
-                                        bordered
-                                        scroll={{ x: 'calc(300px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col> */}
 
                     {/* daugiausia nepagamintu produkt */}
                     <Col span={24} style={{ marginTop: '20px' }}>
@@ -675,7 +592,7 @@ export default connect(mapStateToProps, {
     getUsers,
     getOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,
     getOrdersUncompleted, getWarehouseProducts, getMaterialsWarehouseData,
-    getLastWeeksCompletedOrders, getClientsOrders, getProducts,
+    getLastWeeksCompletedOrders, getProducts,
     getLastMonthCompletedOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders,

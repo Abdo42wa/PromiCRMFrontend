@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
+import { Col } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMainPendingProducts, getTodayMadeProducts, getMainTodayNewOrders, getNecessaryToMakeToday } from '../../appStore/actions/ordersDetailsActions'
 //Pagrindiniai rodikliai
