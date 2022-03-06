@@ -44,45 +44,11 @@ class HomeScreen extends React.Component {
             done: false
         }
     }
-
-    // getUser = (userId) => {
-    //     const user = this.props.usersListReducer.users.find(u => String(u.id) === userId)
-    //     if (user !== null && user !== undefined) {
-    //         return (<p>${user.name} ${user.surname}</p>)
-    //     } else {
-    //         return <p></p>
-    //     }
-
-    // }
     datediff(first) {
         var future = moment(first);
         var today = new Date();
         var start = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
         return future.diff(start, 'days');
-    }
-
-    onChange(value, record) {
-        const postObj = {
-            "userId": record.userId,
-            "description": record.description,
-            "done": value,
-        }
-        const reducerObj = {
-            "id": record.id,
-            "userId": record.userId,
-            "user": record.user,
-            "description": record.description,
-            "done": value,
-            "date": record.date
-        }
-        this.props.updateWork(postObj, reducerObj);
-        console.log(postObj)
-        console.log(reducerObj)
-        // console.log(e.target.value)
-
-        // this.setState({
-        //     done: !this.state.done
-        // })
     }
 
     //employees-made-orders

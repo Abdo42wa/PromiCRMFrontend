@@ -1,13 +1,30 @@
 import React, { useEffect } from 'react'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
-import { getWeekWorks } from '../../appStore/actions/weeklyworkschedulesAction'
+import { getWeekWorks,updateWork } from '../../appStore/actions/weeklyworkschedulesAction'
 import { tableCardStyle, tableCardBodyStyle } from '../../styles/customStyles.js';
 import moment from 'moment'
 //Savaites ukio darbai
 function WeeklyWorkScheduleComponent() {
     const dispatch = useDispatch()
     const weeklyWorkScheduleReducer = useSelector((state) => state.weeklyWorkScheduleReducer)
+    //on complete
+    const onChange = (value, record) => {
+        const postObj = {
+            "userId": record.userId,
+            "description": record.description,
+            "done": value,
+        }
+        const reducerObj = {
+            "id": record.id,
+            "userId": record.userId,
+            "user": record.user,
+            "description": record.description,
+            "done": value,
+            "date": record.date
+        }
+        dispatch(updateWork(postObj, reducerObj))
+    }
     useEffect(() => {
         dispatch(getWeekWorks())
     }, [])
@@ -31,7 +48,7 @@ function WeeklyWorkScheduleComponent() {
             width: '25%',
             render: (text, record, index) => (
                 // <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
-                <Checkbox onChange={(e) => this.onChange(e.target.checked, record)} value={text} defaultChecked={text} />
+                <Checkbox onChange={(e) => onChange(e.target.checked, record)} value={text} defaultChecked={text} />
             )
         },
         {
