@@ -23,6 +23,7 @@ import { Bar, Line } from 'react-chartjs-2';
 import LastWeeksProducts from '../components/LastWeeksProducts'
 import LastMonthProducts from '../components/LastMonthProducts'
 import PendingProductsComponent from '../components/dashboard_components/PendingProductsComponent'
+import PlannedWorkTimeComponent from '../components/dashboard_components/PlannedWorkTimeComponent'
 
 
 
@@ -87,14 +88,6 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            //Pagrindiniai rodikliai. 
-            this.props.getMainPendingProducts()
-            this.props.getNecessaryToMakeToday()
-            this.props.getTodayMadeProducts()
-            this.props.getMainTodayNewOrders()
-
-            //Get work times. Suplanuotas darbo laikas
-            this.props.getUncompletedOrdersTimes()
             //WeeklyWorkSchedule works. Only for this particular week. Savaites ukio darbai
             this.props.getWeekWorks()
             //Gaminiu tvarkarascio darbai.
@@ -166,234 +159,6 @@ class HomeScreen extends React.Component {
                     <Typography.Text>{moment(text).format('YYYY/MM/DD')}</Typography.Text>
                 )
             }
-        ]
-        const workTimesColumns = [
-            {
-                title: 'Lazeriavimo laikas',
-                dataIndex: 'laserTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Frezavimo laikas',
-                dataIndex: 'milingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Dažymo laikas',
-                dataIndex: 'paintingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Šlifavimo laikas',
-                dataIndex: 'grindingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Suklijavimo laikas',
-                dataIndex: 'bondingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Surinkimo laikas',
-                dataIndex: 'collectionTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Pakavimo laikas',
-                dataIndex: 'packingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            //DONE TIMES
-            {
-                title: 'Lazeriavimo laikas(padarytas)',
-                dataIndex: 'doneLaserTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Frezavimo laikas(padarytas)',
-                dataIndex: 'doneMilingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Dažymo laikas(padarytas)',
-                dataIndex: 'donePaintingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Šlifavimo laikas(padarytas)',
-                dataIndex: 'doneGrindingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Suklijavimo laikas(padarytas)',
-                dataIndex: 'doneBondingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Surinkimo laikas(padarytas)',
-                dataIndex: 'doneCollectionTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-            {
-                title: 'Pakavimo laikas(padarytas)',
-                dataIndex: 'donePackingTime',
-                width: '10%',
-                render: (text, record, index) => {
-                    if (Math.floor(text / 60) === 0) {
-                        return (
-                            <Typography.Text>{Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    } else {
-                        return (
-                            <Typography.Text>{Math.floor(text / 60)}h {Math.round(((text / 60) - Math.floor(text / 60)) * 60)} m</Typography.Text>
-                        )
-                    }
-                }
-            },
-
         ]
         const urgentOrders = [
             {
@@ -757,34 +522,12 @@ class HomeScreen extends React.Component {
         return (
             <>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
-
+                    {/* Pagrindiniai rodikliai */}
                     <PendingProductsComponent/>
+                    {/* Suplanuotas darbo laikas */}
+                    <PlannedWorkTimeComponent/>
 
-                    <Col lg={24} style={{ marginTop: '20px' }}>
-                        {/* <Row gutter={16}>
-                                <Col span={16}> */}
-                        <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                            <h3>Suplanuotas darbo laikas</h3>
-                        </div>
-                        {/* </Col>
-                            </Row> */}
-                        {/* <Row gutter={16}> */}
-                        {/* <Col span={24}> */}
-                        <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                            <Table
-                                rowKey="id"
-                                columns={workTimesColumns}
-                                dataSource={this.props.orderDetailsReducer.uncompleted_orders_times}
-                                pagination={{ pageSize: 15 }}
-                                bWorked
-                                scroll={{ x: 'calc(200px + 50%)' }}
-
-                            />
-
-                        </Card>
-                        {/* </Col> */}
-                        {/* </Row> */}
-                    </Col>
+                    
                     <Col lg={24} style={{ marginTop: '20px' }}>
                         {/* <Row gutter={16}>
                                 <Col span={16}> */}

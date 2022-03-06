@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMainPendingProducts, getTodayMadeProducts, getMainTodayNewOrders, getNecessaryToMakeToday } from '../../appStore/actions/ordersDetailsActions'
-
+//Pagrindiniai rodikliai
 function PendingProductsComponent() {
     const dispatch = useDispatch()
     const orderDetailsReducer = useSelector((state) => state.orderDetailsReducer)
@@ -13,6 +13,7 @@ function PendingProductsComponent() {
         dispatch(getNecessaryToMakeToday())
     }, [])
     return (
+        //Pagrindiniai rodikliai
         <Col lg={24} style={{ marginTop: '20px' }}>
 
             <div style={{ marginRight: '40px', textAlign: 'start' }}>
