@@ -22,6 +22,7 @@ import moment from 'moment';
 import { Bar, Line } from 'react-chartjs-2';
 import LastWeeksProducts from '../components/LastWeeksProducts'
 import LastMonthProducts from '../components/LastMonthProducts'
+import PendingProductsComponent from '../components/dashboard_components/PendingProductsComponent'
 
 
 
@@ -757,37 +758,7 @@ class HomeScreen extends React.Component {
             <>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
 
-                    <Col lg={24} style={{ marginTop: '20px' }}>
-
-                        <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                            <h3>Pagrindiniai rodikliai</h3>
-                        </div>
-                        <table className="table">
-                            <thead style={{ background: 'black', color: 'whitesmoke' }}>
-                                <tr>
-                                    <th scope="col-25"></th>
-                                    <th scope="col-25">Viso</th>
-                                    <th scope="col-25">Šiandien pagaminta</th>
-                                    <th scope="col-25">Nauji užsakyti gaminiai (2 d.)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">Laukiantys gaminiai</th>
-                                    <td>{this.props.orderDetailsReducer.main_pending_products === null ? "" : this.props.orderDetailsReducer.main_pending_products === undefined ? "" : this.props.orderDetailsReducer.main_pending_products.quantity}</td>
-                                    <td>{this.props.orderDetailsReducer.main_today_made_products === null ? "" : this.props.orderDetailsReducer.main_today_made_products === undefined ? "" : this.props.orderDetailsReducer.main_today_made_products.quantity}</td>
-                                    <td>{this.props.orderDetailsReducer.main_new_today_orders === null ? "" : this.props.orderDetailsReducer.main_new_today_orders === undefined ? "" : this.props.orderDetailsReducer.main_new_today_orders.quantity}</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Būtina šiandien atlikti</th>
-                                    <td>{this.props.orderDetailsReducer.main_necessary_today === null ? "" : this.props.orderDetailsReducer.main_necessary_today === undefined ? "" : this.props.orderDetailsReducer.main_necessary_today.quantity}</td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </Col>
+                    <PendingProductsComponent/>
 
                     <Col lg={24} style={{ marginTop: '20px' }}>
                         {/* <Row gutter={16}>
