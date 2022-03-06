@@ -5,7 +5,7 @@ import { Image } from 'antd'
 import { getOrders } from '../appStore/actions/ordersAction'
 import {
     getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
-    getMainPendingProducts, getRecentOrders, getUncompletedOrdersTimes, getNecessaryToMakeToday,
+    getMainPendingProducts, getUncompletedOrdersTimes, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders
 } from '../appStore/actions/ordersDetailsActions'
 import { withRouter } from 'react-router-dom';
@@ -28,6 +28,8 @@ import MostUncompletedOrders from '../components/dashboard_components/MostUncomp
 import UnsendedOrdersComponent from '../components/dashboard_components/UnsendedOrdersComponent'
 import UncompletedOrdersByPlatformsComponent from '../components/dashboard_components/UncompletedOrdersByPlatformsComponent'
 import UncompletedWarehouseOrdersComponent from '../components/dashboard_components/UncompletedWarehouseOrdersComponent'
+import WarehouseProductsComponent from '../components/dashboard_components/WarehouseProductsComponent'
+import RecentCompletedServices from '../components/dashboard_components/RecentCompletedServices'
 
 
 
@@ -52,11 +54,6 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
-            // get from warehouse. Gaminiu kiekis sandelyje
-            this.props.getWarehouseProducts();
-            //Get most recents orders/works. Newest 10 works. Naujausi atlikti darbai
-            this.props.getRecentOrders();
-
             // Pagamintu gaminiu ataskaita per 30 dienu. Uz kiekviena diena
             this.props.getLastMonthCompletedOrders()
             //Pagamintu gaminiu ataskaita per 30 dienu. Darbuotoju per menesi pagamintu produktu skaicius
@@ -70,86 +67,6 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        const recentWorksColumns = [
-            {
-                title: "Laikas",
-                dataIndex: "CompletionDate",
-                width: '15%',
-                render: (text, record, index) => (
-                    <Typography.Text>{moment(text).format("HH:mm")}  {moment(text).format("YYYY/MM/DD")}</Typography.Text>
-                )
-            },
-            {
-                title: 'Nr',
-                dataIndex: 'orderNumber',
-                width: '15%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text.orderNumber}</Typography.Text>
-                )
-            },
-            {
-                title: 'Kodas',
-                dataIndex: 'productCode',
-                width: '15%',
-                render: (text, record, index) => (
-                    <Typography.Text>{text}</Typography.Text>
-                )
-            },
-            {
-                title: 'Foto',
-                dataIndex: 'product',
-                width: '15%',
-                render: (text, record, index) => {
-                    if (text === null || text === undefined) {
-                        if (record.imagePath === undefined || record.imagePath === null) {
-                            return (<p></p>)
-                        } else {
-                            return (<Image src={record.imagePath} height={30} alt='Foto' />)
-                        }
-                    } else {
-                        if (text.imagePath === null)
-                            return (<p></p>)
-                        else
-                            return (<Image src={text.imagePath} height={30} alt='Foto' />)
-                    }
-                }
-            },
-            {
-                title: 'Kiekis',
-                dataIndex: 'quantity',
-                width: '15%'
-            },
-            {
-                title: "Vardas",
-                width: '15%',
-                render: (text, record, index) => (
-                    <Typography.Text>{record.user.name}  {record.packingComplete !== null ? <p>Supakavo</p> : <p></p>}</Typography.Text>
-                )
-            },
-        ]
-        const completedWarehouseOrders = [
-            {
-                title: 'Kiekis',
-                dataIndex: 'quantityProductWarehouse',
-                width: '30%'
-            },
-            {
-                title: 'Kodas',
-                dataIndex: 'productCode',
-                width: '30%'
-            },
-            {
-                title: 'Nuotrauka',
-                dataIndex: 'imagePath',
-                width: '30%',
-                render: (text, record, index) => (
-                    <div>
-                        {text === null || text === undefined ?
-                            <p></p> : <Image src={text} height={30} />}
-                    </div>
-                )
-            },
-        ]
         return (
             <>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
@@ -176,55 +93,11 @@ class HomeScreen extends React.Component {
                     <UncompletedOrdersByPlatformsComponent/>
                     {/* Gaminimo i sandeli lentele */}
                     <UncompletedWarehouseOrdersComponent/>
+                    {/* Gaminių kiekis sandėlyje */}
+                    <WarehouseProductsComponent/>
+                    {/* Naujausi atlikti darbai. Newest 10 works */}
+                    <RecentCompletedServices/>
                     
-                    <Col span={24} style={{ marginTop: '20px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Gaminių kiekis sandėlyje</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={completedWarehouseOrders}
-                                        dataSource={this.props.warehouseReducer.warehouse_products}
-                                        pagination={false}
-                                        bordered
-                                        scroll={{ x: 'calc(300px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
-                    <Col span={24} style={{ marginTop: '20px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Naujausi atlikti darbai</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={recentWorksColumns}
-                                        dataSource={this.props.orderDetailsReducer.recent_orders}
-                                        pagination={false}
-                                        bordered
-                                        scroll={{ x: 'calc(300px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
 
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
@@ -297,7 +170,7 @@ export default connect(mapStateToProps, {
     getOrders,
     getWarehouseProducts, getMaterialsWarehouseData,
     getLastWeeksCompletedOrders, getProducts,
-    getLastMonthCompletedOrders, getRecentOrders,
+    getLastMonthCompletedOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders,
     getEmployeeMadeProducts
