@@ -316,6 +316,56 @@ export const createNonStandartOrder = (postObject) => async (dispatch, getState)
     }
 }
 
+// BROKAS -------------------------
+export const updateDefectiveOrderAndInsertNew = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'ORDERS_DEFECTIVE_UPDATE_AND_INSERT_NEW_REQUEST'
+        })
+        const order = getState().orderReducer.order
+        const { id, ...obj } = order;
+        if (order.orderType === "Ne-standartinis") {
+            console.log('order to update:'+JSON.stringify(order))
+            dispatch(updateNonStandart())
+            const orderServices = obj.orderServices.map(x => x.id !== null? { "serviceId":x.serviceId, "timeConsumption":x.timeConsumption}:x)
+            const postObj = {
+                ...obj,
+                "status":false,
+                "defective": false,
+                "defectiveNumber": 0,
+                "quantity": obj.defectiveNumber,
+                "orderServices":orderServices
+            }
+            dispatch(createNonStandartOrder(postObj))
+            console.log("create order:"+JSON.stringify(postObj))
+        } else {
+            console.log('order to update:'+JSON.stringify(order))
+            dispatch(updateOrder())
+            const postObj = {
+                ...obj,
+                "status":false,
+                "defective": false,
+                "defectiveNumber": 0,
+                "quantity": obj.defectiveNumber
+            }
+            dispatch(addOrder(postObj))
+            console.log("create order:"+JSON.stringify(postObj))
+        }
+        dispatch({
+            type: 'ORDERS_DEFECTIVE_UPDATE_AND_INSERT_NEW_SUCCESS'
+        })
+    } catch (error) {
+        dispatch({
+            type: 'ORDERS_DEFECTIVE_UPDATE_AND_INSERT_NEW_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+//----------------------------
+
 
 export const updateOrder = () => async (dispatch, getState) => {
     try {
