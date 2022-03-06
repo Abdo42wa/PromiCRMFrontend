@@ -1,20 +1,13 @@
 import React from 'react'
 import { getUsers } from '../appStore/actions/userListActions'
-import { Table, Card, Typography, Col, Row, Tag, Checkbox } from 'antd'
-import { Image } from 'antd'
-import { getOrders } from '../appStore/actions/ordersAction'
+import { Card, Col, Row } from 'antd'
 import {
-    getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
-    getMainPendingProducts, getUncompletedOrdersTimes, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders
+    getEmployeeMadeProducts, getLastMonthCompletedOrders,
+    getLastWeeksCompletedOrders
 } from '../appStore/actions/ordersDetailsActions'
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { tableCardStyle, tableCardBodyStyle } from '../styles/customStyles.js';
-import { getMaterialsWarehouseData } from '../appStore/actions/materialsWarehouseActions';
-import { getProducts } from '../appStore/actions/productsActions'
-import { getWarehouseProducts } from '../appStore/actions/warehouseActions'
-import moment from 'moment';
 import LastWeeksProducts from '../components/LastWeeksProducts'
 import LastMonthProducts from '../components/LastMonthProducts'
 import PendingProductsComponent from '../components/dashboard_components/PendingProductsComponent'
@@ -31,27 +24,10 @@ import UncompletedWarehouseOrdersComponent from '../components/dashboard_compone
 import WarehouseProductsComponent from '../components/dashboard_components/WarehouseProductsComponent'
 import RecentCompletedServices from '../components/dashboard_components/RecentCompletedServices'
 
-
-
-
 class HomeScreen extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            orders: [],
-            products: [],
-            collectionTime: 0,
-            bondingTime: 0,
-            laserTime: 0,
-            paintingTime: 0,
-            milingTime: 0,
-            packingTime: 0,
-            done: false
-        }
     }
-
-    //employees-made-orders
-
     componentDidMount() {
         if (this.props.usersReducer.currentUser !== null) {
             // Pagamintu gaminiu ataskaita per 30 dienu. Uz kiekviena diena
@@ -60,12 +36,9 @@ class HomeScreen extends React.Component {
             this.props.getEmployeeMadeProducts()
             // Pagamintu gaminiu kiekis savaitemis
             this.props.getLastWeeksCompletedOrders()
-        } else {
+        } else
             this.props.history.push('/login');
-        }
-
     }
-
     render() {
         return (
             <>
@@ -87,18 +60,17 @@ class HomeScreen extends React.Component {
                     {/* Daugiausia nepagamintu produkt */}
                     <MostUncompletedOrders />
                     {/* Neisiustu siuntiniu lentele */}
-                    <UnsendedOrdersComponent/>
+                    <UnsendedOrdersComponent />
 
                     {/* Atvaizdavimas pagal platforma kiek uzsakyta ir labiausiai veluojantys is tu eiles tvarka. */}
-                    <UncompletedOrdersByPlatformsComponent/>
+                    <UncompletedOrdersByPlatformsComponent />
                     {/* Gaminimo i sandeli lentele */}
-                    <UncompletedWarehouseOrdersComponent/>
+                    <UncompletedWarehouseOrdersComponent />
                     {/* Gaminių kiekis sandėlyje */}
-                    <WarehouseProductsComponent/>
+                    <WarehouseProductsComponent />
                     {/* Naujausi atlikti darbai. Newest 10 works */}
-                    <RecentCompletedServices/>
-                    
-
+                    <RecentCompletedServices />
+                    {/* Paskutinių gaminių ataskaita per paskutines 30 dienų */}
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
@@ -124,9 +96,8 @@ class HomeScreen extends React.Component {
                                     </div>
                                 ))}
                         </div>
-
                     </Col>
-
+                    {/* Pagamintų gaminių kiekis savaitemis */}
                     <Col span={24} style={{ marginTop: '20px' }}>
                         <Row gutter={16}>
                             <Col span={16}>
@@ -143,11 +114,7 @@ class HomeScreen extends React.Component {
                             </Col>
                         </Row>
                     </Col>
-
-
                 </div>
-
-
             </>
         )
     }
@@ -156,23 +123,14 @@ class HomeScreen extends React.Component {
 const mapStateToProps = (state) => {
     return {
         usersReducer: state.usersReducer,
-        weeklyWorkScheduleReducer: state.weeklyWorkScheduleReducer,
         usersListReducer: state.usersListReducer,
-        orderReducer: state.orderReducer,
-        productsReducer: state.productsReducer,
-        materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
         orderDetailsReducer: state.orderDetailsReducer,
-        warehouseReducer: state.warehouseReducer
     }
 }
 export default connect(mapStateToProps, {
     getUsers,
-    getOrders,
-    getWarehouseProducts, getMaterialsWarehouseData,
-    getLastWeeksCompletedOrders, getProducts,
+    getLastWeeksCompletedOrders,
     getLastMonthCompletedOrders,
-    getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
-    getTodayMadeProducts, getMainTodayNewOrders,
     getEmployeeMadeProducts
 })(withRouter(HomeScreen))
 
