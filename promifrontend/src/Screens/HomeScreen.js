@@ -7,7 +7,7 @@ import {
     getClientsOrders, getEmployeeMadeProducts, getLastMonthCompletedOrders, getLastWeeksCompletedOrders,
     getMainPendingProducts, getRecentOrders, getUncompletedOrdersTimes, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders, getOrdersUncompleted, getUnsendedOrders,
-    getRecommendedForProductionOrders, getUncompletedWarehouseOrders, getUncompletedExpressOrders,
+    getUncompletedWarehouseOrders, getUncompletedExpressOrders,
     getUncompletedOrdersByPlatforms
 } from '../appStore/actions/ordersDetailsActions'
 import { withRouter } from 'react-router-dom';
@@ -25,6 +25,7 @@ import PendingProductsComponent from '../components/dashboard_components/Pending
 import PlannedWorkTimeComponent from '../components/dashboard_components/PlannedWorkTimeComponent'
 import WeeklyWorkScheduleComponent from '../components/dashboard_components/WeeklyWorkScheduleComponent'
 import UrgentOrdersComponent from '../components/dashboard_components/UrgentOrdersComponent'
+import RecomendedOrdersComponent from '../components/dashboard_components/RecomendedOrdersComponent'
 
 
 
@@ -43,12 +44,6 @@ class HomeScreen extends React.Component {
             packingTime: 0,
             done: false
         }
-    }
-    datediff(first) {
-        var future = moment(first);
-        var today = new Date();
-        var start = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
-        return future.diff(start, 'days');
     }
 
     //employees-made-orders
@@ -82,8 +77,6 @@ class HomeScreen extends React.Component {
             this.props.getLastWeeksCompletedOrders()
             // Neisiustu siuntiniu lentele
             this.props.getUnsendedOrders()
-            // Rekomenduojama gaminti lentele
-            this.props.getRecommendedForProductionOrders()
         } else {
             this.props.history.push('/login');
         }
@@ -91,21 +84,6 @@ class HomeScreen extends React.Component {
     }
 
     render() {
-        const productionOrders = [
-            {
-                title: 'Kodas',
-                dataIndex: 'productCode',
-                width: '10%'
-            },
-            {
-                title: 'Kiekis',
-                dataIndex: 'quantity',
-                width: '10%'
-            }
-        ]
-
-
-
         const recentWorksColumns = [
             {
                 title: "Laikas",
@@ -287,8 +265,8 @@ class HomeScreen extends React.Component {
                 title: 'Platforma',
                 dataIndex: 'platforma',
                 width: '20%',
-                render: (text,record,index)=>(
-                    <Typography.Text>{text !== null? text : ""}</Typography.Text>
+                render: (text, record, index) => (
+                    <Typography.Text>{text !== null ? text : ""}</Typography.Text>
                 )
             },
             {
@@ -300,16 +278,16 @@ class HomeScreen extends React.Component {
                 title: 'Kaina',
                 dataIndex: 'price',
                 width: '20%',
-                render: (text,record,index)=>(
-                    <Typography.Text>{text !== null? text : ""}</Typography.Text>
+                render: (text, record, index) => (
+                    <Typography.Text>{text !== null ? text : ""}</Typography.Text>
                 )
             },
             {
                 title: 'Platforma',
                 dataIndex: 'orderFinishDate',
                 width: '20%',
-                render: (text,record,index)=>(
-                    <Typography.Text>{text !== null? moment(text).format("YYYY/MM/DD") : ""}</Typography.Text>
+                render: (text, record, index) => (
+                    <Typography.Text>{text !== null ? moment(text).format("YYYY/MM/DD") : ""}</Typography.Text>
                 )
             },
         ]
@@ -391,38 +369,15 @@ class HomeScreen extends React.Component {
             <>
                 <div style={{ marginTop: 45, marginBottom: 45 }}>
                     {/* Pagrindiniai rodikliai */}
-                    <PendingProductsComponent/>
+                    <PendingProductsComponent />
                     {/* Suplanuotas darbo laikas */}
-                    <PlannedWorkTimeComponent/>
+                    <PlannedWorkTimeComponent />
                     {/* Savaites ukio darbai */}
-                    <WeeklyWorkScheduleComponent/>
+                    <WeeklyWorkScheduleComponent />
                     {/* Gaminiu tvarkarastis(Uzsakymai) / Urgent Orders*/}
-                    <UrgentOrdersComponent/>
-
-                    <Col span={24} style={{ marginTop: '20px' }}>
-                        <Row gutter={16}>
-                            <Col span={16}>
-                                <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                                    <h3>Rekomenduojama gaminti(Užsakymai)</h3>
-                                </div>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={24}>
-                                <Card size={'small'} style={{ ...tableCardStyle }} bodyStyle={{ ...tableCardBodyStyle }}>
-                                    <Table
-                                        rowKey="id"
-                                        columns={productionOrders}
-                                        dataSource={this.props.productionOrders}
-                                        pagination={{ pageSize: 10 }}
-                                        bordered
-                                        scroll={{ x: 'calc(200px + 50%)' }}
-                                    />
-
-                                </Card>
-                            </Col>
-                        </Row>
-                    </Col>
+                    <UrgentOrdersComponent />
+                    {/* Rekomenduojama gaminti(Užsakymai) */}
+                    <RecomendedOrdersComponent/>
 
                     {/* Klientu darbu lentele */}
                     <Col span={24} style={{ marginTop: '20px' }}>
@@ -713,7 +668,6 @@ const mapStateToProps = (state) => {
         productsReducer: state.productsReducer,
         materialsWarehouseReducer: state.materialsWarehouseReducer.materialsWarehouseData,
         orderDetailsReducer: state.orderDetailsReducer,
-        productionOrders: state.orderDetailsReducer.production_orders,
         warehouseReducer: state.warehouseReducer
     }
 }
@@ -725,7 +679,6 @@ export default connect(mapStateToProps, {
     getLastMonthCompletedOrders, getRecentOrders,
     getUncompletedOrdersTimes, getMainPendingProducts, getNecessaryToMakeToday,
     getTodayMadeProducts, getMainTodayNewOrders, getUnsendedOrders,
-    getEmployeeMadeProducts, getRecommendedForProductionOrders,
-    getUncompletedOrdersByPlatforms
+    getEmployeeMadeProducts,getUncompletedOrdersByPlatforms
 })(withRouter(HomeScreen))
 
