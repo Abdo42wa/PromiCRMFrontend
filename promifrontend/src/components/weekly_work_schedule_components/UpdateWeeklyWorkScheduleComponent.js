@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from '../../appStore/actions/userListActions'
 import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const { Option } = Select;
 const textStyle = {
@@ -36,13 +37,15 @@ function UpdateWeeklyWorkScheduleComponent(props) {
         }))
     }
     const saveChanges = () => {
-        const {id,...postObj} = works;
+        const { id, ...postObj } = works;
         const reducerObj = works;
         props.save(postObj, reducerObj);
     }
     useEffect(() => {
         dispatch(getUsers())
         setWorks(props.record);
+        console.log(props.record)
+        console.log(works.date)
         // eslint-disable-next-line
     }, [dispatch]);
     return (
@@ -64,6 +67,14 @@ function UpdateWeeklyWorkScheduleComponent(props) {
                 <Form layout="vertical" id="myForm" name="myForm">
                     <p style={{ ...textStyle }}>Darbas</p>
                     <Input required style={{ width: '100%' }} placeholder="Parašykite darbą" value={works.description} onChange={(e) => onDataChange(e.target.value, "description")} />
+
+
+                    <p style={{ ...textStyle }}>Data</p>
+                    <Input
+                        style={{ width: '100%' }}
+                        placeholder="Įrašykite datą"
+                        value={moment(works.date).format('YYYY/MM/DD')}
+                        onChange={(e) => onDataChange(e.target.value, "date")} />
 
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>

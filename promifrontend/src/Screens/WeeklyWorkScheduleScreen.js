@@ -8,6 +8,7 @@ import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../styles/custo
 import { withRouter } from 'react-router-dom';
 import AddWeeklyWorkScheduleComponent from '../components/weekly_work_schedule_components/AddWeeklyWorkScheduleComponent'
 import UpdateWeeklyWorkScheduleComponent from '../components/weekly_work_schedule_components/UpdateWeeklyWorkScheduleComponent'
+import moment from 'moment';
 
 
 
@@ -75,7 +76,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
         const columns = [
             {
                 title: 'Atnaujinti',
-                width: '10%',
+                width: '5%',
                 render: (text, record, index) => (
                     <Button onClick={(e) => this.showWorkModal(record)}>Atnaujinti</Button>
                 )
@@ -83,7 +84,7 @@ class WeeklyWorkScheduleScreen extends React.Component {
             {
                 title: 'Vartotojo vardas',
                 dataIndex: 'user',
-                width: '10%',
+                width: '5%',
                 render: (text, record, index) => (
                     <Typography.Text>{text.name}</Typography.Text>
                 )
@@ -94,9 +95,17 @@ class WeeklyWorkScheduleScreen extends React.Component {
                 width: '10%'
             },
             {
+                title: 'Data',
+                dataIndex: 'date',
+                width: '5%',
+                render: (text, record, index) => (
+                    <Typography.Text>{moment(text).format('YYYY/MM/DD')}</Typography.Text>
+                )
+            },
+            {
                 title: 'Atlikta',
                 dataIndex: 'done',
-                width: '10%',
+                width: '5%',
                 render: (text, record, index) => (
                     <Typography.Text>{text === false ? <Tag className='Neatlikta'>Neatlikta</Tag> : <Tag className='atlikta'>Atlikta</Tag>}</Typography.Text>
                 )
