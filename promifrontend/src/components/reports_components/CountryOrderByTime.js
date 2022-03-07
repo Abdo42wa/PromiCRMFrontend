@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Table, Space, Card, Col, Button, DatePicker, Form, message } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../../styles/customStyles.js';
-import { getCompletedCountryOrdersByTime, refreshCompletedPlatformsOrdersByTime } from '../../appStore/actions/reportsActions'
+import { getCompletedCountryOrdersByTime, refreshReports } from '../../appStore/actions/reportsActions'
 //you can either import the `OutputType` const or `jsPDF` class if you want to create another PDF from scratch (without using the template) 
 import jsPDFInvoiceTemplate, { OutputType } from "jspdf-invoice-template";
 import moment from 'moment';
@@ -45,7 +45,6 @@ function CountryOrderByTime() {
     const downloadPdf = () => {
         console.log(dates.dateFrom)
         console.log(dates.dateTo)
-        console.log(JSON.stringify(reportsReducer.completed_platforms_orders_by_time))
         var props = {
             outputType: OutputType.Save,
             returnJsPDFDocObject: true,
@@ -70,7 +69,7 @@ function CountryOrderByTime() {
                 website: "www.promi.lt",
             },
             invoice: {
-                label: "Parduota platformose",
+                label: "Parduota Šalis",
                 // num: 19,
                 invDate: `Data nuo: ${dates.dateFrom}`,
                 invGenDate: `Data iki: ${dates.dateTo}`,
@@ -103,14 +102,14 @@ function CountryOrderByTime() {
                     },
 
                 ],
-                table: Array.from(reportsReducer.completed_platforms_orders_by_time, (item, index) => ([
+                table: Array.from(reportsReducer.completed_Country_orders_by_time, (item, index) => ([
                     index + 1,
-                    item.platforma !== null ? item.platforma : "",
+                    item.countryName !== null ? item.countryName : "",
                     item.quantity !== null ? item.quantity : "",
                     item.price !== null ? item.price : ""
                 ])),
                 invTotalLabel: "Kiekis:",
-                invTotal: `${reportsReducer.completed_platforms_orders_by_time_qty}`,
+                invTotal: `${reportsReducer.completed_Country_orders_by_time_qty}`,
                 // invCurrency: "Isviso"
                 // invDescLabel: "Invoice Note",
                 // invDesc: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary.",
@@ -152,11 +151,10 @@ function CountryOrderByTime() {
         }
     ]
     useEffect(() => {
-        dispatch(refreshCompletedPlatformsOrdersByTime())
+        dispatch(refreshReports())
+        // eslint-disable-next-line
     }, [])
-    // <DatePicker defaultValue={dates.dateFrom} value={dates.dateFrom} format={monthFormat} picker="month" onChange={(date, dateString) => onDataChange(dateString, "dateFrom")} />
-    //             <DatePicker defaultValue={dates.dateTo} value={dates.dateTo} format={monthFormat} picker="month" onChange={(date, dateString) => onDataChange(dateString, "dateTo")} />
-    //             <Button onClick={(e) => getPlatformsOrders}>Ieškoti</Button>
+
     return (
         <Col lg={24} style={{ marginTop: '20px' }}>
             <div style={{ marginRight: '40px', textAlign: 'start' }}>

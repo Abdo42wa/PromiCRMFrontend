@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import CompletedPlatformsOrdersByTime from '../components/reports_components/CompletedPlatformsOrdersByTime.js';
 import CountryOrderByTime from '../components/reports_components/CountryOrderByTime.js';
 import LastMonthSoldProducts from '../components/reports_components/LastMonthSoldProducts.js';
+import PopularProductByTime from '../components/reports_components/PopularProductByTime.js';
 
 function ReportsScreen(props) {
   const history = useHistory();
@@ -19,6 +20,7 @@ function ReportsScreen(props) {
       <LastMonthSoldProducts />
       <CompletedPlatformsOrdersByTime />
       <CountryOrderByTime />
+      <PopularProductByTime />
     </div>
   )
 }

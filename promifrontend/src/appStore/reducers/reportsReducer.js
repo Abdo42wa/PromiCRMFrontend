@@ -46,8 +46,22 @@ export const reportsReducer = (state = {
             return { ...state, loading: false, completed_Country_orders_by_time: action.payload, completed_Country_orders_by_time_qty: sum_Country_orders }
         case 'REPORTS_COUNTRY_ORDERS_BY_TIME_FAIL':
             return { ...state, loading: false, error: action.payload }
-        case 'REPORTS_COUNTRY_ORDERS_BY_TIME_REFRESH':
+        case 'REPORTS_REFRESH':
             return { ...state, loading: false, completed_Country_orders_by_time: [] }
+
+        case 'REPORTS_POPULAR_PRODUCT_BY_TIME_SUCCESS':
+            let Popular_Product_time = [...action.payload]
+            console.log(JSON.stringify(Popular_Product_time))
+            //accumulator is just value. we will each loop add currentValue to it.
+            //and i need to initialize accumulator as zero, so second argument will be zero
+            let sum_Popular_Product = Popular_Product_time.reduce((accumulator, currentValue) => {
+                return accumulator + currentValue.quantity
+            }, 0)
+            return { ...state, loading: false, Popular_Product_by_time: action.payload, Popular_Product_by_time_qty: sum_Popular_Product }
+        case 'REPORTS_POPULAR_PRODUCT_BY_TIME_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        case 'REPORTS_REFRESH_Products':
+            return { ...state, loading: false, Popular_Product_by_time: [] }
         default:
             return state;
     }

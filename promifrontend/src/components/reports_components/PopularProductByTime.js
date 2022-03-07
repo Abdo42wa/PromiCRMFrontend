@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { Table, Space, Card, Col, Button, DatePicker, Form, message } from 'antd'
 import { tableCardStyle, tableCardBodyStyle, buttonStyle } from '../../styles/customStyles.js';
-import { getCompletedPlatformsOrdersByTime, refreshCompletedPlatformsOrdersByTime } from '../../appStore/actions/reportsActions'
+import { GetPopularProductByTime, refreshReportsProduct } from '../../appStore/actions/reportsActions'
 //you can either import the `OutputType` const or `jsPDF` class if you want to create another PDF from scratch (without using the template) 
-import jsPDFInvoiceTemplate, { OutputType, jsPDF } from "jspdf-invoice-template";
+import jsPDFInvoiceTemplate, { OutputType } from "jspdf-invoice-template";
 import moment from 'moment';
 import promiLogo from '../../images/promi-logo_juodas2.png'
 
-function CompletedPlatformsOrdersByTime() {
+function PopularProductByTime() {
     const dispatch = useDispatch();
     const [dates, setDates] = useState({
         dateFrom: moment(),
@@ -33,20 +33,18 @@ function CompletedPlatformsOrdersByTime() {
             } else {
                 let queryString = `dateFrom=${dateF}&dateTo=${dateT}`
                 console.log(queryString)
-                dispatch(getCompletedPlatformsOrdersByTime(queryString))
+                dispatch(GetPopularProductByTime(queryString))
             }
         } else {
             message.error('Jūs nepridėjote datų');
         }
+        console.log('heheh')
 
     }
     //download pdf
     const downloadPdf = () => {
-        let dateF = moment(dates.dateFrom).format('YYYY/MM/DD')
-        let dateT = moment(dates.dateTo).format('YYYY/MM/DD')
         console.log(dates.dateFrom)
         console.log(dates.dateTo)
-        console.log(JSON.stringify(reportsReducer.completed_platforms_orders_by_time))
         var props = {
             outputType: OutputType.Save,
             returnJsPDFDocObject: true,
@@ -55,7 +53,7 @@ function CompletedPlatformsOrdersByTime() {
             compress: true,
             logo: {
                 src: promiLogo,
-                width: 34.33, //aspect ratio = width/height
+                width: 30.33, //aspect ratio = width/height
                 height: 10.66,
                 margin: {
                     top: 0, //negative or positive num, from the current position
@@ -71,10 +69,10 @@ function CompletedPlatformsOrdersByTime() {
                 website: "www.promi.lt",
             },
             invoice: {
-                label: "Parduota platformose",
+                label: "Populiariausiu prekiu",
                 // num: 19,
-                invDate: `Data nuo: ${dateF}`,
-                invGenDate: `Data iki: ${dateT}`,
+                invDate: `Data nuo: ${dates.dateFrom}`,
+                invGenDate: `Data iki: ${dates.dateTo}`,
                 headerBorder: false,
                 tableBodyBorder: false,
                 header: [
@@ -85,7 +83,7 @@ function CompletedPlatformsOrdersByTime() {
                         }
                     },
                     {
-                        title: "Platforma",
+                        title: "Prekės kodas",
                         style: {
                             width: 60
                         }
@@ -104,14 +102,14 @@ function CompletedPlatformsOrdersByTime() {
                     },
 
                 ],
-                table: Array.from(reportsReducer.completed_platforms_orders_by_time, (item, index) => ([
+                table: Array.from(reportsReducer.Popular_Product_by_time, (item, index) => ([
                     index + 1,
-                    item.platforma !== null ? item.platforma : "",
+                    item.productCode !== null ? item.productCode : "Ne-standartinis",
                     item.quantity !== null ? item.quantity : "",
                     item.price !== null ? item.price : ""
                 ])),
                 invTotalLabel: "Kiekis:",
-                invTotal: `${reportsReducer.completed_platforms_orders_by_time_qty}`,
+                invTotal: `${reportsReducer.Popular_Product_by_time_qty}`,
                 // invCurrency: "Isviso"
                 // invDescLabel: "Invoice Note",
                 // invDesc: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary.",
@@ -128,11 +126,11 @@ function CompletedPlatformsOrdersByTime() {
     }
     const lastMonthSoldProductsColumns = [
         {
-            title: 'Platforma',
-            dataIndex: 'platforma',
+            title: 'Prekės kodas',
+            dataIndex: 'productCode',
             width: '30%',
             render: (text, record, index) => (
-                <p key={index + 1}>{text === null ? "" : text}</p>
+                <p key={index + 1}>{text === null ? "Ne-standartinis" : text}</p>
             )
         },
         {
@@ -153,16 +151,14 @@ function CompletedPlatformsOrdersByTime() {
         }
     ]
     useEffect(() => {
-        dispatch(refreshCompletedPlatformsOrdersByTime())
+        dispatch(refreshReportsProduct())
         // eslint-disable-next-line
     }, [])
-    // <DatePicker defaultValue={dates.dateFrom} value={dates.dateFrom} format={monthFormat} picker="month" onChange={(date, dateString) => onDataChange(dateString, "dateFrom")} />
-    //             <DatePicker defaultValue={dates.dateTo} value={dates.dateTo} format={monthFormat} picker="month" onChange={(date, dateString) => onDataChange(dateString, "dateTo")} />
-    //             <Button onClick={(e) => getPlatformsOrders}>Ieškoti</Button>
+
     return (
         <Col lg={24} style={{ marginTop: '20px' }}>
             <div style={{ marginRight: '40px', textAlign: 'start' }}>
-                <h3>Ataskaita pagal platforma per pasirinkta laika</h3>
+                <h3>Ataskaita pagal Populiariausiu prekiu per pasirinkta laikas</h3>
             </div>
             <div style={{ padding: '2px', display: 'flex', marginTop: '5px' }}>
                 <Form
@@ -203,7 +199,7 @@ function CompletedPlatformsOrdersByTime() {
                     id='my-table'
                     rowKey="id"
                     columns={lastMonthSoldProductsColumns}
-                    dataSource={reportsReducer.completed_platforms_orders_by_time}
+                    dataSource={reportsReducer.Popular_Product_by_time}
                     pagination={{ pageSize: 15 }}
                     scroll={{ x: 'calc(200px + 50%)' }}
                     footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -211,7 +207,7 @@ function CompletedPlatformsOrdersByTime() {
                             size="large"
                             style={{ ...buttonStyle }}
                             onClick={(e) => downloadPdf()}
-                            disabled={reportsReducer.completed_platforms_orders_by_time.length < 1}
+                            disabled={reportsReducer.Popular_Product_by_time.length < 1}
                         >
                             <i className="fas fa-print"></i> Export pdf
                         </Button></Space>)}
@@ -222,4 +218,4 @@ function CompletedPlatformsOrdersByTime() {
     )
 }
 
-export default CompletedPlatformsOrdersByTime
+export default PopularProductByTime
