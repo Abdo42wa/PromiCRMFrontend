@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getUsers } from '../../appStore/actions/userListActions'
 import { Modal, Button, Form, Space, Select, Input } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -11,6 +12,7 @@ function AddWeeklyWorkScheduleComponent(props) {
     const [works, setWorks] = useState({
         "userId": "",
         "description": "",
+        "date": moment().format('YYYY/MM/DD'),
         "done": false,
 
     });
@@ -56,6 +58,20 @@ function AddWeeklyWorkScheduleComponent(props) {
 
                     <Form.Item key="name" name="name" label="Darbas">
                         <Input required style={{ width: '100%' }} placeholder="Įrašykite darbo apibūdinimas" value={works.description} onChange={(e) => onDataChange(e.target.value, "description")} />
+                    </Form.Item>
+
+                    <Form.Item
+                        key="date"
+                        name="date"
+                        label=" Data"
+                        initialValue={works.date}
+                        rules={[{ required: true, message: "Įveskite datą!" }]}
+                    >
+                        <Input
+                            style={{ width: '100%' }}
+                            placeholder="Įrašykite datą"
+                            value={works.date}
+                            onChange={(e) => onDataChange(e.target.value, "date")} />
                     </Form.Item>
 
                     <p style={{ marginBottom: '5px' }}>Naudotojai</p>
