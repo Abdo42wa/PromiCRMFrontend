@@ -5,9 +5,9 @@ import { getCountries } from '../../appStore/actions/countriesAction'
 import { getUsers } from '../../appStore/actions/userListActions'
 import { getSalesChannels } from '../../appStore/actions/salesChannelsActions'
 import { getWarehouseProduct } from '../../appStore/actions/warehouseActions';
-import { updateOrderTakeProductsFromWarehouse, updateNonStandart, updateOrder, getOrder, getNonStandartOrder, updateOrderObj, updateNonStandartObjServices } from '../../appStore/actions/ordersAction';
+import { updateOrderTakeProductsFromWarehouse, updateNonStandart, updateOrder, getOrder, getNonStandartOrder, updateOrderObj, updateNonStandartObjServices, updateDefectiveOrderAndInsertNew } from '../../appStore/actions/ordersAction';
 import { getShipments } from '../../appStore/actions/shipmentsActions';
-import { Modal, Button, Form, Space, Select, Input, InputNumber, Image } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, InputNumber, Image, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { currencies } from '../data/currenciesData';
@@ -29,7 +29,6 @@ function UpdateOrderComponent(props) {
     const dispatch = useDispatch();
     const [sandelis, setSandelis] = useState(false);
     const [notStandart, setNotStandart] = useState(true);
-    const [orderServices, setOrderServices] = useState([])
     const [serviceFakeArray, setServiceFakeArray] = useState([
         {
             num: 1,
@@ -102,7 +101,21 @@ function UpdateOrderComponent(props) {
 
 
     }
-
+    const onDefectiveCheck = () => {
+        if (orderReducer.order.defective === false && orderReducer.order.defectiveNumber !== null &&
+            orderReducer.order.defectiveNumber > 0 && orderReducer.order.defectiveNumber < orderReducer.order.quantity) {
+            if (orderReducer.order !== null && orderReducer.order.orderType === "Standartinis" || orderReducer.order.orderType === "Sandelis"){
+                dispatch(updateOrderObj("defective", true, "Standartinis"))
+            }else if (orderReducer.order !== null && orderReducer.order.orderType === "Ne-standartinis"){
+                dispatch(updateOrderObj("defective", true, "Ne-standartinis"))
+            }
+            dispatch(updateDefectiveOrderAndInsertNew())
+            message.success("Sukurtas naujas užsakymas su tokiu kiekiu kiek brokuota")
+            props.onClose()
+        } else {
+            message.error("Brokuotas skaičius negali būti didesnis už užsakymo kiekį ir turi būti didesnis už 0")
+        }
+    }
     const onTakeFromWarehouseCheck = (value, inputName) => {
         let num = 0;
         if (value === false)
@@ -219,7 +232,7 @@ function UpdateOrderComponent(props) {
                                     <p style={{ ...textStyle }}>Panaudosime sandėlio produktus?</p>
                                     <Input disabled={
                                         orderReducer.order.quantity <= warehouseReducer.warehouse_product.quantityProductWarehouse &&
-                                            orderReducer.order.warehouseProductsTaken === false ? false : true}
+                                            orderReducer.order.warehouseProductsTaken === false && orderReducer.order.status === false ? false : true}
                                         style={{ width: '35px', height: '35px' }}
                                         type={'checkbox'}
                                         value={orderReducer.order.warehouseProductsNumber === 0 ? false : true}
@@ -312,6 +325,12 @@ function UpdateOrderComponent(props) {
                             }
                             <p style={{ ...textStyle }}>Gamybos laikas</p>
                             <InputNumber required style={{ width: '100%' }} placeholder="Įrašykite gamybos laiką" value={orderReducer.order.productionTime} onChange={(e) => onDataChange(e, "productionTime")} />
+
+                            <p style={{ ...textStyle }}>Brokuota</p>
+                            <InputNumber disabled={orderReducer.order.defective !== false ? true : false} value={orderReducer.order.defectiveNumber} onChange={(e) => onDataChange(e, "defectiveNumber")} />
+                            <Button disabled={orderReducer.order.defective === true ? true : false} onClick={(e) => onDefectiveCheck()}>Brokuota</Button>
+
+
                             {/* <p style={{ ...textStyle }}> Įrenginys</p>
                     <Input required style={{ width: '100%' }} placeholder="Įrašykite įrenginį" value={orderReducer.order.device} onChange={(e) => onDataChange(e.target.value, "device")} /> */}
                             <p style={{ ...textStyle }}>Adresas</p>

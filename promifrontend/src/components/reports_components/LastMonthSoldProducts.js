@@ -24,7 +24,7 @@ function LastMonthSoldProducts() {
             compress: true,
             logo: {
                 src: promiLogo,
-                width: 30.33, //aspect ratio = width/height
+                width: 34.33, //aspect ratio = width/height
                 height: 10.66,
                 margin: {
                     top: 0, //negative or positive num, from the current position

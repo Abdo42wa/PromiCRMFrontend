@@ -38,11 +38,12 @@ function CompletedPlatformsOrdersByTime() {
         } else {
             message.error('Jūs nepridėjote datų');
         }
-        console.log('heheh')
 
     }
     //download pdf
     const downloadPdf = () => {
+        let dateF = moment(dates.dateFrom).format('YYYY/MM/DD')
+        let dateT = moment(dates.dateTo).format('YYYY/MM/DD')
         console.log(dates.dateFrom)
         console.log(dates.dateTo)
         console.log(JSON.stringify(reportsReducer.completed_platforms_orders_by_time))
@@ -54,7 +55,7 @@ function CompletedPlatformsOrdersByTime() {
             compress: true,
             logo: {
                 src: promiLogo,
-                width: 30.33, //aspect ratio = width/height
+                width: 34.33, //aspect ratio = width/height
                 height: 10.66,
                 margin: {
                     top: 0, //negative or positive num, from the current position
@@ -72,8 +73,8 @@ function CompletedPlatformsOrdersByTime() {
             invoice: {
                 label: "Parduota platformose",
                 // num: 19,
-                invDate: `Data nuo: ${dates.dateFrom}`,
-                invGenDate: `Data iki: ${dates.dateTo}`,
+                invDate: `Data nuo: ${dateF}`,
+                invGenDate: `Data iki: ${dateT}`,
                 headerBorder: false,
                 tableBodyBorder: false,
                 header: [
@@ -123,7 +124,7 @@ function CompletedPlatformsOrdersByTime() {
         };
 
         const pdfObject = jsPDFInvoiceTemplate(props);
-    
+
     }
     const lastMonthSoldProductsColumns = [
         {
@@ -131,7 +132,7 @@ function CompletedPlatformsOrdersByTime() {
             dataIndex: 'platforma',
             width: '30%',
             render: (text, record, index) => (
-                <p key={index+1}>{text === null ? "" : text}</p>
+                <p key={index + 1}>{text === null ? "" : text}</p>
             )
         },
         {
@@ -139,7 +140,7 @@ function CompletedPlatformsOrdersByTime() {
             dataIndex: 'quantity',
             width: '35%',
             render: (text, record, index) => (
-                <p key={index+2}>{text === null ? "" : text}</p>
+                <p key={index + 2}>{text === null ? "" : text}</p>
             )
         },
         {
@@ -147,7 +148,7 @@ function CompletedPlatformsOrdersByTime() {
             dataIndex: 'price',
             width: '35%',
             render: (text, record, index) => (
-                <p key={index+3}>{text === null ? "" : text}</p>
+                <p key={index + 3}>{text === null ? "" : text}</p>
             )
         }
     ]
@@ -205,11 +206,11 @@ function CompletedPlatformsOrdersByTime() {
                     pagination={{ pageSize: 15 }}
                     scroll={{ x: 'calc(200px + 50%)' }}
                     footer={() => (<Space style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button 
-                        size="large" 
-                        style={{ ...buttonStyle }} 
-                        onClick={(e) => downloadPdf()}
-                        disabled={reportsReducer.completed_platforms_orders_by_time.length < 1}
+                        <Button
+                            size="large"
+                            style={{ ...buttonStyle }}
+                            onClick={(e) => downloadPdf()}
+                            disabled={reportsReducer.completed_platforms_orders_by_time.length < 1}
                         >
                             <i className="fas fa-print"></i> Export pdf
                         </Button></Space>)}

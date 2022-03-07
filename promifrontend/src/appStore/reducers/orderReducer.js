@@ -147,7 +147,7 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: true }
         case 'NON_STANDART_ORDER_UPDATE_SUCCESS':
             const orders_d_c = [...state.non_standart_orders]
-            const updated_orders_d_c = orders_d_c.map(x => x.id === action.payload.id ? action.payload : x)
+            const updated_orders_d_c = orders_d_c.map(x => x.id === action.payload.id ? {...action.payload, "userServices":x.userServices} : x)
             return { ...state, loading: false, non_standart_orders: updated_orders_d_c }
         case 'NON_STANDART_ORDER_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
@@ -234,6 +234,12 @@ export const orderReducer = (state = { orders: [], non_standart_orders: [], orde
             return { ...state, loading: false, orders: updated_orders_c_data }
         case 'ORDERS_COMPLETE_UPDATE_FAIL':
             return { ...state, loading: false, error: action.payload }
+        case 'ORDERS_DEFECTIVE_UPDATE_AND_INSERT_NEW_REQUEST':
+            return {...state, loading: true}
+        case 'ORDERS_DEFECTIVE_UPDATE_AND_INSERT_NEW_SUCCESS':
+            return {...state, loading: false}
+        case 'ORDERS_DEFECTIVE_UPDATE_AND_INSERT_NEW_FAIL':
+            return {...state, loading: false, error: action.payload}
         default:
             return state;
     }

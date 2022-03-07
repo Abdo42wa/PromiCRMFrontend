@@ -21,6 +21,8 @@ function AddOrderComponent(props) {
     const dispatch = useDispatch();
     const [order, setOrder] = useState({
         "userId": "",
+        "defective": false,
+        "defectiveNumber": 0,
         "orderType": "",
         "countryName": "Lithuania",
         "currencyName": "EUR",
