@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form, Space, Select, Input, InputNumber, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -10,7 +11,9 @@ function AddNewOrderMaterial(props) {
     const [material, setMaterial] = useState({
         "orderId": props.orderId,
         "materialWarehouseId": 0,
-        "quantity": 1
+        "quantity": 1,
+        "registerDate": moment().format('YYYY/MM/DD')
+
     });
     const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer)
 
@@ -33,10 +36,11 @@ function AddNewOrderMaterial(props) {
             "materialWarehouseId": material.materialWarehouseId,
             "orderId": material.orderId,
             "quantity": material.quantity,
-            "materialWarehouse":{
-                "title":obj.title
+            "registerDate": moment().format('YYYY/MM/DD'),
+            "materialWarehouse": {
+                "title": obj.title
             }
-        }        
+        }
         props.save(postObj);
     }
 
@@ -75,7 +79,7 @@ function AddNewOrderMaterial(props) {
                     <Form.Item key="name" name="name" label="Kiekis">
                         <InputNumber required style={{ width: '100%', fontSize: '18px' }} placeholder="Įrašykite kiekį" value={material.quantity} onChange={(e) => onDataChange(e, "quantity")} />
                     </Form.Item>
-                    
+
 
                 </Form>
             </Modal>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form, Space, Select, Input, InputNumber, Typography } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const { Option } = Select;
 
@@ -10,7 +11,8 @@ function AddNewMaterial(props) {
     const [material, setMaterial] = useState({
         "productId": props.productId,
         "materialWarehouseId": 0,
-        "quantity": 1
+        "quantity": 1,
+        "registerDate": moment().format('YYYY/MM/DD')
     });
     const materialsWarehouseReducer = useSelector((state) => state.materialsWarehouseReducer)
 
@@ -32,6 +34,7 @@ function AddNewMaterial(props) {
             "materialWarehouseId": material.materialWarehouseId,
             "productId": material.productId,
             "quantity": material.quantity,
+            "registerDate": moment(material.registerDate).format('YYYY/MM/DD'),
             "materialWarehouse": {
                 "title": obj.title
             }

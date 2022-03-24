@@ -4,6 +4,7 @@ export const orderDetailsReducer = (state = {
     main_necessary_today: null,
     main_today_made_products: null,
     main_new_today_orders: null,
+    amount_of_boxs: null,
     // end main dashboard
     uncompleted_orders_times: [],
     completed_warehouse_orders: [],
@@ -81,14 +82,24 @@ export const orderDetailsReducer = (state = {
         case 'ORDERS_UNSENDED_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
         // end unsended orders
-        // start unsende oredrs
+
+        // start box counting
+        case 'AMOUNT_BOX_FETCH_REQUEST':
+            return { ...state, loading: true }
+        case 'AMOUNT_BOX_FETCH_SUCCESS':
+            return { ...state, loading: false, amount_of_boxs: action.payload }
+        case 'AMOUNT_BOX_FETCH_FAIL':
+            return { ...state, loading: false, error: action.payload }
+        // end box counting
+
         case 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_SUCCESS':
             return { ...state, loading: false, production_orders: action.payload }
         case 'ORDERS_RECOMMENDED_FOR_PRODUCTION_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
-        // end unsended orders
+
+
         case 'COMPLETED_WAREHOUSE_ORDERS_FETCH_REQUEST':
             return { ...state, loading: true }
         case 'COMPLETED_WAREHOUSE_ORDERS_FETCH_SUCCESS':
@@ -152,11 +163,11 @@ export const orderDetailsReducer = (state = {
         case 'EMPLOYEE_ORDERS_FETCH_FAIL':
             return { ...state, loading: false, error: action.payload }
         case 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_REQUEST':
-            return {...state, loading: true}
+            return { ...state, loading: true }
         case 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_SUCCESS':
-            return {...state, loading: false,uncompleted_orders_by_platforms: action.payload }
+            return { ...state, loading: false, uncompleted_orders_by_platforms: action.payload }
         case 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_FAIL':
-            return {...state, loading: false, error: action.payload}
+            return { ...state, loading: false, error: action.payload }
         default:
             return state;
     }

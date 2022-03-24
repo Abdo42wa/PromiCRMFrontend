@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Form, Space, Select, Input,InputNumber } from 'antd';
+import { Modal, Button, Form, Space, Select, Input, InputNumber } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import { getProducts } from '../../appStore/actions/productsActions';
 import { getMaterialsWarehouseData } from '../../appStore/actions/materialsWarehouseActions'
@@ -12,7 +12,7 @@ function AddMaterialComponent(props) {
     const [material, setMaterial] = useState({
         "productId": 0,
         "materialWarehouseId": 0,
-        "quantity": 1
+        "quantity": 1,
     });
 
     const productsReducer = useSelector((state) => state.productsReducer);
@@ -37,7 +37,7 @@ function AddMaterialComponent(props) {
         props.save(postObj);
     }
     useEffect(() => {
-        dispatch(getProducts(()=>{
+        dispatch(getProducts(() => {
 
         }))
         dispatch(getMaterialsWarehouseData());

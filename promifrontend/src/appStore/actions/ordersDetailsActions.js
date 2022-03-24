@@ -1,17 +1,17 @@
 import promiAPI from "./promiAPI"
 
-export const getUncompletedOrdersByPlatforms = () => async(dispatch,getState)=>{
-    try{
+export const getUncompletedOrdersByPlatforms = () => async (dispatch, getState) => {
+    try {
         dispatch({
             type: 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_REQUEST'
         })
         const token = getState().usersReducer.currentUser
-        const response = await promiAPI.get(`/api/Orders/uncompleted/by-platform`, {headers: {Authorization: `Beaerer ${token}`}})
+        const response = await promiAPI.get(`/api/Orders/uncompleted/by-platform`, { headers: { Authorization: `Beaerer ${token}` } })
         dispatch({
             type: 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_SUCCESS',
             payload: response.data
         })
-    }catch (error) {
+    } catch (error) {
         dispatch({
             type: 'UNCOMPLETED_ORDERS_BY_PLATFORMS_FETCH_FAIL',
             payload:
@@ -152,9 +152,34 @@ export const getUnsendedOrders = () => async (dispatch, getState) => {
             type: 'ORDERS_UNSENDED_FETCH_SUCCESS',
             payload: response.data
         })
+        console.log(response.data)
     } catch (error) {
         dispatch({
             type: 'ORDERS_UNSENDED_FETCH_FAIL',
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        })
+    }
+}
+
+export const getAmountOfBoxs = () => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: 'AMOUNT_BOX_FETCH_REQUEST'
+        })
+        const token = getState().usersReducer.currentUser;
+        const response = await promiAPI.get('/api/Orders/box/number', { headers: { Authorization: `Bearer ${token}` } })
+        dispatch({
+            type: 'AMOUNT_BOX_FETCH_SUCCESS',
+            payload: response.data[0].quantity
+
+        })
+        console.log(response.data)
+    } catch (error) {
+        dispatch({
+            type: 'AMOUNT_BOX_FETCH_FAIL',
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message
